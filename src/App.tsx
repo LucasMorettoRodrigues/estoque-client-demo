@@ -1,57 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import { useEffect } from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
+import Loading from "./components/Loading";
+import Navbar from "./components/Navbar";
+import { getFornecedores } from "./features/fornecedor/fornecedorSlice";
+import { getProdutos } from "./features/produtos/produtoSlice";
+import EditarFornecedor from "./pages/EditarFornecedor";
+import EditarProduto from "./pages/EditarProduto";
+import EditarSubProduto from "./pages/EditarSubProduto";
+import Fornecedores from "./pages/Fornecedores";
+import NovoFornecedor from "./pages/NovoFornecedor";
+import NovoProduto from "./pages/NovoProduto";
+import Produtos from "./pages/Produtos";
 
 function App() {
+
+  const dispatch = useAppDispatch()
+  const statusProvider = useAppSelector(state => state.fornecedor.status)
+  const statusProduct = useAppSelector(state => state.produto.status)
+
+
+  useEffect(() => {
+    dispatch(getFornecedores())
+    dispatch(getProdutos())
+  }, [dispatch])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <BrowserRouter>
+      {(statusProduct === 'loading' || statusProvider === 'loading') &&
+        <Loading />
+      }
+      <Navbar />
+      <Routes>
+        <Route path='/produtos' element={<Produtos />} />
+        <Route path='/produtos/:id' element={<EditarProduto />} />
+        <Route path='/produtos/:id_produto/subprodutos/:id_subproduto' element={<EditarSubProduto />} />
+        <Route path='/novoProduto' element={<NovoProduto />} />
+        <Route path='/fornecedores' element={<Fornecedores />} />
+        <Route path='/fornecedores/:id' element={<EditarFornecedor />} />
+        <Route path='/novoFornecedor' element={<NovoFornecedor />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
