@@ -33,8 +33,8 @@ export const deleteProviderById = createAsyncThunk(
 export const editProvider = createAsyncThunk(
     'providers/editProvider',
     async (provider: TProvider, thunkAPI) => {
-        await axios.patch(`http://localhost:5000/api/v1/providers/${provider.id}`, provider)
-        return provider
+        const result = await axios.patch(`http://localhost:5000/api/v1/providers/${provider.id}`, provider)
+        return result.data
     }
 )
 

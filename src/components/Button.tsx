@@ -9,6 +9,7 @@ const SButton = styled.button`
     cursor: pointer;
     font-weight: 600;
     margin-bottom: 20px;
+    margin-right: 20px;
 `
 
 type Props = {

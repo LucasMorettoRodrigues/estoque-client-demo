@@ -1,8 +1,9 @@
 import styled from "styled-components"
+import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai'
 import { useNavigate } from "react-router-dom"
 import Button from "../components/Button"
-import { useAppSelector } from "../app/hooks"
-import { TProduct } from "../types/TProduct"
+import { useAppDispatch, useAppSelector } from "../app/hooks"
+import { deleteProductById, deleteSubProductById } from "../features/produtos/produtoSlice"
 
 const Container = styled.div``
 const Wrapper = styled.div`
@@ -11,8 +12,8 @@ const Wrapper = styled.div`
     padding: 40px 20px;
 `
 const ListHeader = styled.div`
-    background-color: #5fb4ff;
     height: 45px;
+    background-color: #5fb4ff;
     display: flex;
     align-items: center;
     border-bottom: 1px solid lightgray;
@@ -34,6 +35,7 @@ const Product = styled.ul`
 `
 const SubProduct = styled.ul`
     height: 40px;
+    padding-left: 75px;
     display: flex;
     background-color: #eef7ff;
     align-items: center;
@@ -54,51 +56,66 @@ const SubProductLi = styled.li<{ flex?: number }>`
     min-width: 120px;
     padding: 10px;
 `
+const ActionButton = styled.li`
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    min-width: 75px;
+    padding: 10px;
+    color: gray;
+    cursor: pointer;
 
-export default function Produtos() {
+    &:hover {
+        color: black;
+    }
+`
+
+export default function Detalhes() {
 
     const navigate = useNavigate()
+    const dispatch = useAppDispatch()
     const products = useAppSelector(state => state.produto.produtos)
-    const resumedProducts: TProduct[] = []
-
-    // AGRUPAR SUBPRODUTOS
-
-    for (let i in products) {
-        let index = resumedProducts.findIndex((item) => item.name === products[i].name)
-
-        if (index < 0) {
-            resumedProducts.push({ ...products[i] })
-        } else {
-            resumedProducts[index].stock = resumedProducts[index].stock + products[i].stock
-        }
-    }
 
     return (
         <Container>
             <Wrapper>
                 <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
-                <Button onClick={() => navigate('/produtos/detalhes')} text={'Detalhes'} />
                 <ListHeader>
+                    <ListHeaderItem>Id</ListHeaderItem>
                     <ListHeaderItem flex={3}>Produto</ListHeaderItem>
+                    <ListHeaderItem flex={1}>Código</ListHeaderItem>
                     <ListHeaderItem flex={1}>Categoria</ListHeaderItem>
+                    <ListHeaderItem flex={1}>Marca</ListHeaderItem>
                     <ListHeaderItem flex={1}>Unidade</ListHeaderItem>
                     <ListHeaderItem flex={1}>Estoque</ListHeaderItem>
                     <ListHeaderItem flex={1}>Est. Mín.</ListHeaderItem>
                     <ListHeaderItem flex={1}>Est. Max.</ListHeaderItem>
+                    <ListHeaderItem>Editar</ListHeaderItem>
+                    <ListHeaderItem>Deletar</ListHeaderItem>
                 </ListHeader>
                 {
-                    resumedProducts.map((item) => (
+                    products.map((item) => (
                         <Container key={item.id}>
-                            <Product>
+                            <Product >
+                                <ProductLi>{item.id}</ProductLi>
                                 <ProductLi flex={3}>{item.name}</ProductLi>
+                                <ProductLi flex={1}>{item.code}</ProductLi>
                                 <ProductLi flex={1}>{item.category}</ProductLi>
+                                <ProductLi flex={1}>{item.brand}</ProductLi>
                                 <ProductLi flex={1}>{item.unit}</ProductLi>
-                                <ProductLi
-                                    color={item.stock < item.min_stock ? '#ff5353' : 'inherit'}
-                                    flex={1}> {item.stock}
-                                </ProductLi>
+                                <ProductLi flex={1}> {item.stock}</ProductLi>
                                 <ProductLi flex={1}>{item.min_stock}</ProductLi>
                                 <ProductLi flex={1}>{item.max_stock}</ProductLi>
+                                <ActionButton
+                                    onClick={() => navigate(`/produtos/${item.id}`, { state: item })}
+                                >
+                                    <AiOutlineEdit />
+                                </ActionButton>
+                                <ActionButton
+                                    onClick={() => dispatch(deleteProductById(item.id!))}
+                                >
+                                    <AiOutlineDelete />
+                                </ActionButton>
                             </Product>
 
                             {item.subproducts &&
@@ -106,13 +123,23 @@ export default function Produtos() {
                                     <SubProduct key={subitem.id}>
                                         <SubProductLi>Lote: {subitem.lote}</SubProductLi>
                                         <SubProductLi>Validade: {subitem.validade.slice(0, 10)}</SubProductLi>
-                                        <SubProductLi>Quantidade: {subitem.quantity}</SubProductLi>
+                                        <SubProductLi flex={1}>Quantidade: {subitem.quantity}</SubProductLi>
+                                        <ActionButton
+                                            onClick={() => navigate(`/produtos/${item.id}/subprodutos/${subitem.id}`, { state: subitem })}
+                                        >
+                                            <AiOutlineEdit /></ActionButton>
+                                        <ActionButton
+                                            onClick={() => dispatch(deleteSubProductById(subitem.id))}
+                                        >
+                                            <AiOutlineDelete />
+                                        </ActionButton>
                                     </SubProduct>
                                 ))
                             }
                         </Container>
                     ))
                 }
+
             </Wrapper>
         </Container>
     )

@@ -54,53 +54,118 @@ const SubProductLi = styled.li<{ flex?: number }>`
     min-width: 120px;
     padding: 10px;
 `
+const Form = styled.div`
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+`
+const InputContainer = styled.div<{ flex: number }>`
+    flex: ${props => props.flex};
+    display: flex;
+    margin-right: 20px;
+    flex-direction: column;
+    font-size: 14px;
+`
+const Label = styled.label`
+    margin-left: 4px;
+    margin-bottom: 4px;
+`
+const Select = styled.select`
+    padding: 10px;
+    width: 100%;
+    outline-color: lightblue;
+    background-color: white;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    margin-bottom: 20px;
+`
+const Input = styled.input`
+    padding: 10px;
+    width: 100%;
+    outline-color: lightblue;
+    background-color: white;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    margin-bottom: 20px;
+`
+const FormButton = styled.button`
+    background-color: #3dc73d;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+`
+const Title = styled.h1`
+    color: #222;
+    margin-bottom: 30px;
+`
 
-export default function Produtos() {
+
+export default function Compra() {
 
     const navigate = useNavigate()
     const products = useAppSelector(state => state.produto.produtos)
-    const resumedProducts: TProduct[] = []
-
-    // AGRUPAR SUBPRODUTOS
-
-    for (let i in products) {
-        let index = resumedProducts.findIndex((item) => item.name === products[i].name)
-
-        if (index < 0) {
-            resumedProducts.push({ ...products[i] })
-        } else {
-            resumedProducts[index].stock = resumedProducts[index].stock + products[i].stock
-        }
-    }
 
     return (
         <Container>
             <Wrapper>
-                <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
-                <Button onClick={() => navigate('/produtos/detalhes')} text={'Detalhes'} />
+                <Title>Comprar Produtos</Title>
+                <Form>
+                    <InputContainer flex={4}>
+                        <Label>Produto</Label>
+                        <Select>
+                            <option>z</option>
+                            <option>b</option>
+                            <option>c</option>
+                        </Select>
+                    </InputContainer>
+                    <InputContainer flex={2}>
+                        <Label>Fornecedor</Label>
+                        <Select>
+                            <option>z</option>
+                            <option>b</option>
+                            <option>c</option>
+                        </Select>
+                    </InputContainer>
+                    <InputContainer flex={1}>
+                        <Label>Preço</Label>
+                        <Input></Input>
+                    </InputContainer>
+                    <InputContainer flex={1}>
+                        <Label>Quantidade</Label>
+                        <Input></Input>
+                    </InputContainer>
+                    <InputContainer flex={1}>
+                        <Label>Lote</Label>
+                        <Input></Input>
+                    </InputContainer>
+                    <InputContainer flex={1}>
+                        <Label>Validade</Label>
+                        <Input type='date'></Input>
+                    </InputContainer>
+                    <FormButton>Lançar</FormButton>
+                </Form>
+
+
                 <ListHeader>
                     <ListHeaderItem flex={3}>Produto</ListHeaderItem>
                     <ListHeaderItem flex={1}>Categoria</ListHeaderItem>
                     <ListHeaderItem flex={1}>Unidade</ListHeaderItem>
-                    <ListHeaderItem flex={1}>Estoque</ListHeaderItem>
-                    <ListHeaderItem flex={1}>Est. Mín.</ListHeaderItem>
-                    <ListHeaderItem flex={1}>Est. Max.</ListHeaderItem>
+                    <ListHeaderItem flex={1}>Fornecedor</ListHeaderItem>
+                    <ListHeaderItem flex={1}>Preço</ListHeaderItem>
                 </ListHeader>
                 {
-                    resumedProducts.map((item) => (
+                    products.map((item) => (
                         <Container key={item.id}>
                             <Product>
                                 <ProductLi flex={3}>{item.name}</ProductLi>
                                 <ProductLi flex={1}>{item.category}</ProductLi>
                                 <ProductLi flex={1}>{item.unit}</ProductLi>
-                                <ProductLi
-                                    color={item.stock < item.min_stock ? '#ff5353' : 'inherit'}
-                                    flex={1}> {item.stock}
-                                </ProductLi>
-                                <ProductLi flex={1}>{item.min_stock}</ProductLi>
-                                <ProductLi flex={1}>{item.max_stock}</ProductLi>
+                                <ProductLi flex={1}>{item.provider_id}</ProductLi>
+                                <ProductLi flex={1}>{item.price}</ProductLi>
                             </Product>
-
                             {item.subproducts &&
                                 item.subproducts.map((subitem) => (
                                     <SubProduct key={subitem.id}>
