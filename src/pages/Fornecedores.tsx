@@ -5,12 +5,6 @@ import { useNavigate } from "react-router-dom"
 import Button from "../components/Button"
 import { deleteProviderById } from "../features/fornecedor/fornecedorSlice"
 
-const Container = styled.div``
-const Wrapper = styled.div`
-    max-width: 1300px;
-    margin: 0 auto;
-    padding: 40px 20px;
-`
 const ListHeader = styled.div`
     background-color: #5fb4ff;
     height: 45px;
@@ -61,32 +55,30 @@ export default function Fornecedores() {
     const fornecedores = useAppSelector(state => state.fornecedor.fornecedores)
 
     return (
-        <Container>
-            <Wrapper>
-                <Button onClick={() => navigate('/novoFornecedor')} text={'Cadastrar Novo Fornecedor'} />
-                <ListHeader>
-                    <ListHeaderItem flex={1}>Fornecedor</ListHeaderItem>
-                    <ListHeaderItem>Editar</ListHeaderItem>
-                    <ListHeaderItem>Deletar</ListHeaderItem>
-                </ListHeader>
-                {
-                    fornecedores.map((item) => (
-                        <Fornecedor key={item.id}>
-                            <FornecedorLi>{item.name}</FornecedorLi>
-                            <ActionButton
-                                onClick={() => navigate(`/fornecedores/${item.id}`, { state: item })}
-                            >
-                                <AiOutlineEdit />
-                            </ActionButton>
-                            <ActionButton
-                                onClick={() => dispatch(deleteProviderById(item.id!))}
-                            >
-                                <AiOutlineDelete />
-                            </ActionButton>
-                        </Fornecedor>
-                    ))
-                }
-            </Wrapper>
-        </Container>
+        <>
+            <Button onClick={() => navigate('/novoFornecedor')} text={'Cadastrar Novo Fornecedor'} />
+            <ListHeader>
+                <ListHeaderItem flex={1}>Fornecedor</ListHeaderItem>
+                <ListHeaderItem>Editar</ListHeaderItem>
+                <ListHeaderItem>Deletar</ListHeaderItem>
+            </ListHeader>
+            {
+                fornecedores.map((item) => (
+                    <Fornecedor key={item.id}>
+                        <FornecedorLi>{item.name}</FornecedorLi>
+                        <ActionButton
+                            onClick={() => navigate(`/fornecedores/${item.id}`, { state: item })}
+                        >
+                            <AiOutlineEdit />
+                        </ActionButton>
+                        <ActionButton
+                            onClick={() => dispatch(deleteProviderById(item.id!))}
+                        >
+                            <AiOutlineDelete />
+                        </ActionButton>
+                    </Fornecedor>
+                ))
+            }
+        </>
     )
 }

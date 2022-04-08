@@ -8,8 +8,7 @@ const SButton = styled.button`
     border-radius: 5px;
     cursor: pointer;
     font-weight: 600;
-    margin-bottom: 20px;
-    margin-right: 20px;
+    margin: 20px 20px 20px 0;
 `
 
 type Props = {

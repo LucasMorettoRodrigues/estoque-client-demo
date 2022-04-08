@@ -7,14 +7,9 @@ import Input from "../components/Input"
 import { editSubProduct } from "../features/produtos/produtoSlice"
 import { TSubProduct } from "../types/TSubProduct"
 
-const Container = styled.div``
-const Wrapper = styled.div`
-    max-width: 1300px;
-    margin: 0 auto;
-    padding: 40px 20px;
-`
 const Title = styled.h1`
-    margin-bottom: 20px;
+    color: #222;
+    margin: 30px 0;
 `
 
 export default function EditarSubProduto() {
@@ -35,37 +30,35 @@ export default function EditarSubProduto() {
     }
 
     return (
-        <Container>
-            <Wrapper>
-                <Title>Editar Produto</Title>
-                <form onSubmit={handleOnSubmit}>
-                    <Input
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setLote(e.target.value)}
-                        name={'lote'}
-                        label={'Lote'}
-                        value={lote}
-                        required
-                    />
-                    <Input
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setValidade(e.target.value)}
-                        name={'validade'}
-                        label={'Validade'}
-                        type='date'
-                        value={validade}
-                        required
-                    />
-                    <Input
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setQuantity(parseInt(e.target.value))}
-                        name={'quantity'}
-                        label={'Quantidade'}
-                        type='number'
-                        min={0}
-                        value={quantity}
-                        required
-                    />
-                    <Button text={'Editar Produto'} />
-                </form>
-            </Wrapper>
-        </Container>
+        <>
+            <Title>Editar Produto</Title>
+            <form onSubmit={handleOnSubmit}>
+                <Input
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setLote(e.target.value)}
+                    name={'lote'}
+                    label={'Lote'}
+                    value={lote}
+                    required
+                />
+                <Input
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setValidade(e.target.value)}
+                    name={'validade'}
+                    label={'Validade'}
+                    type='date'
+                    value={validade}
+                    required
+                />
+                <Input
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setQuantity(parseInt(e.target.value))}
+                    name={'quantity'}
+                    label={'Quantidade'}
+                    type='number'
+                    min={0}
+                    value={quantity}
+                    required
+                />
+                <Button text={'Editar Produto'} />
+            </form>
+        </>
     )
 }

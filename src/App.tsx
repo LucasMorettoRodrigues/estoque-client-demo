@@ -5,6 +5,7 @@ import {
   Route,
 } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
+import Container from "./components/Container";
 import Loading from "./components/Loading";
 import Navbar from "./components/Navbar";
 import { getFornecedores } from "./features/fornecedor/fornecedorSlice";
@@ -18,6 +19,7 @@ import Fornecedores from "./pages/Fornecedores";
 import NovoFornecedor from "./pages/NovoFornecedor";
 import NovoProduto from "./pages/NovoProduto";
 import Produtos from "./pages/Produtos";
+import Retirada from "./pages/Retirada";
 
 function App() {
 
@@ -37,17 +39,20 @@ function App() {
         <Loading />
       }
       <Navbar />
-      <Routes>
-        <Route path='/produtos' element={<Produtos />} />
-        <Route path='/produtos/detalhes' element={<Detalhes />} />
-        <Route path='/produtos/:id' element={<EditarProduto />} />
-        <Route path='/produtos/:id_produto/subprodutos/:id_subproduto' element={<EditarSubProduto />} />
-        <Route path='/novoProduto' element={<NovoProduto />} />
-        <Route path='/fornecedores' element={<Fornecedores />} />
-        <Route path='/fornecedores/:id' element={<EditarFornecedor />} />
-        <Route path='/novoFornecedor' element={<NovoFornecedor />} />
-        <Route path='/compra' element={<Compra />} />
-      </Routes>
+      <Container>
+        <Routes>
+          <Route path='/produtos' element={<Produtos />} />
+          <Route path='/produtos/detalhes' element={<Detalhes />} />
+          <Route path='/produtos/:id' element={<EditarProduto />} />
+          <Route path='/produtos/:id_produto/subprodutos/:id_subproduto' element={<EditarSubProduto />} />
+          <Route path='/novoProduto' element={<NovoProduto />} />
+          <Route path='/fornecedores' element={<Fornecedores />} />
+          <Route path='/fornecedores/:id' element={<EditarFornecedor />} />
+          <Route path='/novoFornecedor' element={<NovoFornecedor />} />
+          <Route path='/compras' element={<Compra />} />
+          <Route path='/retiradas' element={<Retirada />} />
+        </Routes>
+      </Container>
     </BrowserRouter>
   );
 }

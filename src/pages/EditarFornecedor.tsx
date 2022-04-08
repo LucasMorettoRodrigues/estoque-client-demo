@@ -6,14 +6,9 @@ import Button from "../components/Button"
 import Input from "../components/Input"
 import { editProvider } from "../features/fornecedor/fornecedorSlice"
 
-const Container = styled.div``
-const Wrapper = styled.div`
-    max-width: 1300px;
-    margin: 0 auto;
-    padding: 40px 20px;
-`
 const Title = styled.h1`
-    margin-bottom: 20px;
+    color: #222;
+    margin: 30px 0;
 `
 
 type stateType = {
@@ -37,20 +32,18 @@ export default function EditarFornecedor() {
     }
 
     return (
-        <Container>
-            <Wrapper>
-                <form onSubmit={handleOnSubmit}>
-                    <Title>Editar Fornecedor</Title>
-                    <Input
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-                        name={'name'}
-                        label={'Name'}
-                        value={name}
-                        required
-                    />
-                    <Button text={'Editar Fornecedor'} />
-                </form>
-            </Wrapper>
-        </Container>
+        <>
+            <form onSubmit={handleOnSubmit}>
+                <Title>Editar Fornecedor</Title>
+                <Input
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                    name={'name'}
+                    label={'Name'}
+                    value={name}
+                    required
+                />
+                <Button text={'Editar Fornecedor'} />
+            </form>
+        </>
     )
 }

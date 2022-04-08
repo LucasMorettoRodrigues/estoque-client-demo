@@ -6,12 +6,6 @@ import Button from "../components/Button"
 import Input from "../components/Input"
 import { createProduct } from "../features/produtos/produtoSlice"
 
-const Container = styled.div``
-const Wrapper = styled.div`
-    max-width: 1300px;
-    margin: 0 auto;
-    padding: 40px 20px;
-`
 const Title = styled.h1`
     margin-bottom: 20px;
 `
@@ -41,61 +35,59 @@ export default function NovoProduto() {
     }
 
     return (
-        <Container>
-            <Wrapper>
-                <Title>Novo Produto</Title>
-                <Form onSubmit={handleOnSubmit}>
-                    <Input
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-                        name={'name'}
-                        label={'Name'}
-                        required
-                    />
-                    <Input
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setCode(parseInt(e.target.value))}
-                        name={'codigo'}
-                        label={'Código'}
-                        required
-                    />
-                    <Input
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setCategory(e.target.value)}
-                        name={'categoria'}
-                        label={'Categoria'}
-                    />
-                    <Input
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setBrand(e.target.value)}
-                        name={'brand'}
-                        label={'Marca'}
-                    />
-                    <Input
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setUnit(e.target.value)}
-                        name={'unit'}
-                        label={'Unidade'}
-                    />
-                    <Input
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setStock(parseInt(e.target.value))}
-                        name={'stock'}
-                        label={'Estoque'}
-                        type='number'
-                        min={0}
-                    />
-                    <Input
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setMinStock(parseInt(e.target.value))}
-                        name={'minStock'}
-                        label={'Estoque Mínimo'}
-                        type='number'
-                        min={0}
-                    />
-                    <Input
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setMaxStock(parseInt(e.target.value))}
-                        name={'maxStock'}
-                        label={'Estoque Máximo'}
-                        type='number'
-                        min={0}
-                    />
-                    <Button text={'Cadastrar Produto'} />
-                </Form>
-            </Wrapper>
-        </Container>
+        <>
+            <Title>Novo Produto</Title>
+            <Form onSubmit={handleOnSubmit}>
+                <Input
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                    name={'name'}
+                    label={'Name'}
+                    required
+                />
+                <Input
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setCode(parseInt(e.target.value))}
+                    name={'codigo'}
+                    label={'Código'}
+                    required
+                />
+                <Input
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setCategory(e.target.value)}
+                    name={'categoria'}
+                    label={'Categoria'}
+                />
+                <Input
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setBrand(e.target.value)}
+                    name={'brand'}
+                    label={'Marca'}
+                />
+                <Input
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setUnit(e.target.value)}
+                    name={'unit'}
+                    label={'Unidade'}
+                />
+                <Input
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setStock(parseInt(e.target.value))}
+                    name={'stock'}
+                    label={'Estoque'}
+                    type='number'
+                    min={0}
+                />
+                <Input
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setMinStock(parseInt(e.target.value))}
+                    name={'minStock'}
+                    label={'Estoque Mínimo'}
+                    type='number'
+                    min={0}
+                />
+                <Input
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setMaxStock(parseInt(e.target.value))}
+                    name={'maxStock'}
+                    label={'Estoque Máximo'}
+                    type='number'
+                    min={0}
+                />
+                <Button text={'Cadastrar Produto'} />
+            </Form>
+        </>
     )
 }

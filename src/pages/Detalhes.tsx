@@ -6,11 +6,6 @@ import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { deleteProductById, deleteSubProductById } from "../features/produtos/produtoSlice"
 
 const Container = styled.div``
-const Wrapper = styled.div`
-    max-width: 1300px;
-    margin: 0 auto;
-    padding: 40px 20px;
-`
 const ListHeader = styled.div`
     height: 45px;
     background-color: #5fb4ff;
@@ -77,70 +72,67 @@ export default function Detalhes() {
     const products = useAppSelector(state => state.produto.produtos)
 
     return (
-        <Container>
-            <Wrapper>
-                <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
-                <ListHeader>
-                    <ListHeaderItem>Id</ListHeaderItem>
-                    <ListHeaderItem flex={3}>Produto</ListHeaderItem>
-                    <ListHeaderItem flex={1}>Código</ListHeaderItem>
-                    <ListHeaderItem flex={1}>Categoria</ListHeaderItem>
-                    <ListHeaderItem flex={1}>Marca</ListHeaderItem>
-                    <ListHeaderItem flex={1}>Unidade</ListHeaderItem>
-                    <ListHeaderItem flex={1}>Estoque</ListHeaderItem>
-                    <ListHeaderItem flex={1}>Est. Mín.</ListHeaderItem>
-                    <ListHeaderItem flex={1}>Est. Max.</ListHeaderItem>
-                    <ListHeaderItem>Editar</ListHeaderItem>
-                    <ListHeaderItem>Deletar</ListHeaderItem>
-                </ListHeader>
-                {
-                    products.map((item) => (
-                        <Container key={item.id}>
-                            <Product >
-                                <ProductLi>{item.id}</ProductLi>
-                                <ProductLi flex={3}>{item.name}</ProductLi>
-                                <ProductLi flex={1}>{item.code}</ProductLi>
-                                <ProductLi flex={1}>{item.category}</ProductLi>
-                                <ProductLi flex={1}>{item.brand}</ProductLi>
-                                <ProductLi flex={1}>{item.unit}</ProductLi>
-                                <ProductLi flex={1}> {item.stock}</ProductLi>
-                                <ProductLi flex={1}>{item.min_stock}</ProductLi>
-                                <ProductLi flex={1}>{item.max_stock}</ProductLi>
-                                <ActionButton
-                                    onClick={() => navigate(`/produtos/${item.id}`, { state: item })}
-                                >
-                                    <AiOutlineEdit />
-                                </ActionButton>
-                                <ActionButton
-                                    onClick={() => dispatch(deleteProductById(item.id!))}
-                                >
-                                    <AiOutlineDelete />
-                                </ActionButton>
-                            </Product>
+        <>
+            <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
+            <ListHeader>
+                <ListHeaderItem>Id</ListHeaderItem>
+                <ListHeaderItem flex={3}>Produto</ListHeaderItem>
+                <ListHeaderItem flex={1}>Código</ListHeaderItem>
+                <ListHeaderItem flex={1}>Categoria</ListHeaderItem>
+                <ListHeaderItem flex={1}>Marca</ListHeaderItem>
+                <ListHeaderItem flex={1}>Unidade</ListHeaderItem>
+                <ListHeaderItem flex={1}>Estoque</ListHeaderItem>
+                <ListHeaderItem flex={1}>Est. Mín.</ListHeaderItem>
+                <ListHeaderItem flex={1}>Est. Max.</ListHeaderItem>
+                <ListHeaderItem>Editar</ListHeaderItem>
+                <ListHeaderItem>Deletar</ListHeaderItem>
+            </ListHeader>
+            {
+                products.map((item) => (
+                    <Container >
+                        <Product key={item.id}>
+                            <ProductLi>{item.id}</ProductLi>
+                            <ProductLi flex={3}>{item.name}</ProductLi>
+                            <ProductLi flex={1}>{item.code}</ProductLi>
+                            <ProductLi flex={1}>{item.category}</ProductLi>
+                            <ProductLi flex={1}>{item.brand}</ProductLi>
+                            <ProductLi flex={1}>{item.unit}</ProductLi>
+                            <ProductLi flex={1}> {item.stock}</ProductLi>
+                            <ProductLi flex={1}>{item.min_stock}</ProductLi>
+                            <ProductLi flex={1}>{item.max_stock}</ProductLi>
+                            <ActionButton
+                                onClick={() => navigate(`/produtos/${item.id}`, { state: item })}
+                            >
+                                <AiOutlineEdit />
+                            </ActionButton>
+                            <ActionButton
+                                onClick={() => dispatch(deleteProductById(item.id!))}
+                            >
+                                <AiOutlineDelete />
+                            </ActionButton>
+                        </Product>
 
-                            {item.subproducts &&
-                                item.subproducts.map((subitem) => (
-                                    <SubProduct key={subitem.id}>
-                                        <SubProductLi>Lote: {subitem.lote}</SubProductLi>
-                                        <SubProductLi>Validade: {subitem.validade.slice(0, 10)}</SubProductLi>
-                                        <SubProductLi flex={1}>Quantidade: {subitem.quantity}</SubProductLi>
-                                        <ActionButton
-                                            onClick={() => navigate(`/produtos/${item.id}/subprodutos/${subitem.id}`, { state: subitem })}
-                                        >
-                                            <AiOutlineEdit /></ActionButton>
-                                        <ActionButton
-                                            onClick={() => dispatch(deleteSubProductById(subitem.id))}
-                                        >
-                                            <AiOutlineDelete />
-                                        </ActionButton>
-                                    </SubProduct>
-                                ))
-                            }
-                        </Container>
-                    ))
-                }
-
-            </Wrapper>
-        </Container>
+                        {item.subproducts &&
+                            item.subproducts.map((subitem) => (
+                                <SubProduct key={subitem.id}>
+                                    <SubProductLi>Lote: {subitem.lote}</SubProductLi>
+                                    <SubProductLi>Validade: {subitem.validade.slice(0, 10)}</SubProductLi>
+                                    <SubProductLi flex={1}>Quantidade: {subitem.quantity}</SubProductLi>
+                                    <ActionButton
+                                        onClick={() => navigate(`/produtos/${item.id}/subprodutos/${subitem.id}`, { state: subitem })}
+                                    >
+                                        <AiOutlineEdit /></ActionButton>
+                                    <ActionButton
+                                        onClick={() => dispatch(deleteSubProductById(subitem.id))}
+                                    >
+                                        <AiOutlineDelete />
+                                    </ActionButton>
+                                </SubProduct>
+                            ))
+                        }
+                    </Container>
+                ))
+            }
+        </>
     )
 }

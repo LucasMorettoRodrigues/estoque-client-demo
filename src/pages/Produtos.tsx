@@ -5,11 +5,6 @@ import { useAppSelector } from "../app/hooks"
 import { TProduct } from "../types/TProduct"
 
 const Container = styled.div``
-const Wrapper = styled.div`
-    max-width: 1300px;
-    margin: 0 auto;
-    padding: 40px 20px;
-`
 const ListHeader = styled.div`
     background-color: #5fb4ff;
     height: 45px;
@@ -74,46 +69,44 @@ export default function Produtos() {
     }
 
     return (
-        <Container>
-            <Wrapper>
-                <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
-                <Button onClick={() => navigate('/produtos/detalhes')} text={'Detalhes'} />
-                <ListHeader>
-                    <ListHeaderItem flex={3}>Produto</ListHeaderItem>
-                    <ListHeaderItem flex={1}>Categoria</ListHeaderItem>
-                    <ListHeaderItem flex={1}>Unidade</ListHeaderItem>
-                    <ListHeaderItem flex={1}>Estoque</ListHeaderItem>
-                    <ListHeaderItem flex={1}>Est. Mín.</ListHeaderItem>
-                    <ListHeaderItem flex={1}>Est. Max.</ListHeaderItem>
-                </ListHeader>
-                {
-                    resumedProducts.map((item) => (
-                        <Container key={item.id}>
-                            <Product>
-                                <ProductLi flex={3}>{item.name}</ProductLi>
-                                <ProductLi flex={1}>{item.category}</ProductLi>
-                                <ProductLi flex={1}>{item.unit}</ProductLi>
-                                <ProductLi
-                                    color={item.stock < item.min_stock ? '#ff5353' : 'inherit'}
-                                    flex={1}> {item.stock}
-                                </ProductLi>
-                                <ProductLi flex={1}>{item.min_stock}</ProductLi>
-                                <ProductLi flex={1}>{item.max_stock}</ProductLi>
-                            </Product>
+        <>
+            <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
+            <Button onClick={() => navigate('/produtos/detalhes')} text={'Detalhes'} />
+            <ListHeader>
+                <ListHeaderItem flex={3}>Produto</ListHeaderItem>
+                <ListHeaderItem flex={1}>Categoria</ListHeaderItem>
+                <ListHeaderItem flex={1}>Unidade</ListHeaderItem>
+                <ListHeaderItem flex={1}>Estoque</ListHeaderItem>
+                <ListHeaderItem flex={1}>Est. Mín.</ListHeaderItem>
+                <ListHeaderItem flex={1}>Est. Max.</ListHeaderItem>
+            </ListHeader>
+            {
+                resumedProducts.map((item) => (
+                    <Container key={item.id}>
+                        <Product>
+                            <ProductLi flex={3}>{item.name}</ProductLi>
+                            <ProductLi flex={1}>{item.category}</ProductLi>
+                            <ProductLi flex={1}>{item.unit}</ProductLi>
+                            <ProductLi
+                                color={item.stock < item.min_stock ? '#ff5353' : 'inherit'}
+                                flex={1}> {item.stock}
+                            </ProductLi>
+                            <ProductLi flex={1}>{item.min_stock}</ProductLi>
+                            <ProductLi flex={1}>{item.max_stock}</ProductLi>
+                        </Product>
 
-                            {item.subproducts &&
-                                item.subproducts.map((subitem) => (
-                                    <SubProduct key={subitem.id}>
-                                        <SubProductLi>Lote: {subitem.lote}</SubProductLi>
-                                        <SubProductLi>Validade: {subitem.validade.slice(0, 10)}</SubProductLi>
-                                        <SubProductLi>Quantidade: {subitem.quantity}</SubProductLi>
-                                    </SubProduct>
-                                ))
-                            }
-                        </Container>
-                    ))
-                }
-            </Wrapper>
-        </Container>
+                        {item.subproducts &&
+                            item.subproducts.map((subitem) => (
+                                <SubProduct key={subitem.id}>
+                                    <SubProductLi>Lote: {subitem.lote}</SubProductLi>
+                                    <SubProductLi>Validade: {subitem.validade.slice(0, 10)}</SubProductLi>
+                                    <SubProductLi>Quantidade: {subitem.quantity}</SubProductLi>
+                                </SubProduct>
+                            ))
+                        }
+                    </Container>
+                ))
+            }
+        </>
     )
 }

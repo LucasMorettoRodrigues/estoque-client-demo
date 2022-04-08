@@ -10,6 +10,9 @@ export type TProduct = {
     stock: number,
     max_stock: number,
     min_stock: number,
+    lote?: string,
+    validade?: string,
+    quantity?: number,
     subproducts?: {
         id: number,
         lote: string,
