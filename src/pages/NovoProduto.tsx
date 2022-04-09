@@ -30,8 +30,8 @@ export default function NovoProduto() {
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        dispatch(createProduct({ name, code, category, brand, unit, price: '10', provider_id: 1, stock, min_stock: minStock, max_stock: maxStock }))
-        navigate('products')
+        dispatch(createProduct({ name, code, category, brand, unit, stock, min_stock: minStock, max_stock: maxStock }))
+        navigate('/produtos')
     }
 
     return (

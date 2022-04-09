@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import Button from "../components/Button"
 import { useAppSelector } from "../app/hooks"
 import { TProduct } from "../types/TProduct"
+import { useEffect } from "react"
 
 const Container = styled.div``
 const ListHeader = styled.div`
@@ -56,15 +57,14 @@ export default function Produtos() {
     const products = useAppSelector(state => state.produto.produtos)
     const resumedProducts: TProduct[] = []
 
-    // AGRUPAR SUBPRODUTOS
-
     for (let i in products) {
         let index = resumedProducts.findIndex((item) => item.name === products[i].name)
 
         if (index < 0) {
-            resumedProducts.push({ ...products[i] })
+            resumedProducts.push(products[i])
         } else {
             resumedProducts[index].stock = resumedProducts[index].stock + products[i].stock
+            resumedProducts[index].subproducts = [...resumedProducts[index].subproducts!, ...products[i].subproducts!]
         }
     }
 

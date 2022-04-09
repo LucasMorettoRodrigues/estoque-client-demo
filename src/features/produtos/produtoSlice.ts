@@ -3,6 +3,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { TProduct } from '../../types/TProduct'
 import { TSubProduct } from '../../types/TSubProduct'
+import { getProduct } from '../../utils/functions'
+import { createStockOut } from '../stockOut/stockOut'
 
 export const getProdutos = createAsyncThunk(
     'produtos/getProdutos',
@@ -148,6 +150,21 @@ export const produtoSlice = createSlice({
         })
         builder.addCase(editSubProduct.rejected, (state) => {
             state.status = 'failed'
+        })
+        builder.addCase(createStockOut.fulfilled, (state, action) => {
+            state.status = 'success'
+            let updatedProduct = getProduct(state.produtos, action.payload.product_id)
+            updatedProduct = { ...updatedProduct!, stock: updatedProduct!.stock - action.payload.quantity }
+            if (action.payload.subproduct_id) {
+                updatedProduct.subproducts = updatedProduct.subproducts?.map(item => (item.id === action.payload.subproduct_id
+                    ? { ...item, quantity: item.quantity - action.payload.quantity }
+                    : item
+                ))
+            }
+            state.produtos = state.produtos.map(item => (item.id === action.payload.product_id
+                ? updatedProduct!
+                : item
+            ))
         })
     },
 })

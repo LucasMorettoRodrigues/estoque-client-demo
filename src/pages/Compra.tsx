@@ -1,10 +1,14 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
-import { useAppSelector } from "../app/hooks"
+import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { TProduct } from "../types/TProduct"
 import { FormEvent, useState } from "react"
 import { AiOutlineDelete } from 'react-icons/ai'
 import Button from "../components/Button"
+import { TStockIn } from "../types/TStockIn"
+import { getProduct, getProvider, getSubProduct, getSubProductByLote } from "../utils/functions"
+import { editProduct } from "../features/produtos/produtoSlice"
+import { createStockIn } from "../features/stockIn/stockIn"
 
 const Title = styled.h1`
     color: #222;
@@ -91,10 +95,11 @@ const ActionButton = styled.li`
 export default function Compra() {
 
     const navigate = useNavigate()
+    const dispatch = useAppDispatch()
     const products = useAppSelector(state => state.produto.produtos)
     const providers = useAppSelector(state => state.fornecedor.fornecedores)
 
-    const [cart, setCart] = useState<TProduct[]>([])
+    const [cart, setCart] = useState<TStockIn[]>([])
     const [productId, setProductId] = useState(0)
     const [providerId, setProviderId] = useState(0)
     const [quantity, setQuantity] = useState(0)
@@ -104,12 +109,11 @@ export default function Compra() {
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        let productToCart = products.filter((item) => item.id === productId)[0]
-        productToCart = { ...productToCart, lote: lote, quantity: quantity, price: price, validade: validade }
-        setCart([...cart, productToCart])
+        setCart([...cart, { product_id: productId, provider_id: providerId, lote: lote, quantity: quantity, price: price, validade: validade ? validade : null }])
     }
 
     const handleOnClick = () => {
+        cart.map(item => dispatch(createStockIn(item)))
         navigate('/produtos')
     }
 
@@ -141,7 +145,7 @@ export default function Compra() {
                 </InputContainer>
                 <InputContainer flex={1}>
                     <Label>Preço</Label>
-                    <Input required onChange={(e) => setPrice(e.target.value)}></Input>
+                    <Input required type='number' step='.01' onChange={(e) => setPrice(e.target.value)}></Input>
                 </InputContainer>
                 <InputContainer flex={1}>
                     <Label>Lote</Label>
@@ -153,43 +157,44 @@ export default function Compra() {
                 </InputContainer>
                 <InputContainer flex={1}>
                     <Label>Quantidade</Label>
-                    <Input required onChange={(e) => setQuantity(parseInt(e.target.value))}></Input>
+                    <Input required type='number' onChange={(e) => setQuantity(parseInt(e.target.value))}></Input>
                 </InputContainer>
                 <FormButton>Lançar</FormButton>
             </Form>
-            <ListHeader>
-                <ListHeaderItem flex={3}>Produto</ListHeaderItem>
-                <ListHeaderItem flex={1}>Categoria</ListHeaderItem>
-                <ListHeaderItem flex={1}>Unidade</ListHeaderItem>
-                <ListHeaderItem flex={1}>Fornecedor</ListHeaderItem>
-                <ListHeaderItem flex={1}>Lote</ListHeaderItem>
-                <ListHeaderItem flex={1}>Validade</ListHeaderItem>
-                <ListHeaderItem flex={1}>Preço</ListHeaderItem>
-                <ListHeaderItem flex={1}>Quantidade</ListHeaderItem>
-                <ListHeaderItem>Remover</ListHeaderItem>
-            </ListHeader>
-            <>
-                {
-                    cart.map((item, index) => (
-                        <Product key={index}>
-                            <ProductLi flex={3}>{item.name}</ProductLi>
-                            <ProductLi flex={1}>{item.category}</ProductLi>
-                            <ProductLi flex={1}>{item.unit}</ProductLi>
-                            <ProductLi flex={1}>{item.provider_id}</ProductLi>
-                            <ProductLi flex={1}>{item.lote}</ProductLi>
-                            <ProductLi flex={1}>{item.validade}</ProductLi>
-                            <ProductLi flex={1}>{item.price}</ProductLi>
-                            <ProductLi flex={1}>{item.quantity}</ProductLi>
-                            <ActionButton
-                                onClick={() => setCart(cart.filter((p, i) => i !== index))}
-                            >
-                                <AiOutlineDelete />
-                            </ActionButton>
-                        </Product>
-                    ))
-                }
-            </>
-            <Button onClick={handleOnClick} text={'Finalizar Compra'} />
+            {
+                cart.length > 0 &&
+                <>
+                    <ListHeader>
+                        <ListHeaderItem flex={3}>Produto</ListHeaderItem>
+                        <ListHeaderItem flex={1}>Fornecedor</ListHeaderItem>
+                        <ListHeaderItem flex={1}>Lote</ListHeaderItem>
+                        <ListHeaderItem flex={1}>Validade</ListHeaderItem>
+                        <ListHeaderItem flex={1}>Preço</ListHeaderItem>
+                        <ListHeaderItem flex={1}>Quantidade</ListHeaderItem>
+                        <ListHeaderItem>Remover</ListHeaderItem>
+                    </ListHeader>
+                    <>
+                        {
+                            cart.map((item, index) => (
+                                <Product key={index}>
+                                    <ProductLi flex={3}>{getProduct(products, item.product_id)?.name}</ProductLi>
+                                    <ProductLi flex={1}>{getProvider(providers, item.provider_id)?.name}</ProductLi>
+                                    <ProductLi flex={1}>{item.lote}</ProductLi>
+                                    <ProductLi flex={1}>{item.validade}</ProductLi>
+                                    <ProductLi flex={1}>{item.price}</ProductLi>
+                                    <ProductLi flex={1}>{item.quantity}</ProductLi>
+                                    <ActionButton
+                                        onClick={() => setCart(cart.filter((p, i) => i !== index))}
+                                    >
+                                        <AiOutlineDelete />
+                                    </ActionButton>
+                                </Product>
+                            ))
+                        }
+                    </>
+                    <Button onClick={handleOnClick} text={'Finalizar Compra'} />
+                </>
+            }
         </>
     )
 }

@@ -1,13 +1,15 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import fornecedorReducer from '../features/fornecedor/fornecedorSlice'
-import produtoSlice from '../features/produtos/produtoSlice';
-import stockOutSlice from '../features/stockOut/stockOut';
+import produtoReducer from '../features/produtos/produtoSlice';
+import stockInReducer from '../features/stockIn/stockIn';
+import stockOutReducer from '../features/stockOut/stockOut';
 
 export const store = configureStore({
   reducer: {
     fornecedor: fornecedorReducer,
-    produto: produtoSlice,
-    stockOut: stockOutSlice
+    produto: produtoReducer,
+    stockOut: stockOutReducer,
+    stockIn: stockInReducer
   },
 });
 

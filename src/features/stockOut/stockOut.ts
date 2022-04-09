@@ -10,6 +10,14 @@ export const createStockOut = createAsyncThunk(
     }
 )
 
+export const getAllStockOuts = createAsyncThunk(
+    'stockOuts/getAllStockOuts',
+    async (thunkAPI) => {
+        const stockOuts = await axios.get('http://localhost:5000/api/v1/stockOuts')
+        return stockOuts.data
+    }
+)
+
 type State = {
     stockOuts: TStockOut[],
     status: string
@@ -27,10 +35,21 @@ export const stockOutSlice = createSlice({
         builder.addCase(createStockOut.pending, (state) => {
             state.status = 'loading'
         })
-        builder.addCase(createStockOut.fulfilled, (state) => {
+        builder.addCase(createStockOut.fulfilled, (state, action) => {
             state.status = 'success'
+            state.stockOuts = [...state.stockOuts, action.payload]
         })
         builder.addCase(createStockOut.rejected, (state) => {
+            state.status = 'failed'
+        })
+        builder.addCase(getAllStockOuts.pending, (state) => {
+            state.status = 'loading'
+        })
+        builder.addCase(getAllStockOuts.fulfilled, (state, action) => {
+            state.status = 'success'
+            state.stockOuts = action.payload
+        })
+        builder.addCase(getAllStockOuts.rejected, (state) => {
             state.status = 'failed'
         })
     },

@@ -1,5 +1,7 @@
 export type TStockOut = {
+    id?: number,
+    date?: string,
     product_id: number,
-    subProduct_id: number | null,
+    subproduct_id: number | null,
     quantity: number
 }
