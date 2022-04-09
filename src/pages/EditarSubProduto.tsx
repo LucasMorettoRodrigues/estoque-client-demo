@@ -21,11 +21,11 @@ export default function EditarSubProduto() {
 
     const [lote, setLote] = useState(subProduct.lote)
     const [validade, setValidade] = useState(subProduct.validade.slice(0, 10))
-    const [quantity, setQuantity] = useState(subProduct.quantity)
+    const [quantity, setQuantity] = useState(`${subProduct.quantity}`)
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        dispatch(editSubProduct({ id: subProduct.id, lote, validade, quantity }))
+        dispatch(editSubProduct({ id: subProduct.id, lote, validade, quantity: parseInt(quantity) }))
         navigate('/produtos/detalhes')
     }
 
@@ -49,7 +49,7 @@ export default function EditarSubProduto() {
                     required
                 />
                 <Input
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setQuantity(parseInt(e.target.value))}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setQuantity(e.target.value)}
                     name={'quantity'}
                     label={'Quantidade'}
                     type='number'

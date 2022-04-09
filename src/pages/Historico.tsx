@@ -2,12 +2,14 @@ import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
 import Button from "../components/Button"
 import { useAppSelector } from "../app/hooks"
-import { getProduct, getSubProduct } from "../utils/functions"
+import { getProduct } from "../utils/functions"
 import { useEffect, useState } from "react"
-import { TStockIn } from "../types/TStockIn"
-import { TStockOut } from "../types/TStockOut"
 
 const Container = styled.div``
+const Title = styled.h1`
+    color: #222;
+    margin: 30px 0;
+`
 const ListHeader = styled.div`
     background-color: #5fb4ff;
     height: 45px;
@@ -48,12 +50,11 @@ export default function Historico() {
 
     useEffect(() => {
         setHistoric([...stockIns, ...stockOuts])
-    }, [])
+    }, [stockIns, stockOuts])
 
     return (
         <>
-            <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
-            <Button onClick={() => navigate('/produtos/detalhes')} text={'Detalhes'} />
+            <Title>Histórico</Title>
             <ListHeader>
                 <ListHeaderItem flex={1}>Data</ListHeaderItem>
                 <ListHeaderItem flex={2}>Ação</ListHeaderItem>
@@ -65,24 +66,24 @@ export default function Historico() {
                 <ListHeaderItem flex={1}>Quantidade</ListHeaderItem>
             </ListHeader>
             {
-                historic.map((item) => (
+                historic.map((item, index) => (
                     !item.price
                         ? (
-                            <Container key={item.id}>
+                            <Container key={index}>
                                 <Product backgroundColor='#ffa7a7' >
                                     <ProductLi flex={1}>{item.date.slice(0, 10)}</ProductLi>
                                     <ProductLi flex={2}>Retirada de Estoque</ProductLi>
                                     <ProductLi flex={3}>{getProduct(products, item.product_id)?.name}</ProductLi>
                                     <ProductLi flex={1}>{getProduct(products, item.product_id)?.brand}</ProductLi>
                                     <ProductLi flex={1}></ProductLi>
-                                    <ProductLi flex={1}>{getSubProduct(products, item.product_id, item.subproduct_id)?.lote}</ProductLi>
-                                    <ProductLi flex={1}>{getSubProduct(products, item.product_id, item.subproduct_id)?.validade.slice(0, 10)}</ProductLi>
+                                    <ProductLi flex={1}>{item.lote}</ProductLi>
+                                    <ProductLi flex={1}>{item.validade && item.validade.slice(0, 10)}</ProductLi>
                                     <ProductLi flex={1}>{item.quantity}</ProductLi>
                                 </Product>
                             </Container>
                         )
                         : (
-                            <Container key={item.id}>
+                            <Container key={index}>
                                 <Product backgroundColor='#a3ff86'>
                                     <ProductLi flex={1}>{item.date.slice(0, 10)}</ProductLi>
                                     <ProductLi flex={2}>Compra</ProductLi>

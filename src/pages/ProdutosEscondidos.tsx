@@ -1,9 +1,10 @@
 import styled from "styled-components"
-import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai'
 import { useNavigate } from "react-router-dom"
 import Button from "../components/Button"
 import { useAppDispatch, useAppSelector } from "../app/hooks"
-import { deleteProductById, deleteSubProductById } from "../features/produtos/produtoSlice"
+import { TProduct } from "../types/TProduct"
+import { AiOutlineEye } from "react-icons/ai"
+import { editProduct } from "../features/produtos/produtoSlice"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -11,8 +12,8 @@ const Title = styled.h1`
     margin: 30px 0;
 `
 const ListHeader = styled.div`
-    height: 45px;
     background-color: #5fb4ff;
+    height: 45px;
     display: flex;
     align-items: center;
     border-bottom: 1px solid lightgray;
@@ -34,7 +35,6 @@ const Product = styled.ul`
 `
 const SubProduct = styled.ul`
     height: 40px;
-    padding-left: 75px;
     display: flex;
     background-color: #eef7ff;
     align-items: center;
@@ -69,53 +69,54 @@ const ActionButton = styled.li`
     }
 `
 
-export default function Detalhes() {
+export default function ProdutosEscondidos() {
 
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
-    const products = useAppSelector(state => state.produto.produtos)
+    const products = useAppSelector(state => state.produto.produtos.filter(i => i.hide === true))
+    const resumedProducts: TProduct[] = []
+
+    for (let i in products) {
+        let index = resumedProducts.findIndex((item) => item.name === products[i].name)
+
+        if (index < 0) {
+            resumedProducts.push(products[i])
+        } else {
+            resumedProducts[index].stock = resumedProducts[index].stock + products[i].stock
+            resumedProducts[index].subproducts = [...resumedProducts[index].subproducts!, ...products[i].subproducts!]
+        }
+    }
 
     return (
         <>
-            <Title>Produtos / Detalhes</Title>
+            <Title>Produtos Escondidos</Title>
             <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
             <Button onClick={() => navigate('/produtos')} text={'Resumo'} />
-            <Button onClick={() => navigate('/produtos/escondidos')} text={'Produtos Escondidos'} />
+            <Button onClick={() => navigate('/produtos/detalhes')} text={'Detalhes'} />
             <ListHeader>
-                <ListHeaderItem>Id</ListHeaderItem>
                 <ListHeaderItem flex={3}>Produto</ListHeaderItem>
-                <ListHeaderItem flex={1}>Código</ListHeaderItem>
                 <ListHeaderItem flex={1}>Categoria</ListHeaderItem>
-                <ListHeaderItem flex={1}>Marca</ListHeaderItem>
                 <ListHeaderItem flex={1}>Unidade</ListHeaderItem>
                 <ListHeaderItem flex={1}>Estoque</ListHeaderItem>
                 <ListHeaderItem flex={1}>Est. Mín.</ListHeaderItem>
                 <ListHeaderItem flex={1}>Est. Max.</ListHeaderItem>
-                <ListHeaderItem>Editar</ListHeaderItem>
-                <ListHeaderItem>Deletar</ListHeaderItem>
+                <ListHeaderItem>Mostrar</ListHeaderItem>
             </ListHeader>
             {
-                products.map((item) => (
+                resumedProducts.map((item) => (
                     <Container key={item.id}>
                         <Product>
-                            <ProductLi>{item.id}</ProductLi>
                             <ProductLi flex={3}>{item.name}</ProductLi>
-                            <ProductLi flex={1}>{item.code}</ProductLi>
                             <ProductLi flex={1}>{item.category}</ProductLi>
-                            <ProductLi flex={1}>{item.brand}</ProductLi>
                             <ProductLi flex={1}>{item.unit}</ProductLi>
-                            <ProductLi flex={1}> {item.stock}</ProductLi>
+                            <ProductLi
+                                color={item.stock < item.min_stock ? '#ff5353' : 'inherit'}
+                                flex={1}> {item.stock}
+                            </ProductLi>
                             <ProductLi flex={1}>{item.min_stock}</ProductLi>
                             <ProductLi flex={1}>{item.max_stock}</ProductLi>
-                            <ActionButton
-                                onClick={() => navigate(`/produtos/${item.id}`, { state: item })}
-                            >
-                                <AiOutlineEdit />
-                            </ActionButton>
-                            <ActionButton
-                                onClick={() => dispatch(deleteProductById(item.id!))}
-                            >
-                                <AiOutlineDelete />
+                            <ActionButton onClick={() => dispatch(editProduct({ ...item, hide: false }))}>
+                                <AiOutlineEye />
                             </ActionButton>
                         </Product>
 
@@ -124,16 +125,7 @@ export default function Detalhes() {
                                 <SubProduct key={subitem.id}>
                                     <SubProductLi>Lote: {subitem.lote}</SubProductLi>
                                     <SubProductLi>Validade: {subitem.validade.slice(0, 10)}</SubProductLi>
-                                    <SubProductLi flex={1}>Quantidade: {subitem.quantity}</SubProductLi>
-                                    <ActionButton
-                                        onClick={() => navigate(`/produtos/${item.id}/subprodutos/${subitem.id}`, { state: subitem })}
-                                    >
-                                        <AiOutlineEdit /></ActionButton>
-                                    <ActionButton
-                                        onClick={() => dispatch(deleteSubProductById(subitem.id))}
-                                    >
-                                        <AiOutlineDelete />
-                                    </ActionButton>
+                                    <SubProductLi>Quantidade: {subitem.quantity}</SubProductLi>
                                 </SubProduct>
                             ))
                         }

@@ -98,6 +98,9 @@ const ActionButton = styled.li`
         color: black;
     }
 `
+const ProductListContainer = styled.div`
+    margin-bottom: 30px;
+`
 
 type body = {
     product: TProduct,
@@ -105,7 +108,7 @@ type body = {
     quantity: number
 }
 
-export default function Retirada() {
+export default function Retirar() {
 
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
@@ -148,8 +151,6 @@ export default function Retirada() {
     return (
         <>
             <Title>Retirar Produtos</Title>
-            {console.log(productList)
-            }
             <Form onSubmit={handleOnSubmit}>
                 <InputContainer flex={5}>
                     <Label>Produto</Label>
@@ -185,7 +186,6 @@ export default function Retirada() {
                         required
                         min={1}
                         type='number'
-                        value={quantity}
                         onChange={(e) => setQuantity(parseInt(e.target.value))}>
                     </Input>
                 </InputContainer>
@@ -194,32 +194,34 @@ export default function Retirada() {
             {
                 productList.length > 0 &&
                 <>
-                    <ListHeader>
-                        <ListHeaderItem flex={3}>Produto</ListHeaderItem>
-                        <ListHeaderItem flex={1}>Marca</ListHeaderItem>
-                        <ListHeaderItem flex={1}>Lote</ListHeaderItem>
-                        <ListHeaderItem flex={1}>Validade</ListHeaderItem>
-                        <ListHeaderItem flex={1}>Quantidade</ListHeaderItem>
-                        <ListHeaderItem>Remover</ListHeaderItem>
-                    </ListHeader>
-                    <>
-                        {
-                            productList.map((item, index) => (
-                                <Product key={index}>
-                                    <ProductLi flex={3}>{item.product.name}</ProductLi>
-                                    <ProductLi flex={1}>{item.product.brand}</ProductLi>
-                                    <ProductLi flex={1}>{item.subProduct?.lote}</ProductLi>
-                                    <ProductLi flex={1}>{item.subProduct?.validade.slice(0, 10)}</ProductLi>
-                                    <ProductLi flex={1}>{item.quantity}</ProductLi>
-                                    <ActionButton
-                                        onClick={() => setProductList(productList.filter((p, i) => i !== index))}
-                                    >
-                                        <AiOutlineDelete />
-                                    </ActionButton>
-                                </Product>
-                            ))
-                        }
-                    </>
+                    <ProductListContainer>
+                        <ListHeader>
+                            <ListHeaderItem flex={3}>Produto</ListHeaderItem>
+                            <ListHeaderItem flex={1}>Marca</ListHeaderItem>
+                            <ListHeaderItem flex={1}>Lote</ListHeaderItem>
+                            <ListHeaderItem flex={1}>Validade</ListHeaderItem>
+                            <ListHeaderItem flex={1}>Quantidade</ListHeaderItem>
+                            <ListHeaderItem>Remover</ListHeaderItem>
+                        </ListHeader>
+                        <>
+                            {
+                                productList.map((item, index) => (
+                                    <Product key={index}>
+                                        <ProductLi flex={3}>{item.product.name}</ProductLi>
+                                        <ProductLi flex={1}>{item.product.brand}</ProductLi>
+                                        <ProductLi flex={1}>{item.subProduct?.lote}</ProductLi>
+                                        <ProductLi flex={1}>{item.subProduct?.validade.slice(0, 10)}</ProductLi>
+                                        <ProductLi flex={1}>{item.quantity}</ProductLi>
+                                        <ActionButton
+                                            onClick={() => setProductList(productList.filter((p, i) => i !== index))}
+                                        >
+                                            <AiOutlineDelete />
+                                        </ActionButton>
+                                    </Product>
+                                ))
+                            }
+                        </>
+                    </ProductListContainer>
                     <Button onClick={handleOnClick} text={'Finalizar Retirada'} />
                 </>
             }

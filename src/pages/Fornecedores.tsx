@@ -5,6 +5,10 @@ import { useNavigate } from "react-router-dom"
 import Button from "../components/Button"
 import { deleteProviderById } from "../features/fornecedor/fornecedorSlice"
 
+const Title = styled.h1`
+    color: #222;
+    margin: 30px 0;
+`
 const ListHeader = styled.div`
     background-color: #5fb4ff;
     height: 45px;
@@ -56,6 +60,7 @@ export default function Fornecedores() {
 
     return (
         <>
+            <Title>Fornecedores</Title>
             <Button onClick={() => navigate('/novoFornecedor')} text={'Cadastrar Novo Fornecedor'} />
             <ListHeader>
                 <ListHeaderItem flex={1}>Fornecedor</ListHeaderItem>

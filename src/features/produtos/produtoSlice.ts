@@ -13,7 +13,6 @@ export const getProdutos = createAsyncThunk(
             const data = await axios.get('http://localhost:5000/api/v1/products')
             return data.data
         } catch (error) {
-            console.log(error);
         }
     }
 )
@@ -122,7 +121,7 @@ export const produtoSlice = createSlice({
             state.status = 'success'
             state.produtos = state.produtos
                 .map((item) => item.id === action.payload.id
-                    ? action.payload
+                    ? { ...action.payload, subproducts: getProduct(state.produtos, action.payload.id)?.subproducts }
                     : item
                 )
         })
@@ -134,7 +133,6 @@ export const produtoSlice = createSlice({
         })
         builder.addCase(editSubProduct.fulfilled, (state, action) => {
             state.status = 'success'
-            console.log(action.payload);
 
             state.produtos = state.produtos
                 .map((item) => item.id === action.payload.product_id
@@ -155,8 +153,8 @@ export const produtoSlice = createSlice({
             state.status = 'success'
             let updatedProduct = getProduct(state.produtos, action.payload.product_id)
             updatedProduct = { ...updatedProduct!, stock: updatedProduct!.stock - action.payload.quantity }
-            if (action.payload.subproduct_id) {
-                updatedProduct.subproducts = updatedProduct.subproducts?.map(item => (item.id === action.payload.subproduct_id
+            if (action.payload.lote) {
+                updatedProduct.subproducts = updatedProduct.subproducts?.map(item => (item.lote === action.payload.lote
                     ? { ...item, quantity: item.quantity - action.payload.quantity }
                     : item
                 ))

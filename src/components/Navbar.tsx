@@ -37,8 +37,8 @@ export default function Navbar() {
                     <List>
                         <Link to='/produtos'><Item>Produtos</Item></Link>
                         <Link to='/fornecedores'><Item>Fornecedores</Item></Link>
-                        <Link to='/compras'><Item>Compras</Item></Link>
-                        <Link to='/retiradas'><Item>Retiradas</Item></Link>
+                        <Link to='/comprar'><Item>Comprar</Item></Link>
+                        <Link to='/retirar'><Item>Retirar</Item></Link>
                         <Link to='/historico'><Item>Histórico</Item></Link>
                     </List>
                 </Wrapper>

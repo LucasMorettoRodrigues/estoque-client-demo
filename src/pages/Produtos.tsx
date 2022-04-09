@@ -1,11 +1,16 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
 import Button from "../components/Button"
-import { useAppSelector } from "../app/hooks"
+import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { TProduct } from "../types/TProduct"
-import { useEffect } from "react"
+import { AiOutlineEyeInvisible } from "react-icons/ai"
+import { editProduct } from "../features/produtos/produtoSlice"
 
 const Container = styled.div``
+const Title = styled.h1`
+    color: #222;
+    margin: 30px 0;
+`
 const ListHeader = styled.div`
     background-color: #5fb4ff;
     height: 45px;
@@ -50,11 +55,25 @@ const SubProductLi = styled.li<{ flex?: number }>`
     min-width: 120px;
     padding: 10px;
 `
+const ActionButton = styled.li`
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    min-width: 75px;
+    padding: 10px;
+    color: gray;
+    cursor: pointer;
+
+    &:hover {
+        color: black;
+    }
+`
 
 export default function Produtos() {
 
     const navigate = useNavigate()
-    const products = useAppSelector(state => state.produto.produtos)
+    const dispatch = useAppDispatch()
+    const products = useAppSelector(state => state.produto.produtos.filter(i => i.hide === false))
     const resumedProducts: TProduct[] = []
 
     for (let i in products) {
@@ -70,8 +89,10 @@ export default function Produtos() {
 
     return (
         <>
+            <Title>Produtos / Resumo</Title>
             <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
             <Button onClick={() => navigate('/produtos/detalhes')} text={'Detalhes'} />
+            <Button onClick={() => navigate('/produtos/escondidos')} text={'Produtos Escondidos'} />
             <ListHeader>
                 <ListHeaderItem flex={3}>Produto</ListHeaderItem>
                 <ListHeaderItem flex={1}>Categoria</ListHeaderItem>
@@ -79,6 +100,7 @@ export default function Produtos() {
                 <ListHeaderItem flex={1}>Estoque</ListHeaderItem>
                 <ListHeaderItem flex={1}>Est. Mín.</ListHeaderItem>
                 <ListHeaderItem flex={1}>Est. Max.</ListHeaderItem>
+                <ListHeaderItem>Esconder</ListHeaderItem>
             </ListHeader>
             {
                 resumedProducts.map((item) => (
@@ -93,6 +115,9 @@ export default function Produtos() {
                             </ProductLi>
                             <ProductLi flex={1}>{item.min_stock}</ProductLi>
                             <ProductLi flex={1}>{item.max_stock}</ProductLi>
+                            <ActionButton onClick={() => dispatch(editProduct({ ...item, hide: true }))}>
+                                <AiOutlineEyeInvisible />
+                            </ActionButton>
                         </Product>
 
                         {item.subproducts &&

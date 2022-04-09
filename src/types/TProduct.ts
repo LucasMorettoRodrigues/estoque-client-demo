@@ -11,6 +11,7 @@ export type TProduct = {
     lote?: string,
     validade?: string,
     quantity?: number,
+    hide?: boolean,
     subproducts?: {
         id: number,
         lote: string,

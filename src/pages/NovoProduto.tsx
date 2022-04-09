@@ -7,7 +7,8 @@ import Input from "../components/Input"
 import { createProduct } from "../features/produtos/produtoSlice"
 
 const Title = styled.h1`
-    margin-bottom: 20px;
+    color: #222;
+    margin: 30px 0;
 `
 const Form = styled.form`
     display: flex;
@@ -54,16 +55,19 @@ export default function NovoProduto() {
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setCategory(e.target.value)}
                     name={'categoria'}
                     label={'Categoria'}
+                    required
                 />
                 <Input
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setBrand(e.target.value)}
                     name={'brand'}
                     label={'Marca'}
+                    required
                 />
                 <Input
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setUnit(e.target.value)}
                     name={'unit'}
                     label={'Unidade'}
+                    required
                 />
                 <Input
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setStock(parseInt(e.target.value))}
@@ -71,6 +75,7 @@ export default function NovoProduto() {
                     label={'Estoque'}
                     type='number'
                     min={0}
+                    required
                 />
                 <Input
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setMinStock(parseInt(e.target.value))}
@@ -78,6 +83,7 @@ export default function NovoProduto() {
                     label={'Estoque Mínimo'}
                     type='number'
                     min={0}
+                    required
                 />
                 <Input
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setMaxStock(parseInt(e.target.value))}
@@ -85,6 +91,7 @@ export default function NovoProduto() {
                     label={'Estoque Máximo'}
                     type='number'
                     min={0}
+                    required
                 />
                 <Button text={'Cadastrar Produto'} />
             </Form>

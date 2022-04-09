@@ -1,12 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { TStockIn } from '../../types/TStockIn'
+import { getProdutos } from '../produtos/produtoSlice'
 
 export const createStockIn = createAsyncThunk(
     'stockIns/createStockIn',
     async (newStockIn: TStockIn, thunkAPI) => {
-        const product = await axios.post('http://localhost:5000/api/v1/stockIns', newStockIn)
-        return product.data
+        const stockIn = await axios.post('http://localhost:5000/api/v1/stockIns', newStockIn)
+        thunkAPI.dispatch(getProdutos())
+        return stockIn.data
     }
 )
 
