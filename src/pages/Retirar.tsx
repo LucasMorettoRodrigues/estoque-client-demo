@@ -119,6 +119,10 @@ export default function Retirar() {
         if (!productToAdd) return setErrors([...errors, 'Produto não encontrado.'])
         if (quantity > productToAdd.stock) return setErrors([...errors, `Existem apenas ${productToAdd.stock} unidades do produto ${productToAdd.name}.`])
         if (subProductToAdd && quantity > subProductToAdd?.quantity) return setErrors([...errors, `Existem apenas ${subProductToAdd.quantity} unidades do lote ${subProductToAdd.lote}.`])
+        if (productList.find(i => i.product.id === productToAdd?.id &&
+            productList.find(i => i.subProduct?.id === subProductToAdd?.id))) {
+            return setErrors([...errors, 'Produto ja foi lançado.'])
+        }
 
         setProductList([...productList, {
             product: productToAdd,
