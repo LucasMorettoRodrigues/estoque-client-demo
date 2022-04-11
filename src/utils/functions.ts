@@ -6,22 +6,26 @@ export const dateToString = (date: Date): string => {
     return `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`
 }
 
-export const getProduct = (products: TProduct[], product_id: number | undefined): TProduct | undefined | null => {
-    if (!product_id) return
+export const getProduct = (products: TProduct[], product_id: number | undefined): TProduct | null => {
+    if (!product_id) return null
 
     const product = products.find((item) => (item.id === product_id))
+
+    if (!product) return null
 
     return product
 }
 
-export const getSubProduct = (products: TProduct[], product_id: number | undefined | null, subProduct_id: number | undefined | null): TSubProduct | undefined => {
-    if (!product_id || !subProduct_id) return
+export const getSubProduct = (products: TProduct[], product_id: number | undefined | null, subProduct_id: number | undefined | null): TSubProduct | null => {
+    if (!product_id || !subProduct_id) return null
 
     const product = getProduct(products, product_id)
 
-    if (!product) return
+    if (!product) return null
 
     const subProduct = product.subproducts?.find(item => item.id === subProduct_id)
+
+    if (!subProduct) return null
 
     return subProduct
 }

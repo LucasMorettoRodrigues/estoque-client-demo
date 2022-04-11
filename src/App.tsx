@@ -30,6 +30,8 @@ function App() {
   const dispatch = useAppDispatch()
   const statusProvider = useAppSelector(state => state.fornecedor.status)
   const statusProduct = useAppSelector(state => state.produto.status)
+  const statusStockIn = useAppSelector(state => state.stockIn.status)
+  const statusStockOut = useAppSelector(state => state.stockOut.status)
 
   useEffect(() => {
     dispatch(getFornecedores())
@@ -40,7 +42,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      {(statusProduct === 'loading' || statusProvider === 'loading') &&
+      {(statusProduct === 'loading' || statusProvider === 'loading' || statusStockIn === 'loading' || statusStockOut === 'loading') &&
         <Loading />
       }
       <Navbar />

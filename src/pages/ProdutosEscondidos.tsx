@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { TProduct } from "../types/TProduct"
 import { AiOutlineEye } from "react-icons/ai"
 import { editProduct } from "../features/produtos/produtoSlice"
+import EditDeleteButton from "../components/EditDeleteButton"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -23,7 +24,7 @@ const ListHeader = styled.div`
 `
 const ListHeaderItem = styled.p<{ flex?: number }>`
     flex: ${props => props.flex ? props.flex : null};
-    min-width: 75px;
+    min-width: 90px;
     padding: 10px;
 `
 const Product = styled.ul`
@@ -50,23 +51,9 @@ const ProductLi = styled.li<{ flex?: number, color?: string }>`
 const SubProductLi = styled.li<{ flex?: number }>`
     flex: ${props => props.flex ? props.flex : null};
     font-size: 14px;
-    margin-left: 20px;
+    margin-left: 60px;
     color: #555;
-    min-width: 120px;
     padding: 10px;
-`
-const ActionButton = styled.li`
-    display: flex;
-    align-items: center;
-    font-size: 20px;
-    min-width: 75px;
-    padding: 10px;
-    color: gray;
-    cursor: pointer;
-
-    &:hover {
-        color: black;
-    }
 `
 
 export default function ProdutosEscondidos() {
@@ -95,29 +82,30 @@ export default function ProdutosEscondidos() {
             <Button onClick={() => navigate('/produtos/detalhes')} text={'Detalhes'} />
             <ListHeader>
                 <ListHeaderItem flex={3}>Produto</ListHeaderItem>
-                <ListHeaderItem flex={1}>Categoria</ListHeaderItem>
-                <ListHeaderItem flex={1}>Unidade</ListHeaderItem>
-                <ListHeaderItem flex={1}>Estoque</ListHeaderItem>
-                <ListHeaderItem flex={1}>Est. Mín.</ListHeaderItem>
-                <ListHeaderItem flex={1}>Est. Max.</ListHeaderItem>
-                <ListHeaderItem>Mostrar</ListHeaderItem>
+                <ListHeaderItem flex={0.8}>Categoria</ListHeaderItem>
+                <ListHeaderItem flex={0.8}>Unidade</ListHeaderItem>
+                <ListHeaderItem flex={0.5} style={{ textAlign: 'center' }}>Estoque</ListHeaderItem>
+                <ListHeaderItem flex={0.5} style={{ textAlign: 'center' }}>Est. Mín.</ListHeaderItem>
+                <ListHeaderItem flex={0.5} style={{ textAlign: 'center' }}>Est. Max.</ListHeaderItem>
+                <ListHeaderItem style={{ textAlign: 'center' }}>Mostrar</ListHeaderItem>
             </ListHeader>
             {
                 resumedProducts.map((item) => (
                     <Container key={item.id}>
                         <Product>
                             <ProductLi flex={3}>{item.name}</ProductLi>
-                            <ProductLi flex={1}>{item.category}</ProductLi>
-                            <ProductLi flex={1}>{item.unit}</ProductLi>
+                            <ProductLi flex={0.8}>{item.category}</ProductLi>
+                            <ProductLi flex={0.8}>{item.unit}</ProductLi>
                             <ProductLi
                                 color={item.stock < item.min_stock ? '#ff5353' : 'inherit'}
-                                flex={1}> {item.stock}
+                                flex={0.5}
+                                style={{ textAlign: 'center' }}> {item.stock}
                             </ProductLi>
-                            <ProductLi flex={1}>{item.min_stock}</ProductLi>
-                            <ProductLi flex={1}>{item.max_stock}</ProductLi>
-                            <ActionButton onClick={() => dispatch(editProduct({ ...item, hide: false }))}>
+                            <ProductLi flex={0.5} style={{ textAlign: 'center' }}>{item.min_stock}</ProductLi>
+                            <ProductLi flex={0.5} style={{ textAlign: 'center' }}>{item.max_stock}</ProductLi>
+                            <EditDeleteButton onClick={() => dispatch(editProduct({ ...item, hide: false }))}>
                                 <AiOutlineEye />
-                            </ActionButton>
+                            </EditDeleteButton>
                         </Product>
 
                         {item.subproducts &&

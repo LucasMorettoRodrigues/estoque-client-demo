@@ -7,6 +7,7 @@ import Button from "../components/Button"
 import { TStockIn } from "../types/TStockIn"
 import { getProduct, getProvider } from "../utils/functions"
 import { createStockIn } from "../features/stockIn/stockIn"
+import EditDeleteButton from "../components/EditDeleteButton"
 
 const Title = styled.h1`
     color: #222;
@@ -24,7 +25,7 @@ const ListHeader = styled.div`
 `
 const ListHeaderItem = styled.p<{ flex?: number }>`
     flex: ${props => props.flex ? props.flex : null};
-    min-width: 75px;
+    min-width: 90px;
     padding: 10px;
 `
 const Product = styled.ul`
@@ -75,19 +76,6 @@ const FormButton = styled.button`
     cursor: pointer;
     font-weight: 600;
     margin-bottom: 4px;
-`
-const ActionButton = styled.li`
-    display: flex;
-    align-items: center;
-    font-size: 20px;
-    min-width: 75px;
-    padding: 10px;
-    color: gray;
-    cursor: pointer;
-
-    &:hover {
-        color: black;
-    }
 `
 const ProductListContainer = styled.div`
     margin-bottom: 30px;
@@ -173,7 +161,7 @@ export default function Comprar() {
                             <ListHeaderItem flex={1}>Validade</ListHeaderItem>
                             <ListHeaderItem flex={1}>Preço</ListHeaderItem>
                             <ListHeaderItem flex={1}>Quantidade</ListHeaderItem>
-                            <ListHeaderItem>Remover</ListHeaderItem>
+                            <ListHeaderItem style={{ textAlign: 'center' }}>Remover</ListHeaderItem>
                         </ListHeader>
                         <>
                             {
@@ -185,11 +173,11 @@ export default function Comprar() {
                                         <ProductLi flex={1}>{item.validade}</ProductLi>
                                         <ProductLi flex={1}>{item.price}</ProductLi>
                                         <ProductLi flex={1}>{item.quantity}</ProductLi>
-                                        <ActionButton
+                                        <EditDeleteButton
                                             onClick={() => setCart(cart.filter((p, i) => i !== index))}
                                         >
                                             <AiOutlineDelete />
-                                        </ActionButton>
+                                        </EditDeleteButton>
                                     </Product>
                                 ))
                             }

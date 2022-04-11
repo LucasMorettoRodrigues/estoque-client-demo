@@ -7,6 +7,9 @@ import { AiOutlineDelete } from 'react-icons/ai'
 import Button from "../components/Button"
 import { createStockOut } from "../features/stockOut/stockOut"
 import { TSubProduct } from "../types/TSubProduct"
+import EditDeleteButton from "../components/EditDeleteButton"
+import { getProduct, getSubProduct } from "../utils/functions"
+import MensagemErro from "../components/MensagemErro"
 
 const Title = styled.h1`
     color: #222;
@@ -24,7 +27,7 @@ const ListHeader = styled.div`
 `
 const ListHeaderItem = styled.p<{ flex?: number }>`
     flex: ${props => props.flex ? props.flex : null};
-    min-width: 75px;
+    min-width: 90px;
     padding: 10px;
 `
 const Product = styled.ul`
@@ -85,19 +88,6 @@ const FormButton = styled.button`
     font-weight: 600;
     margin-bottom: 4px;
 `
-const ActionButton = styled.li`
-    display: flex;
-    align-items: center;
-    font-size: 20px;
-    min-width: 75px;
-    padding: 10px;
-    color: gray;
-    cursor: pointer;
-
-    &:hover {
-        color: black;
-    }
-`
 const ProductListContainer = styled.div`
     margin-bottom: 30px;
 `
@@ -118,15 +108,21 @@ export default function Retirar() {
     const [subProductId, setSubProductId] = useState(0)
     const [productId, setProductId] = useState(0)
     const [productList, setProductList] = useState<body[]>([])
+    const [errors, setErrors] = useState<string[]>([])
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const productToAdd = products.filter(item => item.id === productId)[0]
+        const productToAdd = getProduct(products, productId)
+        const subProductToAdd = getSubProduct(products, productId, subProductId)
+
+        if (!productToAdd) return setErrors([...errors, 'Produto não encontrado.'])
+        if (quantity > productToAdd.stock) return setErrors([...errors, `Existem apenas ${productToAdd.stock} unidades do produto ${productToAdd.name}.`])
+        if (subProductToAdd && quantity > subProductToAdd?.quantity) return setErrors([...errors, `Existem apenas ${subProductToAdd.quantity} unidades do lote ${subProductToAdd.lote}.`])
 
         setProductList([...productList, {
             product: productToAdd,
-            subProduct: subProductId !== 0 ? productToAdd.subproducts!.find(item => item.id === subProductId)! : null,
+            subProduct: subProductToAdd,
             quantity: quantity
         }])
         cleanFields()
@@ -146,6 +142,12 @@ export default function Retirar() {
             }))
         ))
         navigate('/historico')
+    }
+
+    if (errors.length > 0) {
+        return (
+            <MensagemErro onClick={() => setErrors([])} errors={errors} />
+        )
     }
 
     return (
@@ -201,7 +203,7 @@ export default function Retirar() {
                             <ListHeaderItem flex={1}>Lote</ListHeaderItem>
                             <ListHeaderItem flex={1}>Validade</ListHeaderItem>
                             <ListHeaderItem flex={1}>Quantidade</ListHeaderItem>
-                            <ListHeaderItem>Remover</ListHeaderItem>
+                            <ListHeaderItem style={{ textAlign: 'center' }}>Remover</ListHeaderItem>
                         </ListHeader>
                         <>
                             {
@@ -212,11 +214,11 @@ export default function Retirar() {
                                         <ProductLi flex={1}>{item.subProduct?.lote}</ProductLi>
                                         <ProductLi flex={1}>{item.subProduct?.validade.slice(0, 10)}</ProductLi>
                                         <ProductLi flex={1}>{item.quantity}</ProductLi>
-                                        <ActionButton
+                                        <EditDeleteButton
                                             onClick={() => setProductList(productList.filter((p, i) => i !== index))}
                                         >
                                             <AiOutlineDelete />
-                                        </ActionButton>
+                                        </EditDeleteButton>
                                     </Product>
                                 ))
                             }

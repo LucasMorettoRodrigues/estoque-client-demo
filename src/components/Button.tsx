@@ -9,6 +9,10 @@ const SButton = styled.button`
     cursor: pointer;
     font-weight: 600;
     margin: 0 20px 20px 0;
+
+    &:hover {
+        background-color: #19c219;
+    }
 `
 
 type Props = {

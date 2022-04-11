@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { useNavigate } from "react-router-dom"
 import Button from "../components/Button"
 import { deleteProviderById } from "../features/fornecedor/fornecedorSlice"
+import EditDeleteButton from "../components/EditDeleteButton"
 
 const Title = styled.h1`
     color: #222;
@@ -21,7 +22,7 @@ const ListHeader = styled.div`
 `
 const ListHeaderItem = styled.p<{ flex?: number }>`
     flex: ${props => props.flex ? props.flex : null};
-    min-width: 75px;
+    min-width: 90px;
     padding: 10px;
 `
 const Fornecedor = styled.ul`
@@ -38,19 +39,6 @@ const FornecedorLi = styled.li`
     min-width: 75px;
     padding: 10px;
 `
-const ActionButton = styled.li`
-    display: flex;
-    align-items: center;
-    font-size: 20px;
-    min-width: 75px;
-    padding: 10px;
-    color: gray;
-    cursor: pointer;
-
-    &:hover {
-        color: black;
-    }
-`
 
 export default function Fornecedores() {
 
@@ -64,23 +52,23 @@ export default function Fornecedores() {
             <Button onClick={() => navigate('/novoFornecedor')} text={'Cadastrar Novo Fornecedor'} />
             <ListHeader>
                 <ListHeaderItem flex={1}>Fornecedor</ListHeaderItem>
-                <ListHeaderItem>Editar</ListHeaderItem>
-                <ListHeaderItem>Deletar</ListHeaderItem>
+                <ListHeaderItem style={{ textAlign: 'center' }}>Editar</ListHeaderItem>
+                <ListHeaderItem style={{ textAlign: 'center' }}>Deletar</ListHeaderItem>
             </ListHeader>
             {
                 fornecedores.map((item) => (
                     <Fornecedor key={item.id}>
                         <FornecedorLi>{item.name}</FornecedorLi>
-                        <ActionButton
+                        <EditDeleteButton
                             onClick={() => navigate(`/fornecedores/${item.id}`, { state: item })}
                         >
                             <AiOutlineEdit />
-                        </ActionButton>
-                        <ActionButton
+                        </EditDeleteButton>
+                        <EditDeleteButton
                             onClick={() => dispatch(deleteProviderById(item.id!))}
                         >
                             <AiOutlineDelete />
-                        </ActionButton>
+                        </EditDeleteButton>
                     </Fornecedor>
                 ))
             }
