@@ -8,8 +8,8 @@ import Button from "../components/Button"
 import { createStockOut } from "../features/stockOut/stockOut"
 import { TSubProduct } from "../types/TSubProduct"
 import EditDeleteButton from "../components/EditDeleteButton"
-import { getProduct, getSubProduct } from "../utils/functions"
-import MensagemErro from "../components/MensagemErro"
+import { compareDates, getProduct, getSubProduct } from "../utils/functions"
+import Mensagem from "../components/Mensagem"
 
 const Title = styled.h1`
     color: #222;
@@ -108,7 +108,8 @@ export default function Retirar() {
     const [subProductId, setSubProductId] = useState(0)
     const [productId, setProductId] = useState(0)
     const [productList, setProductList] = useState<body[]>([])
-    const [errors, setErrors] = useState<string[]>([])
+    const [error, setError] = useState('')
+    const [warning, setWarning] = useState('')
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -116,12 +117,16 @@ export default function Retirar() {
         const productToAdd = getProduct(products, productId)
         const subProductToAdd = getSubProduct(products, productId, subProductId)
 
-        if (!productToAdd) return setErrors([...errors, 'Produto não encontrado.'])
-        if (quantity > productToAdd.stock) return setErrors([...errors, `Existem apenas ${productToAdd.stock} unidades do produto ${productToAdd.name}.`])
-        if (subProductToAdd && quantity > subProductToAdd?.quantity) return setErrors([...errors, `Existem apenas ${subProductToAdd.quantity} unidades do lote ${subProductToAdd.lote}.`])
+        if (!productToAdd) return setError('Produto não encontrado.')
+        if (quantity > productToAdd.stock) return setError(`Existem apenas ${productToAdd.stock} unidades do produto ${productToAdd.name}.`)
+        if (subProductToAdd && quantity > subProductToAdd?.quantity) return setError(`Existem apenas ${subProductToAdd.quantity} unidades do lote ${subProductToAdd.lote}.`)
         if (productList.find(i => i.product.id === productToAdd?.id &&
             productList.find(i => i.subProduct?.id === subProductToAdd?.id))) {
-            return setErrors([...errors, 'Produto ja foi lançado.'])
+            return setError('Produto ja foi lançado.')
+        }
+        if (subProductToAdd) {
+            let sorted = [...productToAdd.subproducts!].sort(function compare(a, b) { return compareDates(b.validade!, a.validade!) })
+            if (sorted[0].id !== subProductToAdd.id) setWarning(`O produto retirado não possui a data de validade mais próxima.`)
         }
 
         setProductList([...productList, {
@@ -129,12 +134,10 @@ export default function Retirar() {
             subProduct: subProductToAdd,
             quantity: quantity
         }])
-        cleanFields()
-    }
 
-    const cleanFields = () => {
-        setQuantity(1)
-        setSubProductId(0)
+        Array.from(document.querySelectorAll("input")).forEach(
+            input => (input.value = '')
+        );
     }
 
     const handleOnClick = () => {
@@ -148,14 +151,10 @@ export default function Retirar() {
         navigate('/historico')
     }
 
-    if (errors.length > 0) {
-        return (
-            <MensagemErro onClick={() => setErrors([])} errors={errors} />
-        )
-    }
-
     return (
         <>
+            {error && <Mensagem onClick={() => setError('')} error={error} />}
+            {warning && <Mensagem onClick={() => setWarning('')} warning={warning} />}
             <Title>Retirar Produtos</Title>
             <Form onSubmit={handleOnSubmit}>
                 <InputContainer flex={5}>

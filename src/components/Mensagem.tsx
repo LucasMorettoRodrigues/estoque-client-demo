@@ -50,20 +50,19 @@ const Button = styled.button`
 `
 
 type Props = {
-    errors: string[]
+    error?: string,
+    warning?: string,
     onClick: () => void
 }
 
-export default function MensagemErro({ errors, onClick }: Props) {
+export default function Mensagem({ error, warning, onClick }: Props) {
     return (
         <Container>
             <Wrapper>
                 <Box>
-                    <Title>Erro</Title>
+                    <Title>{error ? "Erro" : "Atenção"}</Title>
                     <ErrorsContainer>
-                        {errors.map(item => (
-                            <p>{item}</p>
-                        ))}
+                        <p>{error ? error : warning}</p>
                     </ErrorsContainer>
                     <Button onClick={onClick}>OK</Button>
                 </Box>

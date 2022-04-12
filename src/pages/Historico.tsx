@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { useAppSelector } from "../app/hooks"
-import { getProduct } from "../utils/functions"
+import { compareDates, getProduct } from "../utils/functions"
 import { useEffect, useState } from "react"
 
 const Container = styled.div``
@@ -47,9 +47,7 @@ export default function Historico() {
 
     useEffect(() => {
         setHistoric([...stockIns, ...stockOuts].sort(function compare(a, b) {
-            let dateA: any = new Date(a.date!);
-            let dateB: any = new Date(b.date!);
-            return dateB - dateA;
+            return compareDates(a.date!, b.date!)
         }))
     }, [stockIns, stockOuts])
 

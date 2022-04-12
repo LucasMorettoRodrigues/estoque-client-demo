@@ -49,3 +49,9 @@ export const getSubProductByLote = (products: TProduct[], product_id: number | u
 
     return subProduct
 }
+
+export const compareDates = (a: string, b: string): number => {
+    let dateA: any = new Date(a);
+    let dateB: any = new Date(b);
+    return dateB - dateA;
+}
