@@ -4,9 +4,24 @@ import { compareDates, getProduct } from "../utils/functions"
 import { useEffect, useState } from "react"
 
 const Container = styled.div``
+const HeaderContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
 const Title = styled.h1`
     color: #222;
     margin: 30px 0;
+`
+const Filter = styled.div`
+    display: flex;
+    align-items: center;
+`
+const Label = styled.label`
+    margin-right: 10px;
+`
+const Select = styled.select`
+    padding: 5px 10px;
 `
 const ListHeader = styled.div`
     background-color: #5fb4ff;
@@ -44,16 +59,42 @@ export default function Historico() {
     const stockIns = useAppSelector(state => state.stockIn.stockIns)
     const products = useAppSelector(state => state.produto.produtos)
     const [historic, setHistoric] = useState<any[]>([])
+    const [filter, setFilter] = useState('')
 
     useEffect(() => {
-        setHistoric([...stockIns, ...stockOuts].sort(function compare(a, b) {
-            return compareDates(a.date!, b.date!)
-        }))
-    }, [stockIns, stockOuts])
+        if (!filter) {
+            setHistoric([...stockIns, ...stockOuts].sort(function compare(a, b) {
+                return compareDates(a.date!, b.date!)
+            }))
+        }
+
+        if (filter === 'Compras') {
+            setHistoric([...stockIns].sort(function compare(a, b) {
+                return compareDates(a.date!, b.date!)
+            }))
+        }
+
+        if (filter === 'Retiradas') {
+            setHistoric([...stockOuts].sort(function compare(a, b) {
+                return compareDates(a.date!, b.date!)
+            }))
+        }
+
+    }, [stockIns, stockOuts, filter])
 
     return (
         <>
-            <Title>Histórico</Title>
+            <HeaderContainer>
+                <Title>Histórico</Title>
+                <Filter>
+                    <Label>Ação:</Label>
+                    <Select onChange={(e) => setFilter(e.target.value)}>
+                        <option></option>
+                        <option>Compras</option>
+                        <option>Retiradas</option>
+                    </Select>
+                </Filter>
+            </HeaderContainer>
             <ListHeader>
                 <ListHeaderItem flex={0.9}>Data</ListHeaderItem>
                 <ListHeaderItem flex={1.5}>Ação</ListHeaderItem>
