@@ -30,10 +30,12 @@ export const getSubProduct = (products: TProduct[], product_id: number | undefin
     return subProduct
 }
 
-export const getProvider = (providers: TProvider[], provider_id: number | undefined): TProvider | undefined | null => {
-    if (!provider_id) return
+export const getProvider = (providers: TProvider[], provider_id: number | undefined): TProvider | null => {
+    if (!provider_id) return null
 
     const provider = providers.find((item) => (item.id === provider_id))
+
+    if (!provider) return null
 
     return provider
 }
@@ -54,4 +56,27 @@ export const compareDates = (a: string, b: string): number => {
     let dateA: any = new Date(a);
     let dateB: any = new Date(b);
     return dateB - dateA;
+}
+
+export const mergeProducts = (products: TProduct[]): TProduct[] => {
+    let res: TProduct[] = []
+    for (let product of products) {
+        if (!res.find(i => i.name === product.name)) {
+            res = [...res, product]
+        } else {
+            res =
+                res.map(i => (
+                    i.name === product.name
+                        ? {
+                            ...i,
+                            stock: i.stock + product.stock,
+                            subproducts: product.subproducts ? [...i.subproducts!, ...product.subproducts] : i.subproducts
+                        }
+                        : i
+                )
+                )
+        }
+    }
+
+    return res
 }

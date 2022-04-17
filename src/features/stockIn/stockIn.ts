@@ -5,10 +5,15 @@ import { getProdutos } from '../produtos/produtoSlice'
 
 export const createStockIn = createAsyncThunk(
     'stockIns/createStockIn',
-    async (newStockIn: TStockIn, thunkAPI) => {
-        const stockIn = await axios.post('http://localhost:5000/api/v1/stockIns', newStockIn)
+    async (newStockIns: TStockIn[], thunkAPI) => {
+        let res: TStockIn[] = []
+        for (const stockIn of newStockIns) {
+            const singleRes: any = await axios.post('http://localhost:5000/api/v1/stockIns', stockIn)
+            res = [...res, singleRes.data]
+        }
         thunkAPI.dispatch(getProdutos())
-        return stockIn.data
+        console.log(res)
+        return res
     }
 )
 
@@ -39,7 +44,7 @@ export const stockInSlice = createSlice({
         })
         builder.addCase(createStockIn.fulfilled, (state, action) => {
             state.status = 'success'
-            state.stockIns = [...state.stockIns, action.payload]
+            state.stockIns = [...state.stockIns, ...action.payload]
         })
         builder.addCase(createStockIn.rejected, (state) => {
             state.status = 'failed'

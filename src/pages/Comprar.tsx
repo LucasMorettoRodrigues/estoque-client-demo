@@ -8,6 +8,7 @@ import { TStockIn } from "../types/TStockIn"
 import { getProduct, getProvider } from "../utils/functions"
 import { createStockIn } from "../features/stockIn/stockIn"
 import EditDeleteButton from "../components/EditDeleteButton"
+import Mensagem from "../components/Mensagem"
 
 const Title = styled.h1`
     color: #222;
@@ -95,19 +96,26 @@ export default function Comprar() {
     const [validade, setValidade] = useState('')
     const [lote, setLote] = useState('')
     const [price, setPrice] = useState('')
+    const [error, setError] = useState('')
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+
+        if ((validade && !lote) || (!validade && lote)) {
+            return setError(`Campo validade ou lote faltando.`)
+        }
+
         setCart([...cart, { product_id: productId, provider_id: providerId, lote: lote, quantity: quantity, price: price, validade: validade ? validade : null }])
     }
 
     const handleOnClick = () => {
-        cart.map(item => dispatch(createStockIn(item)))
+        dispatch(createStockIn(cart))
         navigate('/produtos')
     }
 
     return (
         <>
+            {error && <Mensagem onClick={() => setError('')} error={error} />}
             <Title>Comprar Produtos</Title>
             <Form onSubmit={handleOnSubmit}>
                 <InputContainer flex={5}>

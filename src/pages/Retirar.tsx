@@ -120,20 +120,26 @@ export default function Retirar() {
         if (!productToAdd) return setError('Produto não encontrado.')
         if (quantity > productToAdd.stock) return setError(`Existem apenas ${productToAdd.stock} unidades do produto ${productToAdd.name}.`)
         if (subProductToAdd && quantity > subProductToAdd?.quantity) return setError(`Existem apenas ${subProductToAdd.quantity} unidades do lote ${subProductToAdd.lote}.`)
-        if (productList.find(i => i.product.id === productToAdd?.id &&
-            productList.find(i => i.subProduct?.id === subProductToAdd?.id))) {
-            return setError('Produto ja foi lançado.')
-        }
         if (subProductToAdd) {
             let sorted = [...productToAdd.subproducts!].sort(function compare(a, b) { return compareDates(b.validade!, a.validade!) })
             if (sorted[0].id !== subProductToAdd.id) setWarning(`O produto retirado não possui a data de validade mais próxima.`)
         }
 
-        setProductList([...productList, {
-            product: productToAdd,
-            subProduct: subProductToAdd,
-            quantity: quantity
-        }])
+        if (productList.find(i => i.product.id === productToAdd?.id &&
+            productList.find(i => i.subProduct?.id === subProductToAdd?.id))) {
+            setProductList(productList.map(item => (
+                item.product.id === productToAdd.id &&
+                    item.subProduct?.id === subProductToAdd?.id
+                    ? { ...item, quantity: item.quantity + quantity }
+                    : item
+            )))
+        } else {
+            setProductList([...productList, {
+                product: productToAdd,
+                subProduct: subProductToAdd,
+                quantity: quantity
+            }])
+        }
 
         Array.from(document.querySelectorAll("input")).forEach(
             input => (input.value = '')

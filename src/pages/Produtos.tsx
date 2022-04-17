@@ -2,10 +2,10 @@ import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
 import Button from "../components/Button"
 import { useAppDispatch, useAppSelector } from "../app/hooks"
-import { TProduct } from "../types/TProduct"
 import { AiOutlineEyeInvisible } from "react-icons/ai"
 import { editProduct } from "../features/produtos/produtoSlice"
 import EditDeleteButton from "../components/EditDeleteButton"
+import { mergeProducts } from "../utils/functions"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -60,19 +60,7 @@ export default function Produtos() {
 
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
-    const products = useAppSelector(state => state.produto.produtos.filter(i => i.hide === false))
-    const resumedProducts: TProduct[] = []
-
-    for (let i in products) {
-        let index = resumedProducts.findIndex((item) => item.name === products[i].name)
-
-        if (index < 0) {
-            resumedProducts.push(products[i])
-        } else {
-            resumedProducts[index].stock = resumedProducts[index].stock + products[i].stock
-            resumedProducts[index].subproducts = [...resumedProducts[index].subproducts!, ...products[i].subproducts!]
-        }
-    }
+    const products = useAppSelector(state => mergeProducts(state.produto.produtos).filter(i => i.hide === false))
 
     return (
         <>
@@ -81,28 +69,24 @@ export default function Produtos() {
             <Button onClick={() => navigate('/produtos/detalhes')} text={'Detalhes'} />
             <Button onClick={() => navigate('/produtos/escondidos')} text={'Produtos Escondidos'} />
             <ListHeader>
-                <ListHeaderItem flex={3}>Produto</ListHeaderItem>
-                <ListHeaderItem flex={0.8}>Categoria</ListHeaderItem>
-                <ListHeaderItem flex={0.8}>Unidade</ListHeaderItem>
-                <ListHeaderItem flex={0.5} style={{ textAlign: 'center' }}>Estoque</ListHeaderItem>
-                <ListHeaderItem flex={0.5} style={{ textAlign: 'center' }}>Est. Mín.</ListHeaderItem>
-                <ListHeaderItem flex={0.5} style={{ textAlign: 'center' }}>Est. Max.</ListHeaderItem>
+                <ListHeaderItem flex={8}>Produto</ListHeaderItem>
+                <ListHeaderItem flex={1} style={{ textAlign: 'center' }}>Estoque</ListHeaderItem>
+                <ListHeaderItem flex={1} style={{ textAlign: 'center' }}>Est. Mín.</ListHeaderItem>
+                <ListHeaderItem flex={1} style={{ textAlign: 'center' }}>Est. Max.</ListHeaderItem>
                 <ListHeaderItem style={{ textAlign: 'center' }}>Esconder</ListHeaderItem>
             </ListHeader>
             {
-                resumedProducts.map((item) => (
+                products.map((item) => (
                     <Container key={item.id}>
                         <Product>
-                            <ProductLi flex={3}>{item.name}</ProductLi>
-                            <ProductLi flex={0.8}>{item.category}</ProductLi>
-                            <ProductLi flex={0.8}>{item.unit}</ProductLi>
+                            <ProductLi flex={8}>{item.name}</ProductLi>
                             <ProductLi
                                 color={item.stock < item.min_stock ? '#ff5353' : 'inherit'}
-                                flex={0.5}
+                                flex={1}
                                 style={{ textAlign: 'center' }}> {item.stock}
                             </ProductLi>
-                            <ProductLi flex={0.5} style={{ textAlign: 'center' }}>{item.min_stock}</ProductLi>
-                            <ProductLi flex={0.5} style={{ textAlign: 'center' }}>{item.max_stock}</ProductLi>
+                            <ProductLi flex={1} style={{ textAlign: 'center' }}>{item.min_stock}</ProductLi>
+                            <ProductLi flex={1} style={{ textAlign: 'center' }}>{item.max_stock}</ProductLi>
                             <EditDeleteButton onClick={() => dispatch(editProduct({ ...item, hide: true }))}>
                                 <AiOutlineEyeInvisible />
                             </EditDeleteButton>

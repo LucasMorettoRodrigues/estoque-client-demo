@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { useAppSelector } from "../app/hooks"
-import { compareDates, getProduct } from "../utils/functions"
+import { compareDates, getProduct, getProvider } from "../utils/functions"
 import { useEffect, useState } from "react"
 
 const Container = styled.div``
@@ -58,6 +58,7 @@ export default function Historico() {
     const stockOuts = useAppSelector(state => state.stockOut.stockOuts)
     const stockIns = useAppSelector(state => state.stockIn.stockIns)
     const products = useAppSelector(state => state.produto.produtos)
+    const providers = useAppSelector(state => state.fornecedor.fornecedores)
     const [historic, setHistoric] = useState<any[]>([])
     const [filter, setFilter] = useState('')
 
@@ -97,8 +98,9 @@ export default function Historico() {
             </HeaderContainer>
             <ListHeader>
                 <ListHeaderItem flex={0.9}>Data</ListHeaderItem>
-                <ListHeaderItem flex={1.5}>Ação</ListHeaderItem>
+                <ListHeaderItem flex={1}>Ação</ListHeaderItem>
                 <ListHeaderItem flex={3}>Produto</ListHeaderItem>
+                <ListHeaderItem flex={1}>Fornecedor</ListHeaderItem>
                 <ListHeaderItem flex={1}>Brand</ListHeaderItem>
                 <ListHeaderItem flex={0.9}>Preço</ListHeaderItem>
                 <ListHeaderItem flex={0.7}>Lote</ListHeaderItem>
@@ -112,10 +114,11 @@ export default function Historico() {
                             <Container key={index}>
                                 <Product backgroundColor='#ffa7a7' >
                                     <ProductLi flex={0.9}>{item.date.slice(0, 10)}</ProductLi>
-                                    <ProductLi flex={1.5}>Retirada de Estoque</ProductLi>
+                                    <ProductLi flex={1}>Retirada</ProductLi>
                                     <ProductLi flex={3}>{getProduct(products, item.product_id)?.name}</ProductLi>
+                                    <ProductLi flex={1}>-------</ProductLi>
                                     <ProductLi flex={1}>{getProduct(products, item.product_id)?.brand}</ProductLi>
-                                    <ProductLi flex={0.9}></ProductLi>
+                                    <ProductLi flex={0.9}>-------</ProductLi>
                                     <ProductLi flex={0.7}>{item.lote}</ProductLi>
                                     <ProductLi flex={1}>{item.validade && item.validade.slice(0, 10)}</ProductLi>
                                     <ProductLi flex={0.8} style={{ textAlign: 'center' }}>{item.quantity}</ProductLi>
@@ -126,8 +129,9 @@ export default function Historico() {
                             <Container key={index}>
                                 <Product backgroundColor='#a3ff86'>
                                     <ProductLi flex={0.9}>{item.date.slice(0, 10)}</ProductLi>
-                                    <ProductLi flex={1.5}>Compra</ProductLi>
+                                    <ProductLi flex={1}>Compra</ProductLi>
                                     <ProductLi flex={3}>{getProduct(products, item.product_id)?.name}</ProductLi>
+                                    <ProductLi flex={1}>{getProvider(providers, item.provider_id)?.name}</ProductLi>
                                     <ProductLi flex={1}>{getProduct(products, item.product_id)?.brand}</ProductLi>
                                     <ProductLi flex={0.9}>R$ {item.price.replace('.', ',')}</ProductLi>
                                     <ProductLi flex={0.7}>{item.lote}</ProductLi>
