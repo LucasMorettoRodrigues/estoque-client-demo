@@ -9,7 +9,6 @@ import { getProduct, getProvider } from "../utils/functions"
 import { createStockIn } from "../features/stockIn/stockIn"
 import EditDeleteButton from "../components/EditDeleteButton"
 import Mensagem from "../components/Mensagem"
-import { warning } from "react-router/lib/router"
 import { createProvider } from "../features/fornecedor/fornecedorSlice"
 
 const Title = styled.h1`
@@ -100,36 +99,30 @@ export default function Comprar() {
     const [price, setPrice] = useState('')
     const [error, setError] = useState('')
     const [warning, setWarning] = useState('')
+    const [message, setMessage] = useState('')
 
-    const handleOnSubmit = (e?: FormEvent<HTMLFormElement>, providerIdAux?: string) => {
+    const handleOnSubmit = (e?: FormEvent<HTMLFormElement>) => {
         e && e.preventDefault()
 
         if ((validade && !lote) || (!validade && lote)) {
             return setError(`Campo validade ou lote faltando.`)
         }
 
-        const provider_id = providerIdAux ? providerIdAux : providerId
+        if (!findOrCreateProvider(providerId)) return
 
-        if (!providerIdAux && !findOrCreateProvider(provider_id)) return
-
-        const index = cart.findIndex(i => ((i.product_id === parseInt(provider_id)) && (i.lote === lote)))
+        const index = cart.findIndex(i => ((i.product_id === productId) && (i.lote === lote) && (i.provider_id === parseInt(providerId))))
 
         if (index < 0) {
             setCart([...cart, {
                 product_id: productId,
-                provider_id: parseInt(provider_id),
+                provider_id: parseInt(providerId),
                 price: price,
                 lote: lote,
                 validade: validade,
                 quantity: quantity
             }])
         } else {
-            if (cart[index].validade !== validade) {
-                return setError(`Validade incorreta.`)
-            }
-            let newCart = [...cart]
-            newCart[index].quantity += quantity
-            setCart(newCart)
+            return setError('Produto ja adicionado.')
         }
 
         Array.from(document.querySelectorAll("input")).forEach(
@@ -153,18 +146,21 @@ export default function Comprar() {
         const res = providers.find(i => i.id === parseInt(provider))
 
         if (!res) {
-            setWarning(`Fornecedor ${provider} não cadastrado, deseja cadastra-lo?`)
+            setWarning(`Fornecedor ${provider} não cadastrado. Deseja cadastra-lo?`)
             return false
         }
 
         return true
     }
 
-    const handleAddProvider = () => {
+    const handleCreateProvider = () => {
         dispatch(createProvider({ name: providerId }))
             .unwrap()
-            .then(res => handleOnSubmit(undefined, res.id))
+            .then((res) => {
+                setProviderId(res.id)
+            })
             .then(() => setWarning(''))
+            .then(() => setMessage(`Fornecedor cadastrado com sucesso`))
     }
 
     const handleOnClick = () => {
@@ -175,7 +171,8 @@ export default function Comprar() {
     return (
         <>
             {error && <Mensagem onClick={() => setError('')} error={error} />}
-            {warning && <Mensagem onClick={handleAddProvider} onClose={() => setWarning('')} warning={warning} />}
+            {message && <Mensagem onClick={() => setMessage('')} warning={message} />}
+            {warning && <Mensagem onClick={handleCreateProvider} onClose={() => setWarning('')} warning={warning} />}
             <Title>Comprar Produtos</Title>
             <Form onSubmit={handleOnSubmit}>
                 <InputContainer flex={5}>
@@ -191,7 +188,7 @@ export default function Comprar() {
                 </InputContainer>
                 <InputContainer flex={3}>
                     <Label>Fornecedor</Label>
-                    <Input required onChange={(e) => setProviderId(e.target.value.split(' ')[0])} list='providers'></Input>
+                    <Input required id="provider" onChange={(e) => setProviderId(e.target.value.split(' ')[0])} list='providers'></Input>
                     <datalist id="providers">
                         {
                             providers.map(item => (

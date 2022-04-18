@@ -35,18 +35,23 @@ const ErrorsContainer = styled.div`
         font-size: 14px;
     }
 `
-const Button = styled.button`
-    background-color: #3dc73d;
+const Button = styled.button<{ bg: string }>`
+    background-color: ${props => props.bg};
     color: white;
     border: none;
+    margin: 0 10px;
     padding: 10px 30px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
 
     &:hover {
-        background-color: #19c219;
+        opacity: 0.95;
     }
+`
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: center;
 `
 
 type Props = {
@@ -65,10 +70,12 @@ export default function Mensagem({ error, warning, onClick, onClose }: Props) {
                     <ErrorsContainer>
                         <p>{error ? error : warning}</p>
                     </ErrorsContainer>
-                    <Button onClick={onClick}>OK</Button>
-                    {onClose &&
-                        <Button onClick={onClose}>Não</Button>
-                    }
+                    <ButtonContainer>
+                        {onClose &&
+                            <Button bg={'#ff3232'} onClick={onClose}>Cancelar</Button>
+                        }
+                        <Button bg={'#3dc73d'} onClick={onClick}>OK</Button>
+                    </ButtonContainer>
                 </Box>
             </Wrapper>
         </Container>
