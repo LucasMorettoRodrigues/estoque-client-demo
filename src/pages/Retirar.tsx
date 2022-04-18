@@ -118,7 +118,7 @@ export default function Retirar() {
         const subProductToAdd = getSubProduct(products, productId, subProductId)
 
         if (!productToAdd) return setError('Produto não encontrado.')
-        if (quantity > productToAdd.stock) return setError(`Existem apenas ${productToAdd.stock} unidades do produto ${productToAdd.name}.`)
+        if (quantity > productToAdd.stock) return setError(`Existem ${productToAdd.stock} unidades do produto ${productToAdd.name}.`)
         if (subProductToAdd && quantity > subProductToAdd?.quantity) return setError(`Existem apenas ${subProductToAdd.quantity} unidades do lote ${subProductToAdd.lote}.`)
         if (subProductToAdd) {
             let sorted = [...productToAdd.subproducts!].sort(function compare(a, b) { return compareDates(b.validade!, a.validade!) })
@@ -142,6 +142,10 @@ export default function Retirar() {
         }
 
         Array.from(document.querySelectorAll("input")).forEach(
+            input => (input.value = '')
+        );
+
+        Array.from(document.querySelectorAll("select")).forEach(
             input => (input.value = '')
         );
     }
@@ -173,7 +177,7 @@ export default function Retirar() {
                     <datalist id="products">
                         {
                             products.map(item => (
-                                <option key={item.id}>{item.id} - {item.name} - {item.brand}</option>
+                                <option key={item.id}>{item.id} - {item.name} - {item.brand} - {item.unit}</option>
                             ))
                         }
                     </datalist>

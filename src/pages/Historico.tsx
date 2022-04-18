@@ -121,7 +121,7 @@ export default function Historico() {
                                     <ProductLi flex={0.9}>-------</ProductLi>
                                     <ProductLi flex={0.7}>{item.lote}</ProductLi>
                                     <ProductLi flex={1}>{item.validade && item.validade.slice(0, 10)}</ProductLi>
-                                    <ProductLi flex={0.8} style={{ textAlign: 'center' }}>{item.quantity}</ProductLi>
+                                    <ProductLi flex={0.8} style={{ textAlign: 'center' }}>- {item.quantity}</ProductLi>
                                 </Product>
                             </Container>
                         )

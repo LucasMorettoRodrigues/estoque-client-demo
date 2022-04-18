@@ -9,6 +9,8 @@ import { getProduct, getProvider } from "../utils/functions"
 import { createStockIn } from "../features/stockIn/stockIn"
 import EditDeleteButton from "../components/EditDeleteButton"
 import Mensagem from "../components/Mensagem"
+import { warning } from "react-router/lib/router"
+import { createProvider } from "../features/fornecedor/fornecedorSlice"
 
 const Title = styled.h1`
     color: #222;
@@ -91,21 +93,78 @@ export default function Comprar() {
 
     const [cart, setCart] = useState<TStockIn[]>([])
     const [productId, setProductId] = useState(0)
-    const [providerId, setProviderId] = useState(0)
+    const [providerId, setProviderId] = useState('')
     const [quantity, setQuantity] = useState(0)
-    const [validade, setValidade] = useState('')
+    const [validade, setValidade] = useState<string | null>(null)
     const [lote, setLote] = useState('')
     const [price, setPrice] = useState('')
     const [error, setError] = useState('')
+    const [warning, setWarning] = useState('')
 
-    const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
+    const handleOnSubmit = (e?: FormEvent<HTMLFormElement>, providerIdAux?: string) => {
+        e && e.preventDefault()
 
         if ((validade && !lote) || (!validade && lote)) {
             return setError(`Campo validade ou lote faltando.`)
         }
 
-        setCart([...cart, { product_id: productId, provider_id: providerId, lote: lote, quantity: quantity, price: price, validade: validade ? validade : null }])
+        const provider_id = providerIdAux ? providerIdAux : providerId
+
+        if (!providerIdAux && !findOrCreateProvider(provider_id)) return
+
+        const index = cart.findIndex(i => ((i.product_id === parseInt(provider_id)) && (i.lote === lote)))
+
+        if (index < 0) {
+            setCart([...cart, {
+                product_id: productId,
+                provider_id: parseInt(provider_id),
+                price: price,
+                lote: lote,
+                validade: validade,
+                quantity: quantity
+            }])
+        } else {
+            if (cart[index].validade !== validade) {
+                return setError(`Validade incorreta.`)
+            }
+            let newCart = [...cart]
+            newCart[index].quantity += quantity
+            setCart(newCart)
+        }
+
+        Array.from(document.querySelectorAll("input")).forEach(
+            input => (input.value = '')
+        );
+
+        clearFields()
+    }
+
+    const clearFields = () => {
+        setProductId(0)
+        setProviderId('')
+        setQuantity(0)
+        setValidade(null)
+        setLote('')
+        setPrice('')
+        setError('')
+    }
+
+    const findOrCreateProvider = (provider: string) => {
+        const res = providers.find(i => i.id === parseInt(provider))
+
+        if (!res) {
+            setWarning(`Fornecedor ${provider} não cadastrado, deseja cadastra-lo?`)
+            return false
+        }
+
+        return true
+    }
+
+    const handleAddProvider = () => {
+        dispatch(createProvider({ name: providerId }))
+            .unwrap()
+            .then(res => handleOnSubmit(undefined, res.id))
+            .then(() => setWarning(''))
     }
 
     const handleOnClick = () => {
@@ -116,6 +175,7 @@ export default function Comprar() {
     return (
         <>
             {error && <Mensagem onClick={() => setError('')} error={error} />}
+            {warning && <Mensagem onClick={handleAddProvider} onClose={() => setWarning('')} warning={warning} />}
             <Title>Comprar Produtos</Title>
             <Form onSubmit={handleOnSubmit}>
                 <InputContainer flex={5}>
@@ -124,14 +184,14 @@ export default function Comprar() {
                     <datalist id="products">
                         {
                             products.map(item => (
-                                <option key={item.id}>{item.id} - {item.name} - {item.brand}</option>
+                                <option key={item.id}>{item.id} - {item.name} - {item.brand} - {item.unit}</option>
                             ))
                         }
                     </datalist>
                 </InputContainer>
                 <InputContainer flex={3}>
                     <Label>Fornecedor</Label>
-                    <Input required onChange={(e) => setProviderId(parseInt(e.target.value.split(' ')[0]))} list='providers'></Input>
+                    <Input required onChange={(e) => setProviderId(e.target.value.split(' ')[0])} list='providers'></Input>
                     <datalist id="providers">
                         {
                             providers.map(item => (

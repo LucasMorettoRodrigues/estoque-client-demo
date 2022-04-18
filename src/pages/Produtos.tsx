@@ -6,11 +6,20 @@ import { AiOutlineEyeInvisible } from "react-icons/ai"
 import { editProduct } from "../features/produtos/produtoSlice"
 import EditDeleteButton from "../components/EditDeleteButton"
 import { mergeProducts } from "../utils/functions"
+import { useEffect, useState } from "react"
+import { TProduct } from "../types/TProduct"
 
 const Container = styled.div``
 const Title = styled.h1`
     color: #222;
     margin: 30px 0;
+`
+const InputContainer = styled.div`
+    margin-bottom: 20px;
+    padding: 5px;
+`
+const Label = styled.label`
+    margin-left: 10px;
 `
 const ListHeader = styled.div`
     background-color: #5fb4ff;
@@ -60,7 +69,18 @@ export default function Produtos() {
 
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
-    const products = useAppSelector(state => mergeProducts(state.produto.produtos).filter(i => i.hide === false))
+    const products = useAppSelector(state => state.produto.produtos)
+    const [filteredProducts, setFilteredProducts] = useState<TProduct[]>([])
+    const [lowStockFilter, setLowStockFilter] = useState(false)
+
+    useEffect(() => {
+        if (lowStockFilter) {
+            setFilteredProducts(mergeProducts(products).filter(i => i.hide === false)
+                .filter(i => i.stock < i.min_stock))
+        } else {
+            setFilteredProducts(mergeProducts(products).filter(i => i.hide === false))
+        }
+    }, [lowStockFilter, products])
 
     return (
         <>
@@ -68,6 +88,11 @@ export default function Produtos() {
             <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
             <Button onClick={() => navigate('/produtos/detalhes')} text={'Detalhes'} />
             <Button onClick={() => navigate('/produtos/escondidos')} text={'Produtos Escondidos'} />
+            <InputContainer>
+                <input onChange={() => setLowStockFilter(!lowStockFilter)} id="lowStock" name="lowStock" type='checkbox'></input>
+                <Label htmlFor="lowStock">Produtos em falta</Label>
+            </InputContainer>
+
             <ListHeader>
                 <ListHeaderItem flex={8}>Produto</ListHeaderItem>
                 <ListHeaderItem flex={1} style={{ textAlign: 'center' }}>Estoque</ListHeaderItem>
@@ -76,7 +101,7 @@ export default function Produtos() {
                 <ListHeaderItem style={{ textAlign: 'center' }}>Esconder</ListHeaderItem>
             </ListHeader>
             {
-                products.map((item) => (
+                filteredProducts.map((item) => (
                     <Container key={item.id}>
                         <Product>
                             <ProductLi flex={8}>{item.name}</ProductLi>

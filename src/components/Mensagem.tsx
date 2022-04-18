@@ -52,10 +52,11 @@ const Button = styled.button`
 type Props = {
     error?: string,
     warning?: string,
-    onClick: () => void
+    onClick: () => void,
+    onClose?: () => void
 }
 
-export default function Mensagem({ error, warning, onClick }: Props) {
+export default function Mensagem({ error, warning, onClick, onClose }: Props) {
     return (
         <Container>
             <Wrapper>
@@ -65,6 +66,9 @@ export default function Mensagem({ error, warning, onClick }: Props) {
                         <p>{error ? error : warning}</p>
                     </ErrorsContainer>
                     <Button onClick={onClick}>OK</Button>
+                    {onClose &&
+                        <Button onClick={onClose}>Não</Button>
+                    }
                 </Box>
             </Wrapper>
         </Container>
