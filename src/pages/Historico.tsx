@@ -1,7 +1,9 @@
 import styled from "styled-components"
 import { useAppSelector } from "../app/hooks"
-import { compareDates, getProduct, getProvider } from "../utils/functions"
+import { getProduct, getProvider } from "../utils/functions"
 import { useEffect, useState } from "react"
+import { TStockIn } from "../types/TStockIn"
+import { TStockOut } from "../types/TStockOut"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -59,29 +61,65 @@ export default function Historico() {
     const stockIns = useAppSelector(state => state.stockIn.stockIns)
     const products = useAppSelector(state => state.produto.produtos)
     const providers = useAppSelector(state => state.fornecedor.fornecedores)
-    const [historic, setHistoric] = useState<any[]>([])
+    const [orderedStocks, setOrderedStocks] = useState<{ [key: string]: any }>({})
+    const [filteredStocks, setFilteredStocks] = useState<{ [key: string]: any }>({})
     const [filter, setFilter] = useState('')
 
     useEffect(() => {
+        let stockInByDate: { [key: string]: TStockIn[] } = {}
+        let stockOutByDate: { [key: string]: TStockOut[] } = {}
+
+        stockIns.forEach((i) => {
+            let index = i.date!.slice(0, 10) + '_in'
+            if (stockInByDate[index]) {
+                stockInByDate[index].push(i)
+            } else {
+                stockInByDate[index] = [i]
+            }
+        })
+
+        stockOuts.forEach((i) => {
+            let index = i.date!.slice(0, 10) + '_out'
+            if (stockOutByDate[index]) {
+                stockOutByDate[index].push(i)
+            } else {
+                stockOutByDate[index] = [i]
+            }
+        })
+
+        const stocks = { ...stockInByDate, ...stockOutByDate }
+
+        let orderedStocks = Object.keys(stocks).sort().reduce(
+            (obj: { [key: string]: any }, key) => {
+                obj[key] = stocks[key];
+                return obj;
+            },
+            {}
+        );
+
+        setOrderedStocks(orderedStocks)
+
+    }, [stockIns, stockOuts])
+
+    useEffect(() => {
         if (!filter) {
-            setHistoric([...stockIns, ...stockOuts].sort(function compare(a, b) {
-                return compareDates(a.date!, b.date!)
-            }))
+            setFilteredStocks(orderedStocks)
         }
 
         if (filter === 'Compras') {
-            setHistoric([...stockIns].sort(function compare(a, b) {
-                return compareDates(a.date!, b.date!)
-            }))
+            setFilteredStocks(Object.keys(orderedStocks)
+                .filter((key) => key.includes('_in'))
+                .reduce((cur, key) => { return Object.assign(cur, { [key]: orderedStocks[key] }) }, {})
+            )
         }
 
         if (filter === 'Retiradas') {
-            setHistoric([...stockOuts].sort(function compare(a, b) {
-                return compareDates(a.date!, b.date!)
-            }))
+            setFilteredStocks(Object.keys(orderedStocks)
+                .filter((key) => key.includes('_out'))
+                .reduce((cur, key) => { return Object.assign(cur, { [key]: orderedStocks[key] }) }, {})
+            )
         }
-
-    }, [stockIns, stockOuts, filter])
+    }, [filter, orderedStocks])
 
     return (
         <>
@@ -108,39 +146,41 @@ export default function Historico() {
                 <ListHeaderItem flex={0.8} style={{ textAlign: 'center' }}>Quantidade</ListHeaderItem>
             </ListHeader>
             {
-                historic.map((item, index) => (
-                    !item.price
-                        ? (
-                            <Container key={index}>
-                                <Product backgroundColor='#ffa7a7' >
-                                    <ProductLi flex={0.9}>{item.date.slice(0, 10)}</ProductLi>
-                                    <ProductLi flex={1}>Retirada</ProductLi>
-                                    <ProductLi flex={3}>{getProduct(products, item.product_id)?.name}</ProductLi>
-                                    <ProductLi flex={1}>-------</ProductLi>
-                                    <ProductLi flex={1}>{getProduct(products, item.product_id)?.brand}</ProductLi>
-                                    <ProductLi flex={0.9}>-------</ProductLi>
-                                    <ProductLi flex={0.7}>{item.lote}</ProductLi>
-                                    <ProductLi flex={1}>{item.validade && item.validade.slice(0, 10)}</ProductLi>
-                                    <ProductLi flex={0.8} style={{ textAlign: 'center' }}>- {item.quantity}</ProductLi>
-                                </Product>
-                            </Container>
-                        )
-                        : (
-                            <Container key={index}>
-                                <Product backgroundColor='#a3ff86'>
-                                    <ProductLi flex={0.9}>{item.date.slice(0, 10)}</ProductLi>
-                                    <ProductLi flex={1}>Compra</ProductLi>
-                                    <ProductLi flex={3}>{getProduct(products, item.product_id)?.name}</ProductLi>
-                                    <ProductLi flex={1}>{getProvider(providers, item.provider_id)?.name}</ProductLi>
-                                    <ProductLi flex={1}>{getProduct(products, item.product_id)?.brand}</ProductLi>
-                                    <ProductLi flex={0.9}>R$ {item.price.replace('.', ',')}</ProductLi>
-                                    <ProductLi flex={0.7}>{item.lote}</ProductLi>
-                                    <ProductLi flex={1}>{item.validade && item.validade.slice(0, 10)}</ProductLi>
-                                    <ProductLi flex={0.8} style={{ textAlign: 'center' }}>{item.quantity}</ProductLi>
-                                </Product>
-                            </Container>
-                        )
-                ))
+                Object.keys(filteredStocks).reverse().map(key =>
+                    filteredStocks[key].map((item: any, index: any) => (
+                        !item.price
+                            ? (
+                                < Container key={index} >
+                                    <Product backgroundColor='#ffa7a7' >
+                                        <ProductLi flex={0.9}>{index === 0 && item.date.slice(0, 10)}</ProductLi>
+                                        <ProductLi flex={1}>{index === 0 && 'Retirada'}</ProductLi>
+                                        <ProductLi flex={3}>{getProduct(products, item.product_id)?.name}</ProductLi>
+                                        <ProductLi flex={1}>-------</ProductLi>
+                                        <ProductLi flex={1}>{getProduct(products, item.product_id)?.brand}</ProductLi>
+                                        <ProductLi flex={0.9}>-------</ProductLi>
+                                        <ProductLi flex={0.7}>{item.lote}</ProductLi>
+                                        <ProductLi flex={1}>{item.validade && item.validade.slice(0, 10)}</ProductLi>
+                                        <ProductLi flex={0.8} style={{ textAlign: 'center' }}>- {item.quantity}</ProductLi>
+                                    </Product>
+                                </Container>
+                            )
+                            : (
+                                <Container key={index}>
+                                    <Product backgroundColor='#a3ff86'>
+                                        <ProductLi flex={0.9}>{index === 0 && item.date.slice(0, 10)}</ProductLi>
+                                        <ProductLi flex={1}>{index === 0 && 'Compra'}</ProductLi>
+                                        <ProductLi flex={3}>{getProduct(products, item.product_id)?.name}</ProductLi>
+                                        <ProductLi flex={1}>{getProvider(providers, item.provider_id)?.name}</ProductLi>
+                                        <ProductLi flex={1}>{getProduct(products, item.product_id)?.brand}</ProductLi>
+                                        <ProductLi flex={0.9}>R$ {item.price.replace('.', ',')}</ProductLi>
+                                        <ProductLi flex={0.7}>{item.lote}</ProductLi>
+                                        <ProductLi flex={1}>{item.validade && item.validade.slice(0, 10)}</ProductLi>
+                                        <ProductLi flex={0.8} style={{ textAlign: 'center' }}>{item.quantity}</ProductLi>
+                                    </Product>
+                                </Container>
+                            )
+                    ))
+                )
             }
         </>
     )

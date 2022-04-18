@@ -4,7 +4,7 @@ import styled from "styled-components"
 import { useAppDispatch } from "../app/hooks"
 import Button from "../components/Button"
 import Input from "../components/Input"
-import { editProduct } from "../features/produtos/produtoSlice"
+import { deleteProductById, editProduct } from "../features/produtos/produtoSlice"
 import { TProduct } from "../types/TProduct"
 
 const Title = styled.h1`
@@ -14,6 +14,11 @@ const Title = styled.h1`
 const Form = styled.form`
     display: flex;
     flex-wrap: wrap;
+`
+const ButtonContainer = styled.div`
+    display: flex;
+    width: 93%;
+    justify-content: space-between;
 `
 
 export default function EditarProduto() {
@@ -104,7 +109,21 @@ export default function EditarProduto() {
                     min={0}
                     required
                 />
-                <Button text={'Editar Produto'} />
+                <ButtonContainer>
+                    <Button text='Editar Produto' />
+                    <div>
+                        <Button
+                            onClick={() => dispatch(editProduct({ ...product, hide: true }))}
+                            text='Arquivar'
+                            bg='blue'
+                        />
+                        <Button
+                            onClick={() => dispatch(deleteProductById(product.id!))}
+                            text='Deletar'
+                            bg='red'
+                        />
+                    </div>
+                </ButtonContainer>
             </Form>
         </>
     )

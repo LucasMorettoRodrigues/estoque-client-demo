@@ -1,9 +1,9 @@
 import styled from "styled-components"
-import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai'
 import { useNavigate } from "react-router-dom"
 import Button from "../components/Button"
-import { useAppDispatch, useAppSelector } from "../app/hooks"
-import { deleteProductById, deleteSubProductById } from "../features/produtos/produtoSlice"
+import { useAppSelector } from "../app/hooks"
+import { useEffect, useState } from "react"
+import { TProduct } from "../types/TProduct"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -33,14 +33,23 @@ const Product = styled.ul`
     display: flex;
     align-items: center;
     border-bottom: 1px solid #cacaca;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #74bcff;
+    }
 `
 const SubProduct = styled.ul`
     height: 40px;
-    padding-right: 10px;
     display: flex;
     background-color: #eef7ff;
     align-items: center;
     border-bottom: 1px solid #e4e4e4;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #74bcff;
+    }
 `
 const ProductLi = styled.li<{ flex?: number, color?: string, width?: string }>`
     flex: ${props => props.flex ? props.flex : null};
@@ -49,35 +58,26 @@ const ProductLi = styled.li<{ flex?: number, color?: string, width?: string }>`
     padding: 10px;
     width: ${props => props.width ? props.width : null};
 `
-const SubProductLi = styled.li<{ flex?: number }>`
-    flex: ${props => props.flex ? props.flex : null};
-    font-size: 14px;
-    margin-left: 60px;
-    color: #555;
-    padding: 10px;
-`
-const ActionButton = styled.li<{ width: string }>`
+const SubProductLi = styled.li`
     display: flex;
-    width: ${props => props.width};
-    align-items: center;
     justify-content: center;
-    text-align: center;
-    font-size: 20px;
+    font-size: 13px;
+    width: 16%;
+    color: #3142a0;
+    font-weight: 500;
     padding: 10px;
-    color: gray;
-    cursor: pointer;
-
-    &:hover {
-        color: black;
-    }
 `
 
 export default function Detalhes() {
 
     const navigate = useNavigate()
-    const dispatch = useAppDispatch()
-    const products = useAppSelector(state => state.produto.produtos)
+    const productsData = useAppSelector(state => state.produto.produtos)
     const stockOuts = useAppSelector(state => state.stockOut.stockOuts)
+    const [products, setProducts] = useState<TProduct[]>([])
+
+    useEffect(() => {
+        setProducts(productsData.filter(i => i.hide === false))
+    }, [productsData])
 
     const getStockOutFrequency = (id: number): number | null => {
 
@@ -104,7 +104,7 @@ export default function Detalhes() {
             <Title>Produtos / Detalhes</Title>
             <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
             <Button onClick={() => navigate('/produtos')} text={'Resumo'} />
-            <Button onClick={() => navigate('/produtos/escondidos')} text={'Produtos Escondidos'} />
+            <Button bg='blue' onClick={() => navigate('/produtos/escondidos')} text={'Produtos Arquivados'} />
             <ListHeader>
                 <ListHeaderItem width="30px">Id</ListHeaderItem>
                 <ListHeaderItem flex={3}>Produto</ListHeaderItem>
@@ -116,13 +116,11 @@ export default function Detalhes() {
                 <ListHeaderItem flex={0.8} style={{ textAlign: 'center' }}>Est. Mín.</ListHeaderItem>
                 <ListHeaderItem flex={0.8} style={{ textAlign: 'center' }}>Est. Max.</ListHeaderItem>
                 <ListHeaderItem flex={1} style={{ textAlign: 'center' }}>Tempo Médio Retirada</ListHeaderItem>
-                <ListHeaderItem width="50px">Editar</ListHeaderItem>
-                <ListHeaderItem width="60px">Deletar</ListHeaderItem>
             </ListHeader>
             {
                 products.map((item) => (
                     <Container key={item.id}>
-                        <Product>
+                        <Product onClick={() => navigate(`/produtos/${item.id}`, { state: item })}>
                             <ProductLi width="30px">{item.id}</ProductLi>
                             <ProductLi flex={3}>{item.name}</ProductLi>
                             <ProductLi flex={0.8} style={{ textAlign: 'center' }}>{item.code}</ProductLi>
@@ -132,35 +130,15 @@ export default function Detalhes() {
                             <ProductLi flex={0.8} style={{ textAlign: 'center' }}>{item.stock}</ProductLi>
                             <ProductLi flex={0.8} style={{ textAlign: 'center' }}>{item.min_stock}</ProductLi>
                             <ProductLi flex={0.8} style={{ textAlign: 'center' }}>{item.max_stock}</ProductLi>
-                            <ProductLi flex={1} style={{ textAlign: 'center' }}>{getStockOutFrequency(item.id!)}
-                            </ProductLi>
-                            <ActionButton width="50px"
-                                onClick={() => navigate(`/produtos/${item.id}`, { state: item })}
-                            >
-                                <AiOutlineEdit />
-                            </ActionButton>
-                            <ActionButton width="60px"
-                                onClick={() => dispatch(deleteProductById(item.id!))}
-                            >
-                                <AiOutlineDelete />
-                            </ActionButton>
+                            <ProductLi flex={1} style={{ textAlign: 'center' }}>{getStockOutFrequency(item.id!)}</ProductLi>
                         </Product>
 
                         {item.subproducts &&
                             item.subproducts.map((subitem) => (
-                                <SubProduct key={subitem.id}>
+                                <SubProduct key={subitem.id} onClick={() => navigate(`/produtos/${item.id}/subprodutos/${subitem.id}`, { state: subitem })}>
                                     <SubProductLi>Lote: {subitem.lote}</SubProductLi>
                                     <SubProductLi>Validade: {subitem.validade.slice(0, 10)}</SubProductLi>
-                                    <SubProductLi flex={1}>Quantidade: {subitem.quantity}</SubProductLi>
-                                    <ActionButton width="50px"
-                                        onClick={() => navigate(`/produtos/${item.id}/subprodutos/${subitem.id}`, { state: subitem })}
-                                    >
-                                        <AiOutlineEdit /></ActionButton>
-                                    <ActionButton width="60px"
-                                        onClick={() => dispatch(deleteSubProductById(subitem.id))}
-                                    >
-                                        <AiOutlineDelete />
-                                    </ActionButton>
+                                    <SubProductLi>Quantidade: {subitem.quantity}</SubProductLi>
                                 </SubProduct>
                             ))
                         }

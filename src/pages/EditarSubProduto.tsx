@@ -4,12 +4,21 @@ import styled from "styled-components"
 import { useAppDispatch } from "../app/hooks"
 import Button from "../components/Button"
 import Input from "../components/Input"
-import { editSubProduct } from "../features/produtos/produtoSlice"
+import { deleteSubProductById, editSubProduct } from "../features/produtos/produtoSlice"
 import { TSubProduct } from "../types/TSubProduct"
 
 const Title = styled.h1`
     color: #222;
     margin: 30px 0;
+`
+const Form = styled.form`
+    display: flex;
+    flex-wrap: wrap;
+`
+const ButtonContainer = styled.div`
+    display: flex;
+    width: 93%;
+    justify-content: space-between;
 `
 
 export default function EditarSubProduto() {
@@ -32,7 +41,7 @@ export default function EditarSubProduto() {
     return (
         <>
             <Title>Editar Produto</Title>
-            <form onSubmit={handleOnSubmit}>
+            <Form onSubmit={handleOnSubmit}>
                 <Input
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setLote(e.target.value)}
                     name={'lote'}
@@ -57,8 +66,15 @@ export default function EditarSubProduto() {
                     value={quantity}
                     required
                 />
-                <Button text={'Editar Produto'} />
-            </form>
+                <ButtonContainer>
+                    <Button text='Editar Produto' />
+                    <Button
+                        onClick={() => dispatch(deleteSubProductById(subProduct.id))}
+                        text='Deletar'
+                        bg='red'
+                    />
+                </ButtonContainer>
+            </Form>
         </>
     )
 }

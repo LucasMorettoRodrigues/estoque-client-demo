@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
-const SButton = styled.button`
-    background-color: #3dc73d;
+const SButton = styled.button<{ bg?: string }>`
+    background-color: ${props => props.bg === 'red' ? '#ff3232' : (props.bg === 'blue' ? '#3d69c7' : '#3dc73d')};
     color: white;
     border: none;
     padding: 15px 30px;
@@ -11,17 +11,18 @@ const SButton = styled.button`
     margin: 0 20px 20px 0;
 
     &:hover {
-        background-color: #19c219;
+        opacity: 0.95;
     }
 `
 
 type Props = {
     text: string,
-    onClick?: () => void
+    onClick?: () => void,
+    bg?: string
 }
 
-export default function Button({ text, onClick }: Props) {
+export default function Button({ text, onClick, bg }: Props) {
     return (
-        <SButton onClick={onClick}>{text}</SButton>
+        <SButton bg={bg} onClick={onClick}>{text}</SButton>
     )
 }

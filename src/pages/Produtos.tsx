@@ -1,10 +1,7 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
 import Button from "../components/Button"
-import { useAppDispatch, useAppSelector } from "../app/hooks"
-import { AiOutlineEyeInvisible } from "react-icons/ai"
-import { editProduct } from "../features/produtos/produtoSlice"
-import EditDeleteButton from "../components/EditDeleteButton"
+import { useAppSelector } from "../app/hooks"
 import { mergeProducts } from "../utils/functions"
 import { useEffect, useState } from "react"
 import { TProduct } from "../types/TProduct"
@@ -57,18 +54,19 @@ const ProductLi = styled.li<{ flex?: number, color?: string }>`
     min-width: 75px;
     padding: 10px;
 `
-const SubProductLi = styled.li<{ flex?: number }>`
-    flex: ${props => props.flex ? props.flex : null};
+const SubProductLi = styled.li`
+    display: flex;
+    justify-content: center;
     font-size: 14px;
-    margin-left: 60px;
-    color: #555;
+    width: 16%;
+    color: #3142a0;
+    font-weight: 500;
     padding: 10px;
 `
 
 export default function Produtos() {
 
     const navigate = useNavigate()
-    const dispatch = useAppDispatch()
     const products = useAppSelector(state => state.produto.produtos)
     const [filteredProducts, setFilteredProducts] = useState<TProduct[]>([])
     const [lowStockFilter, setLowStockFilter] = useState(false)
@@ -87,7 +85,7 @@ export default function Produtos() {
             <Title>Produtos / Resumo</Title>
             <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
             <Button onClick={() => navigate('/produtos/detalhes')} text={'Detalhes'} />
-            <Button onClick={() => navigate('/produtos/escondidos')} text={'Produtos Escondidos'} />
+            <Button bg='blue' onClick={() => navigate('/produtos/escondidos')} text={'Produtos Arquivados'} />
             <InputContainer>
                 <input onChange={() => setLowStockFilter(!lowStockFilter)} id="lowStock" name="lowStock" type='checkbox'></input>
                 <Label htmlFor="lowStock">Produtos em falta</Label>
@@ -98,7 +96,6 @@ export default function Produtos() {
                 <ListHeaderItem flex={1} style={{ textAlign: 'center' }}>Estoque</ListHeaderItem>
                 <ListHeaderItem flex={1} style={{ textAlign: 'center' }}>Est. Mín.</ListHeaderItem>
                 <ListHeaderItem flex={1} style={{ textAlign: 'center' }}>Est. Max.</ListHeaderItem>
-                <ListHeaderItem style={{ textAlign: 'center' }}>Esconder</ListHeaderItem>
             </ListHeader>
             {
                 filteredProducts.map((item) => (
@@ -112,9 +109,6 @@ export default function Produtos() {
                             </ProductLi>
                             <ProductLi flex={1} style={{ textAlign: 'center' }}>{item.min_stock}</ProductLi>
                             <ProductLi flex={1} style={{ textAlign: 'center' }}>{item.max_stock}</ProductLi>
-                            <EditDeleteButton onClick={() => dispatch(editProduct({ ...item, hide: true }))}>
-                                <AiOutlineEyeInvisible />
-                            </EditDeleteButton>
                         </Product>
 
                         {item.subproducts &&
