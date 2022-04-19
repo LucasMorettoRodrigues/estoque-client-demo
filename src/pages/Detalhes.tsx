@@ -4,6 +4,7 @@ import Button from "../components/Button"
 import { useAppSelector } from "../app/hooks"
 import { useEffect, useState } from "react"
 import { TProduct } from "../types/TProduct"
+import { compare } from "../utils/functions"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -25,6 +26,12 @@ const ListHeaderItem = styled.p<{ flex?: number, width?: string }>`
     flex: ${props => props.flex ? props.flex : null};
     width: ${props => props.width ? props.width : null};
     padding: 10px;
+    cursor: pointer;
+
+    &:active {
+        transform: translateY(1px);
+        opacity: 0.5;
+    }
 `
 const Product = styled.ul`
     padding: 0 10px;
@@ -73,11 +80,8 @@ export default function Detalhes() {
     const navigate = useNavigate()
     const productsData = useAppSelector(state => state.produto.produtos)
     const stockOuts = useAppSelector(state => state.stockOut.stockOuts)
-    const [products, setProducts] = useState<TProduct[]>([])
-
-    useEffect(() => {
-        setProducts(productsData.filter(i => i.hide === false))
-    }, [productsData])
+    const [filteredProducts, setFilteredProducts] = useState<TProduct[]>([])
+    const [sort, setSort] = useState('')
 
     const getStockOutFrequency = (id: number): number | null => {
 
@@ -99,6 +103,34 @@ export default function Detalhes() {
         return Math.ceil(sum / (1000 * 60 * 60 * 24));
     }
 
+    useEffect(() => {
+        let products = productsData.slice().filter(i => i.hide === false)
+
+        if (!sort) {
+            setFilteredProducts(products)
+        }
+
+        if (sort === 'brand') {
+            setFilteredProducts(compare(products, 'brand'))
+        }
+
+        if (sort === 'category') {
+            setFilteredProducts(compare(products, 'category'))
+        }
+
+        if (sort === 'unit') {
+            setFilteredProducts(compare(products, 'unit'))
+        }
+
+        if (sort === 'id') {
+            setFilteredProducts(compare(products, 'id'))
+        }
+
+        if (sort === 'name') {
+            setFilteredProducts(compare(products, 'name'))
+        }
+    }, [sort, productsData])
+
     return (
         <>
             <Title>Produtos / Detalhes</Title>
@@ -106,19 +138,19 @@ export default function Detalhes() {
             <Button onClick={() => navigate('/produtos')} text={'Resumo'} />
             <Button bg='blue' onClick={() => navigate('/produtos/escondidos')} text={'Produtos Arquivados'} />
             <ListHeader>
-                <ListHeaderItem width="30px">Id</ListHeaderItem>
-                <ListHeaderItem flex={3}>Produto</ListHeaderItem>
+                <ListHeaderItem onClick={() => setSort('id')} width="30px">Id</ListHeaderItem>
+                <ListHeaderItem onClick={() => setSort('name')} flex={3}>Produto</ListHeaderItem>
                 <ListHeaderItem flex={0.8} style={{ textAlign: 'center' }}>Código</ListHeaderItem>
-                <ListHeaderItem flex={1}>Categoria</ListHeaderItem>
-                <ListHeaderItem flex={1}>Marca</ListHeaderItem>
-                <ListHeaderItem flex={1}>Unidade</ListHeaderItem>
+                <ListHeaderItem onClick={() => setSort('category')} flex={1}>Categoria</ListHeaderItem>
+                <ListHeaderItem onClick={() => setSort('brand')} flex={1}>Marca</ListHeaderItem>
+                <ListHeaderItem onClick={() => setSort('unit')} flex={1}>Unidade</ListHeaderItem>
                 <ListHeaderItem flex={0.8} style={{ textAlign: 'center' }}>Estoque</ListHeaderItem>
                 <ListHeaderItem flex={0.8} style={{ textAlign: 'center' }}>Est. Mín.</ListHeaderItem>
                 <ListHeaderItem flex={0.8} style={{ textAlign: 'center' }}>Est. Max.</ListHeaderItem>
                 <ListHeaderItem flex={1} style={{ textAlign: 'center' }}>Tempo Médio Retirada</ListHeaderItem>
             </ListHeader>
             {
-                products.map((item) => (
+                filteredProducts.map((item) => (
                     <Container key={item.id}>
                         <Product onClick={() => navigate(`/produtos/${item.id}`, { state: item })}>
                             <ProductLi width="30px">{item.id}</ProductLi>
