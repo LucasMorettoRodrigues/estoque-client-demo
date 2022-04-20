@@ -26,6 +26,8 @@ const Select = styled.select`
     padding: 5px 10px;
 `
 const ListHeader = styled.div`
+    height: 45px;
+    padding: 0 10px;
     background-color: #5fb4ff;
     height: 45px;
     display: flex;

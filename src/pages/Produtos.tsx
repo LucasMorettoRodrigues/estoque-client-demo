@@ -8,12 +8,30 @@ import { TProduct } from "../types/TProduct"
 
 const Container = styled.div``
 const Title = styled.h1`
+    display: flex;
     color: #222;
     margin: 30px 0;
 `
+const ProductsBtnContainer = styled.div`
+    display: flex;
+`
+const ProductBtn = styled.button<{ active?: boolean }>`
+    font-size: 30px;
+    color: ${props => props.active ? '#222' : '#c0c0c0'};
+    font-weight: bold;
+    margin-left: 10px;
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+
+    &:hover {
+        color: #222;
+    }
+`
 const InputContainer = styled.div`
-    margin-bottom: 20px;
-    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 `
 const Label = styled.label`
     margin-left: 10px;
@@ -87,15 +105,20 @@ export default function Produtos() {
 
     return (
         <>
-            <Title>Produtos / Resumo</Title>
-            <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
-            <Button onClick={() => navigate('/produtos/detalhes')} text={'Detalhes'} />
-            <Button bg='blue' onClick={() => navigate('/produtos/escondidos')} text={'Produtos Arquivados'} />
+            <Title>Produtos /
+                <ProductsBtnContainer>
+                    <ProductBtn active={true} >Resumo</ProductBtn>
+                    <ProductBtn onClick={() => navigate('/produtos/detalhes')} >Detalhes</ProductBtn>
+                    <ProductBtn onClick={() => navigate('/produtos/escondidos')}>Arquivados</ProductBtn>
+                </ProductsBtnContainer>
+            </Title>
             <InputContainer>
-                <input onChange={() => setLowStockFilter(!lowStockFilter)} id="lowStock" name="lowStock" type='checkbox'></input>
-                <Label htmlFor="lowStock">Produtos em falta</Label>
+                <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
+                <div style={{ marginBottom: '10px' }}>
+                    <input onChange={() => setLowStockFilter(!lowStockFilter)} id="lowStock" name="lowStock" type='checkbox'></input>
+                    <Label htmlFor="lowStock">Produtos em falta</Label>
+                </div>
             </InputContainer>
-
             <ListHeader>
                 <ListHeaderItem flex={8}>Produto</ListHeaderItem>
                 <ListHeaderItem flex={1} style={{ textAlign: 'center' }}>Estoque</ListHeaderItem>

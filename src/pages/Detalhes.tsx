@@ -10,10 +10,27 @@ const Container = styled.div``
 const Title = styled.h1`
     color: #222;
     margin: 30px 0;
+    display: flex;
+`
+const ProductsBtnContainer = styled.div`
+    display: flex;
+`
+const ProductBtn = styled.button<{ active?: boolean }>`
+    font-size: 30px;
+    color: ${props => props.active ? '#222' : '#c0c0c0'};
+    font-weight: bold;
+    margin-left: 10px;
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+
+    &:hover {
+        color: #222;
+    }
 `
 const ListHeader = styled.div`
     height: 45px;
-    padding: 0 10px;
+    padding: 0 5px;
     background-color: #5fb4ff;
     display: flex;
     align-items: center;
@@ -34,7 +51,7 @@ const ListHeaderItem = styled.p<{ flex?: number, width?: string }>`
     }
 `
 const Product = styled.ul`
-    padding: 0 10px;
+    padding: 0 5px;
     height: 40px;
     background-color: #cbe6ff;
     display: flex;
@@ -133,38 +150,42 @@ export default function Detalhes() {
 
     return (
         <>
-            <Title>Produtos / Detalhes</Title>
+            <Title>Produtos /
+                <ProductsBtnContainer>
+                    <ProductBtn onClick={() => navigate('/produtos')} >Resumo</ProductBtn>
+                    <ProductBtn active={true}>Detalhes</ProductBtn>
+                    <ProductBtn onClick={() => navigate('/produtos/escondidos')}>Arquivados</ProductBtn>
+                </ProductsBtnContainer>
+            </Title>
             <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
-            <Button onClick={() => navigate('/produtos')} text={'Resumo'} />
-            <Button bg='blue' onClick={() => navigate('/produtos/escondidos')} text={'Produtos Arquivados'} />
             <ListHeader>
-                <ListHeaderItem onClick={() => setSort('id')} width="30px">Id</ListHeaderItem>
-                <ListHeaderItem onClick={() => setSort('name')} flex={3}>Produto</ListHeaderItem>
+                <ListHeaderItem width="26px" onClick={() => setSort('id')}>Id</ListHeaderItem>
+                <ListHeaderItem flex={3} onClick={() => setSort('name')}>Produto</ListHeaderItem>
                 <ListHeaderItem flex={2}>Observação</ListHeaderItem>
-                <ListHeaderItem flex={0.8} style={{ textAlign: 'center' }}>Código</ListHeaderItem>
-                <ListHeaderItem onClick={() => setSort('category')} flex={1}>Categoria</ListHeaderItem>
-                <ListHeaderItem onClick={() => setSort('brand')} flex={1}>Marca</ListHeaderItem>
-                <ListHeaderItem onClick={() => setSort('unit')} flex={1}>Unidade</ListHeaderItem>
-                <ListHeaderItem flex={0.6} style={{ textAlign: 'center' }}>Estoque</ListHeaderItem>
-                <ListHeaderItem flex={0.6} style={{ textAlign: 'center' }}>Est. Mín.</ListHeaderItem>
-                <ListHeaderItem flex={0.6} style={{ textAlign: 'center' }}>Est. Max.</ListHeaderItem>
-                <ListHeaderItem flex={0.9} style={{ textAlign: 'center' }}>Tempo Médio Retirada</ListHeaderItem>
+                <ListHeaderItem width="90px">Código</ListHeaderItem>
+                <ListHeaderItem width="90px" onClick={() => setSort('category')}>Categoria</ListHeaderItem>
+                <ListHeaderItem width="130px" onClick={() => setSort('brand')}>Marca</ListHeaderItem>
+                <ListHeaderItem width="65px" onClick={() => setSort('unit')} >Unidade</ListHeaderItem>
+                <ListHeaderItem width="65px" style={{ textAlign: 'center' }}>Estoque</ListHeaderItem>
+                <ListHeaderItem width="65px" style={{ textAlign: 'center' }}>Est. Mín.</ListHeaderItem>
+                <ListHeaderItem width="65px" style={{ textAlign: 'center' }}>Est. Max.</ListHeaderItem>
+                <ListHeaderItem width="83px" style={{ textAlign: 'center' }}>Frequência Retirada</ListHeaderItem>
             </ListHeader>
             {
                 filteredProducts.map((item) => (
                     <Container key={item.id}>
                         <Product onClick={() => navigate(`/produtos/${item.id}`, { state: item })}>
-                            <ProductLi width="30px">{item.id}</ProductLi>
+                            <ProductLi width="26px">{item.id}</ProductLi>
                             <ProductLi flex={3}>{item.name}</ProductLi>
                             <ProductLi flex={2}>{item.observation}</ProductLi>
-                            <ProductLi flex={0.8} style={{ textAlign: 'center' }}>{item.code}</ProductLi>
-                            <ProductLi flex={1}>{item.category}</ProductLi>
-                            <ProductLi flex={1}>{item.brand}</ProductLi>
-                            <ProductLi flex={1}>{item.unit}</ProductLi>
-                            <ProductLi flex={0.6} style={{ textAlign: 'center' }}>{item.stock}</ProductLi>
-                            <ProductLi flex={0.6} style={{ textAlign: 'center' }}>{item.min_stock}</ProductLi>
-                            <ProductLi flex={0.6} style={{ textAlign: 'center' }}>{item.max_stock}</ProductLi>
-                            <ProductLi flex={0.9} style={{ textAlign: 'center' }}>{getStockOutFrequency(item.id!)}</ProductLi>
+                            <ProductLi width="90px">{item.code}</ProductLi>
+                            <ProductLi width="90px">{item.category}</ProductLi>
+                            <ProductLi width="130px">{item.brand}</ProductLi>
+                            <ProductLi width="65px">{item.unit}</ProductLi>
+                            <ProductLi width="65px" style={{ textAlign: 'center' }}>{item.stock}</ProductLi>
+                            <ProductLi width="65px" style={{ textAlign: 'center' }}>{item.min_stock}</ProductLi>
+                            <ProductLi width="65px" style={{ textAlign: 'center' }}>{item.max_stock}</ProductLi>
+                            <ProductLi width="83px" style={{ textAlign: 'center' }}>{getStockOutFrequency(item.id!)}</ProductLi>
                         </Product>
 
                         {item.subproducts &&

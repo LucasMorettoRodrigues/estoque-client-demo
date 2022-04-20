@@ -9,8 +9,25 @@ import EditDeleteButton from "../components/EditDeleteButton"
 
 const Container = styled.div``
 const Title = styled.h1`
+    display: flex;
     color: #222;
     margin: 30px 0;
+`
+const ProductsBtnContainer = styled.div`
+    display: flex;
+`
+const ProductBtn = styled.button<{ active?: boolean }>`
+    font-size: 30px;
+    color: ${props => props.active ? '#222' : '#c0c0c0'};
+    font-weight: bold;
+    margin-left: 10px;
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+
+    &:hover {
+        color: #222;
+    }
 `
 const ListHeader = styled.div`
     background-color: #5fb4ff;
@@ -76,10 +93,14 @@ export default function ProdutosEscondidos() {
 
     return (
         <>
-            <Title>Produtos Escondidos</Title>
+            <Title>Produtos /
+                <ProductsBtnContainer>
+                    <ProductBtn onClick={() => navigate('/produtos')} >Resumo</ProductBtn>
+                    <ProductBtn onClick={() => navigate('/produtos/detalhes')} >Detalhes</ProductBtn>
+                    <ProductBtn active={true}>Arquivados</ProductBtn>
+                </ProductsBtnContainer>
+            </Title>
             <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
-            <Button onClick={() => navigate('/produtos')} text={'Resumo'} />
-            <Button onClick={() => navigate('/produtos/detalhes')} text={'Detalhes'} />
             <ListHeader>
                 <ListHeaderItem flex={3}>Produto</ListHeaderItem>
                 <ListHeaderItem flex={0.8}>Categoria</ListHeaderItem>
