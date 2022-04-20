@@ -150,14 +150,15 @@ export default function Retirar() {
         );
     }
 
-    const handleOnClick = () => {
-        productList.map((item) => (
-            dispatch(createStockOut({
+    const handleOnClick = async () => {
+        for (const item of productList) {
+            await dispatch(createStockOut({
                 product_id: item.product.id!,
                 quantity: item.quantity,
                 subproduct_id: item.subProduct ? item.subProduct.id : null
             }))
-        ))
+        }
+
         navigate('/historico')
     }
 

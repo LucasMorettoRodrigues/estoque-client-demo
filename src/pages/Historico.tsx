@@ -55,7 +55,11 @@ const ProductLi = styled.li<{ flex?: number, color?: string }>`
     padding: 10px;
 `
 
-export default function Historico() {
+type Props = {
+    productFilter?: string
+}
+
+export default function Historico({ productFilter }: Props) {
 
     const stockOuts = useAppSelector(state => state.stockOut.stockOuts)
     const stockIns = useAppSelector(state => state.stockIn.stockIns)
@@ -66,10 +70,14 @@ export default function Historico() {
     const [filter, setFilter] = useState('')
 
     useEffect(() => {
+
         let stockInByDate: { [key: string]: TStockIn[] } = {}
         let stockOutByDate: { [key: string]: TStockOut[] } = {}
 
-        stockIns.forEach((i) => {
+        const filteredIns = productFilter ? stockIns.filter(i => getProduct(products, i.product_id)?.name === productFilter) : stockIns
+        const filteredOuts = productFilter ? stockOuts.filter(i => getProduct(products, i.product_id)?.name === productFilter) : stockOuts
+
+        filteredIns.forEach((i) => {
             let index = i.date!.slice(0, 10) + '_in'
             if (stockInByDate[index]) {
                 stockInByDate[index].push(i)
@@ -78,7 +86,7 @@ export default function Historico() {
             }
         })
 
-        stockOuts.forEach((i) => {
+        filteredOuts.forEach((i) => {
             let index = i.date!.slice(0, 10) + '_out'
             if (stockOutByDate[index]) {
                 stockOutByDate[index].push(i)
@@ -99,7 +107,7 @@ export default function Historico() {
 
         setOrderedStocks(orderedStocks)
 
-    }, [stockIns, stockOuts])
+    }, [stockIns, stockOuts, productFilter, products])
 
     useEffect(() => {
         if (!filter) {
@@ -139,7 +147,8 @@ export default function Historico() {
                 <ListHeaderItem flex={1}>Ação</ListHeaderItem>
                 <ListHeaderItem flex={3}>Produto</ListHeaderItem>
                 <ListHeaderItem flex={1}>Fornecedor</ListHeaderItem>
-                <ListHeaderItem flex={1}>Brand</ListHeaderItem>
+                <ListHeaderItem flex={1}>Marca</ListHeaderItem>
+                <ListHeaderItem flex={1}>Unidade</ListHeaderItem>
                 <ListHeaderItem flex={0.9}>Preço</ListHeaderItem>
                 <ListHeaderItem flex={0.7}>Lote</ListHeaderItem>
                 <ListHeaderItem flex={1}>Validade</ListHeaderItem>
@@ -157,6 +166,7 @@ export default function Historico() {
                                         <ProductLi flex={3}>{getProduct(products, item.product_id)?.name}</ProductLi>
                                         <ProductLi flex={1}>-------</ProductLi>
                                         <ProductLi flex={1}>{getProduct(products, item.product_id)?.brand}</ProductLi>
+                                        <ProductLi flex={1}>{getProduct(products, item.product_id)?.unit}</ProductLi>
                                         <ProductLi flex={0.9}>-------</ProductLi>
                                         <ProductLi flex={0.7}>{item.lote}</ProductLi>
                                         <ProductLi flex={1}>{item.validade && item.validade.slice(0, 10)}</ProductLi>
@@ -172,6 +182,7 @@ export default function Historico() {
                                         <ProductLi flex={3}>{getProduct(products, item.product_id)?.name}</ProductLi>
                                         <ProductLi flex={1}>{getProvider(providers, item.provider_id)?.name}</ProductLi>
                                         <ProductLi flex={1}>{getProduct(products, item.product_id)?.brand}</ProductLi>
+                                        <ProductLi flex={1}>{getProduct(products, item.product_id)?.unit}</ProductLi>
                                         <ProductLi flex={0.9}>R$ {item.price.replace('.', ',')}</ProductLi>
                                         <ProductLi flex={0.7}>{item.lote}</ProductLi>
                                         <ProductLi flex={1}>{item.validade && item.validade.slice(0, 10)}</ProductLi>

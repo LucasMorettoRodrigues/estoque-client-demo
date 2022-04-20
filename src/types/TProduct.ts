@@ -1,7 +1,7 @@
 export type TProduct = {
     id?: number,
     name: string,
-    code: number,
+    code: string,
     brand: string,
     category: string,
     unit: string,
@@ -11,6 +11,7 @@ export type TProduct = {
     lote?: string,
     validade?: string,
     quantity?: number,
+    observation: string | null,
     hide?: boolean,
     subproducts?: {
         id: number,

@@ -6,6 +6,7 @@ import Button from "../components/Button"
 import Input from "../components/Input"
 import { deleteProductById, editProduct } from "../features/produtos/produtoSlice"
 import { TProduct } from "../types/TProduct"
+import Historico from "./Historico"
 
 const Title = styled.h1`
     color: #222;
@@ -36,10 +37,11 @@ export default function EditarProduto() {
     const [stock, setStock] = useState(`${product.stock}`)
     const [minStock, setMinStock] = useState(`${product.min_stock}`)
     const [maxStock, setMaxStock] = useState(`${product.max_stock}`)
+    const [observation, setObservation] = useState(product.observation)
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        dispatch(editProduct({ id: product.id, name, code, category, brand, unit, stock: parseInt(stock), min_stock: parseInt(minStock), max_stock: parseInt(maxStock) }))
+        dispatch(editProduct({ id: product.id, name, code, category, brand, unit, stock: parseInt(stock), min_stock: parseInt(minStock), max_stock: parseInt(maxStock), observation }))
         navigate('/produtos/detalhes')
     }
 
@@ -55,7 +57,7 @@ export default function EditarProduto() {
                     required
                 />
                 <Input
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setCode(parseInt(e.target.value))}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setCode(e.target.value)}
                     name={'codigo'}
                     label={'Código'}
                     value={code}
@@ -109,6 +111,12 @@ export default function EditarProduto() {
                     min={0}
                     required
                 />
+                <Input
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setObservation(e.target.value)}
+                    name={'obervation'}
+                    label={'Observação'}
+                    value={observation ? observation : ''}
+                />
                 <ButtonContainer>
                     <Button text='Editar Produto' />
                     <div>
@@ -125,6 +133,7 @@ export default function EditarProduto() {
                     </div>
                 </ButtonContainer>
             </Form>
+            <Historico productFilter={product.name} />
         </>
     )
 }

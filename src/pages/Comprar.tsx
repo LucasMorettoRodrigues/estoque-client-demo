@@ -188,7 +188,7 @@ export default function Comprar() {
                 </InputContainer>
                 <InputContainer flex={3}>
                     <Label>Fornecedor</Label>
-                    <Input required id="provider" onChange={(e) => setProviderId(e.target.value.split(' ')[0])} list='providers'></Input>
+                    <Input required autoComplete="off" id="provider" onChange={(e) => setProviderId(e.target.value.split(' ')[0])} list='providers'></Input>
                     <datalist id="providers">
                         {
                             providers.map(item => (

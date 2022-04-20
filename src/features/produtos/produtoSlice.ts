@@ -110,6 +110,11 @@ export const produtoSlice = createSlice({
         builder.addCase(createProduct.fulfilled, (state, action) => {
             state.status = 'success'
             state.produtos.push(action.payload)
+            state.produtos = state.produtos
+                .map((item) => item.name === action.payload.name
+                    ? { ...item, min_stock: action.payload.min_stock, max_stock: action.payload.max_stock }
+                    : item
+                )
         })
         builder.addCase(createProduct.rejected, (state) => {
             state.status = 'failed'
@@ -122,7 +127,9 @@ export const produtoSlice = createSlice({
             state.produtos = state.produtos
                 .map((item) => item.id === action.payload.id
                     ? { ...action.payload, subproducts: getProduct(state.produtos, action.payload.id)?.subproducts }
-                    : item
+                    : item.name === action.payload.name
+                        ? { ...item, min_stock: action.payload.min_stock, max_stock: action.payload.max_stock }
+                        : item
                 )
         })
         builder.addCase(editProduct.rejected, (state) => {

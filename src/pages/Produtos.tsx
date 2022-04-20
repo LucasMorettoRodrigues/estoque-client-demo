@@ -39,6 +39,11 @@ const Product = styled.ul`
     display: flex;
     align-items: center;
     border-bottom: 1px solid #cacaca;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #74bcff;
+    }
 `
 const SubProduct = styled.ul`
     height: 40px;
@@ -100,7 +105,7 @@ export default function Produtos() {
             {
                 filteredProducts.map((item) => (
                     <Container key={item.id}>
-                        <Product>
+                        <Product onClick={() => navigate(`/produtos/${item.id}/historico`, { state: item })}>
                             <ProductLi flex={8}>{item.name}</ProductLi>
                             <ProductLi
                                 color={item.stock < item.min_stock ? '#ff5353' : 'inherit'}

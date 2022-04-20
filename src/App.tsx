@@ -24,6 +24,7 @@ import NovoFornecedor from "./pages/NovoFornecedor";
 import NovoProduto from "./pages/NovoProduto";
 import Produtos from "./pages/Produtos";
 import Retirar from "./pages/Retirar";
+import ProdutoHistorico from "./pages/ProdutoHistorico";
 
 function App() {
 
@@ -60,6 +61,7 @@ function App() {
           <Route path='/comprar' element={<Comprar />} />
           <Route path='/retirar' element={<Retirar />} />
           <Route path='/historico' element={<Historico />} />
+          <Route path='/produtos/:id/historico' element={<ProdutoHistorico />} />
         </Routes>
       </Container>
     </BrowserRouter>
