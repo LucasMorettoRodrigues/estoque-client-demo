@@ -91,14 +91,39 @@ const SubProductLi = styled.li`
     font-weight: 500;
     padding: 10px;
 `
+const MenuContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+`
+const Filter = styled.div`
+    margin-top: -10px;
+    display: flex;
+    width: 80%;
+    align-items: center;
+`
+const Label = styled.label`
+    margin-right: 5px;
+    margin-left: 15px;
+`
+const Select = styled.select`
+    padding: 5px 10px;
+`
+const Input = styled.input`
+    flex: 1;
+    padding: 5px 10px;
+`
 
 export default function Detalhes() {
 
     const navigate = useNavigate()
     const productsData = useAppSelector(state => state.produto.produtos)
     const stockOuts = useAppSelector(state => state.stockOut.stockOuts)
+    const [category, setCategory] = useState('')
     const [filteredProducts, setFilteredProducts] = useState<TProduct[]>([])
+    const [sortedProducts, setSortedProducts] = useState<TProduct[]>([])
     const [sort, setSort] = useState('')
+    const [search, setSearch] = useState('')
+    let categories = Array.from(new Set(productsData.map(i => i.category)))
 
     const getStockOutFrequency = (id: number): number | null => {
 
@@ -123,41 +148,72 @@ export default function Detalhes() {
     useEffect(() => {
         let products = productsData.slice().filter(i => i.hide === false)
 
-        if (!sort) {
-            setFilteredProducts(products)
-        }
+        setSortedProducts(products)
+
 
         if (sort === 'brand') {
-            setFilteredProducts(compare(products, 'brand'))
+            setSortedProducts(compare(products, 'brand'))
         }
 
         if (sort === 'category') {
-            setFilteredProducts(compare(products, 'category'))
+            setSortedProducts(compare(products, 'category'))
         }
 
         if (sort === 'unit') {
-            setFilteredProducts(compare(products, 'unit'))
+            setSortedProducts(compare(products, 'unit'))
         }
 
         if (sort === 'id') {
-            setFilteredProducts(compare(products, 'id'))
+            setSortedProducts(compare(products, 'id'))
         }
 
         if (sort === 'name') {
-            setFilteredProducts(compare(products, 'name'))
+            setSortedProducts(compare(products, 'name'))
         }
-    }, [sort, productsData])
+    }, [sort, productsData, category])
+
+    useEffect(() => {
+        let filtered = sortedProducts
+
+        if (category) {
+            filtered = filtered.filter(i => i.category === category)
+        }
+
+        if (search) {
+            filtered = filtered.filter(i => i.name.toLowerCase().includes(search.toLowerCase()))
+        }
+
+        setFilteredProducts(filtered)
+
+    }, [category, sortedProducts, search])
 
     return (
         <>
             <Title>Produtos /
                 <ProductsBtnContainer>
-                    <ProductBtn onClick={() => navigate('/produtos')} >Resumo</ProductBtn>
                     <ProductBtn active={true}>Detalhes</ProductBtn>
+                    <ProductBtn onClick={() => navigate('/produtos')} >Resumo</ProductBtn>
                     <ProductBtn onClick={() => navigate('/produtos/escondidos')}>Arquivados</ProductBtn>
                 </ProductsBtnContainer>
             </Title>
-            <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
+            <MenuContainer>
+                <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
+                <Filter>
+                    <Label>Pesquisar:</Label>
+                    <Input type='text' onChange={(e) => setSearch(e.target.value)}></Input>
+                    <Label>Categoria:</Label>
+                    <Select onChange={(e) => setCategory(e.target.value)}>
+                        <option></option>
+                        {categories.map(i => <option key={i}>{i}</option>)}
+                    </Select>
+                    <Label>Fornecedor:</Label>
+                    <Select >
+                        <option></option>
+                        <option>Compras</option>
+                        <option>Retiradas</option>
+                    </Select>
+                </Filter>
+            </MenuContainer>
             <ListHeader>
                 <ListHeaderItem width="26px" onClick={() => setSort('id')}>Id</ListHeaderItem>
                 <ListHeaderItem flex={3} onClick={() => setSort('name')}>Produto</ListHeaderItem>

@@ -2,7 +2,7 @@ import { FC, InputHTMLAttributes } from "react"
 import styled from "styled-components"
 
 const Container = styled.div`
-    flex-basis: 45%;
+    flex-basis: 48%;
     margin-right: 20px;
 `
 const Label = styled.label`
@@ -13,7 +13,7 @@ const Label = styled.label`
 const SInput = styled.input`
     display: block;
     width: 100%;
-    padding: 10px 10px;
+    padding: 10px;
     outline-color: lightblue;
     border: 1px solid lightgray;
     border-radius: 5px;

@@ -28,13 +28,23 @@ const ProductBtn = styled.button<{ active?: boolean }>`
         color: #222;
     }
 `
-const InputContainer = styled.div`
+const MenuContainer = styled.div`
     display: flex;
+    margin-right: 0;
     justify-content: space-between;
+`
+const Filter = styled.div`
+    margin-top: -10px;
+    width: 60%;
+    display: flex;
     align-items: center;
 `
 const Label = styled.label`
-    margin-left: 10px;
+    margin-right: 5px;
+`
+const Input = styled.input`
+    padding: 5px 10px;
+    margin-right: 10px;
 `
 const ListHeader = styled.div`
     background-color: #5fb4ff;
@@ -63,13 +73,13 @@ const Product = styled.ul`
         background-color: #74bcff;
     }
 `
-const SubProduct = styled.ul`
-    height: 40px;
-    display: flex;
-    background-color: #eef7ff;
-    align-items: center;
-    border-bottom: 1px solid #e4e4e4;
-`
+// const SubProduct = styled.ul`
+//     height: 40px;
+//     display: flex;
+//     background-color: #eef7ff;
+//     align-items: center;
+//     border-bottom: 1px solid #e4e4e4;
+// `
 const ProductLi = styled.li<{ flex?: number, color?: string }>`
     flex: ${props => props.flex ? props.flex : null};
     background-color: ${props => props.color ? props.color : null};
@@ -77,15 +87,15 @@ const ProductLi = styled.li<{ flex?: number, color?: string }>`
     min-width: 75px;
     padding: 10px;
 `
-const SubProductLi = styled.li`
-    display: flex;
-    justify-content: center;
-    font-size: 14px;
-    width: 16%;
-    color: #3142a0;
-    font-weight: 500;
-    padding: 10px;
-`
+// const SubProductLi = styled.li`
+//     display: flex;
+//     justify-content: center;
+//     font-size: 14px;
+//     width: 16%;
+//     color: #3142a0;
+//     font-weight: 500;
+//     padding: 10px;
+// `
 
 export default function Produtos() {
 
@@ -93,32 +103,43 @@ export default function Produtos() {
     const products = useAppSelector(state => state.produto.produtos)
     const [filteredProducts, setFilteredProducts] = useState<TProduct[]>([])
     const [lowStockFilter, setLowStockFilter] = useState(false)
+    const [search, setSearch] = useState('')
 
     useEffect(() => {
+        let filtered = []
+
         if (lowStockFilter) {
-            setFilteredProducts(mergeProducts(products).filter(i => i.hide === false)
-                .filter(i => i.stock < i.min_stock))
+            filtered = mergeProducts(products).filter(i => i.hide === false)
+                .filter(i => i.stock < i.min_stock)
         } else {
-            setFilteredProducts(mergeProducts(products).filter(i => i.hide === false))
+            filtered = mergeProducts(products).filter(i => i.hide === false)
         }
-    }, [lowStockFilter, products])
+
+        if (search) {
+            filtered = filtered.filter(i => i.name.toLowerCase().includes(search.toLowerCase()))
+        }
+
+        setFilteredProducts(filtered)
+    }, [lowStockFilter, products, search])
 
     return (
         <>
             <Title>Produtos /
                 <ProductsBtnContainer>
-                    <ProductBtn active={true} >Resumo</ProductBtn>
                     <ProductBtn onClick={() => navigate('/produtos/detalhes')} >Detalhes</ProductBtn>
+                    <ProductBtn active={true} >Resumo</ProductBtn>
                     <ProductBtn onClick={() => navigate('/produtos/escondidos')}>Arquivados</ProductBtn>
                 </ProductsBtnContainer>
             </Title>
-            <InputContainer>
+            <MenuContainer>
                 <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
-                <div style={{ marginBottom: '10px' }}>
-                    <input onChange={() => setLowStockFilter(!lowStockFilter)} id="lowStock" name="lowStock" type='checkbox'></input>
-                    <Label htmlFor="lowStock">Produtos em falta</Label>
-                </div>
-            </InputContainer>
+                <Filter>
+                    <Label>Pesquisar:</Label>
+                    <Input style={{ flex: 1, marginRight: '20px' }} type='text' onChange={(e) => setSearch(e.target.value)}></Input>
+                    <Input style={{ width: '18px', height: '18px', cursor: 'pointer' }} onChange={() => setLowStockFilter(!lowStockFilter)} id="lowStock" name="lowStock" type='checkbox'></Input>
+                    <Label style={{ cursor: 'pointer' }} htmlFor="lowStock">Produtos em falta</Label>
+                </Filter>
+            </MenuContainer>
             <ListHeader>
                 <ListHeaderItem flex={8}>Produto</ListHeaderItem>
                 <ListHeaderItem flex={1} style={{ textAlign: 'center' }}>Estoque</ListHeaderItem>
@@ -139,7 +160,7 @@ export default function Produtos() {
                             <ProductLi flex={1} style={{ textAlign: 'center' }}>{item.max_stock}</ProductLi>
                         </Product>
 
-                        {item.subproducts &&
+                        {/* {item.subproducts &&
                             item.subproducts.map((subitem) => (
                                 <SubProduct key={subitem.id}>
                                     <SubProductLi>Lote: {subitem.lote}</SubProductLi>
@@ -147,7 +168,7 @@ export default function Produtos() {
                                     <SubProductLi>Quantidade: {subitem.quantity}</SubProductLi>
                                 </SubProduct>
                             ))
-                        }
+                        } */}
                     </Container>
                 ))
             }

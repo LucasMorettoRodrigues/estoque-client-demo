@@ -17,7 +17,7 @@ const Form = styled.form`
 `
 const ButtonContainer = styled.div`
     display: flex;
-    width: 93%;
+    width: 100%;
     justify-content: space-between;
 `
 

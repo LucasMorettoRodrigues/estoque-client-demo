@@ -35,7 +35,7 @@ export default function Navbar() {
                 <Wrapper>
                     <Title>Estoque</Title>
                     <List>
-                        <Link to='/produtos'><Item>Produtos</Item></Link>
+                        <Link to='/produtos/detalhes'><Item>Produtos</Item></Link>
                         <Link to='/fornecedores'><Item>Fornecedores</Item></Link>
                         <Link to='/comprar'><Item>Comprar</Item></Link>
                         <Link to='/retirar'><Item>Retirar</Item></Link>

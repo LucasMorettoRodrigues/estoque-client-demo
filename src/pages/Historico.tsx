@@ -4,8 +4,12 @@ import { getProduct, getProvider } from "../utils/functions"
 import { useEffect, useState } from "react"
 import { TStockIn } from "../types/TStockIn"
 import { TStockOut } from "../types/TStockOut"
+import { AiFillPlusSquare } from 'react-icons/ai'
 
-const Container = styled.div``
+const Container = styled.div<{ show?: boolean }>`
+    visibility: ${props => props.show === false ? 'hidden' : 'visible'};
+    height: ${props => props.show === false ? '0px' : 'auto'};
+`
 const HeaderContainer = styled.div`
     display: flex;
     align-items: center;
@@ -18,9 +22,10 @@ const Title = styled.h1`
 const Filter = styled.div`
     display: flex;
     align-items: center;
+    margin-top: 10px;
 `
 const Label = styled.label`
-    margin-right: 10px;
+    margin-right: 5px;
 `
 const Select = styled.select`
     padding: 5px 10px;
@@ -51,6 +56,7 @@ const Product = styled.ul<{ backgroundColor: string }>`
 `
 const ProductLi = styled.li<{ flex?: number, color?: string }>`
     flex: ${props => props.flex ? props.flex : null};
+    align-items: center;
     background-color: ${props => props.color ? props.color : null};
     font-size: 14px;
     min-width: 75px;
@@ -70,6 +76,7 @@ export default function Historico({ productFilter }: Props) {
     const [orderedStocks, setOrderedStocks] = useState<{ [key: string]: any }>({})
     const [filteredStocks, setFilteredStocks] = useState<{ [key: string]: any }>({})
     const [filter, setFilter] = useState('')
+    const [show, setShow] = useState('')
 
     useEffect(() => {
 
@@ -157,43 +164,35 @@ export default function Historico({ productFilter }: Props) {
                 <ListHeaderItem flex={0.8} style={{ textAlign: 'center' }}>Quantidade</ListHeaderItem>
             </ListHeader>
             {
-                Object.keys(filteredStocks).reverse().map(key =>
-                    filteredStocks[key].map((item: any, index: any) => (
-                        !item.price
-                            ? (
-                                < Container key={index} >
-                                    <Product backgroundColor='#ffa7a7' >
-                                        <ProductLi flex={0.9}>{index === 0 && item.date.slice(0, 10)}</ProductLi>
-                                        <ProductLi flex={1}>{index === 0 && 'Retirada'}</ProductLi>
+                Object.keys(filteredStocks).reverse().map(key => (
+                    < Container key={key} >
+                        <Product backgroundColor={key.split('_')[1] === 'in' ? '#a3ff86' : '#ffa7a7'} >
+                            <ProductLi flex={1}>{key.split('_')[0]}</ProductLi>
+                            <ProductLi flex={12}>{key.split('_')[1] === 'in' ? "Compra" : "Retirada"}</ProductLi>
+                            <ProductLi style={{ marginTop: '3px' }} onClick={() => setShow(show === key ? '' : key)}>
+                                <AiFillPlusSquare fontSize='22px' color="#f1f1f1" cursor='pointer' style={{ backgroundColor: 'black' }} />
+                            </ProductLi>
+                        </Product>
+                        {
+                            filteredStocks[key].map((item: any, index: any) => (
+                                < Container key={index} show={show === key ? true : false} >
+                                    <Product backgroundColor={key.split('_')[1] === 'in' ? '#a3ff86' : '#ffa7a7'} >
+                                        <ProductLi flex={0.9}></ProductLi>
+                                        <ProductLi flex={1}></ProductLi>
                                         <ProductLi flex={3}>{getProduct(products, item.product_id)?.name}</ProductLi>
-                                        <ProductLi flex={1}>-------</ProductLi>
+                                        <ProductLi flex={1}>{item.provider_id && getProvider(providers, item.provider_id)?.name}</ProductLi>
                                         <ProductLi flex={1}>{getProduct(products, item.product_id)?.brand}</ProductLi>
                                         <ProductLi flex={1}>{getProduct(products, item.product_id)?.unit}</ProductLi>
-                                        <ProductLi flex={0.9}>-------</ProductLi>
+                                        <ProductLi flex={0.9}></ProductLi>
                                         <ProductLi flex={0.7}>{item.lote}</ProductLi>
                                         <ProductLi flex={1}>{item.validade && item.validade.slice(0, 10)}</ProductLi>
                                         <ProductLi flex={0.8} style={{ textAlign: 'center' }}>- {item.quantity}</ProductLi>
                                     </Product>
                                 </Container>
-                            )
-                            : (
-                                <Container key={index}>
-                                    <Product backgroundColor='#a3ff86'>
-                                        <ProductLi flex={0.9}>{index === 0 && item.date.slice(0, 10)}</ProductLi>
-                                        <ProductLi flex={1}>{index === 0 && 'Compra'}</ProductLi>
-                                        <ProductLi flex={3}>{getProduct(products, item.product_id)?.name}</ProductLi>
-                                        <ProductLi flex={1}>{getProvider(providers, item.provider_id)?.name}</ProductLi>
-                                        <ProductLi flex={1}>{getProduct(products, item.product_id)?.brand}</ProductLi>
-                                        <ProductLi flex={1}>{getProduct(products, item.product_id)?.unit}</ProductLi>
-                                        <ProductLi flex={0.9}>R$ {item.price.replace('.', ',')}</ProductLi>
-                                        <ProductLi flex={0.7}>{item.lote}</ProductLi>
-                                        <ProductLi flex={1}>{item.validade && item.validade.slice(0, 10)}</ProductLi>
-                                        <ProductLi flex={0.8} style={{ textAlign: 'center' }}>{item.quantity}</ProductLi>
-                                    </Product>
-                                </Container>
-                            )
-                    ))
-                )
+                            ))
+                        }
+                    </Container>
+                ))
             }
         </>
     )

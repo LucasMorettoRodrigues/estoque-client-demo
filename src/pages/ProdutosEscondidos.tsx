@@ -95,8 +95,8 @@ export default function ProdutosEscondidos() {
         <>
             <Title>Produtos /
                 <ProductsBtnContainer>
-                    <ProductBtn onClick={() => navigate('/produtos')} >Resumo</ProductBtn>
                     <ProductBtn onClick={() => navigate('/produtos/detalhes')} >Detalhes</ProductBtn>
+                    <ProductBtn onClick={() => navigate('/produtos')} >Resumo</ProductBtn>
                     <ProductBtn active={true}>Arquivados</ProductBtn>
                 </ProductsBtnContainer>
             </Title>
