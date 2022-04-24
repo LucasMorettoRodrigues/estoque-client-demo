@@ -27,6 +27,7 @@ import Retirar from "./pages/Retirar";
 import ProdutoHistorico from "./pages/ProdutoHistorico";
 import Ajustar from "./pages/Ajustar";
 import { getAllAdjustStock } from "./features/adjustStock/adjustStock";
+import { Home } from "./pages/Home";
 
 function App() {
 
@@ -53,6 +54,7 @@ function App() {
       <Navbar />
       <Container>
         <Routes>
+          <Route path='/estoque-client' element={<Home />} />
           <Route path='/produtos' element={<Produtos />} />
           <Route path='/produtos/detalhes' element={<Detalhes />} />
           <Route path='/produtos/escondidos' element={<ProdutosEscondidos />} />

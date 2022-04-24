@@ -1,7 +1,7 @@
 {
   "name": "my-app",
   "version": "0.1.0",
-  "homepage": "https://LucasMorettoRodrigues.github.io/estoque-client",
+  "homepage": "https://lucasmorettorodrigues.github.io/estoque-client",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
