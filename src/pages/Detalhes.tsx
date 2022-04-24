@@ -4,7 +4,7 @@ import Button from "../components/Button"
 import { useAppSelector } from "../app/hooks"
 import { useEffect, useState } from "react"
 import { TProduct } from "../types/TProduct"
-import { compare } from "../utils/functions"
+import { compare, getProvider, reduceStockIns } from "../utils/functions"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -106,10 +106,11 @@ const Label = styled.label`
     margin-left: 15px;
 `
 const Select = styled.select`
+    flex: 1;
     padding: 5px 10px;
 `
 const Input = styled.input`
-    flex: 1;
+    flex: 3;
     padding: 5px 10px;
 `
 
@@ -118,9 +119,13 @@ export default function Detalhes() {
     const navigate = useNavigate()
     const productsData = useAppSelector(state => state.produto.produtos)
     const stockOuts = useAppSelector(state => state.stockOut.stockOuts)
+    const providers = useAppSelector(state => state.fornecedor.fornecedores)
+    const stockIns = useAppSelector(state => state.stockIn.stockIns)
     const [category, setCategory] = useState('')
+    const [provider, setProvider] = useState('')
     const [filteredProducts, setFilteredProducts] = useState<TProduct[]>([])
     const [sortedProducts, setSortedProducts] = useState<TProduct[]>([])
+    const [productsAndProviders, setProductsAndProviders] = useState<TProduct[]>([])
     const [sort, setSort] = useState('')
     const [search, setSearch] = useState('')
     let categories = Array.from(new Set(productsData.map(i => i.category)))
@@ -146,7 +151,16 @@ export default function Detalhes() {
     }
 
     useEffect(() => {
-        let products = productsData.slice().filter(i => i.hide === false)
+        let productProviders = reduceStockIns(stockIns, 'product_id')
+
+        setProductsAndProviders(productsData.map(i => (
+            { ...i, providers: productProviders[i.id!] ? [...productProviders[i.id!]] : [] }
+        )))
+
+    }, [productsData, stockIns])
+
+    useEffect(() => {
+        let products = productsAndProviders.slice().filter(i => i.hide === false)
 
         setSortedProducts(products)
 
@@ -170,7 +184,7 @@ export default function Detalhes() {
         if (sort === 'name') {
             setSortedProducts(compare(products, 'name'))
         }
-    }, [sort, productsData, category])
+    }, [sort, productsData, category, productsAndProviders])
 
     useEffect(() => {
         let filtered = sortedProducts
@@ -179,13 +193,17 @@ export default function Detalhes() {
             filtered = filtered.filter(i => i.category === category)
         }
 
+        if (provider) {
+            filtered = filtered.filter(i => i.providers!.includes(parseInt(provider)))
+        }
+
         if (search) {
             filtered = filtered.filter(i => i.name.toLowerCase().includes(search.toLowerCase()))
         }
 
         setFilteredProducts(filtered)
 
-    }, [category, sortedProducts, search])
+    }, [category, sortedProducts, search, provider])
 
     return (
         <>
@@ -207,10 +225,9 @@ export default function Detalhes() {
                         {categories.map(i => <option key={i}>{i}</option>)}
                     </Select>
                     <Label>Fornecedor:</Label>
-                    <Select >
+                    <Select onChange={(e) => setProvider(e.target.value)}>
                         <option></option>
-                        <option>Compras</option>
-                        <option>Retiradas</option>
+                        {providers.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
                     </Select>
                 </Filter>
             </MenuContainer>
@@ -219,6 +236,7 @@ export default function Detalhes() {
                 <ListHeaderItem flex={3} onClick={() => setSort('name')}>Produto</ListHeaderItem>
                 <ListHeaderItem flex={2}>Observação</ListHeaderItem>
                 <ListHeaderItem width="90px">Código</ListHeaderItem>
+                <ListHeaderItem flex={2}>Fornecedores</ListHeaderItem>
                 <ListHeaderItem width="90px" onClick={() => setSort('category')}>Categoria</ListHeaderItem>
                 <ListHeaderItem width="130px" onClick={() => setSort('brand')}>Marca</ListHeaderItem>
                 <ListHeaderItem width="65px" onClick={() => setSort('unit')} >Unidade</ListHeaderItem>
@@ -235,6 +253,7 @@ export default function Detalhes() {
                             <ProductLi flex={3}>{item.name}</ProductLi>
                             <ProductLi flex={2}>{item.observation}</ProductLi>
                             <ProductLi width="90px">{item.code}</ProductLi>
+                            <ProductLi flex={2}>{item.providers && item.providers.map((i: any) => `${getProvider(providers, i)?.name} `)}</ProductLi>
                             <ProductLi width="90px">{item.category}</ProductLi>
                             <ProductLi width="130px">{item.brand}</ProductLi>
                             <ProductLi width="65px">{item.unit}</ProductLi>

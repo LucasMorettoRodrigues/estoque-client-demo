@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
 import Button from "../components/Button"
 import { useAppSelector } from "../app/hooks"
-import { mergeProducts } from "../utils/functions"
+import { getProvider, mergeProducts, reduceStockIns } from "../utils/functions"
 import { useEffect, useState } from "react"
 import { TProduct } from "../types/TProduct"
 
@@ -35,7 +35,7 @@ const MenuContainer = styled.div`
 `
 const Filter = styled.div`
     margin-top: -10px;
-    width: 60%;
+    width: 70%;
     display: flex;
     align-items: center;
 `
@@ -45,6 +45,11 @@ const Label = styled.label`
 const Input = styled.input`
     padding: 5px 10px;
     margin-right: 10px;
+`
+const Select = styled.select`
+    padding: 5px 10px;
+    margin-right: 20px;
+    flex: 1;
 `
 const ListHeader = styled.div`
     background-color: #5fb4ff;
@@ -101,26 +106,43 @@ export default function Produtos() {
 
     const navigate = useNavigate()
     const products = useAppSelector(state => state.produto.produtos)
+    const providers = useAppSelector(state => state.fornecedor.fornecedores)
+    const stockIns = useAppSelector(state => state.stockIn.stockIns)
+    const [productsAndProviders, setProductsAndProviders] = useState<TProduct[]>([])
     const [filteredProducts, setFilteredProducts] = useState<TProduct[]>([])
     const [lowStockFilter, setLowStockFilter] = useState(false)
     const [search, setSearch] = useState('')
+    const [provider, setProvider] = useState('')
+
+    useEffect(() => {
+        let productProviders = reduceStockIns(stockIns, 'product_id')
+
+        setProductsAndProviders(products.map(i => (
+            { ...i, providers: productProviders[i.id!] ? [...productProviders[i.id!]] : [] }
+        )))
+
+    }, [products, stockIns])
 
     useEffect(() => {
         let filtered = []
 
         if (lowStockFilter) {
-            filtered = mergeProducts(products).filter(i => i.hide === false)
+            filtered = mergeProducts(productsAndProviders).filter(i => i.hide === false)
                 .filter(i => i.stock < i.min_stock)
         } else {
-            filtered = mergeProducts(products).filter(i => i.hide === false)
+            filtered = mergeProducts(productsAndProviders).filter(i => i.hide === false)
         }
 
         if (search) {
             filtered = filtered.filter(i => i.name.toLowerCase().includes(search.toLowerCase()))
         }
 
+        if (provider) {
+            filtered = filtered.filter(i => i.providers!.includes(parseInt(provider)))
+        }
+
         setFilteredProducts(filtered)
-    }, [lowStockFilter, products, search])
+    }, [lowStockFilter, productsAndProviders, search, provider])
 
     return (
         <>
@@ -135,13 +157,19 @@ export default function Produtos() {
                 <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
                 <Filter>
                     <Label>Pesquisar:</Label>
-                    <Input style={{ flex: 1, marginRight: '20px' }} type='text' onChange={(e) => setSearch(e.target.value)}></Input>
+                    <Input style={{ flex: 2, marginRight: '20px' }} type='text' onChange={(e) => setSearch(e.target.value)}></Input>
+                    <Label>Fornecedor:</Label>
+                    <Select onChange={(e) => setProvider(e.target.value)}>
+                        <option></option>
+                        {providers.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
+                    </Select>
                     <Input style={{ width: '18px', height: '18px', cursor: 'pointer' }} onChange={() => setLowStockFilter(!lowStockFilter)} id="lowStock" name="lowStock" type='checkbox'></Input>
                     <Label style={{ cursor: 'pointer' }} htmlFor="lowStock">Produtos em falta</Label>
                 </Filter>
             </MenuContainer>
             <ListHeader>
                 <ListHeaderItem flex={8}>Produto</ListHeaderItem>
+                <ListHeaderItem flex={2}>Fornecedores</ListHeaderItem>
                 <ListHeaderItem flex={1} style={{ textAlign: 'center' }}>Estoque</ListHeaderItem>
                 <ListHeaderItem flex={1} style={{ textAlign: 'center' }}>Est. Mín.</ListHeaderItem>
                 <ListHeaderItem flex={1} style={{ textAlign: 'center' }}>Est. Max.</ListHeaderItem>
@@ -151,6 +179,7 @@ export default function Produtos() {
                     <Container key={item.id}>
                         <Product onClick={() => navigate(`/produtos/${item.id}/historico`, { state: item })}>
                             <ProductLi flex={8}>{item.name}</ProductLi>
+                            <ProductLi flex={2}>{item.providers && item.providers.map(i => `${getProvider(providers, i)?.name} `)}</ProductLi>
                             <ProductLi
                                 color={item.stock < item.min_stock ? '#ff5353' : 'inherit'}
                                 flex={1}
