@@ -25,6 +25,8 @@ import NovoProduto from "./pages/NovoProduto";
 import Produtos from "./pages/Produtos";
 import Retirar from "./pages/Retirar";
 import ProdutoHistorico from "./pages/ProdutoHistorico";
+import Ajustar from "./pages/Ajustar";
+import { getAllAdjustStock } from "./features/adjustStock/adjustStock";
 
 function App() {
 
@@ -33,17 +35,19 @@ function App() {
   const statusProduct = useAppSelector(state => state.produto.status)
   const statusStockIn = useAppSelector(state => state.stockIn.status)
   const statusStockOut = useAppSelector(state => state.stockOut.status)
+  const statusAdjustStock = useAppSelector(state => state.adjustStock.status)
 
   useEffect(() => {
     dispatch(getFornecedores())
     dispatch(getProdutos())
     dispatch(getAllStockOuts())
     dispatch(getAllStockIns())
+    dispatch(getAllAdjustStock())
   }, [dispatch])
 
   return (
     <BrowserRouter>
-      {(statusProduct === 'loading' || statusProvider === 'loading' || statusStockIn === 'loading' || statusStockOut === 'loading') &&
+      {(statusProduct === 'loading' || statusProvider === 'loading' || statusStockIn === 'loading' || statusStockOut === 'loading' || statusAdjustStock === 'loading') &&
         <Loading />
       }
       <Navbar />
@@ -60,6 +64,7 @@ function App() {
           <Route path='/novoFornecedor' element={<NovoFornecedor />} />
           <Route path='/comprar' element={<Comprar />} />
           <Route path='/retirar' element={<Retirar />} />
+          <Route path='/ajustar' element={<Ajustar />} />
           <Route path='/historico' element={<Historico />} />
           <Route path='/produtos/:id/historico' element={<ProdutoHistorico />} />
         </Routes>

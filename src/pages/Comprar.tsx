@@ -122,7 +122,7 @@ export default function Comprar() {
                 quantity: quantity
             }])
         } else {
-            return setError('Produto ja adicionado.')
+            return setError('Produto ja lançado.')
         }
 
         Array.from(document.querySelectorAll("input")).forEach(

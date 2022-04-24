@@ -62,7 +62,7 @@ export default function EditarSubProduto() {
                     name={'quantity'}
                     label={'Quantidade'}
                     type='number'
-                    min={0}
+                    min={1}
                     value={quantity}
                     required
                 />

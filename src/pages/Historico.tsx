@@ -70,6 +70,7 @@ type Props = {
 export default function Historico({ productFilter }: Props) {
 
     const stockOuts = useAppSelector(state => state.stockOut.stockOuts)
+    const adjustStock = useAppSelector(state => state.adjustStock.adjustStock)
     const stockIns = useAppSelector(state => state.stockIn.stockIns)
     const products = useAppSelector(state => state.produto.produtos)
     const providers = useAppSelector(state => state.fornecedor.fornecedores)
@@ -82,9 +83,11 @@ export default function Historico({ productFilter }: Props) {
 
         let stockInByDate: { [key: string]: TStockIn[] } = {}
         let stockOutByDate: { [key: string]: TStockOut[] } = {}
+        let adjustStockByDate: { [key: string]: TStockOut[] } = {}
 
         const filteredIns = productFilter ? stockIns.filter(i => getProduct(products, i.product_id)?.name === productFilter) : stockIns
         const filteredOuts = productFilter ? stockOuts.filter(i => getProduct(products, i.product_id)?.name === productFilter) : stockOuts
+        const filteredAdjusts = productFilter ? adjustStock.filter(i => getProduct(products, i.product_id)?.name === productFilter) : adjustStock
 
         filteredIns.forEach((i) => {
             let index = i.date!.slice(0, 10) + '_in'
@@ -104,7 +107,16 @@ export default function Historico({ productFilter }: Props) {
             }
         })
 
-        const stocks = { ...stockInByDate, ...stockOutByDate }
+        filteredAdjusts.forEach((i) => {
+            let index = i.date!.slice(0, 10) + '_adjust'
+            if (adjustStockByDate[index]) {
+                adjustStockByDate[index].push(i)
+            } else {
+                adjustStockByDate[index] = [i]
+            }
+        })
+
+        const stocks = { ...stockInByDate, ...stockOutByDate, ...adjustStockByDate }
 
         let orderedStocks = Object.keys(stocks).sort().reduce(
             (obj: { [key: string]: any }, key) => {
@@ -116,7 +128,7 @@ export default function Historico({ productFilter }: Props) {
 
         setOrderedStocks(orderedStocks)
 
-    }, [stockIns, stockOuts, productFilter, products])
+    }, [stockIns, stockOuts, adjustStock, productFilter, products])
 
     useEffect(() => {
         if (!filter) {
@@ -136,6 +148,13 @@ export default function Historico({ productFilter }: Props) {
                 .reduce((cur, key) => { return Object.assign(cur, { [key]: orderedStocks[key] }) }, {})
             )
         }
+
+        if (filter === 'Ajustes') {
+            setFilteredStocks(Object.keys(orderedStocks)
+                .filter((key) => key.includes('_adjust'))
+                .reduce((cur, key) => { return Object.assign(cur, { [key]: orderedStocks[key] }) }, {})
+            )
+        }
     }, [filter, orderedStocks])
 
     return (
@@ -148,6 +167,7 @@ export default function Historico({ productFilter }: Props) {
                         <option></option>
                         <option>Compras</option>
                         <option>Retiradas</option>
+                        <option>Ajustes</option>
                     </Select>
                 </Filter>
             </HeaderContainer>
@@ -166,9 +186,9 @@ export default function Historico({ productFilter }: Props) {
             {
                 Object.keys(filteredStocks).reverse().map(key => (
                     < Container key={key} >
-                        <Product backgroundColor={key.split('_')[1] === 'in' ? '#a3ff86' : '#ffa7a7'} >
+                        <Product backgroundColor={key.split('_')[1] === 'in' ? '#a3ff86' : key.split('_')[1] === 'out' ? '#ffa7a7' : '#9097fa'} >
                             <ProductLi flex={1}>{key.split('_')[0]}</ProductLi>
-                            <ProductLi flex={12}>{key.split('_')[1] === 'in' ? "Compra" : "Retirada"}</ProductLi>
+                            <ProductLi flex={12}>{key.split('_')[1] === 'in' ? "Compra" : key.split('_')[1] === 'out' ? "Retirada" : "Ajuste"}</ProductLi>
                             <ProductLi style={{ marginTop: '3px' }} onClick={() => setShow(show === key ? '' : key)}>
                                 <AiFillPlusSquare fontSize='22px' color="#f1f1f1" cursor='pointer' style={{ backgroundColor: 'black' }} />
                             </ProductLi>
@@ -176,7 +196,7 @@ export default function Historico({ productFilter }: Props) {
                         {
                             filteredStocks[key].map((item: any, index: any) => (
                                 < Container key={index} show={show === key ? true : false} >
-                                    <Product backgroundColor={key.split('_')[1] === 'in' ? '#a3ff86' : '#ffa7a7'} >
+                                    <Product backgroundColor={key.split('_')[1] === 'in' ? '#a3ff86' : key.split('_')[1] === 'out' ? '#ffa7a7' : '#9097fa'} >
                                         <ProductLi flex={0.9}></ProductLi>
                                         <ProductLi flex={1}></ProductLi>
                                         <ProductLi flex={3}>{getProduct(products, item.product_id)?.name}</ProductLi>
@@ -186,7 +206,7 @@ export default function Historico({ productFilter }: Props) {
                                         <ProductLi flex={0.9}></ProductLi>
                                         <ProductLi flex={0.7}>{item.lote}</ProductLi>
                                         <ProductLi flex={1}>{item.validade && item.validade.slice(0, 10)}</ProductLi>
-                                        <ProductLi flex={0.8} style={{ textAlign: 'center' }}>- {item.quantity}</ProductLi>
+                                        <ProductLi flex={0.8} style={{ textAlign: 'center' }}>{key.split('_')[1] === 'out' ? -item.quantity : item.quantity}</ProductLi>
                                     </Product>
                                 </Container>
                             ))

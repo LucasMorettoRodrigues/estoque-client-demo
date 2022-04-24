@@ -24,7 +24,7 @@ type State = {
 }
 
 export const stockOutSlice = createSlice({
-    name: 'fornecedor',
+    name: 'stockOut',
     initialState: {
         stockOuts: [],
         status: 'success'

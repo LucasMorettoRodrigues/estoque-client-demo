@@ -3,13 +3,15 @@ import fornecedorReducer from '../features/fornecedor/fornecedorSlice'
 import produtoReducer from '../features/produtos/produtoSlice';
 import stockInReducer from '../features/stockIn/stockIn';
 import stockOutReducer from '../features/stockOut/stockOut';
+import adjustStockReducer from '../features/adjustStock/adjustStock'
 
 export const store = configureStore({
   reducer: {
     fornecedor: fornecedorReducer,
     produto: produtoReducer,
     stockOut: stockOutReducer,
-    stockIn: stockInReducer
+    stockIn: stockInReducer,
+    adjustStock: adjustStockReducer
   },
 });
 
