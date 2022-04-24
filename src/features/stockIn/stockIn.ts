@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import axios from 'axios'
+import { api } from '../../services/api.service'
 import { TStockIn } from '../../types/TStockIn'
 import { getProdutos } from '../produtos/produtoSlice'
 
@@ -8,7 +8,7 @@ export const createStockIn = createAsyncThunk(
     async (newStockIns: TStockIn[], thunkAPI) => {
         let res: TStockIn[] = []
         for (const stockIn of newStockIns) {
-            const singleRes: any = await axios.post('http://localhost:5000/api/v1/stockIns', stockIn)
+            const singleRes: any = await api.post('/stockIns', stockIn)
             res = [...res, singleRes.data]
         }
         thunkAPI.dispatch(getProdutos())
@@ -20,7 +20,7 @@ export const createStockIn = createAsyncThunk(
 export const getAllStockIns = createAsyncThunk(
     'stockIns/getAllStockIns',
     async (thunkAPI) => {
-        const stockIns = await axios.get('http://localhost:5000/api/v1/stockIns')
+        const stockIns = await api.get('/stockIns')
         return stockIns.data
     }
 )

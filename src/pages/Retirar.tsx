@@ -185,7 +185,7 @@ export default function Retirar() {
                 </InputContainer>
                 <InputContainer flex={2}>
                     <Label>Lote / Validade</Label>
-                    <Select onChange={(e) => setSubProductId(parseInt(e.target.value))}>
+                    <Select required onChange={(e) => setSubProductId(parseInt(e.target.value))}>
                         <option value={0}></option>
                         {
                             products.filter(item => item.id === productId).map(item => (

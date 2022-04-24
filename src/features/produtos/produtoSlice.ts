@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 // import { TAccount } from '../Types/taccount'
-import axios from 'axios'
+import { api } from '../../services/api.service'
 import { TProduct } from '../../types/TProduct'
 import { TSubProduct } from '../../types/TSubProduct'
 import { getProduct } from '../../utils/functions'
@@ -11,7 +11,7 @@ export const getProdutos = createAsyncThunk(
     'produtos/getProdutos',
     async () => {
         try {
-            const data = await axios.get('http://localhost:5000/api/v1/products')
+            const data = await api.get('/products')
             return data.data
         } catch (error) {
         }
@@ -21,7 +21,7 @@ export const getProdutos = createAsyncThunk(
 export const createProduct = createAsyncThunk(
     'products/createProduct',
     async (newProduct: TProduct, thunkAPI) => {
-        const product = await axios.post('http://localhost:5000/api/v1/products', newProduct)
+        const product = await api.post('/products', newProduct)
         return product.data
     }
 )
@@ -29,7 +29,7 @@ export const createProduct = createAsyncThunk(
 export const deleteProductById = createAsyncThunk(
     'products/deleteProduct',
     async (id: number, thunkAPI) => {
-        await axios.delete(`http://localhost:5000/api/v1/products/${id}`)
+        await api.delete(`/products/${id}`)
         return id
     }
 )
@@ -37,7 +37,7 @@ export const deleteProductById = createAsyncThunk(
 export const deleteSubProductById = createAsyncThunk(
     'products/deleteSubProduct',
     async (id: number, thunkAPI) => {
-        await axios.delete(`http://localhost:5000/api/v1/subProducts/${id}`)
+        await api.delete(`/subProducts/${id}`)
         return id
     }
 )
@@ -45,7 +45,7 @@ export const deleteSubProductById = createAsyncThunk(
 export const editProduct = createAsyncThunk(
     'products/editProduct',
     async (product: TProduct, thunkAPI) => {
-        const result = await axios.patch(`http://localhost:5000/api/v1/products/${product.id}`, product)
+        const result = await api.patch(`/products/${product.id}`, product)
         return result.data
     }
 )
@@ -53,7 +53,7 @@ export const editProduct = createAsyncThunk(
 export const editSubProduct = createAsyncThunk(
     'products/editSubProduct',
     async (subProduct: TSubProduct, thunkAPI) => {
-        const result = await axios.patch(`http://localhost:5000/api/v1/subProducts/${subProduct.id}`, subProduct)
+        const result = await api.patch(`/subProducts/${subProduct.id}`, subProduct)
         return result.data
     }
 )

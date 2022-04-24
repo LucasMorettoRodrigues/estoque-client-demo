@@ -203,7 +203,7 @@ export default function Comprar() {
                 </InputContainer>
                 <InputContainer flex={1}>
                     <Label>Lote</Label>
-                    <Input onChange={(e) => setLote(e.target.value)}></Input>
+                    <Input required onChange={(e) => setLote(e.target.value)}></Input>
                 </InputContainer>
                 <InputContainer flex={1}>
                     <Label>Validade</Label>

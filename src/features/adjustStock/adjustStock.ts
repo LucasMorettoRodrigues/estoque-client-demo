@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import axios from 'axios'
+import { api } from '../../services/api.service'
 import { TStockOut } from '../../types/TStockOut'
 
 export const createAdjustStock = createAsyncThunk(
     'adjustStock/createAdjustStock',
     async (newAdjustStock: TStockOut, thunkAPI) => {
-        const product = await axios.post('http://localhost:5000/api/v1/adjustStock', newAdjustStock)
+        const product = await api.post('/adjustStock', newAdjustStock)
         return product.data
     }
 )
@@ -13,7 +13,7 @@ export const createAdjustStock = createAsyncThunk(
 export const getAllAdjustStock = createAsyncThunk(
     'adjustStock/getAllAdjustStock',
     async (thunkAPI) => {
-        const adjustStock = await axios.get('http://localhost:5000/api/v1/adjustStock')
+        const adjustStock = await api.get('/adjustStock')
         return adjustStock.data
     }
 )

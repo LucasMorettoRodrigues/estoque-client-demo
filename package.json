@@ -47,6 +47,7 @@
     "@types/axios": "^0.14.0",
     "@types/react-icons": "^3.0.0",
     "@types/react-router-dom": "^5.3.3",
-    "@types/styled-components": "^5.1.24"
+    "@types/styled-components": "^5.1.24",
+    "gh-pages": "^3.2.3"
   }
 }

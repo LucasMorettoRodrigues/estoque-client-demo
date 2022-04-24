@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import axios from 'axios'
+import { api } from '../../services/api.service'
 import { TProvider } from '../../types/TProvider'
 
 export const getFornecedores = createAsyncThunk(
     'providers/getProviders',
     async () => {
         try {
-            const data = await axios.get('http://localhost:5000/api/v1/providers')
+            const data = await api.get('/providers')
             return data.data
         } catch (error) {
             console.log(error);
@@ -17,7 +17,7 @@ export const getFornecedores = createAsyncThunk(
 export const createProvider = createAsyncThunk(
     'providers/createProvider',
     async (newProvider: TProvider, thunkAPI) => {
-        const provider = await axios.post('http://localhost:5000/api/v1/providers', newProvider)
+        const provider = await api.post('/providers', newProvider)
         return provider.data
     }
 )
@@ -25,7 +25,7 @@ export const createProvider = createAsyncThunk(
 export const deleteProviderById = createAsyncThunk(
     'providers/deleteProvider',
     async (providerId: number, thunkAPI) => {
-        await axios.delete(`http://localhost:5000/api/v1/providers/${providerId}`)
+        await api.delete(`/providers/${providerId}`)
         return providerId
     }
 )
@@ -33,7 +33,7 @@ export const deleteProviderById = createAsyncThunk(
 export const editProvider = createAsyncThunk(
     'providers/editProvider',
     async (provider: TProvider, thunkAPI) => {
-        const result = await axios.patch(`http://localhost:5000/api/v1/providers/${provider.id}`, provider)
+        const result = await api.patch(`/providers/${provider.id}`, provider)
         return result.data
     }
 )
