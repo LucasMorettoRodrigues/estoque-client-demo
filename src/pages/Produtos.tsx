@@ -8,6 +8,7 @@ import { TProduct } from "../types/TProduct"
 import Select from "../components/Select"
 import Input from "../components/Input"
 import ListHeader from "../components/List/ListHeader"
+import Item from "../components/List/Item"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -48,15 +49,11 @@ const InputContainer = styled.div`
 `
 const Label = styled.label`
     margin-right: 5px;
+    cursor: pointer;
 `
 const CheckBox = styled.input`
     padding: 5px 10px;
     margin-right: 10px;
-`
-const ListHeaderItem = styled.p<{ flex?: number }>`
-    flex: ${props => props.flex ? props.flex : null};
-    min-width: 90px;
-    padding: 10px;
 `
 const Product = styled.ul`
     height: 40px;
@@ -69,13 +66,6 @@ const Product = styled.ul`
     &:hover {
         background-color: #74bcff;
     }
-`
-const ProductLi = styled.li<{ flex?: number, color?: string }>`
-    flex: ${props => props.flex ? props.flex : null};
-    background-color: ${props => props.color ? props.color : null};
-    font-size: 14px;
-    min-width: 75px;
-    padding: 10px;
 `
 
 export default function Produtos() {
@@ -142,29 +132,26 @@ export default function Produtos() {
                         </Select>
                     </InputContainer>
                     <CheckBox style={{ width: '18px', height: '18px', cursor: 'pointer' }} onChange={() => setLowStockFilter(!lowStockFilter)} id="lowStock" name="lowStock" type='checkbox'></CheckBox>
-                    <Label style={{ cursor: 'pointer' }} htmlFor="lowStock">Produtos em falta</Label>
+                    <Label htmlFor="lowStock">Produtos em falta</Label>
                 </Filter>
             </MenuContainer>
             <ListHeader>
-                <ListHeaderItem flex={8}>Produto</ListHeaderItem>
-                <ListHeaderItem flex={2}>Fornecedores</ListHeaderItem>
-                <ListHeaderItem flex={1} style={{ textAlign: 'center' }}>Estoque</ListHeaderItem>
-                <ListHeaderItem flex={1} style={{ textAlign: 'center' }}>Est. Mín.</ListHeaderItem>
-                <ListHeaderItem flex={1} style={{ textAlign: 'center' }}>Est. Max.</ListHeaderItem>
+                <Item flex={8} text='Produto' />
+                <Item flex={2} text='Fornecedores' />
+                <Item flex={1} text='Estoque' align='center' />
+                <Item flex={1} text='Est. Mín' align='center' />
+                <Item flex={1} text='Est. Max' align='center' />
             </ListHeader>
             {
                 filteredProducts.map((item) => (
                     <Container key={item.id}>
                         <Product onClick={() => navigate(`/produtos/${item.id}/historico`, { state: item })}>
-                            <ProductLi flex={8}>{item.name}</ProductLi>
-                            <ProductLi flex={2}>{item.providers && item.providers.map(i => `${getProvider(providers, i)?.name} `)}</ProductLi>
-                            <ProductLi
-                                color={item.stock < item.min_stock ? '#ff5353' : 'inherit'}
-                                flex={1}
-                                style={{ textAlign: 'center' }}> {item.stock}
-                            </ProductLi>
-                            <ProductLi flex={1} style={{ textAlign: 'center' }}>{item.min_stock}</ProductLi>
-                            <ProductLi flex={1} style={{ textAlign: 'center' }}>{item.max_stock}</ProductLi>
+                            <Item flex={8} text={item.name} />
+                            <Item flex={2} text={item.providers ? item.providers.map(i => `${getProvider(providers, i)?.name} `) : ''} />
+                            <Item flex={1} text={item.min_stock} align='center'
+                                color={item.stock < item.min_stock ? '#ff5353' : 'inherit'} />
+                            <Item flex={1} text={item.min_stock} align='center' />
+                            <Item flex={1} text={item.max_stock} align='center' />
                         </Product>
                     </Container>
                 ))
