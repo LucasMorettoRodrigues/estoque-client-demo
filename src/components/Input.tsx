@@ -1,4 +1,4 @@
-import { FC, InputHTMLAttributes } from "react"
+import { InputHTMLAttributes } from "react"
 import styled from "styled-components"
 
 const Label = styled.label<{ display?: string }>`
@@ -22,7 +22,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     display?: string
 }
 
-const Input: FC<InputProps> = ({ name, label, display, ...rest }: InputProps) => {
+export default function Input({ name, label, display, ...rest }: InputProps) {
     return (
         <>
             <Label htmlFor={name} display={display}>{label}</Label>
@@ -30,5 +30,3 @@ const Input: FC<InputProps> = ({ name, label, display, ...rest }: InputProps) =>
         </>
     )
 }
-
-export default Input

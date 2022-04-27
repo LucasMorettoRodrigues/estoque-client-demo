@@ -7,6 +7,7 @@ import { AiOutlineEye } from "react-icons/ai"
 import { editProduct } from "../features/produtos/produtoSlice"
 import EditDeleteButton from "../components/EditDeleteButton"
 import ListHeader from "../components/List/ListHeader"
+import Item from "../components/List/Item"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -33,11 +34,6 @@ const ProductBtn = styled.button<{ active?: boolean }>`
         color: #222;
     }
 `
-const ListHeaderItem = styled.p<{ flex?: number }>`
-    flex: ${props => props.flex ? props.flex : null};
-    min-width: 90px;
-    padding: 10px;
-`
 const Product = styled.ul`
     height: 40px;
     background-color: #cbe6ff;
@@ -51,13 +47,6 @@ const SubProduct = styled.ul`
     background-color: #eef7ff;
     align-items: center;
     border-bottom: 1px solid #e4e4e4;
-`
-const ProductLi = styled.li<{ flex?: number, color?: string }>`
-    flex: ${props => props.flex ? props.flex : null};
-    background-color: ${props => props.color ? props.color : null};
-    font-size: 14px;
-    min-width: 75px;
-    padding: 10px;
 `
 const SubProductLi = styled.li<{ flex?: number }>`
     flex: ${props => props.flex ? props.flex : null};
@@ -98,28 +87,25 @@ export default function ProdutosEscondidos() {
                 <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
             </ButtonContainer>
             <ListHeader>
-                <ListHeaderItem flex={3}>Produto</ListHeaderItem>
-                <ListHeaderItem flex={0.8}>Categoria</ListHeaderItem>
-                <ListHeaderItem flex={0.8}>Unidade</ListHeaderItem>
-                <ListHeaderItem flex={0.5} style={{ textAlign: 'center' }}>Estoque</ListHeaderItem>
-                <ListHeaderItem flex={0.5} style={{ textAlign: 'center' }}>Est. Mín.</ListHeaderItem>
-                <ListHeaderItem flex={0.5} style={{ textAlign: 'center' }}>Est. Max.</ListHeaderItem>
-                <ListHeaderItem style={{ textAlign: 'center' }}>Mostrar</ListHeaderItem>
+                <Item flex={3} text='Produto' />
+                <Item flex={0.7} text='Categoria' />
+                <Item flex={0.7} text='Unidade' />
+                <Item flex={0.5} text='Estoque' align='center' />
+                <Item flex={0.5} text='Est. Mín.' align='center' />
+                <Item flex={0.5} text='Est. Max' align='center' />
+                <Item width="90px" text='Mostrar' align='center' />
             </ListHeader>
             {
                 resumedProducts.map((item) => (
                     <Container key={item.id}>
                         <Product>
-                            <ProductLi flex={3}>{item.name}</ProductLi>
-                            <ProductLi flex={0.8}>{item.category}</ProductLi>
-                            <ProductLi flex={0.8}>{item.unit}</ProductLi>
-                            <ProductLi
-                                color={item.stock < item.min_stock ? '#ff5353' : 'inherit'}
-                                flex={0.5}
-                                style={{ textAlign: 'center' }}> {item.stock}
-                            </ProductLi>
-                            <ProductLi flex={0.5} style={{ textAlign: 'center' }}>{item.min_stock}</ProductLi>
-                            <ProductLi flex={0.5} style={{ textAlign: 'center' }}>{item.max_stock}</ProductLi>
+                            <Item flex={3} text={item.name} />
+                            <Item flex={0.7} text={item.category} />
+                            <Item flex={0.7} text={item.unit} />
+                            <Item flex={0.5} text={item.stock} align='center'
+                                color={item.stock < item.min_stock ? '#ff5353' : 'inherit'} />
+                            <Item flex={0.5} align='center' text={item.min_stock} />
+                            <Item flex={0.5} align='center' text={item.max_stock} />
                             <EditDeleteButton onClick={() => dispatch(editProduct({ ...item, hide: false }))}>
                                 <AiOutlineEye />
                             </EditDeleteButton>

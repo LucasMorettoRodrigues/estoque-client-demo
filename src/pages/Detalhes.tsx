@@ -33,7 +33,6 @@ const ProductBtn = styled.button<{ active?: boolean }>`
     }
 `
 const Product = styled.ul`
-    padding: 0 5px;
     height: 40px;
     background-color: #cbe6ff;
     display: flex;

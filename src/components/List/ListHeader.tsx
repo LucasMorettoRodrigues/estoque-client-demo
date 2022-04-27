@@ -2,7 +2,6 @@ import styled from "styled-components"
 
 const ListHeader = styled.div<{ fontSize?: string }>`
     height: 45px;
-    padding: 0 5px;
     background-color: #5fb4ff;
     display: flex;
     align-items: center;

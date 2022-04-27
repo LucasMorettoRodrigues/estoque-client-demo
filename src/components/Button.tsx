@@ -1,4 +1,4 @@
-import { FC, ButtonHTMLAttributes } from "react"
+import { ButtonHTMLAttributes } from "react"
 import styled from "styled-components"
 
 const SButton = styled.button<{ bg?: string }>`
@@ -21,16 +21,8 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
     bg?: string
 }
 
-// type Props = {
-//     text: string,
-//     onClick?: () => void,
-//     bg?: string
-// }
-
-const Button: FC<Props> = ({ text, onClick, bg, ...rest }: Props) => {
+export default function Button({ text, onClick, bg, ...rest }: Props) {
     return (
         <SButton bg={bg} {...rest} onClick={onClick}>{text}</SButton>
     )
 }
-
-export default Button

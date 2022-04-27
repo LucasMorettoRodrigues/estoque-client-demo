@@ -1,4 +1,4 @@
-import { FC, SelectHTMLAttributes } from "react"
+import { SelectHTMLAttributes } from "react"
 import styled from "styled-components"
 
 const Label = styled.label<{ display?: string }>`
@@ -24,7 +24,7 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
     display?: string
 }
 
-const Input: FC<SelectProps> = ({ name, label, display, ...rest }: SelectProps) => {
+export default function Input({ name, label, display, ...rest }: SelectProps) {
     return (
         <>
             <Label htmlFor={name} display={display}>{label}</Label>
@@ -32,5 +32,3 @@ const Input: FC<SelectProps> = ({ name, label, display, ...rest }: SelectProps) 
         </>
     )
 }
-
-export default Input
