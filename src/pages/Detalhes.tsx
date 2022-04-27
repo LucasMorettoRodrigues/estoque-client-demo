@@ -56,15 +56,6 @@ const SubProduct = styled.ul`
         background-color: #74bcff;
     }
 `
-const SubProductLi = styled.li`
-    display: flex;
-    justify-content: center;
-    font-size: 13px;
-    width: 16%;
-    color: #3142a0;
-    font-weight: 500;
-    padding: 10px;
-`
 const MenuContainer = styled.div`
     display: flex;
     align-items: center;
@@ -236,9 +227,9 @@ export default function Detalhes() {
                         {item.subproducts &&
                             item.subproducts.map((subitem) => (
                                 <SubProduct key={subitem.id} onClick={() => navigate(`/produtos/${item.id}/subprodutos/${subitem.id}`, { state: subitem })}>
-                                    <SubProductLi>Lote: {subitem.lote}</SubProductLi>
-                                    <SubProductLi>Validade: {subitem.validade.slice(0, 10)}</SubProductLi>
-                                    <SubProductLi>Quantidade: {subitem.quantity}</SubProductLi>
+                                    <Item width='200px' align='center' color='#3142a0' text={`Lote: ${subitem.lote}`} />
+                                    <Item width='200px' align='center' color='#3142a0' text={`Validade: ${subitem.validade.slice(0, 10)}`} />
+                                    <Item width='200px' align='center' color='#3142a0' text={`Quantidade: ${subitem.quantity}`} />
                                 </SubProduct>
                             ))
                         }

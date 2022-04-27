@@ -149,7 +149,7 @@ export default function Produtos() {
                             <Item flex={8} text={item.name} />
                             <Item flex={2} text={item.providers ? item.providers.map(i => `${getProvider(providers, i)?.name} `) : ''} />
                             <Item flex={1} text={item.min_stock} align='center'
-                                color={item.stock < item.min_stock ? '#ff5353' : 'inherit'} />
+                                bg={item.stock < item.min_stock ? '#ff5353' : 'inherit'} />
                             <Item flex={1} text={item.min_stock} align='center' />
                             <Item flex={1} text={item.max_stock} align='center' />
                         </Product>

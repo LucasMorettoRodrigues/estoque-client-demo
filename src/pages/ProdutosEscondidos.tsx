@@ -48,13 +48,6 @@ const SubProduct = styled.ul`
     align-items: center;
     border-bottom: 1px solid #e4e4e4;
 `
-const SubProductLi = styled.li<{ flex?: number }>`
-    flex: ${props => props.flex ? props.flex : null};
-    font-size: 14px;
-    margin-left: 60px;
-    color: #555;
-    padding: 10px;
-`
 
 export default function ProdutosEscondidos() {
 
@@ -103,7 +96,7 @@ export default function ProdutosEscondidos() {
                             <Item flex={0.7} text={item.category} />
                             <Item flex={0.7} text={item.unit} />
                             <Item flex={0.5} text={item.stock} align='center'
-                                color={item.stock < item.min_stock ? '#ff5353' : 'inherit'} />
+                                bg={item.stock < item.min_stock ? '#ff5353' : 'inherit'} />
                             <Item flex={0.5} align='center' text={item.min_stock} />
                             <Item flex={0.5} align='center' text={item.max_stock} />
                             <EditDeleteButton onClick={() => dispatch(editProduct({ ...item, hide: false }))}>
@@ -114,9 +107,9 @@ export default function ProdutosEscondidos() {
                         {item.subproducts &&
                             item.subproducts.map((subitem) => (
                                 <SubProduct key={subitem.id}>
-                                    <SubProductLi>Lote: {subitem.lote}</SubProductLi>
-                                    <SubProductLi>Validade: {subitem.validade.slice(0, 10)}</SubProductLi>
-                                    <SubProductLi>Quantidade: {subitem.quantity}</SubProductLi>
+                                    <Item width='200px' align='center' color='#3142a0' text={`Lote: ${subitem.lote}`} />
+                                    <Item width='200px' align='center' color='#3142a0' text={`Validade: ${subitem.validade.slice(0, 10)}`} />
+                                    <Item width='200px' align='center' color='#3142a0' text={`Quantidade: ${subitem.quantity}`} />
                                 </SubProduct>
                             ))
                         }

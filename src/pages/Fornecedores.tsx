@@ -6,6 +6,7 @@ import Button from "../components/Button"
 import { deleteProviderById } from "../features/fornecedor/fornecedorSlice"
 import EditDeleteButton from "../components/EditDeleteButton"
 import ListHeader from "../components/List/ListHeader"
+import Item from "../components/List/Item"
 
 const Title = styled.h1`
     color: #222;
@@ -14,24 +15,12 @@ const Title = styled.h1`
 const ButtonContainer = styled.div`
     margin-bottom: 20px;
 `
-const ListHeaderItem = styled.p<{ flex?: number }>`
-    flex: ${props => props.flex ? props.flex : null};
-    min-width: 90px;
-    padding: 10px;
-`
 const Fornecedor = styled.ul`
 
     background-color: #cbe6ff;
     display: flex;
     align-items: center;
     border-bottom: 1px solid #cacaca;
-`
-const FornecedorLi = styled.li`
-    flex: 1;
-    background-color: ${props => props.color ? props.color : null};
-    font-size: 14px;
-    min-width: 75px;
-    padding: 10px;
 `
 
 export default function Fornecedores() {
@@ -47,14 +36,14 @@ export default function Fornecedores() {
                 <Button onClick={() => navigate('/novoFornecedor')} text={'Cadastrar Novo Fornecedor'} />
             </ButtonContainer>
             <ListHeader>
-                <ListHeaderItem flex={1}>Fornecedor</ListHeaderItem>
-                <ListHeaderItem style={{ textAlign: 'center' }}>Editar</ListHeaderItem>
-                <ListHeaderItem style={{ textAlign: 'center' }}>Deletar</ListHeaderItem>
+                <Item flex={1} text='Fornecedor' />
+                <Item width='90px' text='Editar' align='center' />
+                <Item width='90px' text='Deletar' align='center' />
             </ListHeader>
             {
                 fornecedores.map((item) => (
                     <Fornecedor key={item.id}>
-                        <FornecedorLi>{item.name}</FornecedorLi>
+                        <Item flex={1} text={item.name} />
                         <EditDeleteButton
                             onClick={() => navigate(`/fornecedores/${item.id}`, { state: item })}
                         >

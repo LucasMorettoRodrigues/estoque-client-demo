@@ -7,6 +7,7 @@ import { TStockOut } from "../types/TStockOut"
 import { AiFillPlusSquare } from 'react-icons/ai'
 import Select from '../components/Select'
 import ListHeader from "../components/List/ListHeader"
+import Item from "../components/List/Item"
 
 const Container = styled.div<{ show?: boolean }>`
     visibility: ${props => props.show === false ? 'hidden' : 'visible'};
@@ -25,11 +26,6 @@ const Filter = styled.div`
     display: flex;
     align-items: center;
 `
-const ListHeaderItem = styled.p<{ flex?: number }>`
-    flex: ${props => props.flex ? props.flex : null};
-    min-width: 75px;
-    padding: 10px;
-`
 const Product = styled.ul<{ backgroundColor: string }>`
     height: 40px;
     background-color: ${props => props.backgroundColor};
@@ -37,12 +33,10 @@ const Product = styled.ul<{ backgroundColor: string }>`
     align-items: center;
     border-bottom: 1px solid #cacaca;
 `
-const ProductLi = styled.li<{ flex?: number, color?: string }>`
-    flex: ${props => props.flex ? props.flex : null};
+const ButtonContainer = styled.li<{ flex?: number, color?: string }>`
     align-items: center;
-    background-color: ${props => props.color ? props.color : null};
-    font-size: 14px;
-    min-width: 75px;
+    margin-top: 4px;
+    width: 75px;
     padding: 10px;
 `
 
@@ -159,41 +153,41 @@ export default function Historico({ productFilter }: Props) {
                 </Filter>
             </HeaderContainer>
             <ListHeader>
-                <ListHeaderItem flex={0.9}>Data</ListHeaderItem>
-                <ListHeaderItem flex={1}>Ação</ListHeaderItem>
-                <ListHeaderItem flex={3}>Produto</ListHeaderItem>
-                <ListHeaderItem flex={1}>Fornecedor</ListHeaderItem>
-                <ListHeaderItem flex={1}>Marca</ListHeaderItem>
-                <ListHeaderItem flex={1}>Unidade</ListHeaderItem>
-                <ListHeaderItem flex={0.9}>Preço</ListHeaderItem>
-                <ListHeaderItem flex={0.7}>Lote</ListHeaderItem>
-                <ListHeaderItem flex={1}>Validade</ListHeaderItem>
-                <ListHeaderItem flex={0.8} style={{ textAlign: 'center' }}>Quantidade</ListHeaderItem>
+                <Item flex={0.9} text='Data' />
+                <Item flex={1} text='Ação' />
+                <Item flex={3} text='Produto' />
+                <Item flex={1} text='Fornecedor' />
+                <Item flex={1} text='Marca' />
+                <Item flex={1} text='Unidade' />
+                <Item flex={0.9} text='Preço' />
+                <Item flex={0.7} text='Lote' />
+                <Item flex={1} text='Validade' />
+                <Item flex={0.9} text='Quantidade' align='center' />
             </ListHeader>
             {
                 Object.keys(filteredStocks).reverse().map(key => (
                     < Container key={key} >
                         <Product backgroundColor={key.split('_')[1] === 'in' ? '#a3ff86' : key.split('_')[1] === 'out' ? '#ffa7a7' : '#9097fa'} >
-                            <ProductLi flex={1}>{key.split('_')[0]}</ProductLi>
-                            <ProductLi flex={12}>{key.split('_')[1] === 'in' ? "Compra" : key.split('_')[1] === 'out' ? "Retirada" : "Ajuste"}</ProductLi>
-                            <ProductLi style={{ marginTop: '3px' }} onClick={() => setShow(show === key ? '' : key)}>
+                            <Item flex={1} text={key.split('_')[0]} />
+                            <Item flex={12} text={key.split('_')[1] === 'in' ? "Compra" : key.split('_')[1] === 'out' ? "Retirada" : "Ajuste"} />
+                            <ButtonContainer onClick={() => setShow(show === key ? '' : key)}>
                                 <AiFillPlusSquare fontSize='22px' color="#f1f1f1" cursor='pointer' style={{ backgroundColor: 'black' }} />
-                            </ProductLi>
+                            </ButtonContainer>
                         </Product>
                         {
                             filteredStocks[key].map((item: any, index: any) => (
                                 < Container key={index} show={show === key ? true : false} >
                                     <Product backgroundColor={key.split('_')[1] === 'in' ? '#a3ff86' : key.split('_')[1] === 'out' ? '#ffa7a7' : '#9097fa'} >
-                                        <ProductLi flex={0.9}></ProductLi>
-                                        <ProductLi flex={1}></ProductLi>
-                                        <ProductLi flex={3}>{getProduct(products, item.product_id)?.name}</ProductLi>
-                                        <ProductLi flex={1}>{item.provider_id && getProvider(providers, item.provider_id)?.name}</ProductLi>
-                                        <ProductLi flex={1}>{getProduct(products, item.product_id)?.brand}</ProductLi>
-                                        <ProductLi flex={1}>{getProduct(products, item.product_id)?.unit}</ProductLi>
-                                        <ProductLi flex={0.9}></ProductLi>
-                                        <ProductLi flex={0.7}>{item.lote}</ProductLi>
-                                        <ProductLi flex={1}>{item.validade && item.validade.slice(0, 10)}</ProductLi>
-                                        <ProductLi flex={0.8} style={{ textAlign: 'center' }}>{key.split('_')[1] === 'out' ? -item.quantity : item.quantity}</ProductLi>
+                                        <Item flex={0.9} text='' />
+                                        <Item flex={1} text='' />
+                                        <Item flex={3} text={getProduct(products, item.product_id)?.name} />
+                                        <Item flex={1} text={item.provider_id && getProvider(providers, item.provider_id)?.name} />
+                                        <Item flex={1} text={getProduct(products, item.product_id)?.brand} />
+                                        <Item flex={1} text={getProduct(products, item.product_id)?.unit} />
+                                        <Item flex={0.9} text='' />
+                                        <Item flex={0.7} text={item.lote} />
+                                        <Item flex={1} text={item.validade && item.validade.slice(0, 10)} />
+                                        <Item flex={0.9} text={key.split('_')[1] === 'out' ? -item.quantity : item.quantity} align='center' />
                                     </Product>
                                 </Container>
                             ))

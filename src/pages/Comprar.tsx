@@ -12,15 +12,11 @@ import Mensagem from "../components/Mensagem"
 import { createProvider } from "../features/fornecedor/fornecedorSlice"
 import Input from "../components/Input"
 import ListHeader from "../components/List/ListHeader"
+import Item from "../components/List/Item"
 
 const Title = styled.h1`
     color: #222;
     margin: 30px 0;
-`
-const ListHeaderItem = styled.p<{ flex?: number }>`
-    flex: ${props => props.flex ? props.flex : null};
-    min-width: 90px;
-    padding: 10px;
 `
 const Product = styled.ul`
     height: 40px;
@@ -28,13 +24,6 @@ const Product = styled.ul`
     display: flex;
     align-items: center;
     border-bottom: 1px solid #cacaca;
-`
-const ProductLi = styled.li<{ flex?: number, color?: string }>`
-    flex: ${props => props.flex ? props.flex : null};
-    background-color: ${props => props.color ? props.color : null};
-    font-size: 14px;
-    min-width: 75px;
-    padding: 10px;
 `
 const Form = styled.form`
     display: flex;
@@ -221,24 +210,24 @@ export default function Comprar() {
                 <>
                     <ProductListContainer>
                         <ListHeader>
-                            <ListHeaderItem flex={3}>Produto</ListHeaderItem>
-                            <ListHeaderItem flex={1}>Fornecedor</ListHeaderItem>
-                            <ListHeaderItem flex={1}>Lote</ListHeaderItem>
-                            <ListHeaderItem flex={1}>Validade</ListHeaderItem>
-                            <ListHeaderItem flex={1}>Preço</ListHeaderItem>
-                            <ListHeaderItem flex={1}>Quantidade</ListHeaderItem>
-                            <ListHeaderItem style={{ textAlign: 'center' }}>Remover</ListHeaderItem>
+                            <Item flex={3} text='Produto' />
+                            <Item flex={1} text='Fornecedor' />
+                            <Item flex={1} text='Lote' />
+                            <Item flex={1} text='Validade' />
+                            <Item flex={1} text='Preço' />
+                            <Item flex={1} text='Quantidade' />
+                            <Item width='90px' text='Remover' align='center' />
                         </ListHeader>
                         <>
                             {
                                 cart.map((item, index) => (
                                     <Product key={index}>
-                                        <ProductLi flex={3}>{getProduct(products, item.product_id)?.name}</ProductLi>
-                                        <ProductLi flex={1}>{getProvider(providers, item.provider_id)?.name}</ProductLi>
-                                        <ProductLi flex={1}>{item.lote}</ProductLi>
-                                        <ProductLi flex={1}>{item.validade}</ProductLi>
-                                        <ProductLi flex={1}>{item.price}</ProductLi>
-                                        <ProductLi flex={1}>{item.quantity}</ProductLi>
+                                        <Item flex={3} text={getProduct(products, item.product_id)?.name} />
+                                        <Item flex={1} text={getProvider(providers, item.provider_id)?.name} />
+                                        <Item flex={1} text={item.lote} />
+                                        <Item flex={1} text={item.validade} />
+                                        <Item flex={1} text={item.price} />
+                                        <Item flex={1} text={item.quantity} />
                                         <EditDeleteButton
                                             onClick={() => setCart(cart.filter((p, i) => i !== index))}
                                         >

@@ -13,15 +13,11 @@ import { createAdjustStock } from "../features/adjustStock/adjustStock"
 import Input from "../components/Input"
 import Select from "../components/Select"
 import ListHeader from "../components/List/ListHeader"
+import Item from "../components/List/Item"
 
 const Title = styled.h1`
     color: #222;
     margin: 30px 0;
-`
-const ListHeaderItem = styled.p<{ flex?: number }>`
-    flex: ${props => props.flex ? props.flex : null};
-    min-width: 90px;
-    padding: 10px;
 `
 const Product = styled.ul`
     height: 40px;
@@ -29,13 +25,6 @@ const Product = styled.ul`
     display: flex;
     align-items: center;
     border-bottom: 1px solid #cacaca;
-`
-const ProductLi = styled.li<{ flex?: number, color?: string }>`
-    flex: ${props => props.flex ? props.flex : null};
-    background-color: ${props => props.color ? props.color : null};
-    font-size: 14px;
-    min-width: 75px;
-    padding: 10px;
 `
 const Form = styled.form`
     display: flex;
@@ -170,22 +159,22 @@ export default function Ajustar() {
                 <>
                     <ProductListContainer>
                         <ListHeader>
-                            <ListHeaderItem flex={3}>Produto</ListHeaderItem>
-                            <ListHeaderItem flex={1}>Marca</ListHeaderItem>
-                            <ListHeaderItem flex={1}>Lote</ListHeaderItem>
-                            <ListHeaderItem flex={1}>Validade</ListHeaderItem>
-                            <ListHeaderItem flex={1}>Quantidade</ListHeaderItem>
-                            <ListHeaderItem style={{ textAlign: 'center' }}>Remover</ListHeaderItem>
+                            <Item flex={3} text='Produto' />
+                            <Item flex={1} text='Marca' />
+                            <Item flex={1} text='Lote' />
+                            <Item flex={1} text='Validade' />
+                            <Item flex={1} text='Quantidade' />
+                            <Item width='90px' text='Remover' align='center' />
                         </ListHeader>
                         <>
                             {
                                 productList.map((item, index) => (
                                     <Product key={index}>
-                                        <ProductLi flex={3}>{item.product.name}</ProductLi>
-                                        <ProductLi flex={1}>{item.product.brand}</ProductLi>
-                                        <ProductLi flex={1}>{item.subProduct?.lote}</ProductLi>
-                                        <ProductLi flex={1}>{item.subProduct?.validade.slice(0, 10)}</ProductLi>
-                                        <ProductLi flex={1}>{item.quantity}</ProductLi>
+                                        <Item flex={3} text={item.product.name} />
+                                        <Item flex={1} text={item.product.brand} />
+                                        <Item flex={1} text={item.subProduct?.lote} />
+                                        <Item flex={1} text={item.subProduct?.validade.slice(0, 10)} />
+                                        <Item flex={1} text={item.quantity} />
                                         <EditDeleteButton
                                             onClick={() => setProductList(productList.filter((p, i) => i !== index))}
                                         >

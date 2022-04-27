@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 const SItem = styled.div<{
     fontSize?: string, flex?: number, width?: string, align?: string,
-    color?: string, cursor?: string
+    bg?: string, cursor?: string, color?: string
 }>`
     flex: ${props => props.flex ? props.flex : null};
     padding: 10px;
@@ -10,7 +10,8 @@ const SItem = styled.div<{
     flex: ${props => props.flex ? props.flex : null};
     width: ${props => props.width ? props.width : null};
     text-align: ${props => props.align === 'center' ? props.align : null};
-    color: ${props => props.color === 'center' ? props.color : null};
+    background-color: ${props => props.bg ? props.bg : null};
+    color: ${props => props.color ? props.color : null};
     cursor: ${props => props.cursor === 'pointer' ? props.cursor : null};
 `
 
@@ -20,15 +21,16 @@ type Props = {
     align?: string,
     width?: string,
     flex?: number,
+    bg?: string,
     color?: string,
     cursor?: string,
     onClick?: () => void
 }
 
-export default function Item({ fontSize, align, width, flex, text, color, onClick, cursor }: Props) {
+export default function Item({ fontSize, align, width, flex, text, bg, onClick, cursor, color }: Props) {
     return (
         <SItem fontSize={fontSize} align={align} width={width} flex={flex}
-            color={color} onClick={onClick} cursor={cursor} >
+            bg={bg} onClick={onClick} cursor={cursor} color={color} >
             {text}
         </SItem>
     )
