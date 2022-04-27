@@ -49,16 +49,6 @@ const InputContainer = styled.div<{ flex: number }>`
     flex-direction: column;
     font-size: 14px;
 `
-const FormButton = styled.button`
-    background-color: #3dc73d;
-    color: white;
-    border: none;
-    padding: 11px 25px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    margin-bottom: 4px;
-`
 const ProductListContainer = styled.div`
     margin-bottom: 30px;
 `
