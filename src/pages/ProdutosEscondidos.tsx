@@ -8,6 +8,7 @@ import { editProduct } from "../features/produtos/produtoSlice"
 import EditDeleteButton from "../components/EditDeleteButton"
 import ListHeader from "../components/List/ListHeader"
 import Item from "../components/List/Item"
+import ItemsContainer from "../components/List/ItemsContainer"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -33,20 +34,6 @@ const ProductBtn = styled.button<{ active?: boolean }>`
     &:hover {
         color: #222;
     }
-`
-const Product = styled.ul`
-    height: 40px;
-    background-color: #cbe6ff;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #cacaca;
-`
-const SubProduct = styled.ul`
-    height: 40px;
-    display: flex;
-    background-color: #eef7ff;
-    align-items: center;
-    border-bottom: 1px solid #e4e4e4;
 `
 
 export default function ProdutosEscondidos() {
@@ -91,7 +78,7 @@ export default function ProdutosEscondidos() {
             {
                 resumedProducts.map((item) => (
                     <Container key={item.id}>
-                        <Product>
+                        <ItemsContainer>
                             <Item flex={3} text={item.name} />
                             <Item flex={0.7} text={item.category} />
                             <Item flex={0.7} text={item.unit} />
@@ -102,15 +89,15 @@ export default function ProdutosEscondidos() {
                             <EditDeleteButton onClick={() => dispatch(editProduct({ ...item, hide: false }))}>
                                 <AiOutlineEye />
                             </EditDeleteButton>
-                        </Product>
+                        </ItemsContainer>
 
                         {item.subproducts &&
                             item.subproducts.map((subitem) => (
-                                <SubProduct key={subitem.id}>
+                                <ItemsContainer key={subitem.id} type='subItem' bg='#eef7ff' >
                                     <Item width='200px' align='center' color='#3142a0' text={`Lote: ${subitem.lote}`} />
                                     <Item width='200px' align='center' color='#3142a0' text={`Validade: ${subitem.validade.slice(0, 10)}`} />
                                     <Item width='200px' align='center' color='#3142a0' text={`Quantidade: ${subitem.quantity}`} />
-                                </SubProduct>
+                                </ItemsContainer>
                             ))
                         }
                     </Container>

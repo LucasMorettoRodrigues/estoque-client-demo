@@ -4,10 +4,10 @@ import { getProduct, getProvider } from "../utils/functions"
 import { useEffect, useState } from "react"
 import { TStockIn } from "../types/TStockIn"
 import { TStockOut } from "../types/TStockOut"
-import { AiFillPlusSquare } from 'react-icons/ai'
 import Select from '../components/Select'
 import ListHeader from "../components/List/ListHeader"
 import Item from "../components/List/Item"
+import ItemsContainer from "../components/List/ItemsContainer"
 
 const Container = styled.div<{ show?: boolean }>`
     visibility: ${props => props.show === false ? 'hidden' : 'visible'};
@@ -25,19 +25,6 @@ const Title = styled.h1`
 const Filter = styled.div`
     display: flex;
     align-items: center;
-`
-const Product = styled.ul<{ backgroundColor: string }>`
-    height: 40px;
-    background-color: ${props => props.backgroundColor};
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #cacaca;
-`
-const ButtonContainer = styled.li<{ flex?: number, color?: string }>`
-    align-items: center;
-    margin-top: 4px;
-    width: 75px;
-    padding: 10px;
 `
 
 type Props = {
@@ -167,17 +154,17 @@ export default function Historico({ productFilter }: Props) {
             {
                 Object.keys(filteredStocks).reverse().map(key => (
                     < Container key={key} >
-                        <Product backgroundColor={key.split('_')[1] === 'in' ? '#a3ff86' : key.split('_')[1] === 'out' ? '#ffa7a7' : '#9097fa'} >
+                        <ItemsContainer
+                            bg={key.split('_')[1] === 'in' ? '#a3ff86' : key.split('_')[1] === 'out' ? '#ffa7a7' : '#a8aeff'}
+                            onClick={() => setShow(show === key ? '' : key)}
+                        >
                             <Item flex={1} text={key.split('_')[0]} />
                             <Item flex={12} text={key.split('_')[1] === 'in' ? "Compra" : key.split('_')[1] === 'out' ? "Retirada" : "Ajuste"} />
-                            <ButtonContainer onClick={() => setShow(show === key ? '' : key)}>
-                                <AiFillPlusSquare fontSize='22px' color="#f1f1f1" cursor='pointer' style={{ backgroundColor: 'black' }} />
-                            </ButtonContainer>
-                        </Product>
+                        </ItemsContainer>
                         {
                             filteredStocks[key].map((item: any, index: any) => (
                                 < Container key={index} show={show === key ? true : false} >
-                                    <Product backgroundColor={key.split('_')[1] === 'in' ? '#a3ff86' : key.split('_')[1] === 'out' ? '#ffa7a7' : '#9097fa'} >
+                                    <ItemsContainer bg={key.split('_')[1] === 'in' ? '#ceffbf' : key.split('_')[1] === 'out' ? '#ffc6c6' : '#c6caff'} >
                                         <Item flex={0.9} text='' />
                                         <Item flex={1} text='' />
                                         <Item flex={3} text={getProduct(products, item.product_id)?.name} />
@@ -188,7 +175,7 @@ export default function Historico({ productFilter }: Props) {
                                         <Item flex={0.7} text={item.lote} />
                                         <Item flex={1} text={item.validade && item.validade.slice(0, 10)} />
                                         <Item flex={0.9} text={key.split('_')[1] === 'out' ? -item.quantity : item.quantity} align='center' />
-                                    </Product>
+                                    </ItemsContainer>
                                 </Container>
                             ))
                         }

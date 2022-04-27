@@ -9,6 +9,7 @@ import Select from "../components/Select"
 import Input from "../components/Input"
 import ListHeader from "../components/List/ListHeader"
 import Item from "../components/List/Item"
+import ItemsContainer from "../components/List/ItemsContainer"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -54,18 +55,6 @@ const Label = styled.label`
 const CheckBox = styled.input`
     padding: 5px 10px;
     margin-right: 10px;
-`
-const Product = styled.ul`
-    height: 40px;
-    background-color: #cbe6ff;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #cacaca;
-    cursor: pointer;
-
-    &:hover {
-        background-color: #74bcff;
-    }
 `
 
 export default function Produtos() {
@@ -145,14 +134,14 @@ export default function Produtos() {
             {
                 filteredProducts.map((item) => (
                     <Container key={item.id}>
-                        <Product onClick={() => navigate(`/produtos/${item.id}/historico`, { state: item })}>
+                        <ItemsContainer onClick={() => navigate(`/produtos/${item.id}/historico`, { state: item })}>
                             <Item flex={8} text={item.name} />
                             <Item flex={2} text={item.providers ? item.providers.map(i => `${getProvider(providers, i)?.name} `) : ''} />
                             <Item flex={1} text={item.min_stock} align='center'
                                 bg={item.stock < item.min_stock ? '#ff5353' : 'inherit'} />
                             <Item flex={1} text={item.min_stock} align='center' />
                             <Item flex={1} text={item.max_stock} align='center' />
-                        </Product>
+                        </ItemsContainer>
                     </Container>
                 ))
             }

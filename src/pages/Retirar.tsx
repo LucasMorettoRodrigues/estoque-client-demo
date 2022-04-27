@@ -14,17 +14,11 @@ import Input from "../components/Input"
 import Select from "../components/Select"
 import ListHeader from "../components/List/ListHeader"
 import Item from "../components/List/Item"
+import ItemsContainer from "../components/List/ItemsContainer"
 
 const Title = styled.h1`
     color: #222;
     margin: 30px 0;
-`
-const Product = styled.ul`
-    height: 40px;
-    background-color: #cbe6ff;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #cacaca;
 `
 const Form = styled.form`
     display: flex;
@@ -160,7 +154,7 @@ export default function Retirar() {
                         <>
                             {
                                 productList.map((item, index) => (
-                                    <Product key={index}>
+                                    <ItemsContainer key={index}>
                                         <Item flex={3} text={item.product.name} />
                                         <Item flex={1} text={item.product.brand} />
                                         <Item flex={1} text={item.subProduct?.lote} />
@@ -171,7 +165,7 @@ export default function Retirar() {
                                         >
                                             <AiOutlineDelete />
                                         </EditDeleteButton>
-                                    </Product>
+                                    </ItemsContainer>
                                 ))
                             }
                         </>

@@ -7,6 +7,7 @@ import { deleteProviderById } from "../features/fornecedor/fornecedorSlice"
 import EditDeleteButton from "../components/EditDeleteButton"
 import ListHeader from "../components/List/ListHeader"
 import Item from "../components/List/Item"
+import ItemsContainer from "../components/List/ItemsContainer"
 
 const Title = styled.h1`
     color: #222;
@@ -14,13 +15,6 @@ const Title = styled.h1`
 `
 const ButtonContainer = styled.div`
     margin-bottom: 20px;
-`
-const Fornecedor = styled.ul`
-
-    background-color: #cbe6ff;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #cacaca;
 `
 
 export default function Fornecedores() {
@@ -42,7 +36,7 @@ export default function Fornecedores() {
             </ListHeader>
             {
                 fornecedores.map((item) => (
-                    <Fornecedor key={item.id}>
+                    <ItemsContainer key={item.id}>
                         <Item flex={1} text={item.name} />
                         <EditDeleteButton
                             onClick={() => navigate(`/fornecedores/${item.id}`, { state: item })}
@@ -54,7 +48,7 @@ export default function Fornecedores() {
                         >
                             <AiOutlineDelete />
                         </EditDeleteButton>
-                    </Fornecedor>
+                    </ItemsContainer>
                 ))
             }
         </>

@@ -9,6 +9,7 @@ import Input from "../components/Input"
 import Select from "../components/Select"
 import ListHeader from "../components/List/ListHeader"
 import Item from "../components/List/Item"
+import ItemsContainer from "../components/List/ItemsContainer"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -30,30 +31,6 @@ const ProductBtn = styled.button<{ active?: boolean }>`
 
     &:hover {
         color: #222;
-    }
-`
-const Product = styled.ul`
-    height: 40px;
-    background-color: #cbe6ff;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #cacaca;
-    cursor: pointer;
-
-    &:hover {
-        background-color: #74bcff;
-    }
-`
-const SubProduct = styled.ul`
-    height: 40px;
-    display: flex;
-    background-color: #eef7ff;
-    align-items: center;
-    border-bottom: 1px solid #e4e4e4;
-    cursor: pointer;
-
-    &:hover {
-        background-color: #74bcff;
     }
 `
 const MenuContainer = styled.div`
@@ -209,7 +186,7 @@ export default function Detalhes() {
             {
                 filteredProducts.map((item) => (
                     <Container key={item.id}>
-                        <Product onClick={() => navigate(`/produtos/${item.id}`, { state: item })}>
+                        <ItemsContainer onClick={() => navigate(`/produtos/${item.id}`, { state: item })}>
                             <Item width="26px" text={item.id} fontSize='12px' />
                             <Item flex={3} text={item.name} fontSize='12px' />
                             <Item flex={2} text={item.observation} fontSize='12px' />
@@ -222,15 +199,20 @@ export default function Detalhes() {
                             <Item width="65px" text={item.min_stock} align='center' fontSize='12px' />
                             <Item width="65px" text={item.max_stock} align='center' fontSize='12px' />
                             <Item width="83px" text={getStockOutFrequency(item.id!)} align='center' fontSize='12px' />
-                        </Product>
+                        </ItemsContainer>
 
                         {item.subproducts &&
                             item.subproducts.map((subitem) => (
-                                <SubProduct key={subitem.id} onClick={() => navigate(`/produtos/${item.id}/subprodutos/${subitem.id}`, { state: subitem })}>
+                                <ItemsContainer
+                                    type="subItem"
+                                    bg='#eef7ff'
+                                    key={subitem.id}
+                                    onClick={() => navigate(`/produtos/${item.id}/subprodutos/${subitem.id}`, { state: subitem })}
+                                >
                                     <Item width='200px' align='center' color='#3142a0' text={`Lote: ${subitem.lote}`} />
                                     <Item width='200px' align='center' color='#3142a0' text={`Validade: ${subitem.validade.slice(0, 10)}`} />
                                     <Item width='200px' align='center' color='#3142a0' text={`Quantidade: ${subitem.quantity}`} />
-                                </SubProduct>
+                                </ItemsContainer>
                             ))
                         }
                     </Container>
