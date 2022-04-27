@@ -8,6 +8,7 @@ import { compare, getProvider, reduceStockIns } from "../utils/functions"
 import Input from "../components/Input"
 import Select from "../components/Select"
 import ListHeader from "../components/List/ListHeader"
+import Item from "../components/List/Item"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -29,17 +30,6 @@ const ProductBtn = styled.button<{ active?: boolean }>`
 
     &:hover {
         color: #222;
-    }
-`
-const ListHeaderItem = styled.p<{ flex?: number, width?: string }>`
-    flex: ${props => props.flex ? props.flex : null};
-    width: ${props => props.width ? props.width : null};
-    padding: 10px;
-    cursor: pointer;
-
-    &:active {
-        transform: translateY(1px);
-        opacity: 0.5;
     }
 `
 const Product = styled.ul`
@@ -66,13 +56,6 @@ const SubProduct = styled.ul`
     &:hover {
         background-color: #74bcff;
     }
-`
-const ProductLi = styled.li<{ flex?: number, color?: string, width?: string }>`
-    flex: ${props => props.flex ? props.flex : null};
-    background-color: ${props => props.color ? props.color : null};
-    font-size: 12px;
-    padding: 10px;
-    width: ${props => props.width ? props.width : null};
 `
 const SubProductLi = styled.li`
     display: flex;
@@ -220,35 +203,35 @@ export default function Detalhes() {
                 </Filter>
             </MenuContainer>
             <ListHeader fontSize='12px'>
-                <ListHeaderItem width="26px" onClick={() => setSort('id')}>Id</ListHeaderItem>
-                <ListHeaderItem flex={3} onClick={() => setSort('name')}>Produto</ListHeaderItem>
-                <ListHeaderItem flex={2}>Observação</ListHeaderItem>
-                <ListHeaderItem width="90px">Código</ListHeaderItem>
-                <ListHeaderItem flex={2}>Fornecedores</ListHeaderItem>
-                <ListHeaderItem width="90px" onClick={() => setSort('category')}>Categoria</ListHeaderItem>
-                <ListHeaderItem width="130px" onClick={() => setSort('brand')}>Marca</ListHeaderItem>
-                <ListHeaderItem width="65px" onClick={() => setSort('unit')} >Unidade</ListHeaderItem>
-                <ListHeaderItem width="65px" style={{ textAlign: 'center' }}>Estoque</ListHeaderItem>
-                <ListHeaderItem width="65px" style={{ textAlign: 'center' }}>Est. Mín.</ListHeaderItem>
-                <ListHeaderItem width="65px" style={{ textAlign: 'center' }}>Est. Max.</ListHeaderItem>
-                <ListHeaderItem width="83px" style={{ textAlign: 'center' }}>Frequência Retirada</ListHeaderItem>
+                <Item width="26px" text='Id' onClick={() => setSort('id')} cursor='pointer' fontSize='12px' />
+                <Item flex={3} text='Produto' onClick={() => setSort('name')} cursor='pointer' fontSize='12px' />
+                <Item flex={2} text='Observação' fontSize='12px' />
+                <Item width="90px" text='Código' fontSize='12px' />
+                <Item flex={2} text='Fornecedores' fontSize='12px' />
+                <Item width="90px" text='Categoria' onClick={() => setSort('category')} cursor='pointer' fontSize='12px' />
+                <Item width="130px" text='Marca' onClick={() => setSort('brand')} cursor='pointer' fontSize='12px' />
+                <Item width="65px" text='Unidade' onClick={() => setSort('unit')} cursor='pointer' fontSize='12px' />
+                <Item width="65px" text='Estoque' align='center' fontSize='12px' />
+                <Item width="65px" text='Est. Mín.' align='center' fontSize='12px' />
+                <Item width="65px" text='Est. Max.' align='center' fontSize='12px' />
+                <Item width="83px" text='Frequência Retirada' align='center' fontSize='12px' />
             </ListHeader>
             {
                 filteredProducts.map((item) => (
                     <Container key={item.id}>
                         <Product onClick={() => navigate(`/produtos/${item.id}`, { state: item })}>
-                            <ProductLi width="26px">{item.id}</ProductLi>
-                            <ProductLi flex={3}>{item.name}</ProductLi>
-                            <ProductLi flex={2}>{item.observation}</ProductLi>
-                            <ProductLi width="90px">{item.code}</ProductLi>
-                            <ProductLi flex={2}>{item.providers && item.providers.map((i: any) => `${getProvider(providers, i)?.name} `)}</ProductLi>
-                            <ProductLi width="90px">{item.category}</ProductLi>
-                            <ProductLi width="130px">{item.brand}</ProductLi>
-                            <ProductLi width="65px">{item.unit}</ProductLi>
-                            <ProductLi width="65px" style={{ textAlign: 'center' }}>{item.stock}</ProductLi>
-                            <ProductLi width="65px" style={{ textAlign: 'center' }}>{item.min_stock}</ProductLi>
-                            <ProductLi width="65px" style={{ textAlign: 'center' }}>{item.max_stock}</ProductLi>
-                            <ProductLi width="83px" style={{ textAlign: 'center' }}>{getStockOutFrequency(item.id!)}</ProductLi>
+                            <Item width="26px" text={item.id} fontSize='12px' />
+                            <Item flex={3} text={item.name} fontSize='12px' />
+                            <Item flex={2} text={item.observation} fontSize='12px' />
+                            <Item width="90px" text={item.code} fontSize='12px' />
+                            <Item flex={2} text={item.providers && item.providers.map((i: any) => `${getProvider(providers, i)?.name} `)} fontSize='12px' />
+                            <Item width="90px" text={item.category} fontSize='12px' />
+                            <Item width="130px" text={item.brand} fontSize='12px' />
+                            <Item width="65px" text={item.unit} fontSize='12px' />
+                            <Item width="65px" text={item.stock} align='center' fontSize='12px' />
+                            <Item width="65px" text={item.min_stock} align='center' fontSize='12px' />
+                            <Item width="65px" text={item.max_stock} align='center' fontSize='12px' />
+                            <Item width="83px" text={getStockOutFrequency(item.id!)} align='center' fontSize='12px' />
                         </Product>
 
                         {item.subproducts &&
