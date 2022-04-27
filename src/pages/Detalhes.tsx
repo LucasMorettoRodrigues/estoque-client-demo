@@ -10,6 +10,7 @@ import Select from "../components/Select"
 import ListHeader from "../components/List/ListHeader"
 import Item from "../components/List/Item"
 import ItemsContainer from "../components/List/ItemsContainer"
+import ProductBtn from "../components/ProductBtn"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -19,19 +20,6 @@ const Title = styled.h1`
 `
 const ProductsBtnContainer = styled.div`
     display: flex;
-`
-const ProductBtn = styled.button<{ active?: boolean }>`
-    font-size: 30px;
-    color: ${props => props.active ? '#222' : '#c0c0c0'};
-    font-weight: bold;
-    margin-left: 10px;
-    border: none;
-    background-color: inherit;
-    cursor: pointer;
-
-    &:hover {
-        color: #222;
-    }
 `
 const MenuContainer = styled.div`
     display: flex;
@@ -144,9 +132,9 @@ export default function Detalhes() {
         <>
             <Title>Produtos /
                 <ProductsBtnContainer>
-                    <ProductBtn active={true}>Detalhes</ProductBtn>
-                    <ProductBtn onClick={() => navigate('/produtos')} >Resumo</ProductBtn>
-                    <ProductBtn onClick={() => navigate('/produtos/escondidos')}>Arquivados</ProductBtn>
+                    <ProductBtn active={true} text='Detalhes' />
+                    <ProductBtn onClick={() => navigate('/produtos')} text='Resumo' />
+                    <ProductBtn onClick={() => navigate('/produtos/escondidos')} text='Arquivados' />
                 </ProductsBtnContainer>
             </Title>
             <MenuContainer>

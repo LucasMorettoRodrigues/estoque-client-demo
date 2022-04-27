@@ -9,6 +9,7 @@ import EditDeleteButton from "../components/EditDeleteButton"
 import ListHeader from "../components/List/ListHeader"
 import Item from "../components/List/Item"
 import ItemsContainer from "../components/List/ItemsContainer"
+import ProductBtn from "../components/ProductBtn"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -21,19 +22,6 @@ const ProductsBtnContainer = styled.div`
 `
 const ButtonContainer = styled.div`
     margin-bottom: 20px;
-`
-const ProductBtn = styled.button<{ active?: boolean }>`
-    font-size: 30px;
-    color: ${props => props.active ? '#222' : '#c0c0c0'};
-    font-weight: bold;
-    margin-left: 10px;
-    border: none;
-    background-color: inherit;
-    cursor: pointer;
-
-    &:hover {
-        color: #222;
-    }
 `
 
 export default function ProdutosEscondidos() {
@@ -58,9 +46,9 @@ export default function ProdutosEscondidos() {
         <>
             <Title>Produtos /
                 <ProductsBtnContainer>
-                    <ProductBtn onClick={() => navigate('/produtos/detalhes')} >Detalhes</ProductBtn>
-                    <ProductBtn onClick={() => navigate('/produtos')} >Resumo</ProductBtn>
-                    <ProductBtn active={true}>Arquivados</ProductBtn>
+                    <ProductBtn onClick={() => navigate('/produtos/detalhes')} text='Detalhes' />
+                    <ProductBtn onClick={() => navigate('/produtos')} text='Resumo' />
+                    <ProductBtn active={true} text='Arquivados' />
                 </ProductsBtnContainer>
             </Title>
             <ButtonContainer>
