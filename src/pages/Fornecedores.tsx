@@ -5,20 +5,14 @@ import { useNavigate } from "react-router-dom"
 import Button from "../components/Button"
 import { deleteProviderById } from "../features/fornecedor/fornecedorSlice"
 import EditDeleteButton from "../components/EditDeleteButton"
+import ListHeader from "../components/List/ListHeader"
 
 const Title = styled.h1`
     color: #222;
     margin: 30px 0;
 `
-const ListHeader = styled.div`
-    background-color: #5fb4ff;
-    height: 45px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid lightgray;
-    font-size: 15px;
-    font-weight: bold;
-    border-bottom: 1px solid #cacaca;
+const ButtonContainer = styled.div`
+    margin-bottom: 20px;
 `
 const ListHeaderItem = styled.p<{ flex?: number }>`
     flex: ${props => props.flex ? props.flex : null};
@@ -49,7 +43,9 @@ export default function Fornecedores() {
     return (
         <>
             <Title>Fornecedores</Title>
-            <Button onClick={() => navigate('/novoFornecedor')} text={'Cadastrar Novo Fornecedor'} />
+            <ButtonContainer>
+                <Button onClick={() => navigate('/novoFornecedor')} text={'Cadastrar Novo Fornecedor'} />
+            </ButtonContainer>
             <ListHeader>
                 <ListHeaderItem flex={1}>Fornecedor</ListHeaderItem>
                 <ListHeaderItem style={{ textAlign: 'center' }}>Editar</ListHeaderItem>

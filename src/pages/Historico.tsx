@@ -5,6 +5,8 @@ import { useEffect, useState } from "react"
 import { TStockIn } from "../types/TStockIn"
 import { TStockOut } from "../types/TStockOut"
 import { AiFillPlusSquare } from 'react-icons/ai'
+import Select from '../components/Select'
+import ListHeader from "../components/List/ListHeader"
 
 const Container = styled.div<{ show?: boolean }>`
     visibility: ${props => props.show === false ? 'hidden' : 'visible'};
@@ -22,25 +24,6 @@ const Title = styled.h1`
 const Filter = styled.div`
     display: flex;
     align-items: center;
-    margin-top: 10px;
-`
-const Label = styled.label`
-    margin-right: 5px;
-`
-const Select = styled.select`
-    padding: 5px 10px;
-`
-const ListHeader = styled.div`
-    height: 45px;
-    padding: 0 10px;
-    background-color: #5fb4ff;
-    height: 45px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid lightgray;
-    font-size: 15px;
-    font-weight: bold;
-    border-bottom: 1px solid #cacaca;
 `
 const ListHeaderItem = styled.p<{ flex?: number }>`
     flex: ${props => props.flex ? props.flex : null};
@@ -162,8 +145,12 @@ export default function Historico({ productFilter }: Props) {
             <HeaderContainer>
                 <Title>Histórico</Title>
                 <Filter>
-                    <Label>Ação:</Label>
-                    <Select onChange={(e) => setFilter(e.target.value)}>
+                    <Select
+                        display="flex"
+                        name="filter"
+                        label="Ação:"
+                        onChange={(e) => setFilter(e.target.value)}
+                    >
                         <option></option>
                         <option>Compras</option>
                         <option>Retiradas</option>

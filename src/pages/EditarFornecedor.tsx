@@ -10,6 +10,9 @@ const Title = styled.h1`
     color: #222;
     margin: 30px 0;
 `
+const InputContainer = styled.div`
+    margin-bottom: 20px;
+`
 
 type stateType = {
     id: number,
@@ -35,13 +38,15 @@ export default function EditarFornecedor() {
         <>
             <form onSubmit={handleOnSubmit}>
                 <Title>Editar Fornecedor</Title>
-                <Input
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-                    name={'name'}
-                    label={'Name'}
-                    value={name}
-                    required
-                />
+                <InputContainer>
+                    <Input
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                        name={'name'}
+                        label={'Name'}
+                        value={name}
+                        required
+                    />
+                </InputContainer>
                 <Button text={'Editar Fornecedor'} />
             </form>
         </>

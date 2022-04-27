@@ -17,6 +17,10 @@ const Form = styled.form`
     flex-wrap: wrap;
     justify-content: space-between;
 `
+const InputContainer = styled.div`
+    width: 48%;
+    margin-bottom: 20px;
+`
 const ButtonContainer = styled.div`
     display: flex;
     width: 100%;
@@ -49,65 +53,81 @@ export default function EditarProduto() {
         <>
             <Title>Editar Produto</Title>
             <Form onSubmit={handleOnSubmit}>
-                <Input
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-                    name={'name'}
-                    label={'Name'}
-                    value={name}
-                    required
-                />
-                <Input
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setCode(e.target.value)}
-                    name={'codigo'}
-                    label={'Código'}
-                    value={code}
-                    required
-                />
-                <Input
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setCategory(e.target.value)}
-                    name={'categoria'}
-                    label={'Categoria'}
-                    value={category}
-                    required
-                />
-                <Input
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setBrand(e.target.value)}
-                    name={'brand'}
-                    label={'Marca'}
-                    value={brand}
-                    required
-                />
-                <Input
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setUnit(e.target.value)}
-                    name={'unit'}
-                    label={'Unidade'}
-                    value={unit}
-                    required
-                />
-                <Input
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setMinStock(e.target.value)}
-                    name={'minStock'}
-                    label={'Estoque Mínimo'}
-                    type='number'
-                    value={minStock}
-                    min={0}
-                    required
-                />
-                <Input
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setMaxStock(e.target.value)}
-                    name={'maxStock'}
-                    label={'Estoque Máximo'}
-                    type='number'
-                    value={maxStock}
-                    min={0}
-                    required
-                />
-                <Input
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setObservation(e.target.value)}
-                    name={'obervation'}
-                    label={'Observação'}
-                    value={observation ? observation : ''}
-                />
+                <InputContainer>
+                    <Input
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                        name={'name'}
+                        label={'Name'}
+                        value={name}
+                        required
+                    />
+                </InputContainer>
+                <InputContainer>
+                    <Input
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setCode(e.target.value)}
+                        name={'codigo'}
+                        label={'Código'}
+                        value={code}
+                        required
+                    />
+                </InputContainer>
+                <InputContainer>
+                    <Input
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setCategory(e.target.value)}
+                        name={'categoria'}
+                        label={'Categoria'}
+                        value={category}
+                        required
+                    />
+                </InputContainer>
+                <InputContainer>
+                    <Input
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setBrand(e.target.value)}
+                        name={'brand'}
+                        label={'Marca'}
+                        value={brand}
+                        required
+                    />
+                </InputContainer>
+                <InputContainer>
+                    <Input
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setUnit(e.target.value)}
+                        name={'unit'}
+                        label={'Unidade'}
+                        value={unit}
+                        required
+                    />
+                </InputContainer>
+                <InputContainer>
+                    <Input
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setMinStock(e.target.value)}
+                        name={'minStock'}
+                        label={'Estoque Mínimo'}
+                        type='number'
+                        value={minStock}
+                        min={0}
+                        required
+                    />
+                </InputContainer>
+                <InputContainer>
+                    <Input
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setMaxStock(e.target.value)}
+                        name={'maxStock'}
+                        label={'Estoque Máximo'}
+                        type='number'
+                        value={maxStock}
+                        min={0}
+                        required
+                    />
+                </InputContainer>
+                <InputContainer>
+                    <Input
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setObservation(e.target.value)}
+                        name={'obervation'}
+                        label={'Observação'}
+                        value={observation ? observation : ''}
+                    />
+                </InputContainer>
                 <ButtonContainer>
                     <Button text='Editar Produto' />
                     <div>

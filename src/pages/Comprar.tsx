@@ -10,20 +10,12 @@ import { createStockIn } from "../features/stockIn/stockIn"
 import EditDeleteButton from "../components/EditDeleteButton"
 import Mensagem from "../components/Mensagem"
 import { createProvider } from "../features/fornecedor/fornecedorSlice"
+import Input from "../components/Input"
+import ListHeader from "../components/List/ListHeader"
 
 const Title = styled.h1`
     color: #222;
     margin: 30px 0;
-`
-const ListHeader = styled.div`
-    background-color: #5fb4ff;
-    height: 45px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid lightgray;
-    font-size: 15px;
-    font-weight: bold;
-    border-bottom: 1px solid #cacaca;
 `
 const ListHeaderItem = styled.p<{ flex?: number }>`
     flex: ${props => props.flex ? props.flex : null};
@@ -55,29 +47,6 @@ const InputContainer = styled.div<{ flex: number }>`
     margin-right: 20px;
     flex-direction: column;
     font-size: 14px;
-`
-const Label = styled.label`
-    margin-left: 4px;
-    margin-bottom: 4px;
-`
-const Input = styled.input`
-    padding: 10px;
-    width: 100%;
-    outline-color: lightblue;
-    background-color: white;
-    border: 1px solid lightgray;
-    border-radius: 5px;
-    margin-bottom: 20px;
-`
-const FormButton = styled.button`
-    background-color: #3dc73d;
-    color: white;
-    border: none;
-    padding: 11px 25px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    margin-bottom: 4px;
 `
 const ProductListContainer = styled.div`
     margin-bottom: 30px;
@@ -176,8 +145,13 @@ export default function Comprar() {
             <Title>Comprar Produtos</Title>
             <Form onSubmit={handleOnSubmit}>
                 <InputContainer flex={5}>
-                    <Label>Produto</Label>
-                    <Input required onChange={(e) => setProductId(parseInt(e.target.value.split(' ')[0]))} list='products'></Input>
+                    <Input
+                        name="product"
+                        label="Produto"
+                        required
+                        onChange={(e) => setProductId(parseInt(e.target.value.split(' ')[0]))}
+                        list='products'
+                    />
                     <datalist id="products">
                         {
                             products.map(item => (
@@ -187,8 +161,14 @@ export default function Comprar() {
                     </datalist>
                 </InputContainer>
                 <InputContainer flex={3}>
-                    <Label>Fornecedor</Label>
-                    <Input required autoComplete="off" id="provider" onChange={(e) => setProviderId(e.target.value.split(' ')[0])} list='providers'></Input>
+                    <Input
+                        name="provider"
+                        label="Fornecedor"
+                        required
+                        autoComplete="off"
+                        onChange={(e) => setProviderId(e.target.value.split(' ')[0])}
+                        list='providers'
+                    />
                     <datalist id="providers">
                         {
                             providers.map(item => (
@@ -198,22 +178,43 @@ export default function Comprar() {
                     </datalist>
                 </InputContainer>
                 <InputContainer flex={1}>
-                    <Label>Preço</Label>
-                    <Input required type='number' step='.01' min={0} onChange={(e) => setPrice(e.target.value)}></Input>
+                    <Input
+                        name="price"
+                        label="Preço"
+                        required
+                        type='number'
+                        step='.01'
+                        min={0}
+                        onChange={(e) => setPrice(e.target.value)}
+                    />
                 </InputContainer>
                 <InputContainer flex={1}>
-                    <Label>Lote</Label>
-                    <Input required onChange={(e) => setLote(e.target.value)}></Input>
+                    <Input
+                        name="lote"
+                        label="Lote"
+                        required
+                        onChange={(e) => setLote(e.target.value)}
+                    />
                 </InputContainer>
                 <InputContainer flex={1}>
-                    <Label>Validade</Label>
-                    <Input onChange={(e) => setValidade(e.target.value)} type='date'></Input>
+                    <Input
+                        name="validade"
+                        label="Validade"
+                        onChange={(e) => setValidade(e.target.value)}
+                        type='date'
+                    />
                 </InputContainer>
                 <InputContainer flex={1}>
-                    <Label>Quantidade</Label>
-                    <Input required min={1} type='number' onChange={(e) => setQuantity(parseInt(e.target.value))}></Input>
+                    <Input
+                        name="quantity"
+                        label="Quantidade"
+                        required
+                        min={1}
+                        type='number'
+                        onChange={(e) => setQuantity(parseInt(e.target.value))}
+                    />
                 </InputContainer>
-                <FormButton>Lançar</FormButton>
+                <Button style={{ padding: '12px 24px', alignSelf: 'flex-end' }} text={'Lançar'} />
             </Form>
             {
                 cart.length > 0 &&

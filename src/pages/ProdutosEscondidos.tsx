@@ -6,6 +6,7 @@ import { TProduct } from "../types/TProduct"
 import { AiOutlineEye } from "react-icons/ai"
 import { editProduct } from "../features/produtos/produtoSlice"
 import EditDeleteButton from "../components/EditDeleteButton"
+import ListHeader from "../components/List/ListHeader"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -15,6 +16,9 @@ const Title = styled.h1`
 `
 const ProductsBtnContainer = styled.div`
     display: flex;
+`
+const ButtonContainer = styled.div`
+    margin-bottom: 20px;
 `
 const ProductBtn = styled.button<{ active?: boolean }>`
     font-size: 30px;
@@ -28,16 +32,6 @@ const ProductBtn = styled.button<{ active?: boolean }>`
     &:hover {
         color: #222;
     }
-`
-const ListHeader = styled.div`
-    background-color: #5fb4ff;
-    height: 45px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid lightgray;
-    font-size: 15px;
-    font-weight: bold;
-    border-bottom: 1px solid #cacaca;
 `
 const ListHeaderItem = styled.p<{ flex?: number }>`
     flex: ${props => props.flex ? props.flex : null};
@@ -100,7 +94,9 @@ export default function ProdutosEscondidos() {
                     <ProductBtn active={true}>Arquivados</ProductBtn>
                 </ProductsBtnContainer>
             </Title>
-            <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
+            <ButtonContainer>
+                <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
+            </ButtonContainer>
             <ListHeader>
                 <ListHeaderItem flex={3}>Produto</ListHeaderItem>
                 <ListHeaderItem flex={0.8}>Categoria</ListHeaderItem>

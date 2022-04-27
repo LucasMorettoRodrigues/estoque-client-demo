@@ -5,6 +5,9 @@ import { useAppSelector } from "../app/hooks"
 import { useEffect, useState } from "react"
 import { TProduct } from "../types/TProduct"
 import { compare, getProvider, reduceStockIns } from "../utils/functions"
+import Input from "../components/Input"
+import Select from "../components/Select"
+import ListHeader from "../components/List/ListHeader"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -27,17 +30,6 @@ const ProductBtn = styled.button<{ active?: boolean }>`
     &:hover {
         color: #222;
     }
-`
-const ListHeader = styled.div`
-    height: 45px;
-    padding: 0 5px;
-    background-color: #5fb4ff;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid lightgray;
-    font-size: 12px;
-    font-weight: bold;
-    border-bottom: 1px solid #cacaca;
 `
 const ListHeaderItem = styled.p<{ flex?: number, width?: string }>`
     flex: ${props => props.flex ? props.flex : null};
@@ -93,25 +85,18 @@ const SubProductLi = styled.li`
 `
 const MenuContainer = styled.div`
     display: flex;
+    align-items: center;
     justify-content: space-between;
+    margin-bottom: 20px;
 `
 const Filter = styled.div`
-    margin-top: -10px;
     display: flex;
-    width: 80%;
     align-items: center;
 `
-const Label = styled.label`
-    margin-right: 5px;
-    margin-left: 15px;
-`
-const Select = styled.select`
-    flex: 1;
-    padding: 5px 10px;
-`
-const Input = styled.input`
-    flex: 3;
-    padding: 5px 10px;
+const InputContainer = styled.div`
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
 `
 
 export default function Detalhes() {
@@ -217,21 +202,24 @@ export default function Detalhes() {
             <MenuContainer>
                 <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
                 <Filter>
-                    <Label>Pesquisar:</Label>
-                    <Input type='text' onChange={(e) => setSearch(e.target.value)}></Input>
-                    <Label>Categoria:</Label>
-                    <Select onChange={(e) => setCategory(e.target.value)}>
-                        <option></option>
-                        {categories.map(i => <option key={i}>{i}</option>)}
-                    </Select>
-                    <Label>Fornecedor:</Label>
-                    <Select onChange={(e) => setProvider(e.target.value)}>
-                        <option></option>
-                        {providers.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
-                    </Select>
+                    <InputContainer>
+                        <Input name="search" label="Pesquisar:" display="flex" type='text' onChange={(e) => setSearch(e.target.value)}></Input>
+                    </InputContainer>
+                    <InputContainer>
+                        <Select name="categories" label="Categoria:" display="flex" onChange={(e) => setCategory(e.target.value)}>
+                            <option></option>
+                            {categories.map(i => <option key={i}>{i}</option>)}
+                        </Select>
+                    </InputContainer>
+                    <InputContainer>
+                        <Select name="providers" label="Fornecedor:" display="flex" onChange={(e) => setProvider(e.target.value)}>
+                            <option></option>
+                            {providers.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
+                        </Select>
+                    </InputContainer>
                 </Filter>
             </MenuContainer>
-            <ListHeader>
+            <ListHeader fontSize='12px'>
                 <ListHeaderItem width="26px" onClick={() => setSort('id')}>Id</ListHeaderItem>
                 <ListHeaderItem flex={3} onClick={() => setSort('name')}>Produto</ListHeaderItem>
                 <ListHeaderItem flex={2}>Observação</ListHeaderItem>

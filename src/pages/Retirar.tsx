@@ -10,20 +10,13 @@ import { TSubProduct } from "../types/TSubProduct"
 import EditDeleteButton from "../components/EditDeleteButton"
 import { compareDates, getProduct, getSubProduct } from "../utils/functions"
 import Mensagem from "../components/Mensagem"
+import Input from "../components/Input"
+import Select from "../components/Select"
+import ListHeader from "../components/List/ListHeader"
 
 const Title = styled.h1`
     color: #222;
     margin: 30px 0;
-`
-const ListHeader = styled.div`
-    background-color: #5fb4ff;
-    height: 45px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid lightgray;
-    font-size: 15px;
-    font-weight: bold;
-    border-bottom: 1px solid #cacaca;
 `
 const ListHeaderItem = styled.p<{ flex?: number }>`
     flex: ${props => props.flex ? props.flex : null};
@@ -55,38 +48,6 @@ const InputContainer = styled.div<{ flex: number }>`
     margin-right: 20px;
     flex-direction: column;
     font-size: 14px;
-`
-const Label = styled.label`
-    margin-left: 4px;
-    margin-bottom: 4px;
-`
-const Input = styled.input`
-    padding: 10px;
-    width: 100%;
-    outline-color: lightblue;
-    background-color: white;
-    border: 1px solid lightgray;
-    border-radius: 5px;
-    margin-bottom: 20px;
-`
-const Select = styled.select`
-    padding: 10px;
-    width: 100%;
-    outline-color: lightblue;
-    background-color: white;
-    border: 1px solid lightgray;
-    border-radius: 5px;
-    margin-bottom: 20px;
-`
-const FormButton = styled.button`
-    background-color: #3dc73d;
-    color: white;
-    border: none;
-    padding: 11px 25px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    margin-bottom: 4px;
 `
 const ProductListContainer = styled.div`
     margin-bottom: 30px;
@@ -169,12 +130,7 @@ export default function Retirar() {
             <Title>Retirar Produtos</Title>
             <Form onSubmit={handleOnSubmit}>
                 <InputContainer flex={5}>
-                    <Label>Produto</Label>
-                    <Input
-                        required
-                        onChange={(e) => setProductId(parseInt(e.target.value.split(' ')[0]))}
-                        list='products'>
-                    </Input>
+                    <Input name="product" label='Produto' required list='products' onChange={(e) => setProductId(parseInt(e.target.value.split(' ')[0]))} />
                     <datalist id="products">
                         {
                             products.map(item => (
@@ -184,8 +140,7 @@ export default function Retirar() {
                     </datalist>
                 </InputContainer>
                 <InputContainer flex={2}>
-                    <Label>Lote / Validade</Label>
-                    <Select required onChange={(e) => setSubProductId(parseInt(e.target.value))}>
+                    <Select name='lote-validade' label='Lote / Validade' required onChange={(e) => setSubProductId(parseInt(e.target.value))}>
                         <option value={0}></option>
                         {
                             products.filter(item => item.id === productId).map(item => (
@@ -197,15 +152,9 @@ export default function Retirar() {
                     </Select>
                 </InputContainer>
                 <InputContainer flex={1}>
-                    <Label>Quantidade</Label>
-                    <Input
-                        required
-                        min={1}
-                        type='number'
-                        onChange={(e) => setQuantity(parseInt(e.target.value))}>
-                    </Input>
+                    <Input name='quantity' label='Quantidade' type='number' min={1} onChange={(e) => setQuantity(parseInt(e.target.value))} />
                 </InputContainer>
-                <FormButton>Lançar</FormButton>
+                <Button style={{ padding: '12px 24px', alignSelf: 'flex-end' }} text={'Lançar'} />
             </Form>
             {
                 productList.length > 0 &&

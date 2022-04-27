@@ -5,6 +5,9 @@ import { useAppSelector } from "../app/hooks"
 import { getProvider, mergeProducts, reduceStockIns } from "../utils/functions"
 import { useEffect, useState } from "react"
 import { TProduct } from "../types/TProduct"
+import Select from "../components/Select"
+import Input from "../components/Input"
+import ListHeader from "../components/List/ListHeader"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -30,36 +33,25 @@ const ProductBtn = styled.button<{ active?: boolean }>`
 `
 const MenuContainer = styled.div`
     display: flex;
-    margin-right: 0;
+    align-items: center;
     justify-content: space-between;
+    margin-bottom: 20px;
 `
 const Filter = styled.div`
-    margin-top: -10px;
-    width: 70%;
     display: flex;
     align-items: center;
+`
+const InputContainer = styled.div`
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
 `
 const Label = styled.label`
     margin-right: 5px;
 `
-const Input = styled.input`
+const CheckBox = styled.input`
     padding: 5px 10px;
     margin-right: 10px;
-`
-const Select = styled.select`
-    padding: 5px 10px;
-    margin-right: 20px;
-    flex: 1;
-`
-const ListHeader = styled.div`
-    background-color: #5fb4ff;
-    height: 45px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid lightgray;
-    font-size: 15px;
-    font-weight: bold;
-    border-bottom: 1px solid #cacaca;
 `
 const ListHeaderItem = styled.p<{ flex?: number }>`
     flex: ${props => props.flex ? props.flex : null};
@@ -78,13 +70,6 @@ const Product = styled.ul`
         background-color: #74bcff;
     }
 `
-// const SubProduct = styled.ul`
-//     height: 40px;
-//     display: flex;
-//     background-color: #eef7ff;
-//     align-items: center;
-//     border-bottom: 1px solid #e4e4e4;
-// `
 const ProductLi = styled.li<{ flex?: number, color?: string }>`
     flex: ${props => props.flex ? props.flex : null};
     background-color: ${props => props.color ? props.color : null};
@@ -92,15 +77,6 @@ const ProductLi = styled.li<{ flex?: number, color?: string }>`
     min-width: 75px;
     padding: 10px;
 `
-// const SubProductLi = styled.li`
-//     display: flex;
-//     justify-content: center;
-//     font-size: 14px;
-//     width: 16%;
-//     color: #3142a0;
-//     font-weight: 500;
-//     padding: 10px;
-// `
 
 export default function Produtos() {
 
@@ -156,14 +132,16 @@ export default function Produtos() {
             <MenuContainer>
                 <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
                 <Filter>
-                    <Label>Pesquisar:</Label>
-                    <Input style={{ flex: 2, marginRight: '20px' }} type='text' onChange={(e) => setSearch(e.target.value)}></Input>
-                    <Label>Fornecedor:</Label>
-                    <Select onChange={(e) => setProvider(e.target.value)}>
-                        <option></option>
-                        {providers.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
-                    </Select>
-                    <Input style={{ width: '18px', height: '18px', cursor: 'pointer' }} onChange={() => setLowStockFilter(!lowStockFilter)} id="lowStock" name="lowStock" type='checkbox'></Input>
+                    <InputContainer>
+                        <Input name="search" label="Pesquisar:" display="flex" type='text' onChange={(e) => setSearch(e.target.value)}></Input>
+                    </InputContainer>
+                    <InputContainer>
+                        <Select name="providers" label="Fornecedores:" display="flex" onChange={(e) => setProvider(e.target.value)}>
+                            <option></option>
+                            {providers.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
+                        </Select>
+                    </InputContainer>
+                    <CheckBox style={{ width: '18px', height: '18px', cursor: 'pointer' }} onChange={() => setLowStockFilter(!lowStockFilter)} id="lowStock" name="lowStock" type='checkbox'></CheckBox>
                     <Label style={{ cursor: 'pointer' }} htmlFor="lowStock">Produtos em falta</Label>
                 </Filter>
             </MenuContainer>
@@ -188,16 +166,6 @@ export default function Produtos() {
                             <ProductLi flex={1} style={{ textAlign: 'center' }}>{item.min_stock}</ProductLi>
                             <ProductLi flex={1} style={{ textAlign: 'center' }}>{item.max_stock}</ProductLi>
                         </Product>
-
-                        {/* {item.subproducts &&
-                            item.subproducts.map((subitem) => (
-                                <SubProduct key={subitem.id}>
-                                    <SubProductLi>Lote: {subitem.lote}</SubProductLi>
-                                    <SubProductLi>Validade: {subitem.validade.slice(0, 10)}</SubProductLi>
-                                    <SubProductLi>Quantidade: {subitem.quantity}</SubProductLi>
-                                </SubProduct>
-                            ))
-                        } */}
                     </Container>
                 ))
             }

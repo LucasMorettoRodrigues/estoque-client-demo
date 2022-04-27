@@ -14,6 +14,11 @@ const Title = styled.h1`
 const Form = styled.form`
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
+`
+const InputContainer = styled.div`
+    width: 48%;
+    margin-bottom: 20px;
 `
 const ButtonContainer = styled.div`
     display: flex;
@@ -39,23 +44,27 @@ export default function EditarSubProduto() {
 
     return (
         <>
-            <Title>Editar Produto</Title>
+            <Title>Editar SubProduto</Title>
             <Form onSubmit={handleOnSubmit}>
-                <Input
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setLote(e.target.value)}
-                    name={'lote'}
-                    label={'Lote'}
-                    value={lote}
-                    required
-                />
-                <Input
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setValidade(e.target.value)}
-                    name={'validade'}
-                    label={'Validade'}
-                    type='date'
-                    value={validade}
-                    required
-                />
+                <InputContainer>
+                    <Input
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setLote(e.target.value)}
+                        name={'lote'}
+                        label={'Lote'}
+                        value={lote}
+                        required
+                    />
+                </InputContainer>
+                <InputContainer>
+                    <Input
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setValidade(e.target.value)}
+                        name={'validade'}
+                        label={'Validade'}
+                        type='date'
+                        value={validade}
+                        required
+                    />
+                </InputContainer>
                 <ButtonContainer>
                     <Button text='Editar Produto' />
                     <Button

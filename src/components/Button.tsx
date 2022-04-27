@@ -1,3 +1,4 @@
+import { FC, ButtonHTMLAttributes } from "react"
 import styled from "styled-components"
 
 const SButton = styled.button<{ bg?: string }>`
@@ -8,21 +9,28 @@ const SButton = styled.button<{ bg?: string }>`
     border-radius: 5px;
     cursor: pointer;
     font-weight: 600;
-    margin: 0 20px 20px 0;
 
     &:hover {
         opacity: 0.95;
     }
 `
 
-type Props = {
+interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
     text: string,
     onClick?: () => void,
     bg?: string
 }
 
-export default function Button({ text, onClick, bg }: Props) {
+// type Props = {
+//     text: string,
+//     onClick?: () => void,
+//     bg?: string
+// }
+
+const Button: FC<Props> = ({ text, onClick, bg, ...rest }: Props) => {
     return (
-        <SButton bg={bg} onClick={onClick}>{text}</SButton>
+        <SButton bg={bg} {...rest} onClick={onClick}>{text}</SButton>
     )
 }
+
+export default Button

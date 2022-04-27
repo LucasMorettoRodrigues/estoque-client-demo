@@ -5,26 +5,18 @@ import { TProduct } from "../types/TProduct"
 import { FormEvent, useState } from "react"
 import { AiOutlineDelete } from 'react-icons/ai'
 import Button from "../components/Button"
-import { createStockOut } from "../features/stockOut/stockOut"
 import { TSubProduct } from "../types/TSubProduct"
 import EditDeleteButton from "../components/EditDeleteButton"
-import { compareDates, getProduct, getSubProduct } from "../utils/functions"
+import { getProduct, getSubProduct } from "../utils/functions"
 import Mensagem from "../components/Mensagem"
 import { createAdjustStock } from "../features/adjustStock/adjustStock"
+import Input from "../components/Input"
+import Select from "../components/Select"
+import ListHeader from "../components/List/ListHeader"
 
 const Title = styled.h1`
     color: #222;
     margin: 30px 0;
-`
-const ListHeader = styled.div`
-    background-color: #5fb4ff;
-    height: 45px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid lightgray;
-    font-size: 15px;
-    font-weight: bold;
-    border-bottom: 1px solid #cacaca;
 `
 const ListHeaderItem = styled.p<{ flex?: number }>`
     flex: ${props => props.flex ? props.flex : null};
@@ -56,28 +48,6 @@ const InputContainer = styled.div<{ flex: number }>`
     margin-right: 20px;
     flex-direction: column;
     font-size: 14px;
-`
-const Label = styled.label`
-    margin-left: 4px;
-    margin-bottom: 4px;
-`
-const Input = styled.input`
-    padding: 10px;
-    width: 100%;
-    outline-color: lightblue;
-    background-color: white;
-    border: 1px solid lightgray;
-    border-radius: 5px;
-    margin-bottom: 20px;
-`
-const Select = styled.select`
-    padding: 10px;
-    width: 100%;
-    outline-color: lightblue;
-    background-color: white;
-    border: 1px solid lightgray;
-    border-radius: 5px;
-    margin-bottom: 20px;
 `
 const FormButton = styled.button`
     background-color: #3dc73d;
@@ -163,8 +133,9 @@ export default function Ajustar() {
             <Title>Ajustar Estoque</Title>
             <Form onSubmit={handleOnSubmit}>
                 <InputContainer flex={5}>
-                    <Label>Produto</Label>
                     <Input
+                        name="product"
+                        label="Produto"
                         required
                         onChange={(e) => setProductId(parseInt(e.target.value.split(' ')[0]))}
                         list='products'>
@@ -178,8 +149,11 @@ export default function Ajustar() {
                     </datalist>
                 </InputContainer>
                 <InputContainer flex={2}>
-                    <Label>Lote / Validade</Label>
-                    <Select required onChange={(e) => setSubProductId(e.target.value)}>
+                    <Select
+                        required
+                        name="lote-validade"
+                        label="Lote / Validade"
+                        onChange={(e) => setSubProductId(e.target.value)}>
                         <option></option>
                         {
                             products.filter(item => item.id === productId).map(item => (
@@ -191,14 +165,15 @@ export default function Ajustar() {
                     </Select>
                 </InputContainer>
                 <InputContainer flex={1}>
-                    <Label>Quantidade</Label>
                     <Input
+                        name="quantity"
+                        label="Quantidade"
                         required
                         type='number'
                         onChange={(e) => setQuantity(parseInt(e.target.value))}>
                     </Input>
                 </InputContainer>
-                <FormButton>Lançar</FormButton>
+                <Button style={{ padding: '12px 24px', alignSelf: 'flex-end' }} text={'Lançar'} />
             </Form>
             {
                 productList.length > 0 &&

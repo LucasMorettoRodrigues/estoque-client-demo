@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { useAppSelector } from "../app/hooks"
 
 const Container = styled.div`
     position: fixed;
@@ -40,6 +41,22 @@ const Loader = styled.div`
 `
 
 export default function Loading() {
+
+    const statusProvider = useAppSelector(state => state.fornecedor.status)
+    const statusProduct = useAppSelector(state => state.produto.status)
+    const statusStockIn = useAppSelector(state => state.stockIn.status)
+    const statusStockOut = useAppSelector(state => state.stockOut.status)
+    const statusAdjustStock = useAppSelector(state => state.adjustStock.status)
+
+    if (
+        statusProduct !== 'loading' ||
+        statusProvider !== 'loading' ||
+        statusStockIn !== 'loading' ||
+        statusStockOut !== 'loading' ||
+        statusAdjustStock !== 'loading') {
+        return <></>
+    }
+
     return (
         <Container>
             <Wrapper>

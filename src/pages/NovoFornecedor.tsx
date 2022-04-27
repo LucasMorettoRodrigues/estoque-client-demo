@@ -10,6 +10,9 @@ const Title = styled.h1`
     color: #222;
     margin: 30px 0;
 `
+const InputContainer = styled.div`
+    margin-bottom: 20px;
+`
 
 export default function NovoFornecedor() {
 
@@ -28,12 +31,14 @@ export default function NovoFornecedor() {
         <>
             <form onSubmit={handleOnSubmit}>
                 <Title>Novo Fornecedor</Title>
-                <Input
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-                    name={'name'}
-                    label={'Name'}
-                    required
-                />
+                <InputContainer>
+                    <Input
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                        name={'name'}
+                        label={'Name'}
+                        required
+                    />
+                </InputContainer>
                 <Button text={'Cadastrar Fornecedor'} />
             </form>
         </>

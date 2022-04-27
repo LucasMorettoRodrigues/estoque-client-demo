@@ -4,7 +4,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "./app/hooks";
+import { useAppDispatch } from "./app/hooks";
 import Container from "./components/Container";
 import Loading from "./components/Loading";
 import Navbar from "./components/Navbar";
@@ -32,11 +32,6 @@ import { Home } from "./pages/Home";
 function App() {
 
   const dispatch = useAppDispatch()
-  const statusProvider = useAppSelector(state => state.fornecedor.status)
-  const statusProduct = useAppSelector(state => state.produto.status)
-  const statusStockIn = useAppSelector(state => state.stockIn.status)
-  const statusStockOut = useAppSelector(state => state.stockOut.status)
-  const statusAdjustStock = useAppSelector(state => state.adjustStock.status)
 
   useEffect(() => {
     dispatch(getFornecedores())
@@ -48,9 +43,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      {(statusProduct === 'loading' || statusProvider === 'loading' || statusStockIn === 'loading' || statusStockOut === 'loading' || statusAdjustStock === 'loading') &&
-        <Loading />
-      }
+      <Loading />
       <Navbar />
       <Container>
         <Routes>
