@@ -26,6 +26,11 @@ const Item = styled.li`
     flex: 1;
     padding: 20px;
     color: black;
+    transition: all .3s ease-in-out;
+
+    &:hover {
+        color: #232350;
+    }
 `
 
 export default function Navbar() {

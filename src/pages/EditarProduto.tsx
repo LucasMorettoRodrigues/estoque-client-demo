@@ -132,6 +132,7 @@ export default function EditarProduto() {
                     <Button text='Editar Produto' />
                     <div>
                         <Button
+                            style={{ marginRight: '20px' }}
                             onClick={() => dispatch(editProduct({ ...product, hide: true }))}
                             text='Arquivar'
                             bg='blue'
