@@ -1,10 +1,10 @@
 import { useState, FormEvent, ChangeEvent } from "react"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
-import { useAppDispatch } from "../app/hooks"
-import Button from "../components/Button"
-import Input from "../components/Input"
-import { createProvider } from "../features/fornecedor/fornecedorSlice"
+import { useAppDispatch } from "../../app/hooks"
+import Button from "../../components/Button"
+import Input from "../../components/Input"
+import { createProvider } from "../../features/fornecedor/fornecedorSlice"
 
 const Title = styled.h1`
     color: #222;

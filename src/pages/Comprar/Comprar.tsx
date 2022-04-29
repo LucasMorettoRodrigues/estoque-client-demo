@@ -1,19 +1,19 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
-import { useAppDispatch, useAppSelector } from "../app/hooks"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { FormEvent, useState } from "react"
 import { AiOutlineDelete } from 'react-icons/ai'
-import Button from "../components/Button"
-import { TStockIn } from "../types/TStockIn"
-import { getProduct, getProvider } from "../utils/functions"
-import { createStockIn } from "../features/stockIn/stockIn"
-import EditDeleteButton from "../components/EditDeleteButton"
-import Mensagem from "../components/Mensagem"
-import { createProvider } from "../features/fornecedor/fornecedorSlice"
-import Input from "../components/Input"
-import ListHeader from "../components/List/ListHeader"
-import Item from "../components/List/Item"
-import ItemsContainer from "../components/List/ItemsContainer"
+import Button from "../../components/Button"
+import { TStockIn } from "../../types/TStockIn"
+import { getProduct, getProvider } from "../../utils/functions"
+import { createStockIn } from "../../features/stockIn/stockIn"
+import EditDeleteButton from "../../components/EditDeleteButton"
+import Mensagem from "../../components/Mensagem"
+import { createProvider } from "../../features/fornecedor/fornecedorSlice"
+import Input from "../../components/Input"
+import ListHeader from "../../components/List/ListHeader"
+import Item from "../../components/List/Item"
+import ItemsContainer from "../../components/List/ItemsContainer"
 
 const Title = styled.h1`
     color: #222;
@@ -53,11 +53,15 @@ export default function Comprar() {
     const [warning, setWarning] = useState('')
     const [message, setMessage] = useState('')
 
-    const handleOnSubmit = (e?: FormEvent<HTMLFormElement>) => {
-        e && e.preventDefault()
+    const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
 
-        if ((validade && !lote) || (!validade && lote)) {
-            return setError(`Campo validade ou lote faltando.`)
+        if (!productId || !providerId || !price || !lote || !validade || !quantity) {
+            return setError(`Por favor preencha todos os campo.`)
+        }
+
+        if (!getProduct(products, productId)) {
+            return setError(`O produto não existe.`)
         }
 
         if (!findOrCreateProvider(providerId)) return
@@ -74,7 +78,9 @@ export default function Comprar() {
                 quantity: quantity
             }])
         } else {
-            return setError('Produto ja lançado.')
+            let newCart = cart.slice()
+            newCart[index].quantity += quantity
+            setCart(newCart)
         }
 
         Array.from(document.querySelectorAll("input")).forEach(
@@ -197,7 +203,7 @@ export default function Comprar() {
                         onChange={(e) => setQuantity(parseInt(e.target.value))}
                     />
                 </InputContainer>
-                <Button style={{ padding: '12px 24px', alignSelf: 'flex-end' }} text={'Lançar'} />
+                <Button style={{ padding: '12px 24px', alignSelf: 'flex-end' }} text='Lançar' />
             </Form>
             {
                 cart.length > 0 &&
