@@ -22,7 +22,7 @@ import Fornecedores from "./pages/Fornecedores";
 import Historico from "./pages/Historico";
 import NovoFornecedor from "./pages/NovoForcedor/NovoFornecedor";
 import NovoProduto from "./pages/NovoProduto";
-import Produtos from "./pages/Produtos";
+import Produtos from "./pages/Produtos/Produtos";
 import Retirar from "./pages/Retirar";
 import ProdutoHistorico from "./pages/ProdutoHistorico";
 import Ajustar from "./pages/Ajustar";
