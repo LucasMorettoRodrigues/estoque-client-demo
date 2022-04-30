@@ -13,7 +13,7 @@ import { getProdutos } from "./features/produtos/produtoSlice";
 import { getAllStockIns } from "./features/stockIn/stockIn";
 import { getAllStockOuts } from "./features/stockOut/stockOut";
 import Comprar from "./pages/Comprar/Comprar";
-import Detalhes from "./pages/Detalhes";
+import Detalhes from "./pages/Detalhes/Detalhes";
 import ProdutosEscondidos from "./pages/ProdutosEscondidos";
 import EditarFornecedor from "./pages/EditarFornecedor";
 import EditarProduto from "./pages/EditarProduto";

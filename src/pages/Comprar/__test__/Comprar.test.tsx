@@ -16,7 +16,7 @@ const mockStore = {
     produto: { produtos: [{ id: 1, name: 'produto_item' }] }
 }
 
-const MockNovoFornecedor = () => {
+const MockComprar = () => {
     return (
         <BrowserRouter>
             <Comprar />
@@ -38,7 +38,7 @@ describe('Integration test of Comprar Form', () => {
 
     it('should add product to list', async () => {
         const { getByLabelText, getByRole, getByText } = render(
-            <MockNovoFornecedor />
+            <MockComprar />
         );
 
         fireEvent.change(getByLabelText('Produto'), { target: { value: '1' } })
@@ -59,7 +59,7 @@ describe('Integration test of Comprar Form', () => {
 
     it('should sum quantities when two equal products are added to list', async () => {
         const { getByLabelText, getByRole, getByText } = render(
-            <MockNovoFornecedor />
+            <MockComprar />
         );
 
         let i = 0
@@ -80,7 +80,7 @@ describe('Integration test of Comprar Form', () => {
 
     it('should get Error if product does not exists', async () => {
         const { getByLabelText, getByRole, getByText } = render(
-            <MockNovoFornecedor />
+            <MockComprar />
         );
 
         fireEvent.change(getByLabelText('Produto'), { target: { value: '2' } })
@@ -96,7 +96,7 @@ describe('Integration test of Comprar Form', () => {
 
     it('should get Message if provider does not exists', async () => {
         const { getByLabelText, getByRole, getByText } = render(
-            <MockNovoFornecedor />
+            <MockComprar />
         );
 
         fireEvent.change(getByLabelText('Produto'), { target: { value: '1' } })
@@ -112,7 +112,7 @@ describe('Integration test of Comprar Form', () => {
 
     it('should get Error if price is not declared', async () => {
         const { getByLabelText, getByRole, getByText } = render(
-            <MockNovoFornecedor />
+            <MockComprar />
         );
 
         fireEvent.change(getByLabelText('Produto'), { target: { value: '1' } })
@@ -127,7 +127,7 @@ describe('Integration test of Comprar Form', () => {
 
     it('should get Error if lote is not declared', async () => {
         const { getByLabelText, getByRole, getByText } = render(
-            <MockNovoFornecedor />
+            <MockComprar />
         );
 
         fireEvent.change(getByLabelText('Produto'), { target: { value: '2' } })
@@ -142,7 +142,7 @@ describe('Integration test of Comprar Form', () => {
 
     it('should get Error if validity is not declared', async () => {
         const { getByLabelText, getByRole, getByText } = render(
-            <MockNovoFornecedor />
+            <MockComprar />
         );
 
         fireEvent.change(getByLabelText('Produto'), { target: { value: '2' } })
@@ -157,7 +157,7 @@ describe('Integration test of Comprar Form', () => {
 
     it('should get Error if quantity is not declared', async () => {
         const { getByLabelText, getByRole, getByText } = render(
-            <MockNovoFornecedor />
+            <MockComprar />
         );
 
         fireEvent.change(getByLabelText('Produto'), { target: { value: '2' } })

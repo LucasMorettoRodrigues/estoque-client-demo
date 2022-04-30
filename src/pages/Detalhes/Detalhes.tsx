@@ -1,16 +1,16 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
-import Button from "../components/Button"
-import { useAppSelector } from "../app/hooks"
+import Button from "../../components/Button"
+import { useAppSelector } from "../../app/hooks"
 import { useEffect, useState } from "react"
-import { TProduct } from "../types/TProduct"
-import { compare, getProvider, reduceStockIns } from "../utils/functions"
-import Input from "../components/Input"
-import Select from "../components/Select"
-import ListHeader from "../components/List/ListHeader"
-import Item from "../components/List/Item"
-import ItemsContainer from "../components/List/ItemsContainer"
-import ProductBtn from "../components/ProductBtn"
+import { TProduct } from "../../types/TProduct"
+import { compare, getProvider, reduceStockIns } from "../../utils/functions"
+import Input from "../../components/Input"
+import Select from "../../components/Select"
+import ListHeader from "../../components/List/ListHeader"
+import Item from "../../components/List/Item"
+import ItemsContainer from "../../components/List/ItemsContainer"
+import ProductBtn from "../../components/ProductBtn"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -51,6 +51,7 @@ export default function Detalhes() {
     const [productsAndProviders, setProductsAndProviders] = useState<TProduct[]>([])
     const [sort, setSort] = useState('')
     const [search, setSearch] = useState('')
+
     let categories = Array.from(new Set(productsData.map(i => i.category)))
 
     const getStockOutFrequency = (id: number): number | null => {
@@ -146,7 +147,7 @@ export default function Detalhes() {
                     <InputContainer>
                         <Select name="categories" label="Categoria:" display="flex" onChange={(e) => setCategory(e.target.value)}>
                             <option></option>
-                            {categories.map(i => <option key={i}>{i}</option>)}
+                            {categories.map((i, index) => <option key={index}>{i}</option>)}
                         </Select>
                     </InputContainer>
                     <InputContainer>
