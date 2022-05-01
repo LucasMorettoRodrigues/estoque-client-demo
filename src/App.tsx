@@ -20,7 +20,7 @@ import EditarProduto from "./pages/EditarProduto";
 import EditarSubProduto from "./pages/EditarSubProduto";
 import Fornecedores from "./pages/Fornecedores";
 import Historico from "./pages/Historico";
-import NovoFornecedor from "./pages/NovoForcedor/NovoFornecedor";
+import NovoFornecedor from "./pages/NovoFornecedor";
 import NovoProduto from "./pages/NovoProduto";
 import Produtos from "./pages/Produtos/Produtos";
 import Retirar from "./pages/Retirar";
@@ -47,7 +47,8 @@ function App() {
       <Navbar />
       <Container>
         <Routes>
-          <Route path='/estoque-client' element={<Home />} />
+          <Route path='/' element={<Home />} />
+          {/* <Route path='/estoque-client' element={<Home />} /> */}
           <Route path='/produtos' element={<Produtos />} />
           <Route path='/produtos/detalhes' element={<Detalhes />} />
           <Route path='/produtos/escondidos' element={<ProdutosEscondidos />} />
