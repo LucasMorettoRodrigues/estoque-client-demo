@@ -70,10 +70,9 @@ export default function Produtos() {
         let filtered = []
 
         if (lowStockFilter) {
-            filtered = mergeProducts(productsAndProviders).filter(i => i.hide === false)
-                .filter(i => i.stock < i.min_stock)
+            filtered = mergeProducts(productsAndProviders).filter(i => i.stock < i.min_stock)
         } else {
-            filtered = mergeProducts(productsAndProviders).filter(i => i.hide === false)
+            filtered = mergeProducts(productsAndProviders)
         }
 
         if (search) {
@@ -125,7 +124,7 @@ export default function Produtos() {
                         <ItemsContainer onClick={() => navigate(`/produtos/${item.id}/historico`, { state: item })}>
                             <Item flex={8} text={item.name} />
                             <Item flex={2} text={item.providers ? item.providers.map(i => `${getProvider(providers, i)?.name} `) : ''} />
-                            <Item flex={1} text={item.min_stock} align='center'
+                            <Item flex={1} text={item.stock} align='center'
                                 bg={item.stock < item.min_stock ? '#ff5353' : 'inherit'} />
                             <Item flex={1} text={item.min_stock} align='center' />
                             <Item flex={1} text={item.max_stock} align='center' />

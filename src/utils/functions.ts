@@ -60,10 +60,14 @@ export const compareDates = (a: string, b: string): number => {
 }
 
 export const mergeProducts = (products: TProduct[]): TProduct[] => {
+    products = products.filter(i => i.hide === false)
+
     let res: TProduct[] = []
+
     for (let product of products) {
         if (!res.find(i => i.name === product.name)) {
             res = [...res, product]
+
         } else {
             res =
                 res.map(i => (
@@ -71,7 +75,7 @@ export const mergeProducts = (products: TProduct[]): TProduct[] => {
                         ? {
                             ...i,
                             stock: i.stock + product.stock,
-                            subproducts: product.subproducts ? [...i.subproducts!, ...product.subproducts] : i.subproducts
+                            subproducts: i.subproducts!.concat(i.subproducts!)
                         }
                         : i
                 )
