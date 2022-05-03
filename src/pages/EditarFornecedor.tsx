@@ -5,11 +5,8 @@ import styled from "styled-components"
 import Button from "../components/Button"
 import Input from "../components/Input"
 import { editProvider } from "../features/fornecedor/fornecedorSlice"
+import Title from "../components/Title"
 
-const Title = styled.h1`
-    color: #222;
-    margin: 30px 0;
-`
 const InputContainer = styled.div`
     margin-bottom: 20px;
 `
@@ -37,7 +34,7 @@ export default function EditarFornecedor() {
     return (
         <>
             <form onSubmit={handleOnSubmit}>
-                <Title>Editar Fornecedor</Title>
+                <Title title='Editar Fornecedor' />
                 <InputContainer>
                     <Input
                         onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}

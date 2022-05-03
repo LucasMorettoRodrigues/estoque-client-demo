@@ -8,11 +8,8 @@ import EditDeleteButton from "../components/EditDeleteButton"
 import ListHeader from "../components/List/ListHeader"
 import Item from "../components/List/Item"
 import ItemsContainer from "../components/List/ItemsContainer"
+import Title from "../components/Title"
 
-const Title = styled.h1`
-    color: #222;
-    margin: 30px 0;
-`
 const ButtonContainer = styled.div`
     margin-bottom: 20px;
 `
@@ -25,7 +22,7 @@ export default function Fornecedores() {
 
     return (
         <>
-            <Title>Fornecedores</Title>
+            <Title title='Fornecedor' />
             <ButtonContainer>
                 <Button onClick={() => navigate('/novoFornecedor')} text={'Cadastrar Novo Fornecedor'} />
             </ButtonContainer>

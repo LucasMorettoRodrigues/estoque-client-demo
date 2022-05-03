@@ -15,11 +15,8 @@ import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import Form from "../../components/Form"
+import Title from "../../components/Title"
 
-const Title = styled.h1`
-    color: #222;
-    margin: 30px 0;
-`
 const InputContainer = styled.div<{ flex: number }>`
     flex: ${props => props.flex};
     display: flex;
@@ -127,7 +124,7 @@ export default function Comprar() {
             {error && <Mensagem onClick={() => setError('')} error={error} />}
             {message && <Mensagem onClick={() => setMessage('')} warning={message} />}
             {warning && <Mensagem onClick={handleCreateProvider} onClose={() => setWarning('')} warning={warning} />}
-            <Title>Comprar Produtos</Title>
+            <Title title='Comprar Produtos' />
             <Form onSubmit={handleOnSubmit}>
                 <InputContainer flex={5}>
                     <Input

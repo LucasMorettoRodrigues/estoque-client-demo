@@ -11,14 +11,11 @@ import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import ProductBtn from "../../components/ProductBtn"
+import Title from "../../components/Title"
 
 const Container = styled.div``
-const Title = styled.h1`
-    color: #222;
-    margin: 30px 0;
-    display: flex;
-`
-const ProductsBtnContainer = styled.div`
+
+const TitleContainer = styled.div`
     display: flex;
 `
 const MenuContainer = styled.div`
@@ -131,13 +128,12 @@ export default function Detalhes() {
 
     return (
         <>
-            <Title>Produtos /
-                <ProductsBtnContainer>
-                    <ProductBtn active={true} text='Detalhes' />
-                    <ProductBtn onClick={() => navigate('/produtos')} text='Resumo' />
-                    <ProductBtn onClick={() => navigate('/produtos/escondidos')} text='Arquivados' />
-                </ProductsBtnContainer>
-            </Title>
+            <TitleContainer>
+                <Title title='Produtos /' />
+                <ProductBtn active={true} text='Detalhes' />
+                <ProductBtn onClick={() => navigate('/produtos')} text='Resumo' />
+                <ProductBtn onClick={() => navigate('/produtos/escondidos')} text='Arquivados' />
+            </TitleContainer>
             <MenuContainer>
                 <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
                 <Filter>

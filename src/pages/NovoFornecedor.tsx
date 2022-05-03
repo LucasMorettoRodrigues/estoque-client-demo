@@ -4,12 +4,9 @@ import styled from "styled-components"
 import { useAppDispatch } from "../app/hooks"
 import Button from "../components/Button"
 import Input from "../components/Input"
+import Title from "../components/Title"
 import { createProvider } from "../features/fornecedor/fornecedorSlice"
 
-const Title = styled.h1`
-    color: #222;
-    margin: 30px 0;
-`
 const InputContainer = styled.div`
     margin-bottom: 20px;
 `
@@ -30,7 +27,7 @@ export default function NovoFornecedor() {
     return (
         <>
             <form onSubmit={handleOnSubmit}>
-                <Title>Novo Fornecedor</Title>
+                <Title title='Novo Fornecedor' />
                 <InputContainer>
                     <Input
                         onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}

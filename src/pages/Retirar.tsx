@@ -16,11 +16,8 @@ import ListHeader from "../components/List/ListHeader"
 import Item from "../components/List/Item"
 import ItemsContainer from "../components/List/ItemsContainer"
 import Form from "../components/Form"
+import Title from "../components/Title"
 
-const Title = styled.h1`
-    color: #222;
-    margin: 30px 0;
-`
 const InputContainer = styled.div<{ flex: number }>`
     flex: ${props => props.flex};
     display: flex;
@@ -106,7 +103,7 @@ export default function Retirar() {
         <>
             {error && <Mensagem onClick={() => setError('')} error={error} />}
             {warning && <Mensagem onClick={() => setWarning('')} warning={warning} />}
-            <Title>Retirar Produtos</Title>
+            <Title title='Retirar Produtos' />
             <Form onSubmit={handleOnSubmit}>
                 <InputContainer flex={5}>
                     <Input name="product" label='Produto' required list='products' onChange={(e) => setProductId(parseInt(e.target.value.split(' ')[0]))} />

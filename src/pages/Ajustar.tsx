@@ -16,11 +16,8 @@ import ListHeader from "../components/List/ListHeader"
 import Item from "../components/List/Item"
 import ItemsContainer from "../components/List/ItemsContainer"
 import Form from "../components/Form"
+import Title from "../components/Title"
 
-const Title = styled.h1`
-    color: #222;
-    margin: 30px 0;
-`
 const InputContainer = styled.div<{ flex: number }>`
     flex: ${props => props.flex};
     display: flex;
@@ -99,7 +96,7 @@ export default function Ajustar() {
         <>
             {error && <Mensagem onClick={() => setError('')} error={error} />}
             {warning && <Mensagem onClick={() => setWarning('')} warning={warning} />}
-            <Title>Ajustar Estoque</Title>
+            <Title title='Ajustar Estoque' />
             <Form onSubmit={handleOnSubmit}>
                 <InputContainer flex={5}>
                     <Input

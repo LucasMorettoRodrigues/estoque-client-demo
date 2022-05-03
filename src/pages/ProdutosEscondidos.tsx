@@ -10,14 +10,11 @@ import ListHeader from "../components/List/ListHeader"
 import Item from "../components/List/Item"
 import ItemsContainer from "../components/List/ItemsContainer"
 import ProductBtn from "../components/ProductBtn"
+import Title from "../components/Title"
 
 const Container = styled.div``
-const Title = styled.h1`
-    display: flex;
-    color: #222;
-    margin: 30px 0;
-`
-const ProductsBtnContainer = styled.div`
+
+const TitleContainer = styled.div`
     display: flex;
 `
 const ButtonContainer = styled.div`
@@ -44,13 +41,13 @@ export default function ProdutosEscondidos() {
 
     return (
         <>
-            <Title>Produtos /
-                <ProductsBtnContainer>
-                    <ProductBtn onClick={() => navigate('/produtos/detalhes')} text='Detalhes' />
-                    <ProductBtn onClick={() => navigate('/produtos')} text='Resumo' />
-                    <ProductBtn active={true} text='Arquivados' />
-                </ProductsBtnContainer>
-            </Title>
+            <TitleContainer>
+                <Title title='Produtos /' />
+                <ProductBtn onClick={() => navigate('/produtos/detalhes')} text='Detalhes' />
+                <ProductBtn onClick={() => navigate('/produtos')} text='Resumo' />
+                <ProductBtn active={true} text='Arquivados' />
+            </TitleContainer>
+
             <ButtonContainer>
                 <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
             </ButtonContainer>
