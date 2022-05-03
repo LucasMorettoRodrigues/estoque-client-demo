@@ -1,5 +1,5 @@
-describe("teste", () => {
-    it("a", () => {
+describe("Test product functionalities", () => {
+    it("Test create, archive, edit, delete product", () => {
         cy.visit("/")
 
         // Create

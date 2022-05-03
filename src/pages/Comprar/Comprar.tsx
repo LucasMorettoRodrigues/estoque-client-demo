@@ -14,15 +14,11 @@ import Input from "../../components/Input"
 import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
+import Form from "../../components/Form"
 
 const Title = styled.h1`
     color: #222;
     margin: 30px 0;
-`
-const Form = styled.form`
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
 `
 const InputContainer = styled.div<{ flex: number }>`
     flex: ${props => props.flex};
