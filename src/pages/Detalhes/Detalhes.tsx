@@ -14,7 +14,6 @@ import ProductBtn from "../../components/ProductBtn"
 import Title from "../../components/Title"
 
 const Container = styled.div``
-
 const TitleContainer = styled.div`
     display: flex;
 `
@@ -83,28 +82,8 @@ export default function Detalhes() {
     useEffect(() => {
         let products = productsAndProviders.slice().filter(i => i.hide === false)
 
-        setSortedProducts(products)
+        sort ? setSortedProducts(compare(products, sort)) : setSortedProducts(products)
 
-
-        if (sort === 'brand') {
-            setSortedProducts(compare(products, 'brand'))
-        }
-
-        if (sort === 'category') {
-            setSortedProducts(compare(products, 'category'))
-        }
-
-        if (sort === 'unit') {
-            setSortedProducts(compare(products, 'unit'))
-        }
-
-        if (sort === 'id') {
-            setSortedProducts(compare(products, 'id'))
-        }
-
-        if (sort === 'name') {
-            setSortedProducts(compare(products, 'name'))
-        }
     }, [sort, productsData, category, productsAndProviders])
 
     useEffect(() => {

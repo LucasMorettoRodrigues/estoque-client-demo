@@ -86,8 +86,12 @@ export const mergeProducts = (products: TProduct[]): TProduct[] => {
     return res
 }
 
-export const compare = (array: TProduct[], property: 'category' | 'brand' | 'unit' | 'id' | 'name') => {
-    return array.sort((a, b) => (a[property]! > b[property]!) ? 1 : ((b[property]! > a[property]!) ? -1 : 0))
+export const compare = (array: TProduct[], property: string) => {
+    if (property === 'category' || property === 'brand' || property === 'unit' ||
+        property === 'id' || property === 'name') {
+        return array.sort((a, b) => (a[property]! > b[property]!) ? 1 : ((b[property]! > a[property]!) ? -1 : 0))
+    }
+    return []
 }
 
 export const reduceStockIns = (stockIns: TStockIn[], key: keyof TStockIn) => {
