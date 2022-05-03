@@ -4,7 +4,9 @@ import styled from "styled-components"
 const SForm = styled.form`
     display: flex;
     align-items: center;
+    justify-content: space-between;
     margin-bottom: 20px;
+    flex-wrap: wrap;
 `
 type Props = {
     children: JSX.Element | JSX.Element[],

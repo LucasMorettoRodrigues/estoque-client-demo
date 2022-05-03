@@ -3,11 +3,10 @@ import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { useAppDispatch } from "../app/hooks"
 import Button from "../components/Button"
+import Form from "../components/Form"
 import Input from "../components/Input"
 import Title from "../components/Title"
 import { createProduct } from "../features/produtos/produtoSlice"
-
-const Form = styled.form``
 
 const InputsContainer = styled.div`
     display: flex;
