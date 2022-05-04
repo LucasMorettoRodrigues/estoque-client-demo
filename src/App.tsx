@@ -35,17 +35,20 @@ function App() {
 
   const dispatch = useAppDispatch()
 
-  const user = getUser()
-
   useEffect(() => {
+    const user = getUser()
+
     if (user) {
-      dispatch(getFornecedores())
       dispatch(getProdutos())
-      dispatch(getAllStockOuts())
-      dispatch(getAllStockIns())
-      dispatch(getAllAdjustStock())
+      if (user.user.role === 'admin') {
+        dispatch(getFornecedores())
+        dispatch(getAllStockOuts())
+        dispatch(getAllStockIns())
+        dispatch(getAllAdjustStock())
+      }
     }
-  }, [dispatch, user])
+  }, [dispatch])
+
 
   const PrivateRoute = ({ children }: { children: JSX.Element }) => {
     if (!getUser()) return <Navigate to="/login" />

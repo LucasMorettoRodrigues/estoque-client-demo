@@ -3,7 +3,7 @@ import styled from "styled-components"
 import Button from "../components/Button"
 import Form from "../components/Form"
 import Input from "../components/Input"
-import { login } from "../services/auth.service"
+import { getUser, login } from "../services/auth.service"
 
 const Container = styled.div`
     display: flex;
@@ -48,7 +48,13 @@ const Login = () => {
 
         try {
             await login(email, password)
-            window.location.href = "/produtos";
+
+            if (getUser().user.role === 'user') {
+                window.location.href = "/retirar";
+            } else {
+                window.location.href = "/produtos";
+            }
+
         } catch (error: any) {
             setError(error.response.data)
         }

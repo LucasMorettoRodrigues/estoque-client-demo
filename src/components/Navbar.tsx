@@ -20,7 +20,6 @@ const Title = styled.h1`
     flex: 1;
 `
 const List = styled.ul`
-    flex: 2;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -37,19 +36,26 @@ const Item = styled.li`
 `
 
 export default function Navbar() {
+
+    const user = getUser()
+
     return (
         <Container>
             <Nav>
                 <Wrapper>
                     <Title>Estoque</Title>
-                    {getUser() &&
+                    {user &&
                         <List>
-                            <Link to='/produtos/detalhes'><Item>Produtos</Item></Link>
-                            <Link to='/fornecedores'><Item>Fornecedores</Item></Link>
-                            <Link to='/comprar'><Item>Comprar</Item></Link>
-                            <Link to='/retirar'><Item>Retirar</Item></Link>
-                            <Link to='/ajustar'><Item>Ajustar</Item></Link>
-                            <Link to='/historico'><Item>Histórico</Item></Link>
+                            {user.user.role === 'admin' &&
+                                <>
+                                    <Link to='/produtos/detalhes'><Item>Produtos</Item></Link>
+                                    <Link to='/fornecedores'><Item>Fornecedores</Item></Link>
+                                    <Link to='/comprar'><Item>Comprar</Item></Link>
+                                    <Link to='/retirar'><Item>Retirar</Item></Link>
+                                    <Link to='/ajustar'><Item>Ajustar</Item></Link>
+                                    <Link to='/historico'><Item>Histórico</Item></Link>
+                                </>
+                            }
                             <Item onClick={() => logout()}>Sair</Item>
                         </List>
                     }

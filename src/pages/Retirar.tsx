@@ -96,7 +96,8 @@ export default function Retirar() {
             }))
         }
 
-        navigate('/historico')
+        setProductList([])
+        setWarning('Produtos retirados com sucesso.')
     }
 
     return (
