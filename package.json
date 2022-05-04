@@ -1,6 +1,6 @@
 {
   "name": "my-app",
-  "homepage": "https://lucasmorettorodrigues.github.io/estoque-client",
+  "homepage": "https://lucasmorettorodrigues.github.io/login",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

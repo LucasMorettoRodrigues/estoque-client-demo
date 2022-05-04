@@ -15,6 +15,7 @@ const Select = styled.select`
     background-color: white;
     border: 1px solid lightgray;
     border-radius: 5px;
+    min-width: 180px;
     cursor: pointer;
 `
 

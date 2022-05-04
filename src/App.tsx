@@ -3,6 +3,7 @@ import {
   BrowserRouter,
   Routes,
   Route,
+  Navigate,
 } from "react-router-dom";
 import { useAppDispatch } from "./app/hooks";
 import Container from "./components/Container";
@@ -27,19 +28,29 @@ import Retirar from "./pages/Retirar";
 import ProdutoHistorico from "./pages/ProdutoHistorico";
 import Ajustar from "./pages/Ajustar";
 import { getAllAdjustStock } from "./features/adjustStock/adjustStock";
-import { Home } from "./pages/Home";
+import Login from "./pages/Login";
+import { getUser } from "./services/auth.service";
 
 function App() {
 
   const dispatch = useAppDispatch()
 
+  const user = getUser()
+
   useEffect(() => {
-    dispatch(getFornecedores())
-    dispatch(getProdutos())
-    dispatch(getAllStockOuts())
-    dispatch(getAllStockIns())
-    dispatch(getAllAdjustStock())
-  }, [dispatch])
+    if (user) {
+      dispatch(getFornecedores())
+      dispatch(getProdutos())
+      dispatch(getAllStockOuts())
+      dispatch(getAllStockIns())
+      dispatch(getAllAdjustStock())
+    }
+  }, [dispatch, user])
+
+  const PrivateRoute = ({ children }: { children: JSX.Element }) => {
+    if (!getUser()) return <Navigate to="/login" />
+    return children
+  }
 
   return (
     <BrowserRouter>
@@ -47,22 +58,21 @@ function App() {
       <Navbar />
       <Container>
         <Routes>
-          <Route path='/' element={<Home />} />
-          {/* <Route path='/estoque-client' element={<Home />} /> */}
-          <Route path='/produtos' element={<Produtos />} />
-          <Route path='/produtos/detalhes' element={<Detalhes />} />
-          <Route path='/produtos/escondidos' element={<ProdutosEscondidos />} />
-          <Route path='/produtos/:id' element={<EditarProduto />} />
-          <Route path='/produtos/:id_produto/subprodutos/:id_subproduto' element={<EditarSubProduto />} />
-          <Route path='/novoProduto' element={<NovoProduto />} />
-          <Route path='/fornecedores' element={<Fornecedores />} />
-          <Route path='/fornecedores/:id' element={<EditarFornecedor />} />
-          <Route path='/novoFornecedor' element={<NovoFornecedor />} />
-          <Route path='/comprar' element={<Comprar />} />
-          <Route path='/retirar' element={<Retirar />} />
-          <Route path='/ajustar' element={<Ajustar />} />
-          <Route path='/historico' element={<Historico />} />
-          <Route path='/produtos/:id/historico' element={<ProdutoHistorico />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/produtos' element={<PrivateRoute><Produtos /></PrivateRoute>} />
+          <Route path='/produtos/detalhes' element={<PrivateRoute><Detalhes /></PrivateRoute>} />
+          <Route path='/produtos/escondidos' element={<PrivateRoute><ProdutosEscondidos /></PrivateRoute>} />
+          <Route path='/produtos/:id' element={<PrivateRoute><EditarProduto /></PrivateRoute>} />
+          <Route path='/produtos/:id_produto/subprodutos/:id_subproduto' element={<PrivateRoute><EditarSubProduto /></PrivateRoute>} />
+          <Route path='/novoProduto' element={<PrivateRoute><NovoProduto /></PrivateRoute>} />
+          <Route path='/fornecedores' element={<PrivateRoute><Fornecedores /></PrivateRoute>} />
+          <Route path='/fornecedores/:id' element={<PrivateRoute><EditarFornecedor /></PrivateRoute>} />
+          <Route path='/novoFornecedor' element={<PrivateRoute><NovoFornecedor /></PrivateRoute>} />
+          <Route path='/comprar' element={<PrivateRoute><Comprar /></PrivateRoute>} />
+          <Route path='/retirar' element={<PrivateRoute><Retirar /></PrivateRoute>} />
+          <Route path='/ajustar' element={<PrivateRoute><Ajustar /></PrivateRoute>} />
+          <Route path='/historico' element={<PrivateRoute><Historico /></PrivateRoute>} />
+          <Route path='/produtos/:id/historico' element={<PrivateRoute><ProdutoHistorico /></PrivateRoute>} />
         </Routes>
       </Container>
     </BrowserRouter>
