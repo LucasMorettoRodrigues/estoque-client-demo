@@ -1,5 +1,4 @@
 import { FormEvent, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import Button from "../components/Button"
 import Form from "../components/Form"
@@ -41,7 +40,6 @@ const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
-    const navigate = useNavigate()
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
