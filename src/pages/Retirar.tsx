@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import { useNavigate } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { TProduct } from "../types/TProduct"
 import { FormEvent, useState } from "react"
@@ -29,6 +28,14 @@ const ProductListContainer = styled.div`
     margin-bottom: 30px;
 `
 
+const BottomContainer = styled.div`
+    display: flex;
+    align-items: center;
+`
+const BottomInputContainer = styled.div`
+    margin-right: 10px;
+`
+
 type body = {
     product: TProduct,
     subProduct: TSubProduct | null,
@@ -37,7 +44,6 @@ type body = {
 
 export default function Retirar() {
 
-    const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const products = useAppSelector(state => state.produto.produtos)
 
@@ -47,6 +53,8 @@ export default function Retirar() {
     const [productList, setProductList] = useState<body[]>([])
     const [error, setError] = useState('')
     const [warning, setWarning] = useState('')
+    const [password, setPassword] = useState('')
+    const [user, setUser] = useState('')
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -88,12 +96,23 @@ export default function Retirar() {
     }
 
     const handleOnClick = async () => {
+
+        if (!password || !user) {
+            return setWarning('Assine a operação.')
+        }
+
         for (const item of productList) {
-            await dispatch(createStockOut({
-                product_id: item.product.id!,
-                quantity: item.quantity,
-                subproduct_id: item.subProduct ? item.subProduct.id : null
-            }))
+            try {
+                await dispatch(createStockOut({
+                    product_id: item.product.id!,
+                    quantity: item.quantity,
+                    subproduct_id: item.subProduct ? item.subProduct.id : null,
+                    user,
+                    password
+                })).unwrap()
+            } catch (error) {
+                return setError('Não foi possivel retirar os produtos.')
+            }
         }
 
         setProductList([])
@@ -164,7 +183,35 @@ export default function Retirar() {
                             }
                         </>
                     </ProductListContainer>
-                    <Button onClick={handleOnClick} text={'Finalizar Retirada'} />
+                    <BottomContainer>
+                        <BottomInputContainer>
+                            <Input
+                                onChange={(e) => setUser(e.target.value)}
+                                type="text"
+                                name="user"
+                                value={user}
+                                label="Usuario"
+                                display="flex"
+                                style={{ maxWidth: '250px' }}
+                            />
+                        </BottomInputContainer>
+                        <BottomInputContainer>
+                            <Input
+                                onChange={(e) => setPassword(e.target.value)}
+                                type="password"
+                                name="sign"
+                                value={password}
+                                label="Assinar"
+                                display="flex"
+                                style={{ maxWidth: '250px' }}
+                            />
+                        </BottomInputContainer>
+                        <Button
+                            onClick={handleOnClick}
+                            text={'Finalizar Retirada'}
+                            style={{ padding: '12px 24px', alignSelf: 'flex-end' }}
+                        />
+                    </BottomContainer>
                 </>
             }
         </>

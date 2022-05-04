@@ -5,5 +5,7 @@ export type TStockOut = {
     subproduct_id?: number | null,
     lote?: string | null,
     validade?: string | null,
-    quantity: number
+    quantity: number,
+    user?: string,
+    password?: string
 }
