@@ -63,6 +63,7 @@ export default function Retirar() {
         const subProductToAdd = getSubProduct(products, productId, subProductId)
 
         if (!productToAdd) return setError('Produto não encontrado.')
+        if (!subProductToAdd) return setError('Selecione o lote e validade.')
         if (quantity > productToAdd.stock) return setError(`Existem ${productToAdd.stock} unidades do produto ${productToAdd.name}.`)
         if (subProductToAdd && quantity > subProductToAdd?.quantity) return setError(`Existem apenas ${subProductToAdd.quantity} unidades do lote ${subProductToAdd.lote}.`)
         if (subProductToAdd) {
@@ -111,12 +112,19 @@ export default function Retirar() {
                     password
                 })).unwrap()
             } catch (error) {
+                cleanAssign()
                 return setError('Não foi possivel retirar os produtos.')
             }
         }
 
+        cleanAssign()
         setProductList([])
         setWarning('Produtos retirados com sucesso.')
+    }
+
+    const cleanAssign = () => {
+        setUser('')
+        setPassword('')
     }
 
     return (
@@ -136,7 +144,12 @@ export default function Retirar() {
                     </datalist>
                 </InputContainer>
                 <InputContainer flex={2}>
-                    <Select name='lote-validade' label='Lote / Validade' required onChange={(e) => setSubProductId(parseInt(e.target.value))}>
+                    <Select
+                        name='lote-validade'
+                        label='Lote / Validade'
+                        required
+                        onChange={(e) => setSubProductId(parseInt(e.target.value))}
+                    >
                         <option value={0}></option>
                         {
                             products.filter(item => item.id === productId).map(item => (
@@ -148,7 +161,14 @@ export default function Retirar() {
                     </Select>
                 </InputContainer>
                 <InputContainer flex={1}>
-                    <Input name='quantity' label='Quantidade' type='number' min={1} onChange={(e) => setQuantity(parseInt(e.target.value))} />
+                    <Input
+                        name='quantity'
+                        label='Quantidade'
+                        type='number'
+                        min={1}
+                        onChange={(e) => setQuantity(parseInt(e.target.value))}
+                        required
+                    />
                 </InputContainer>
                 <Button style={{ padding: '12px 24px', alignSelf: 'flex-end' }} text={'Lançar'} />
             </Form>
