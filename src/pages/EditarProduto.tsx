@@ -6,7 +6,7 @@ import Button from "../components/Button"
 import Form from "../components/Form"
 import Input from "../components/Input"
 import Title from "../components/Title"
-import { deleteProductById, editProduct } from "../features/produtos/produtoSlice"
+import { editProduct } from "../features/produtos/produtoSlice"
 import { TProduct } from "../types/TProduct"
 import Historico from "./Historico"
 
@@ -123,19 +123,11 @@ export default function EditarProduto() {
                 </InputContainer>
                 <ButtonContainer>
                     <Button text='Editar Produto' />
-                    <div>
-                        <Button
-                            style={{ marginRight: '20px' }}
-                            onClick={() => dispatch(editProduct({ ...product, hide: true }))}
-                            text='Arquivar'
-                            bg='blue'
-                        />
-                        <Button
-                            onClick={() => dispatch(deleteProductById(product.id!))}
-                            text='Deletar'
-                            bg='red'
-                        />
-                    </div>
+                    <Button
+                        onClick={() => dispatch(editProduct({ ...product, hide: true }))}
+                        text='Arquivar'
+                        bg='blue'
+                    />
                 </ButtonContainer>
             </Form>
             <Historico productFilter={product.name} />

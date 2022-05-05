@@ -37,22 +37,22 @@ const InputContainer = styled.div`
 
 const Login = () => {
 
-    const [email, setEmail] = useState('')
+    const [user, setUser] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
 
-        if (!email || !password) return setError("Preencha todos os campos.")
+        if (!user || !password) return setError("Preencha todos os campos.")
 
         try {
-            await login(email, password)
+            await login(user, password)
 
-            if (getUser().user.role === 'user') {
-                window.location.href = "/retirar";
-            } else {
+            if (getUser().user.role === 'admin') {
                 window.location.href = "/produtos";
+            } else {
+                window.location.href = "/retirar";
             }
 
         } catch (error: any) {
@@ -68,9 +68,9 @@ const Login = () => {
                 <Form onSubmit={handleSubmit}>
                     <InputContainer>
                         <Input
-                            name="email"
-                            label="Email"
-                            onChange={(e) => setEmail(e.target.value)}
+                            name="user"
+                            label="Usuario"
+                            onChange={(e) => setUser(e.target.value)}
                             required
                         />
                     </InputContainer>

@@ -6,17 +6,12 @@ import Button from "../components/Button"
 import Form from "../components/Form"
 import Input from "../components/Input"
 import Title from "../components/Title"
-import { deleteSubProductById, editSubProduct } from "../features/produtos/produtoSlice"
+import { editSubProduct } from "../features/produtos/produtoSlice"
 import { TSubProduct } from "../types/TSubProduct"
 
 const InputContainer = styled.div`
     width: 48%;
     margin-bottom: 20px;
-`
-const ButtonContainer = styled.div`
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
 `
 
 export default function EditarSubProduto() {
@@ -58,14 +53,7 @@ export default function EditarSubProduto() {
                         required
                     />
                 </InputContainer>
-                <ButtonContainer>
-                    <Button text='Editar Produto' />
-                    <Button
-                        onClick={() => dispatch(deleteSubProductById(subProduct.id))}
-                        text='Deletar'
-                        bg='red'
-                    />
-                </ButtonContainer>
+                <Button text='Editar Produto' />
             </Form>
         </>
     )

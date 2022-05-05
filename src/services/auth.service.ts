@@ -6,8 +6,8 @@ export const getUser = () => {
     return null
 }
 
-export const login = async (email: string, password: string) => {
-    const data = await api.post("/auth", { email, password })
+export const login = async (user: string, password: string) => {
+    const data = await api.post("/auth", { user, password })
 
     if (data.data.token) {
         localStorage.setItem("user", JSON.stringify(data.data))

@@ -26,22 +26,6 @@ export const createProduct = createAsyncThunk(
     }
 )
 
-export const deleteProductById = createAsyncThunk(
-    'products/deleteProduct',
-    async (id: number, thunkAPI) => {
-        await api.delete(`/products/${id}`)
-        return id
-    }
-)
-
-export const deleteSubProductById = createAsyncThunk(
-    'products/deleteSubProduct',
-    async (id: number, thunkAPI) => {
-        await api.delete(`/subProducts/${id}`)
-        return id
-    }
-)
-
 export const editProduct = createAsyncThunk(
     'products/editProduct',
     async (product: TProduct, thunkAPI) => {
@@ -80,29 +64,6 @@ export const produtoSlice = createSlice({
             state.produtos = action.payload
         })
         builder.addCase(getProdutos.rejected, (state) => {
-            state.status = 'failed'
-        })
-        builder.addCase(deleteProductById.pending, (state) => {
-            state.status = 'loading'
-        })
-        builder.addCase(deleteProductById.fulfilled, (state, action) => {
-            state.status = 'success'
-            state.produtos = state.produtos.filter((item) => item.id !== action.payload)
-        })
-        builder.addCase(deleteProductById.rejected, (state) => {
-            state.status = 'failed'
-        })
-        builder.addCase(deleteSubProductById.pending, (state) => {
-            state.status = 'loading'
-        })
-        builder.addCase(deleteSubProductById.fulfilled, (state, action) => {
-            state.status = 'success'
-            state.produtos = state.produtos.map((item) => item.subproducts
-                ? { ...item, subproducts: item.subproducts.filter((subitem) => subitem.id !== action.payload) }
-                : item
-            )
-        })
-        builder.addCase(deleteSubProductById.rejected, (state) => {
             state.status = 'failed'
         })
         builder.addCase(createProduct.pending, (state) => {
