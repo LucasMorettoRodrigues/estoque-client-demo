@@ -79,9 +79,11 @@ export default function ProdutosEscondidos() {
                         {item.subproducts &&
                             item.subproducts.map((subitem) => (
                                 <ItemsContainer key={subitem.id} type='subItem' bg='#eef7ff' >
-                                    <Item width='200px' align='center' color='#3142a0' text={`Lote: ${subitem.lote}`} />
-                                    <Item width='200px' align='center' color='#3142a0' text={`Validade: ${subitem.validade.slice(0, 10)}`} />
-                                    <Item width='200px' align='center' color='#3142a0' text={`Quantidade: ${subitem.quantity}`} />
+                                    <div style={{ marginLeft: '60px' }}>
+                                        <Item width='200px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
+                                    </div>
+                                    <Item width='280px' color='#3142a0' text={`Validade: ${subitem.validade.slice(0, 10)}`} />
+                                    <Item width='200px' color='#3142a0' text={`Quantidade: ${subitem.quantity}`} />
                                 </ItemsContainer>
                             ))
                         }

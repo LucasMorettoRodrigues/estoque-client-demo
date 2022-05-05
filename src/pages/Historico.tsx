@@ -168,7 +168,7 @@ export default function Historico({ productFilter }: Props) {
                                         <Item flex={1} text={item.provider_id && getProvider(providers, item.provider_id)?.name} />
                                         <Item flex={1} text={getProduct(products, item.product_id)?.brand} />
                                         <Item flex={1} text={getProduct(products, item.product_id)?.unit} />
-                                        <Item flex={0.9} text='' />
+                                        <Item flex={0.9} text={item.price} />
                                         <Item flex={0.7} text={item.lote} />
                                         <Item flex={1} text={item.validade && item.validade.slice(0, 10)} />
                                         <Item flex={0.9} text={key.split('_')[1] === 'out' ? -item.quantity : item.quantity} align='center' />
