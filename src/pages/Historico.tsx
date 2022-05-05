@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { useAppSelector } from "../app/hooks"
-import { getProduct, getProvider } from "../utils/functions"
+import { getProduct } from "../utils/functions"
 import { useEffect, useState } from "react"
 import { TStockIn } from "../types/TStockIn"
 import { TStockOut } from "../types/TStockOut"
@@ -34,7 +34,6 @@ export default function Historico({ productFilter }: Props) {
     const adjustStock = useAppSelector(state => state.adjustStock.adjustStock)
     const stockIns = useAppSelector(state => state.stockIn.stockIns)
     const products = useAppSelector(state => state.produto.produtos)
-    const providers = useAppSelector(state => state.fornecedor.fornecedores)
     const [orderedStocks, setOrderedStocks] = useState<{ [key: string]: any }>({})
     const [filteredStocks, setFilteredStocks] = useState<{ [key: string]: any }>({})
     const [filter, setFilter] = useState('')
@@ -47,8 +46,8 @@ export default function Historico({ productFilter }: Props) {
         let adjustStockByDate: { [key: string]: TStockOut[] } = {}
 
         const filteredIns = productFilter ? stockIns.filter(i => getProduct(products, i.product_id)?.name === productFilter) : stockIns
-        const filteredOuts = productFilter ? stockOuts.filter(i => getProduct(products, i.product_id)?.name === productFilter) : stockOuts
-        const filteredAdjusts = productFilter ? adjustStock.filter(i => getProduct(products, i.product_id)?.name === productFilter) : adjustStock
+        const filteredOuts = productFilter ? stockOuts.filter(i => i.product?.name === productFilter) : stockOuts
+        const filteredAdjusts = productFilter ? adjustStock.filter(i => i.product?.name === productFilter) : adjustStock
 
         filteredIns.forEach((i) => {
             let index = i.date!.slice(0, 10) + '_in'
@@ -137,9 +136,7 @@ export default function Historico({ productFilter }: Props) {
                 </Filter>
             </HeaderContainer>
             <ListHeader>
-                <Item flex={0.9} text='Data' />
-                <Item flex={1} text='Ação' />
-                <Item flex={3} text='Produto' />
+                <Item flex={4} text='Produto' />
                 <Item flex={1} text='Fornecedor' />
                 <Item flex={1} text='Marca' />
                 <Item flex={1} text='Unidade' />
@@ -147,6 +144,7 @@ export default function Historico({ productFilter }: Props) {
                 <Item flex={0.7} text='Lote' />
                 <Item flex={1} text='Validade' />
                 <Item flex={0.9} text='Quantidade' align='center' />
+                <Item flex={0.9} text='Usuário' />
             </ListHeader>
             {
                 Object.keys(filteredStocks).reverse().map(key => (
@@ -162,16 +160,15 @@ export default function Historico({ productFilter }: Props) {
                             filteredStocks[key].map((item: any, index: any) => (
                                 < Container key={index} show={show === key ? true : false} >
                                     <ItemsContainer bg={key.split('_')[1] === 'in' ? '#ceffbf' : key.split('_')[1] === 'out' ? '#ffc6c6' : '#c6caff'} >
-                                        <Item flex={0.9} text='' />
-                                        <Item flex={1} text='' />
-                                        <Item flex={3} text={getProduct(products, item.product_id)?.name} />
-                                        <Item flex={1} text={item.provider_id && getProvider(providers, item.provider_id)?.name} />
-                                        <Item flex={1} text={getProduct(products, item.product_id)?.brand} />
-                                        <Item flex={1} text={getProduct(products, item.product_id)?.unit} />
+                                        <Item flex={4} text={item.product.name} />
+                                        <Item flex={1} text={item.provider?.name} />
+                                        <Item flex={1} text={item.product.brand} />
+                                        <Item flex={1} text={item.product.unit} />
                                         <Item flex={0.9} text={item.price} />
                                         <Item flex={0.7} text={item.lote} />
-                                        <Item flex={1} text={item.validade && item.validade.slice(0, 10)} />
+                                        <Item flex={1} text={item.validade.slice(0, 10)} />
                                         <Item flex={0.9} text={key.split('_')[1] === 'out' ? -item.quantity : item.quantity} align='center' />
+                                        <Item flex={0.9} text={item.user?.name} />
                                     </ItemsContainer>
                                 </Container>
                             ))

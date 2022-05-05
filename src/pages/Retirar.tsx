@@ -16,6 +16,8 @@ import Item from "../components/List/Item"
 import ItemsContainer from "../components/List/ItemsContainer"
 import Form from "../components/Form"
 import Title from "../components/Title"
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const InputContainer = styled.div<{ flex: number }>`
     flex: ${props => props.flex};
@@ -108,7 +110,7 @@ export default function Retirar() {
                     product_id: item.product.id!,
                     quantity: item.quantity,
                     subproduct_id: item.subProduct ? item.subProduct.id : null,
-                    user,
+                    username: user,
                     password
                 })).unwrap()
             } catch (error) {
@@ -127,23 +129,48 @@ export default function Retirar() {
         setPassword('')
     }
 
+    const top100Films = products.map(i => ({
+        label: `${i.id} - ${i.name} - ${i.brand} - ${i.unit}`, id: i.id
+    }))
+
     return (
         <>
             {error && <Mensagem onClick={() => setError('')} error={error} />}
             {warning && <Mensagem onClick={() => setWarning('')} warning={warning} />}
             <Title title='Retirar Produtos' />
+            {/* <Dropdown
+                style={{ heigth: '100px', width: '500px' }}
+                placeholder='Select Country'
+                search
+                selection
+                options={products.map(i => ({ key: i.id, text: i.name, value: i.id }))}
+            /> */}
+            {console.log(productId)}
             <Form onSubmit={handleOnSubmit}>
                 <InputContainer flex={5}>
+                    <Autocomplete
+                        disablePortal
+                        onChange={(event, newValue) => setProductId(newValue?.id || 0)}
+                        id="combo-box-demo"
+                        options={top100Films}
+                        sx={{ backgroundColor: 'white', marginTop: '20px' }}
+                        renderInput={(params) => <TextField {...params} label="Produto" size='small' />}
+                    />
+                </InputContainer>
+
+                {/* <InputContainer flex={10}>
                     <Input name="product" label='Produto' required list='products' onChange={(e) => setProductId(parseInt(e.target.value.split(' ')[0]))} />
                     <datalist id="products">
                         {
                             products.map(item => (
-                                <option key={item.id}>{item.id} - {item.name} - {item.brand} - {item.unit}</option>
+                                <option
+                                    key={item.id}>{item.id} - {item.name} - {item.brand} - {item.unit}
+                                </option>
                             ))
                         }
                     </datalist>
-                </InputContainer>
-                <InputContainer flex={2}>
+                </InputContainer> */}
+                <InputContainer flex={1}>
                     <Select
                         name='lote-validade'
                         label='Lote / Validade'
@@ -153,8 +180,12 @@ export default function Retirar() {
                         <option value={0}></option>
                         {
                             products.filter(item => item.id === productId).map(item => (
-                                item.subproducts?.map((item) => (
-                                    <option key={item.id} value={item.id}>{item.lote} / {item.validade.slice(0, 10)}</option>
+                                item.subproducts?.map((item, index) => (
+                                    <option
+                                        style={{ backgroundColor: `${index === 0 && 'green'}` }}
+                                        key={item.id}
+                                        value={item.id}>{item.lote} / {item.validade.slice(0, 10)}
+                                    </option>
                                 ))
                             ))
                         }

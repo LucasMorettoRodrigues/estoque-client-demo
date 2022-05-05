@@ -6,6 +6,16 @@ export type TStockOut = {
     lote?: string | null,
     validade?: string | null,
     quantity: number,
-    user?: string,
+    user_id?: string,
     password?: string
+    username?: string,
+    product?: {
+        name: string,
+        brand: string,
+        unit: string,
+        category: string
+    },
+    user?: {
+        name: string
+    }
 }

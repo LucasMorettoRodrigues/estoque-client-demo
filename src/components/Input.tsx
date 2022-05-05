@@ -10,7 +10,7 @@ const Label = styled.label<{ display?: string }>`
 const SInput = styled.input`
     display: block;
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     outline-color: lightblue;
     border: 1px solid lightgray;
     border-radius: 5px;

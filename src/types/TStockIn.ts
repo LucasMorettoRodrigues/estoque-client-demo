@@ -6,5 +6,5 @@ export type TStockIn = {
     price: string,
     lote: string | null,
     validade: string | null,
-    quantity: number
+    quantity: number,
 }
