@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { TProduct } from "../types/TProduct"
-import { FormEvent, useState } from "react"
+import { FormEvent, useRef, useState } from "react"
 import { AiOutlineDelete } from 'react-icons/ai'
 import Button from "../components/Button"
 import { TSubProduct } from "../types/TSubProduct"
@@ -16,6 +16,7 @@ import Item from "../components/List/Item"
 import ItemsContainer from "../components/List/ItemsContainer"
 import Form from "../components/Form"
 import Title from "../components/Title"
+import { Autocomplete, TextField } from "@mui/material"
 
 const InputContainer = styled.div<{ flex: number }>`
     flex: ${props => props.flex};
@@ -45,6 +46,8 @@ export default function Ajustar() {
     const [productList, setProductList] = useState<body[]>([])
     const [error, setError] = useState('')
     const [warning, setWarning] = useState('')
+    const elmRef = useRef(null as HTMLElement | null);
+
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -73,6 +76,8 @@ export default function Ajustar() {
             input => (input.value = '')
         );
 
+        elmRef.current!.querySelector("button")?.click();
+
         Array.from(document.querySelectorAll("select")).forEach(
             input => (input.value = '')
         );
@@ -98,20 +103,20 @@ export default function Ajustar() {
             <Title title='Ajustar Estoque' />
             <Form onSubmit={handleOnSubmit}>
                 <InputContainer flex={5}>
-                    <Input
-                        name="product"
-                        label="Produto"
-                        required
-                        onChange={(e) => setProductId(parseInt(e.target.value.split(' ')[0]))}
-                        list='products'>
-                    </Input>
-                    <datalist id="products">
-                        {
-                            products.map(item => (
-                                <option key={item.id}>{item.id} - {item.name} - {item.brand} - {item.unit}</option>
-                            ))
+                    <Autocomplete
+                        ref={elmRef}
+                        disablePortal
+                        onChange={(event, newValue) => setProductId(newValue?.id || 0)}
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                        id="select"
+                        options={
+                            products.map(i => ({
+                                label: `${i.id} - ${i.name} - ${i.brand} - ${i.unit}`, id: i.id
+                            }))
                         }
-                    </datalist>
+                        sx={{ backgroundColor: 'white', marginTop: '20px' }}
+                        renderInput={(params) => <TextField {...params} label="Produto" size='small' />}
+                    />
                 </InputContainer>
                 <InputContainer flex={2}>
                     <Select

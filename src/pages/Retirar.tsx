@@ -98,10 +98,7 @@ export default function Retirar() {
             input => (input.value = '')
         );
 
-
-        const button = elmRef.current!.querySelector("button")
-        button?.click();
-
+        elmRef.current!.querySelector("button")?.click();
 
         Array.from(document.querySelectorAll("select")).forEach(
             input => (input.value = '')
@@ -152,7 +149,7 @@ export default function Retirar() {
                             disablePortal
                             onChange={(event, newValue) => setProductId(newValue?.id || 0)}
                             isOptionEqualToValue={(option, value) => option.id === value.id}
-                            id="jaja"
+                            id="select"
                             options={
                                 products.map(i => ({
                                     label: `${i.id} - ${i.name} - ${i.brand} - ${i.unit}`, id: i.id
@@ -162,19 +159,6 @@ export default function Retirar() {
                             renderInput={(params) => <TextField {...params} label="Produto" size='small' />}
                         />
                     </InputContainer>
-
-                    {/* <InputContainer flex={10}>
-                    <Input name="product" label='Produto' required list='products' onChange={(e) => setProductId(parseInt(e.target.value.split(' ')[0]))} />
-                    <datalist id="products">
-                        {
-                            products.map(item => (
-                                <option
-                                    key={item.id}>{item.id} - {item.name} - {item.brand} - {item.unit}
-                                </option>
-                            ))
-                        }
-                    </datalist>
-                </InputContainer> */}
                     <InputContainer flex={1}>
                         <Select
                             name='lote-validade'

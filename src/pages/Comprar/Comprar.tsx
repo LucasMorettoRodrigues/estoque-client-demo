@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { FormEvent, useState } from "react"
+import { FormEvent, useRef, useState } from "react"
 import { AiOutlineDelete } from 'react-icons/ai'
 import Button from "../../components/Button"
 import { TStockIn } from "../../types/TStockIn"
@@ -15,6 +15,7 @@ import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import Form from "../../components/Form"
 import Title from "../../components/Title"
+import { Autocomplete, TextField } from "@mui/material"
 
 const InputContainer = styled.div<{ flex: number }>`
     flex: ${props => props.flex};
@@ -43,6 +44,7 @@ export default function Comprar() {
     const [error, setError] = useState('')
     const [warning, setWarning] = useState('')
     const [message, setMessage] = useState('')
+    const elmRef = useRef(null as HTMLElement | null);
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -77,6 +79,8 @@ export default function Comprar() {
         Array.from(document.querySelectorAll("input")).forEach(
             input => (input.value = '')
         );
+
+        elmRef.current!.querySelector("button")?.click();
 
         clearFields()
     }
@@ -127,6 +131,22 @@ export default function Comprar() {
             <Title title='Comprar Produtos' />
             <Form onSubmit={handleOnSubmit}>
                 <InputContainer flex={5}>
+                    <Autocomplete
+                        ref={elmRef}
+                        disablePortal
+                        onChange={(event, newValue) => setProductId(newValue?.id || 0)}
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                        id="select"
+                        options={
+                            products.map(i => ({
+                                label: `${i.id} - ${i.name} - ${i.brand} - ${i.unit}`, id: i.id
+                            }))
+                        }
+                        sx={{ backgroundColor: 'white', marginTop: '20px' }}
+                        renderInput={(params) => <TextField {...params} label="Produto" size='small' />}
+                    />
+                </InputContainer>
+                {/* <InputContainer flex={5}>
                     <Input
                         name="product"
                         label="Produto"
@@ -141,7 +161,7 @@ export default function Comprar() {
                             ))
                         }
                     </datalist>
-                </InputContainer>
+                </InputContainer> */}
                 <InputContainer flex={3}>
                     <Input
                         name="provider"
