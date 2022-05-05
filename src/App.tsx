@@ -78,7 +78,7 @@ function App() {
           <Route path='/produtos/:id/historico' element={<PrivateRoute><ProdutoHistorico /></PrivateRoute>} />
         </Routes>
       </Container>
-    </BrowserRouter>
+    </BrowserRouter >
   );
 }
 

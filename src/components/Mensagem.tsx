@@ -7,6 +7,7 @@ const Container = styled.div`
     bottom: 0;
     right: 0;
     background-color: #00000084;
+    z-index: 100;
 `
 const Title = styled.h2`
     color: #ff3232;

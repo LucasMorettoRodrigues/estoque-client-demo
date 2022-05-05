@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import { useNavigate } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { FormEvent, useState } from "react"
 import { AiOutlineDelete } from 'react-icons/ai'
@@ -30,7 +29,6 @@ const ProductListContainer = styled.div`
 
 export default function Comprar() {
 
-    const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const products = useAppSelector(state => state.produto.produtos)
     const providers = useAppSelector(state => state.fornecedor.fornecedores)
@@ -116,7 +114,9 @@ export default function Comprar() {
 
     const handleOnClick = () => {
         dispatch(createStockIn(cart))
-        navigate('/produtos')
+
+        setCart([])
+        setMessage('Compra realizada com sucesso.')
     }
 
     return (

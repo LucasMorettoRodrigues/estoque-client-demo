@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { TProduct } from "../types/TProduct"
-import { FormEvent, useState } from "react"
+import { FormEvent, useRef, useState } from "react"
 import { AiOutlineDelete } from 'react-icons/ai'
 import Button from "../components/Button"
 import { createStockOut } from "../features/stockOut/stockOut"
@@ -51,15 +51,20 @@ export default function Retirar() {
 
     const [quantity, setQuantity] = useState(1)
     const [subProductId, setSubProductId] = useState(0)
-    const [productId, setProductId] = useState(0)
+    const [productId, setProductId] = useState<number | null>(null)
     const [productList, setProductList] = useState<body[]>([])
     const [error, setError] = useState('')
     const [warning, setWarning] = useState('')
     const [password, setPassword] = useState('')
     const [user, setUser] = useState('')
+    const elmRef = useRef(null as HTMLElement | null);
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+
+        if (!productId) {
+            return setError('Selecione o produto.')
+        }
 
         const productToAdd = getProduct(products, productId)
         const subProductToAdd = getSubProduct(products, productId, subProductId)
@@ -93,6 +98,11 @@ export default function Retirar() {
             input => (input.value = '')
         );
 
+
+        const button = elmRef.current!.querySelector("button")
+        button?.click();
+
+
         Array.from(document.querySelectorAll("select")).forEach(
             input => (input.value = '')
         );
@@ -109,7 +119,7 @@ export default function Retirar() {
                 await dispatch(createStockOut({
                     product_id: item.product.id!,
                     quantity: item.quantity,
-                    subproduct_id: item.subProduct ? item.subProduct.id : null,
+                    subproduct_id: item.subProduct?.id,
                     username: user,
                     password
                 })).unwrap()
@@ -129,36 +139,31 @@ export default function Retirar() {
         setPassword('')
     }
 
-    const top100Films = products.map(i => ({
-        label: `${i.id} - ${i.name} - ${i.brand} - ${i.unit}`, id: i.id
-    }))
-
     return (
         <>
             {error && <Mensagem onClick={() => setError('')} error={error} />}
             {warning && <Mensagem onClick={() => setWarning('')} warning={warning} />}
             <Title title='Retirar Produtos' />
-            {/* <Dropdown
-                style={{ heigth: '100px', width: '500px' }}
-                placeholder='Select Country'
-                search
-                selection
-                options={products.map(i => ({ key: i.id, text: i.name, value: i.id }))}
-            /> */}
-            {console.log(productId)}
-            <Form onSubmit={handleOnSubmit}>
-                <InputContainer flex={5}>
-                    <Autocomplete
-                        disablePortal
-                        onChange={(event, newValue) => setProductId(newValue?.id || 0)}
-                        id="combo-box-demo"
-                        options={top100Films}
-                        sx={{ backgroundColor: 'white', marginTop: '20px' }}
-                        renderInput={(params) => <TextField {...params} label="Produto" size='small' />}
-                    />
-                </InputContainer>
+            <div>
+                <Form onSubmit={handleOnSubmit}>
+                    <InputContainer flex={5}>
+                        <Autocomplete
+                            ref={elmRef}
+                            disablePortal
+                            onChange={(event, newValue) => setProductId(newValue?.id || 0)}
+                            isOptionEqualToValue={(option, value) => option.id === value.id}
+                            id="jaja"
+                            options={
+                                products.map(i => ({
+                                    label: `${i.id} - ${i.name} - ${i.brand} - ${i.unit}`, id: i.id
+                                }))
+                            }
+                            sx={{ backgroundColor: 'white', marginTop: '20px' }}
+                            renderInput={(params) => <TextField {...params} label="Produto" size='small' />}
+                        />
+                    </InputContainer>
 
-                {/* <InputContainer flex={10}>
+                    {/* <InputContainer flex={10}>
                     <Input name="product" label='Produto' required list='products' onChange={(e) => setProductId(parseInt(e.target.value.split(' ')[0]))} />
                     <datalist id="products">
                         {
@@ -170,39 +175,41 @@ export default function Retirar() {
                         }
                     </datalist>
                 </InputContainer> */}
-                <InputContainer flex={1}>
-                    <Select
-                        name='lote-validade'
-                        label='Lote / Validade'
-                        required
-                        onChange={(e) => setSubProductId(parseInt(e.target.value))}
-                    >
-                        <option value={0}></option>
-                        {
-                            products.filter(item => item.id === productId).map(item => (
-                                item.subproducts?.map((item, index) => (
-                                    <option
-                                        style={{ backgroundColor: `${index === 0 && 'green'}` }}
-                                        key={item.id}
-                                        value={item.id}>{item.lote} / {item.validade.slice(0, 10)}
-                                    </option>
+                    <InputContainer flex={1}>
+                        <Select
+                            name='lote-validade'
+                            label='Lote / Validade'
+                            required
+                            onChange={(e) => setSubProductId(parseInt(e.target.value))}
+                        >
+                            <option value={0}></option>
+                            {
+                                products.filter(item => item.id === productId).map(item => (
+                                    item.subproducts?.map((item, index) => (
+                                        <option
+                                            style={{ backgroundColor: `${index === 0 && 'lightgreen'}` }}
+                                            key={item.id}
+                                            value={item.id}>{item.lote} / {item.validade.slice(0, 10)}
+                                        </option>
+                                    ))
                                 ))
-                            ))
-                        }
-                    </Select>
-                </InputContainer>
-                <InputContainer flex={1}>
-                    <Input
-                        name='quantity'
-                        label='Quantidade'
-                        type='number'
-                        min={1}
-                        onChange={(e) => setQuantity(parseInt(e.target.value))}
-                        required
-                    />
-                </InputContainer>
-                <Button style={{ padding: '12px 24px', alignSelf: 'flex-end' }} text={'Lançar'} />
-            </Form>
+                            }
+                        </Select>
+                    </InputContainer>
+                    <InputContainer flex={1}>
+                        <Input
+                            name='quantity'
+                            label='Quantidade'
+                            type='number'
+                            min={1}
+                            onChange={(e) => setQuantity(parseInt(e.target.value))}
+                            required
+                        />
+                    </InputContainer>
+                    <Button style={{ padding: '12px 24px', alignSelf: 'flex-end' }} text={'Lançar'} />
+                </Form>
+            </div>
+
             {
                 productList.length > 0 &&
                 <>

@@ -120,34 +120,38 @@ export const produtoSlice = createSlice({
         })
         builder.addCase(createStockOut.fulfilled, (state, action) => {
             state.status = 'success'
+
             let updatedProduct = getProduct(state.produtos, action.payload.product_id)
+
             updatedProduct = { ...updatedProduct!, stock: updatedProduct!.stock - action.payload.quantity }
-            if (action.payload.lote) {
-                updatedProduct.subproducts = updatedProduct.subproducts?.map(item => (item.lote === action.payload.lote
-                    ? { ...item, quantity: item.quantity - action.payload.quantity }
-                    : item
-                ))
-            }
+
+            updatedProduct.subproducts = updatedProduct.subproducts?.map(item => (item.lote === action.payload.lote
+                ? { ...item, quantity: item.quantity - action.payload.quantity }
+                : item
+            ))
+
             state.produtos = state.produtos.map(item => (item.id === action.payload.product_id
                 ? updatedProduct!
                 : item
             ))
+
             state.produtos = state.produtos.map(item => ({ ...item, subproducts: item.subproducts?.filter(i => i.quantity !== 0) }))
         })
         builder.addCase(createAdjustStock.fulfilled, (state, action) => {
             state.status = 'success'
             let updatedProduct = getProduct(state.produtos, action.payload.product_id)
             updatedProduct = { ...updatedProduct!, stock: updatedProduct!.stock + action.payload.quantity }
-            if (action.payload.lote) {
-                updatedProduct.subproducts = updatedProduct.subproducts?.map(item => (item.lote === action.payload.lote
-                    ? { ...item, quantity: item.quantity + action.payload.quantity }
-                    : item
-                ))
-            }
+
+            updatedProduct.subproducts = updatedProduct.subproducts?.map(item => (item.lote === action.payload.lote
+                ? { ...item, quantity: item.quantity + action.payload.quantity }
+                : item
+            ))
+
             state.produtos = state.produtos.map(item => (item.id === action.payload.product_id
                 ? updatedProduct!
                 : item
             ))
+
             state.produtos = state.produtos.map(item => ({ ...item, subproducts: item.subproducts?.filter(i => i.quantity !== 0) }))
         })
     },

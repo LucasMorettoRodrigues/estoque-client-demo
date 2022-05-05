@@ -12,8 +12,7 @@ export const createStockIn = createAsyncThunk(
             res = [...res, singleRes.data]
         }
         thunkAPI.dispatch(getProdutos())
-        console.log(res)
-        return res
+        thunkAPI.dispatch(getAllStockIns())
     }
 )
 
@@ -44,7 +43,6 @@ export const stockInSlice = createSlice({
         })
         builder.addCase(createStockIn.fulfilled, (state, action) => {
             state.status = 'success'
-            state.stockIns = [...state.stockIns, ...action.payload]
         })
         builder.addCase(createStockIn.rejected, (state) => {
             state.status = 'failed'

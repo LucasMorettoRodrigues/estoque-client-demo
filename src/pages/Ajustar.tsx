@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import { useNavigate } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { TProduct } from "../types/TProduct"
 import { FormEvent, useState } from "react"
@@ -37,7 +36,6 @@ type body = {
 
 export default function Ajustar() {
 
-    const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const products = useAppSelector(state => state.produto.produtos)
 
@@ -89,7 +87,8 @@ export default function Ajustar() {
             }))
         }
 
-        navigate('/historico')
+        setProductList([])
+        setWarning('Produtos ajustados com sucesso.')
     }
 
     return (
