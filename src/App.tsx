@@ -5,7 +5,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { useAppDispatch } from "./app/hooks";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
 import Container from "./components/Container";
 import Loading from "./components/Loading";
 import Navbar from "./components/Navbar";
@@ -29,29 +29,27 @@ import ProdutoHistorico from "./pages/ProdutoHistorico";
 import Ajustar from "./pages/Ajustar";
 import { getAllAdjustStock } from "./features/adjustStock/adjustStock";
 import Login from "./pages/Login";
-import { getUser } from "./services/auth.service";
 
 function App() {
 
   const dispatch = useAppDispatch()
+  const authentication = useAppSelector(state => state.authentication)
 
   useEffect(() => {
-    const user = getUser()
-
-    if (user) {
+    if (authentication.authenticated) {
       dispatch(getProdutos())
-      if (user.user.role === 'admin') {
+      if (authentication.role === 'admin') {
         dispatch(getFornecedores())
         dispatch(getAllStockOuts())
         dispatch(getAllStockIns())
         dispatch(getAllAdjustStock())
       }
     }
-  }, [dispatch])
+  }, [dispatch, authentication])
 
 
   const PrivateRoute = ({ children }: { children: JSX.Element }) => {
-    if (!getUser()) return <Navigate to="/login" />
+    if (!authentication.authenticated) return <Navigate to="/login" />
     return children
   }
 

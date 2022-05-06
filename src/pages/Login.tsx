@@ -1,8 +1,11 @@
 import { FormEvent, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
+import { useAppDispatch, useAppSelector } from "../app/hooks"
 import Button from "../components/Button"
 import Form from "../components/Form"
 import Input from "../components/Input"
+import { updateAuthentication } from "../features/authentication/authentication"
 import { getUser, login } from "../services/auth.service"
 
 const Container = styled.div`
@@ -40,6 +43,9 @@ const Login = () => {
     const [user, setUser] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
+    const dispatch = useAppDispatch()
+    const auth = useAppSelector(state => state.authentication)
+    const navigate = useNavigate()
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
@@ -48,15 +54,16 @@ const Login = () => {
 
         try {
             await login(user, password)
-
-            if (getUser().user.role === 'admin') {
-                window.location.href = "/produtos";
-            } else {
-                window.location.href = "/retirar";
-            }
-
         } catch (error: any) {
-            setError(error.response.data)
+            return setError(error.response.data)
+        }
+        dispatch(updateAuthentication())
+
+        if (getUser().user.role === 'admin') {
+            navigate('/produtos')
+        } else {
+            console.log(auth)
+            navigate('/retirar')
         }
     }
 

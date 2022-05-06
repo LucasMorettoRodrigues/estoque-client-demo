@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { getUser, logout } from "../services/auth.service";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { logout } from "../services/auth.service";
+import { updateAuthentication } from '../features/authentication/authentication'
 
 const Container = styled.div`
     background-color: #5fb4ff;
@@ -37,16 +39,22 @@ const Item = styled.li`
 
 export default function Navbar() {
 
-    const user = getUser()
+    const auth = useAppSelector(state => state.authentication)
+    const dispatch = useAppDispatch()
+
+    const handleOnClick = () => {
+        logout()
+        dispatch(updateAuthentication())
+    }
 
     return (
         <Container>
             <Nav>
                 <Wrapper>
                     <Title>Estoque</Title>
-                    {user &&
+                    {auth.authenticated &&
                         <List>
-                            {user.user.role === 'admin' &&
+                            {auth.role === 'admin' &&
                                 <>
                                     <Link to='/produtos/detalhes'><Item>Produtos</Item></Link>
                                     <Link to='/fornecedores'><Item>Fornecedores</Item></Link>
@@ -56,7 +64,7 @@ export default function Navbar() {
                                     <Link to='/historico'><Item>Histórico</Item></Link>
                                 </>
                             }
-                            <Item onClick={() => logout()}>Sair</Item>
+                            <Item onClick={handleOnClick}>Sair</Item>
                         </List>
                     }
                 </Wrapper>
