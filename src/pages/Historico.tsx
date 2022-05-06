@@ -1,6 +1,5 @@
 import styled from "styled-components"
 import { useAppSelector } from "../app/hooks"
-import { getProduct } from "../utils/functions"
 import { useEffect, useState } from "react"
 import { TStockIn } from "../types/TStockIn"
 import { TStockOut } from "../types/TStockOut"
@@ -45,7 +44,7 @@ export default function Historico({ productFilter }: Props) {
         let stockOutByDate: { [key: string]: TStockOut[] } = {}
         let adjustStockByDate: { [key: string]: TStockOut[] } = {}
 
-        const filteredIns = productFilter ? stockIns.filter(i => getProduct(products, i.product_id)?.name === productFilter) : stockIns
+        const filteredIns = productFilter ? stockIns.filter(i => i.product?.name === productFilter) : stockIns
         const filteredOuts = productFilter ? stockOuts.filter(i => i.product?.name === productFilter) : stockOuts
         const filteredAdjusts = productFilter ? adjustStock.filter(i => i.product?.name === productFilter) : adjustStock
 
