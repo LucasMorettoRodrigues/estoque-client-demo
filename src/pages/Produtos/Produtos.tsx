@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
 import Button from "../../components/Button"
 import { useAppSelector } from "../../app/hooks"
-import { getProvider, mergeProducts, reduceStockIns } from "../../utils/functions"
+import { mergeProducts } from "../../utils/functions"
 import { useEffect, useState } from "react"
 import { TProduct } from "../../types/TProduct"
 import Select from "../../components/Select"
@@ -50,29 +50,18 @@ export default function Produtos() {
     const navigate = useNavigate()
     const products = useAppSelector(state => state.produto.produtos)
     const providers = useAppSelector(state => state.fornecedor.fornecedores)
-    const stockIns = useAppSelector(state => state.stockIn.stockIns)
-    const [productsAndProviders, setProductsAndProviders] = useState<TProduct[]>([])
     const [filteredProducts, setFilteredProducts] = useState<TProduct[]>([])
     const [lowStockFilter, setLowStockFilter] = useState(false)
     const [search, setSearch] = useState('')
     const [provider, setProvider] = useState('')
 
     useEffect(() => {
-        let productProviders = reduceStockIns(stockIns, 'product_id')
-
-        setProductsAndProviders(products.map(i => (
-            { ...i, providers: productProviders[i.id!] ? [...productProviders[i.id!]] : [] }
-        )))
-
-    }, [products, stockIns])
-
-    useEffect(() => {
         let filtered = []
 
         if (lowStockFilter) {
-            filtered = mergeProducts(productsAndProviders).filter(i => i.stock < i.min_stock)
+            filtered = mergeProducts(products).filter(i => i.stock < i.min_stock)
         } else {
-            filtered = mergeProducts(productsAndProviders)
+            filtered = mergeProducts(products)
         }
 
         if (search) {
@@ -80,11 +69,11 @@ export default function Produtos() {
         }
 
         if (provider) {
-            filtered = filtered.filter(i => i.providers!.includes(parseInt(provider)))
+            filtered = filtered.filter(i => i.providers?.includes(provider))
         }
 
         setFilteredProducts(filtered)
-    }, [lowStockFilter, productsAndProviders, search, provider])
+    }, [lowStockFilter, products, search, provider])
 
     return (
         <>
@@ -104,7 +93,7 @@ export default function Produtos() {
                     <InputContainer>
                         <Select name="providers" label="Fornecedores:" display="flex" onChange={(e) => setProvider(e.target.value)}>
                             <option></option>
-                            {providers.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
+                            {providers.map(i => <option key={i.id} value={i.name}>{i.name}</option>)}
                         </Select>
                     </InputContainer>
                     <CheckBox style={{ width: '18px', height: '18px', cursor: 'pointer' }} onChange={() => setLowStockFilter(!lowStockFilter)} id="lowStock" name="lowStock" type='checkbox'></CheckBox>
@@ -123,7 +112,7 @@ export default function Produtos() {
                     <Container key={item.id}>
                         <ItemsContainer onClick={() => navigate(`/produtos/${item.id}/historico`, { state: item })}>
                             <Item flex={8} text={item.name} />
-                            <Item flex={2} text={item.providers ? item.providers.map(i => `${getProvider(providers, i)?.name} `) : ''} />
+                            <Item flex={2} text={item.providers?.map(i => `${i} `)} />
                             <Item flex={1} text={item.stock} align='center'
                                 bg={item.stock < item.min_stock ? '#ff5353' : 'inherit'} />
                             <Item flex={1} text={item.min_stock} align='center' />

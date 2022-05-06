@@ -4,7 +4,7 @@ import Button from "../../components/Button"
 import { useAppSelector } from "../../app/hooks"
 import { useEffect, useState } from "react"
 import { TProduct } from "../../types/TProduct"
-import { compare, getProvider, reduceStockIns } from "../../utils/functions"
+import { compare } from "../../utils/functions"
 import Input from "../../components/Input"
 import Select from "../../components/Select"
 import ListHeader from "../../components/List/ListHeader"
@@ -39,12 +39,12 @@ export default function Detalhes() {
     const productsData = useAppSelector(state => state.produto.produtos)
     const stockOuts = useAppSelector(state => state.stockOut.stockOuts)
     const providers = useAppSelector(state => state.fornecedor.fornecedores)
-    const stockIns = useAppSelector(state => state.stockIn.stockIns)
+    // const stockIns = useAppSelector(state => state.stockIn.stockIns)
     const [category, setCategory] = useState('')
     const [provider, setProvider] = useState('')
     const [filteredProducts, setFilteredProducts] = useState<TProduct[]>([])
     const [sortedProducts, setSortedProducts] = useState<TProduct[]>([])
-    const [productsAndProviders, setProductsAndProviders] = useState<TProduct[]>([])
+    // const [productsAndProviders, setProductsAndProviders] = useState<TProduct[]>([])
     const [sort, setSort] = useState('')
     const [search, setSearch] = useState('')
 
@@ -71,20 +71,11 @@ export default function Detalhes() {
     }
 
     useEffect(() => {
-        let productProviders = reduceStockIns(stockIns, 'product_id')
-
-        setProductsAndProviders(productsData.map(i => (
-            { ...i, providers: productProviders[i.id!] ? [...productProviders[i.id!]] : [] }
-        )))
-
-    }, [productsData, stockIns])
-
-    useEffect(() => {
-        let products = productsAndProviders.slice().filter(i => i.hide === false)
+        let products = productsData.slice().filter(i => i.hide === false)
 
         sort ? setSortedProducts(compare(products, sort)) : setSortedProducts(products)
 
-    }, [sort, productsData, category, productsAndProviders])
+    }, [sort, productsData, category])
 
     useEffect(() => {
         let filtered = sortedProducts
@@ -94,7 +85,7 @@ export default function Detalhes() {
         }
 
         if (provider) {
-            filtered = filtered.filter(i => i.providers!.includes(parseInt(provider)))
+            filtered = filtered.filter(i => i.providers?.includes(provider))
         }
 
         if (search) {
@@ -128,7 +119,7 @@ export default function Detalhes() {
                     <InputContainer>
                         <Select name="providers" label="Fornecedor:" display="flex" onChange={(e) => setProvider(e.target.value)}>
                             <option></option>
-                            {providers.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
+                            {providers.map(i => <option key={i.id} value={i.name}>{i.name}</option>)}
                         </Select>
                     </InputContainer>
                 </Filter>
@@ -155,7 +146,7 @@ export default function Detalhes() {
                             <Item flex={3} text={item.name} fontSize='12px' />
                             <Item flex={2} text={item.observation} fontSize='12px' />
                             <Item width="90px" text={item.code} fontSize='12px' />
-                            <Item flex={2} text={item.providers && item.providers.map((i: any) => `${getProvider(providers, i)?.name} `)} fontSize='12px' />
+                            <Item flex={2} text={item.providers?.map((i) => `${i} `)} fontSize='12px' />
                             <Item width="90px" text={item.category} fontSize='12px' />
                             <Item width="130px" text={item.brand} fontSize='12px' />
                             <Item width="65px" text={item.unit} fontSize='12px' />

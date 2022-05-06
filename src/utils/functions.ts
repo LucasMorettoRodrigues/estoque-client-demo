@@ -1,6 +1,5 @@
 import { TProduct } from "../types/TProduct"
 import { TProvider } from "../types/TProvider"
-import { TStockIn } from "../types/TStockIn"
 import { TSubProduct } from "../types/TSubProduct"
 
 export const dateToString = (date: Date): string => {
@@ -92,17 +91,4 @@ export const compare = (array: TProduct[], property: string) => {
         return array.sort((a, b) => (a[property]! > b[property]!) ? 1 : ((b[property]! > a[property]!) ? -1 : 0))
     }
     return []
-}
-
-export const reduceStockIns = (stockIns: TStockIn[], key: keyof TStockIn) => {
-    return stockIns.reduce((obj: any, i: TStockIn) => {
-        if (obj[i[key]!]) {
-            if (!obj[i[key]!].includes(i.provider_id)) {
-                obj[i[key]!].push(i.provider_id)
-            }
-        } else {
-            obj[i[key]!] = [i.provider_id]
-        }
-        return obj
-    }, [])
 }
