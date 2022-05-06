@@ -62,6 +62,7 @@ function App() {
       <Container>
         <Routes>
           <Route path='/login' element={<Login />} />
+          <Route path='/estoque-client' element={<Login />} />
           <Route path='/produtos' element={<PrivateRoute><Produtos /></PrivateRoute>} />
           <Route path='/produtos/detalhes' element={<PrivateRoute><Detalhes /></PrivateRoute>} />
           <Route path='/produtos/escondidos' element={<PrivateRoute><ProdutosEscondidos /></PrivateRoute>} />
