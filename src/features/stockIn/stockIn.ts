@@ -13,6 +13,7 @@ export const createStockIn = createAsyncThunk(
         }
         thunkAPI.dispatch(getProdutos())
         thunkAPI.dispatch(getAllStockIns())
+        return
     }
 )
 
