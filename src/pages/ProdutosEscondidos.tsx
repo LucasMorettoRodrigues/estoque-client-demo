@@ -11,6 +11,7 @@ import Item from "../components/List/Item"
 import ItemsContainer from "../components/List/ItemsContainer"
 import ProductBtn from "../components/ProductBtn"
 import Title from "../components/Title"
+import { formatValidity } from "../utils/functions"
 
 const Container = styled.div``
 
@@ -82,7 +83,7 @@ export default function ProdutosEscondidos() {
                                     <div style={{ marginLeft: '60px' }}>
                                         <Item width='200px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
                                     </div>
-                                    <Item width='280px' color='#3142a0' text={`Validade: ${subitem.validade.slice(0, 10)}`} />
+                                    <Item width='280px' color='#3142a0' text={`Validade: ${formatValidity(subitem.validade)}`} />
                                     <Item width='200px' color='#3142a0' text={`Quantidade: ${subitem.quantity}`} />
                                 </ItemsContainer>
                             ))

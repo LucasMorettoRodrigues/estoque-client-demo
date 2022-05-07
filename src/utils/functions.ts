@@ -92,3 +92,10 @@ export const compare = (array: TProduct[], property: string) => {
     }
     return []
 }
+
+export const formatValidity = (date: string | null | undefined) => {
+    if (date) {
+        return date.slice(0, 10)
+    }
+    return 'Indeterminada'
+}

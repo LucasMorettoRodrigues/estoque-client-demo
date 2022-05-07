@@ -17,7 +17,7 @@ export type TProduct = {
     subproducts?: {
         id: number,
         lote: string,
-        validade: string,
+        validade: string | null,
         quantity: number
     }[]
 }

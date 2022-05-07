@@ -8,6 +8,7 @@ import ListHeader from "../components/List/ListHeader"
 import Item from "../components/List/Item"
 import ItemsContainer from "../components/List/ItemsContainer"
 import Title from "../components/Title"
+import { formatValidity } from "../utils/functions"
 
 const Container = styled.div<{ show?: boolean }>`
     visibility: ${props => props.show === false ? 'hidden' : 'visible'};
@@ -90,29 +91,13 @@ export default function Historico({ productFilter }: Props) {
     }, [stockIns, stockOuts, adjustStock, productFilter, products])
 
     useEffect(() => {
-        if (!filter) {
+        if (filter) {
+            setFilteredStocks(Object.keys(orderedStocks)
+                .filter((key) => key.includes(filter))
+                .reduce((cur, key) => { return Object.assign(cur, { [key]: orderedStocks[key] }) }, {})
+            )
+        } else {
             setFilteredStocks(orderedStocks)
-        }
-
-        if (filter === 'Compras') {
-            setFilteredStocks(Object.keys(orderedStocks)
-                .filter((key) => key.includes('_in'))
-                .reduce((cur, key) => { return Object.assign(cur, { [key]: orderedStocks[key] }) }, {})
-            )
-        }
-
-        if (filter === 'Retiradas') {
-            setFilteredStocks(Object.keys(orderedStocks)
-                .filter((key) => key.includes('_out'))
-                .reduce((cur, key) => { return Object.assign(cur, { [key]: orderedStocks[key] }) }, {})
-            )
-        }
-
-        if (filter === 'Ajustes') {
-            setFilteredStocks(Object.keys(orderedStocks)
-                .filter((key) => key.includes('_adjust'))
-                .reduce((cur, key) => { return Object.assign(cur, { [key]: orderedStocks[key] }) }, {})
-            )
         }
     }, [filter, orderedStocks])
 
@@ -128,9 +113,9 @@ export default function Historico({ productFilter }: Props) {
                         onChange={(e) => setFilter(e.target.value)}
                     >
                         <option></option>
-                        <option>Compras</option>
-                        <option>Retiradas</option>
-                        <option>Ajustes</option>
+                        <option value="_in">Compras</option>
+                        <option value="_out">Retiradas</option>
+                        <option value="_adjust">Ajustes</option>
                     </Select>
                 </Filter>
             </HeaderContainer>
@@ -165,7 +150,7 @@ export default function Historico({ productFilter }: Props) {
                                         <Item flex={1} text={item.product.unit} />
                                         <Item flex={0.9} text={item.price} />
                                         <Item flex={0.7} text={item.lote} />
-                                        <Item flex={1} text={item.validade.slice(0, 10)} />
+                                        <Item flex={1} text={formatValidity(item.validade)} />
                                         <Item flex={0.9} text={key.split('_')[1] === 'out' ? -item.quantity : item.quantity} align='center' />
                                         <Item flex={0.9} text={item.user?.name} />
                                     </ItemsContainer>

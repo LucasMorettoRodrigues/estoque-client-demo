@@ -7,7 +7,7 @@ import Button from "../components/Button"
 import { createStockOut } from "../features/stockOut/stockOut"
 import { TSubProduct } from "../types/TSubProduct"
 import EditDeleteButton from "../components/EditDeleteButton"
-import { compareDates, getProduct, getSubProduct } from "../utils/functions"
+import { compareDates, formatValidity, getProduct, getSubProduct } from "../utils/functions"
 import Mensagem from "../components/Mensagem"
 import Input from "../components/Input"
 import Select from "../components/Select"
@@ -173,7 +173,7 @@ export default function Retirar() {
                                         <option
                                             style={{ backgroundColor: `${index === 0 && 'lightgreen'}` }}
                                             key={item.id}
-                                            value={item.id}>{item.lote} / {item.validade.slice(0, 10)}
+                                            value={item.id}>{item.lote} / {formatValidity(item.validade)}
                                         </option>
                                     ))
                                 ))
@@ -213,7 +213,7 @@ export default function Retirar() {
                                         <Item flex={3} text={item.product.name} />
                                         <Item flex={1} text={item.product.brand} />
                                         <Item flex={1} text={item.subProduct?.lote} />
-                                        <Item flex={1} text={item.subProduct?.validade.slice(0, 10)} />
+                                        <Item flex={1} text={formatValidity(item.subProduct?.validade)} />
                                         <Item flex={1} text={item.quantity} />
                                         <EditDeleteButton
                                             onClick={() => setProductList(productList.filter((p, i) => i !== index))}

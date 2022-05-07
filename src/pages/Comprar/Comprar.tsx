@@ -49,7 +49,7 @@ export default function Comprar() {
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (!productId || !providerId || !price || !lote || !validade || !quantity) {
+        if (!productId || !providerId || !price || !lote || !quantity) {
             return setError(`Por favor preencha todos os campo.`)
         }
 
@@ -116,11 +116,14 @@ export default function Comprar() {
             .then(() => setMessage(`Fornecedor cadastrado com sucesso`))
     }
 
-    const handleOnClick = () => {
-        dispatch(createStockIn(cart))
-
-        setCart([])
-        setMessage('Compra realizada com sucesso.')
+    const handleOnClick = async () => {
+        try {
+            await dispatch(createStockIn(cart)).unwrap()
+            setCart([])
+            setMessage('Compra realizada com sucesso.')
+        } catch (error) {
+            setError('Não foi possível realizar a compra.')
+        }
     }
 
     return (
@@ -146,22 +149,6 @@ export default function Comprar() {
                         renderInput={(params) => <TextField {...params} label="Produto" size='small' />}
                     />
                 </InputContainer>
-                {/* <InputContainer flex={5}>
-                    <Input
-                        name="product"
-                        label="Produto"
-                        required
-                        onChange={(e) => setProductId(parseInt(e.target.value.split(' ')[0]))}
-                        list='products'
-                    />
-                    <datalist id="products">
-                        {
-                            products.map(item => (
-                                <option key={item.id}>{item.id} - {item.name} - {item.brand} - {item.unit}</option>
-                            ))
-                        }
-                    </datalist>
-                </InputContainer> */}
                 <InputContainer flex={3}>
                     <Input
                         name="provider"
@@ -238,7 +225,7 @@ export default function Comprar() {
                                         <Item flex={3} text={getProduct(products, item.product_id)?.name} />
                                         <Item flex={1} text={getProvider(providers, item.provider_id)?.name} />
                                         <Item flex={1} text={item.lote} />
-                                        <Item flex={1} text={item.validade} />
+                                        <Item flex={1} text={item.validade || 'Indeterminada'} />
                                         <Item flex={1} text={item.price} />
                                         <Item flex={1} text={item.quantity} />
                                         <EditDeleteButton

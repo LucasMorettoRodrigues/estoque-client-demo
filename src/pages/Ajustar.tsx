@@ -17,6 +17,7 @@ import ItemsContainer from "../components/List/ItemsContainer"
 import Form from "../components/Form"
 import Title from "../components/Title"
 import { Autocomplete, TextField } from "@mui/material"
+import { formatValidity } from '../utils/functions'
 
 const InputContainer = styled.div<{ flex: number }>`
     flex: ${props => props.flex};
@@ -128,7 +129,7 @@ export default function Ajustar() {
                         {
                             products.filter(item => item.id === productId).map(item => (
                                 item.subproducts?.map((item) => (
-                                    <option key={item.id} value={item.id}>{item.lote} / {item.validade.slice(0, 10)}</option>
+                                    <option key={item.id} value={item.id}>{item.lote} / {formatValidity(item.validade)}</option>
                                 ))
                             ))
                         }
@@ -164,7 +165,7 @@ export default function Ajustar() {
                                         <Item flex={3} text={item.product.name} />
                                         <Item flex={1} text={item.product.brand} />
                                         <Item flex={1} text={item.subProduct?.lote} />
-                                        <Item flex={1} text={item.subProduct?.validade.slice(0, 10)} />
+                                        <Item flex={1} text={formatValidity(item.subProduct?.validade)} />
                                         <Item flex={1} text={item.quantity} />
                                         <EditDeleteButton
                                             onClick={() => setProductList(productList.filter((p, i) => i !== index))}

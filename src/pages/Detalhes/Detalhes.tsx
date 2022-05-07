@@ -4,7 +4,7 @@ import Button from "../../components/Button"
 import { useAppSelector } from "../../app/hooks"
 import { useEffect, useState } from "react"
 import { TProduct } from "../../types/TProduct"
-import { compare } from "../../utils/functions"
+import { compare, formatValidity } from "../../utils/functions"
 import Input from "../../components/Input"
 import Select from "../../components/Select"
 import ListHeader from "../../components/List/ListHeader"
@@ -169,7 +169,7 @@ export default function Detalhes() {
                                     <div style={{ marginLeft: '60px' }}>
                                         <Item width='200px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
                                     </div>
-                                    <Item width='280px' color='#3142a0' text={`Validade: ${subitem.validade.slice(0, 10)}`} />
+                                    <Item width='280px' color='#3142a0' text={`Validade: ${formatValidity(subitem.validade)}`} />
                                     <Item width='200px' color='#3142a0' text={`Quantidade: ${subitem.quantity}`} />
                                 </ItemsContainer>
                             ))

@@ -8,6 +8,7 @@ import Input from "../components/Input"
 import Title from "../components/Title"
 import { editSubProduct } from "../features/produtos/produtoSlice"
 import { TSubProduct } from "../types/TSubProduct"
+import { formatValidity } from "../utils/functions"
 
 const InputContainer = styled.div`
     width: 48%;
@@ -22,7 +23,7 @@ export default function EditarSubProduto() {
     const subProduct = location.state as TSubProduct;
 
     const [lote, setLote] = useState(subProduct.lote)
-    const [validade, setValidade] = useState(subProduct.validade.slice(0, 10))
+    const [validade, setValidade] = useState(formatValidity(subProduct.validade))
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
