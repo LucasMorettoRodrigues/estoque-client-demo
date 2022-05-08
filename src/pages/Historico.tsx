@@ -8,7 +8,7 @@ import ListHeader from "../components/List/ListHeader"
 import Item from "../components/List/Item"
 import ItemsContainer from "../components/List/ItemsContainer"
 import Title from "../components/Title"
-import { formatValidity } from "../utils/functions"
+import { formatValidity, groupStockByDate } from "../utils/functions"
 
 const Container = styled.div<{ show?: boolean }>`
     visibility: ${props => props.show === false ? 'hidden' : 'visible'};
@@ -41,40 +41,13 @@ export default function Historico({ productFilter }: Props) {
 
     useEffect(() => {
 
-        let stockInByDate: { [key: string]: TStockIn[] } = {}
-        let stockOutByDate: { [key: string]: TStockOut[] } = {}
-        let adjustStockByDate: { [key: string]: TStockOut[] } = {}
+        let filteredIns = productFilter ? stockIns.filter(i => i.product?.name === productFilter) : stockIns
+        let filteredOuts = productFilter ? stockOuts.filter(i => i.product?.name === productFilter) : stockOuts
+        let filteredAdjusts = productFilter ? adjustStock.filter(i => i.product?.name === productFilter) : adjustStock
 
-        const filteredIns = productFilter ? stockIns.filter(i => i.product?.name === productFilter) : stockIns
-        const filteredOuts = productFilter ? stockOuts.filter(i => i.product?.name === productFilter) : stockOuts
-        const filteredAdjusts = productFilter ? adjustStock.filter(i => i.product?.name === productFilter) : adjustStock
-
-        filteredIns.forEach((i) => {
-            let index = i.createdAt!.slice(0, 10) + '_in'
-            if (stockInByDate[index]) {
-                stockInByDate[index].push(i)
-            } else {
-                stockInByDate[index] = [i]
-            }
-        })
-
-        filteredOuts.forEach((i) => {
-            let index = i.createdAt!.slice(0, 10) + '_out'
-            if (stockOutByDate[index]) {
-                stockOutByDate[index].push(i)
-            } else {
-                stockOutByDate[index] = [i]
-            }
-        })
-
-        filteredAdjusts.forEach((i) => {
-            let index = i.createdAt!.slice(0, 10) + '_adjust'
-            if (adjustStockByDate[index]) {
-                adjustStockByDate[index].push(i)
-            } else {
-                adjustStockByDate[index] = [i]
-            }
-        })
+        const stockInByDate = groupStockByDate(filteredIns, '_in') as { [key: string]: TStockIn[] }
+        const stockOutByDate = groupStockByDate(filteredOuts, '_out') as { [key: string]: TStockOut[] }
+        const adjustStockByDate = groupStockByDate(filteredAdjusts, '_adjust') as { [key: string]: TStockOut[] }
 
         const stocks = { ...stockInByDate, ...stockOutByDate, ...adjustStockByDate }
 

@@ -1,5 +1,7 @@
 import { TProduct } from "../types/TProduct"
 import { TProvider } from "../types/TProvider"
+import { TStockIn } from "../types/TStockIn"
+import { TStockOut } from "../types/TStockOut"
 import { TSubProduct } from "../types/TSubProduct"
 
 export const dateToString = (date: Date): string => {
@@ -98,4 +100,20 @@ export const formatValidity = (date: string | null | undefined) => {
         return date.slice(0, 10)
     }
     return 'Indeterminada'
+}
+
+export const groupStockByDate = (stockList: (TStockIn[] | TStockOut[]), suffix: string) => {
+
+    let stockByDate: { [key: string]: (TStockIn[] | TStockOut[]) } = {}
+
+    stockList.forEach((i: any) => {
+        let index = i.createdAt!.slice(0, 10) + suffix
+        if (stockByDate[index]) {
+            stockByDate[index].push(i)
+        } else {
+            stockByDate[index] = [i]
+        }
+    })
+
+    return stockByDate
 }

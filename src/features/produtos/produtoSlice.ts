@@ -8,7 +8,7 @@ import { createAdjustStock } from '../adjustStock/adjustStock'
 import { createStockOut } from '../stockOut/stockOut'
 
 export const getProdutos = createAsyncThunk(
-    'produtos/getProdutos',
+    'produtos/getProducts',
     async () => {
         try {
             const data = await api.get('/products')
