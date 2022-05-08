@@ -1,6 +1,5 @@
 export type TStockOut = {
     id?: number,
-    date?: string,
     product_id: number,
     subproduct_id?: number | null,
     lote?: string | null,
@@ -17,5 +16,6 @@ export type TStockOut = {
     },
     user?: {
         name: string
-    }
+    },
+    createdAt?: string
 }

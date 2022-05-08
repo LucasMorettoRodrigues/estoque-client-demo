@@ -57,7 +57,7 @@ export default function Detalhes() {
 
         stockOuts
             .filter(i => i.product_id === id)
-            .map(i => dates.push(new Date(i.date!)))
+            .map(i => dates.push(new Date(i.createdAt!)))
 
         if (dates.length <= 1) return null
 

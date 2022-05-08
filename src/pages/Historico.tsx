@@ -50,7 +50,7 @@ export default function Historico({ productFilter }: Props) {
         const filteredAdjusts = productFilter ? adjustStock.filter(i => i.product?.name === productFilter) : adjustStock
 
         filteredIns.forEach((i) => {
-            let index = i.date!.slice(0, 10) + '_in'
+            let index = i.createdAt!.slice(0, 10) + '_in'
             if (stockInByDate[index]) {
                 stockInByDate[index].push(i)
             } else {
@@ -59,7 +59,7 @@ export default function Historico({ productFilter }: Props) {
         })
 
         filteredOuts.forEach((i) => {
-            let index = i.date!.slice(0, 10) + '_out'
+            let index = i.createdAt!.slice(0, 10) + '_out'
             if (stockOutByDate[index]) {
                 stockOutByDate[index].push(i)
             } else {
@@ -68,7 +68,7 @@ export default function Historico({ productFilter }: Props) {
         })
 
         filteredAdjusts.forEach((i) => {
-            let index = i.date!.slice(0, 10) + '_adjust'
+            let index = i.createdAt!.slice(0, 10) + '_adjust'
             if (adjustStockByDate[index]) {
                 adjustStockByDate[index].push(i)
             } else {

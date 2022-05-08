@@ -1,6 +1,5 @@
 export type TStockIn = {
     id?: number,
-    date?: string,
     product_id: number,
     provider_id: number,
     price: string,
@@ -13,4 +12,5 @@ export type TStockIn = {
         unit: string,
         category: string
     },
+    createdAt?: string
 }
