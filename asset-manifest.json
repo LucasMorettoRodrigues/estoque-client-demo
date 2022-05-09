@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/estoque-client/static/css/main.d83f74e4.css",
-    "main.js": "/estoque-client/static/js/main.e262cc35.js",
+    "main.js": "/estoque-client/static/js/main.7447228e.js",
     "index.html": "/estoque-client/index.html",
     "main.d83f74e4.css.map": "/estoque-client/static/css/main.d83f74e4.css.map",
-    "main.e262cc35.js.map": "/estoque-client/static/js/main.e262cc35.js.map"
+    "main.7447228e.js.map": "/estoque-client/static/js/main.7447228e.js.map"
   },
   "entrypoints": [
     "static/css/main.d83f74e4.css",
-    "static/js/main.e262cc35.js"
+    "static/js/main.7447228e.js"
   ]
 }
