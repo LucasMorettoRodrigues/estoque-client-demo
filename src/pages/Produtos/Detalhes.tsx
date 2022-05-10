@@ -39,12 +39,10 @@ export default function Detalhes() {
     const productsData = useAppSelector(state => state.produto.produtos)
     const stockOuts = useAppSelector(state => state.stockOut.stockOuts)
     const providers = useAppSelector(state => state.fornecedor.fornecedores)
-    // const stockIns = useAppSelector(state => state.stockIn.stockIns)
     const [category, setCategory] = useState('')
     const [provider, setProvider] = useState('')
     const [filteredProducts, setFilteredProducts] = useState<TProduct[]>([])
     const [sortedProducts, setSortedProducts] = useState<TProduct[]>([])
-    // const [productsAndProviders, setProductsAndProviders] = useState<TProduct[]>([])
     const [sort, setSort] = useState('')
     const [search, setSearch] = useState('')
 
