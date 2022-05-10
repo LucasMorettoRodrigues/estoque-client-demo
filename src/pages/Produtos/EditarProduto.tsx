@@ -1,14 +1,14 @@
 import { useState, FormEvent, ChangeEvent } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import styled from "styled-components"
-import { useAppDispatch } from "../app/hooks"
-import Button from "../components/Button"
-import Form from "../components/Form"
-import Input from "../components/Input"
-import Title from "../components/Title"
-import { editProduct } from "../features/produtos/produtoSlice"
-import { TProduct } from "../types/TProduct"
-import Historico from "./Historico"
+import { useAppDispatch } from "../../app/hooks"
+import Button from "../../components/Button"
+import Form from "../../components/Form"
+import Input from "../../components/Input"
+import Title from "../../components/Title"
+import { editProduct } from "../../features/produtos/produtoSlice"
+import { TProduct } from "../../types/TProduct"
+import Historico from "../Historico"
 
 const InputContainer = styled.div`
     width: 48%;

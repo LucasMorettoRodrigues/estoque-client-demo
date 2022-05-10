@@ -13,22 +13,24 @@ import { getFornecedores } from "./features/fornecedor/fornecedorSlice";
 import { getProdutos } from "./features/produtos/produtoSlice";
 import { getAllStockIns } from "./features/stockIn/stockIn";
 import { getAllStockOuts } from "./features/stockOut/stockOut";
-import Comprar from "./pages/Comprar/Comprar";
-import Detalhes from "./pages/Detalhes/Detalhes";
-import ProdutosEscondidos from "./pages/ProdutosEscondidos";
-import EditarFornecedor from "./pages/EditarFornecedor";
-import EditarProduto from "./pages/EditarProduto";
+import Comprar from "./pages/Actions/Comprar";
+import Detalhes from "./pages/Produtos/Detalhes";
+import ProdutosEscondidos from "./pages/Produtos/ProdutosEscondidos";
+import EditarFornecedor from "./pages/Providers/EditarFornecedor";
+import EditarProduto from "./pages/Produtos/EditarProduto";
 import EditarSubProduto from "./pages/EditarSubProduto";
-import Fornecedores from "./pages/Fornecedores";
+import Fornecedores from "./pages/Providers/Fornecedores";
 import Historico from "./pages/Historico";
-import NovoFornecedor from "./pages/NovoFornecedor";
-import NovoProduto from "./pages/NovoProduto";
+import NovoFornecedor from "./pages/Providers/NovoFornecedor";
+import NovoProduto from "./pages/Produtos/NovoProduto";
 import Produtos from "./pages/Produtos/Produtos";
-import Retirar from "./pages/Retirar";
+import Retirar from "./pages/Actions/Retirar";
 import ProdutoHistorico from "./pages/ProdutoHistorico";
-import Ajustar from "./pages/Ajustar";
+import Ajustar from "./pages/Actions/Ajustar";
 import { getAllAdjustStock } from "./features/adjustStock/adjustStock";
 import Login from "./pages/Login";
+import Users from "./pages/Users/Users";
+import CreateUser from "./pages/Users/CreateUser";
 
 function App() {
 
@@ -75,6 +77,8 @@ function App() {
           <Route path='/ajustar' element={<PrivateRoute><Ajustar /></PrivateRoute>} />
           <Route path='/historico' element={<PrivateRoute><Historico /></PrivateRoute>} />
           <Route path='/produtos/:id/historico' element={<PrivateRoute><ProdutoHistorico /></PrivateRoute>} />
+          <Route path='/usuarios' element={<PrivateRoute><Users /></PrivateRoute>} />
+          <Route path='/usuarios/novo' element={<PrivateRoute><CreateUser /></PrivateRoute>} />
         </Routes>
       </Container>
     </BrowserRouter >

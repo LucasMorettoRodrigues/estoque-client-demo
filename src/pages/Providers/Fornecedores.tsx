@@ -1,14 +1,14 @@
 import styled from "styled-components"
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai'
-import { useAppDispatch, useAppSelector } from "../app/hooks"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { useNavigate } from "react-router-dom"
-import Button from "../components/Button"
-import { deleteProviderById } from "../features/fornecedor/fornecedorSlice"
-import EditDeleteButton from "../components/EditDeleteButton"
-import ListHeader from "../components/List/ListHeader"
-import Item from "../components/List/Item"
-import ItemsContainer from "../components/List/ItemsContainer"
-import Title from "../components/Title"
+import Button from "../../components/Button"
+import { deleteProviderById } from "../../features/fornecedor/fornecedorSlice"
+import EditDeleteButton from "../../components/EditDeleteButton"
+import ListHeader from "../../components/List/ListHeader"
+import Item from "../../components/List/Item"
+import ItemsContainer from "../../components/List/ItemsContainer"
+import Title from "../../components/Title"
 
 const ButtonContainer = styled.div`
     margin-bottom: 20px;

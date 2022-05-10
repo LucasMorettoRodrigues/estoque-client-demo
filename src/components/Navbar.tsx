@@ -56,6 +56,7 @@ export default function Navbar() {
                         <List>
                             {auth.role === 'admin' &&
                                 <>
+                                    <Link to='/usuarios'><Item>Usuários</Item></Link>
                                     <Link to='/produtos/detalhes'><Item>Produtos</Item></Link>
                                     <Link to='/fornecedores'><Item>Fornecedores</Item></Link>
                                     <Link to='/comprar'><Item>Comprar</Item></Link>
