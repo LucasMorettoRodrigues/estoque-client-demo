@@ -31,6 +31,7 @@ import { getAllAdjustStock } from "./features/adjustStock/adjustStock";
 import Login from "./pages/Login";
 import Users from "./pages/Users/Users";
 import CreateUser from "./pages/Users/CreateUser";
+import { getAllCarts } from "./features/cart/cartSlice";
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
         dispatch(getAllStockOuts())
         dispatch(getAllStockIns())
         dispatch(getAllAdjustStock())
+        dispatch(getAllCarts())
       }
     }
   }, [dispatch, authentication])
