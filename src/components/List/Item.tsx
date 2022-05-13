@@ -13,6 +13,10 @@ const SItem = styled.div<{
     background-color: ${props => props.bg ? props.bg : null};
     color: ${props => props.color ? props.color : null};
     cursor: ${props => props.cursor === 'pointer' ? props.cursor : null};
+
+    @media (max-width: 768px) {
+        font-size: 12px;
+    }
 `
 
 type Props = {

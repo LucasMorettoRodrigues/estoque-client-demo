@@ -199,23 +199,24 @@ export default function Retirar() {
                 <>
                     <ProductListContainer>
                         <ListHeader>
-                            <Item flex={3} text='Produto' />
-                            <Item flex={1} text='Marca' />
-                            <Item flex={1} text='Lote' />
-                            <Item flex={1} text='Validade' />
-                            <Item flex={1} text='Quantidade' />
-                            <Item width='90px' text='Remover' align='center' />
+                            <Item flex={1} text='Produto' />
+                            <Item flex={0.4} text='Marca' />
+                            <Item flex={0.2} text='Lote' />
+                            <Item flex={0.25} text='Validade' />
+                            <Item flex={0.1} align="center" text='Qtd' />
+                            <Item width='50px' text='' align='center' />
                         </ListHeader>
                         <>
                             {
                                 productList.map((item, index) => (
                                     <ItemsContainer key={index}>
-                                        <Item flex={3} text={item.product.name} />
-                                        <Item flex={1} text={item.product.brand} />
-                                        <Item flex={1} text={item.subProduct?.lote} />
-                                        <Item flex={1} text={formatValidity(item.subProduct?.validade)} />
-                                        <Item flex={1} text={item.quantity} />
+                                        <Item flex={1} text={item.product.name} />
+                                        <Item flex={0.4} text={item.product.brand} />
+                                        <Item flex={0.2} text={item.subProduct?.lote} />
+                                        <Item flex={0.25} text={formatValidity(item.subProduct?.validade)} />
+                                        <Item flex={0.1} text={item.quantity} align="center" />
                                         <EditDeleteButton
+                                            width='50px'
                                             onClick={() => setProductList(productList.filter((p, i) => i !== index))}
                                         >
                                             <AiOutlineDelete />
