@@ -16,6 +16,7 @@ import ItemsContainer from "../../components/List/ItemsContainer"
 import Form from "../../components/Form"
 import Title from "../../components/Title"
 import { Autocomplete, TextField } from "@mui/material"
+import { createCart } from "../../features/cart/cartSlice"
 
 const InputContainer = styled.div<{ flex: number }>`
     flex: ${props => props.flex};
@@ -33,6 +34,7 @@ export default function Comprar() {
     const dispatch = useAppDispatch()
     const products = useAppSelector(state => state.produto.produtos)
     const providers = useAppSelector(state => state.fornecedor.fornecedores)
+    const auth = useAppSelector(state => state.authentication)
 
     const [cart, setCart] = useState<TStockIn[]>([])
     const [productId, setProductId] = useState(0)
@@ -118,9 +120,16 @@ export default function Comprar() {
 
     const handleOnClick = async () => {
         try {
-            await dispatch(createStockIn(cart)).unwrap()
+            if (auth.role === 'admin') {
+                await dispatch(createStockIn(cart)).unwrap()
+                setMessage('Compra realizada com sucesso.')
+            } else {
+                await dispatch(createCart(cart)).unwrap()
+                setMessage('Solicitação de compra enviada com sucesso.')
+            }
+
             setCart([])
-            setMessage('Compra realizada com sucesso.')
+
         } catch (error) {
             setError('Não foi possível realizar a compra.')
         }
