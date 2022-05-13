@@ -32,6 +32,7 @@ import Login from "./pages/Login";
 import Users from "./pages/Users/Users";
 import CreateUser from "./pages/Users/CreateUser";
 import { getAllCarts } from "./features/cart/cartSlice";
+import AdminPanel from "./pages/AdminPanel";
 
 function App() {
 
@@ -81,6 +82,7 @@ function App() {
           <Route path='/produtos/:id/historico' element={<PrivateRoute><ProdutoHistorico /></PrivateRoute>} />
           <Route path='/usuarios' element={<PrivateRoute><Users /></PrivateRoute>} />
           <Route path='/usuarios/novo' element={<PrivateRoute><CreateUser /></PrivateRoute>} />
+          <Route path='/home' element={<PrivateRoute><AdminPanel /></PrivateRoute>} />
         </Routes>
       </Container>
     </BrowserRouter >
