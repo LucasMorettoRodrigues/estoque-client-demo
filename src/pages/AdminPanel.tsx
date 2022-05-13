@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAppSelector } from "../app/hooks";
 import Title from "../components/Title";
@@ -28,6 +29,7 @@ const Box = styled.div`
 
 export default function AdminPanel() {
 
+    const navigate = useNavigate()
     const carts = useAppSelector(state => state.cart.carts)
 
     return (
@@ -35,7 +37,7 @@ export default function AdminPanel() {
             <Title title='Bem Vindo'></Title>
             <Info>Você possui {carts.length} solicitações pendentes.</Info>
             {carts.map((cart, index) => (
-                <Box key={index} >
+                <Box key={index} onClick={() => navigate('/comprar', { state: cart })}>
                     <div>Solicitação de Compra</div>
                     <div>Data: {formatValidity(cart.createdAt)}</div>
                 </Box>

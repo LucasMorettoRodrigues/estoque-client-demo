@@ -5,7 +5,7 @@ import { TStockIn } from '../../types/TStockIn'
 export const createCart = createAsyncThunk(
     'carts/createCart',
     async (cart: TStockIn[], thunkAPI) => {
-        await api.post('/carts', cart)
+        await api.post('/carts', { cart: cart })
     }
 )
 

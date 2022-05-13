@@ -42,8 +42,9 @@ function App() {
   useEffect(() => {
     if (authentication.authenticated) {
       dispatch(getProdutos())
+      dispatch(getFornecedores())
+
       if (authentication.role === 'admin') {
-        dispatch(getFornecedores())
         dispatch(getAllStockOuts())
         dispatch(getAllStockIns())
         dispatch(getAllAdjustStock())

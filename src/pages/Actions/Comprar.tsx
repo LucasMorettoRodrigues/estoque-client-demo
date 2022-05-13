@@ -17,6 +17,7 @@ import Form from "../../components/Form"
 import Title from "../../components/Title"
 import { Autocomplete, TextField } from "@mui/material"
 import { createCart } from "../../features/cart/cartSlice"
+import { useLocation } from "react-router-dom"
 
 const InputContainer = styled.div<{ flex: number }>`
     flex: ${props => props.flex};
@@ -32,11 +33,12 @@ const ProductListContainer = styled.div`
 export default function Comprar() {
 
     const dispatch = useAppDispatch()
+    const { state }: any = useLocation()
     const products = useAppSelector(state => state.produto.produtos)
     const providers = useAppSelector(state => state.fornecedor.fornecedores)
     const auth = useAppSelector(state => state.authentication)
 
-    const [cart, setCart] = useState<TStockIn[]>([])
+    const [cart, setCart] = useState<TStockIn[]>(state ? state.cart : [])
     const [productId, setProductId] = useState(0)
     const [providerId, setProviderId] = useState('')
     const [quantity, setQuantity] = useState(0)
