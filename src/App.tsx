@@ -83,7 +83,7 @@ function App() {
           <Route path='/produtos/:id/historico' element={<PrivateRoute><ProdutoHistorico /></PrivateRoute>} />
           <Route path='/usuarios' element={<PrivateRoute><Users /></PrivateRoute>} />
           <Route path='/usuarios/novo' element={<PrivateRoute><CreateUser /></PrivateRoute>} />
-          <Route path='/home' element={<PrivateRoute><AdminPanel /></PrivateRoute>} />
+          <Route path='/panel' element={<PrivateRoute><AdminPanel /></PrivateRoute>} />
         </Routes>
       </Container>
     </BrowserRouter >

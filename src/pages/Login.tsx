@@ -60,7 +60,7 @@ const Login = () => {
         dispatch(updateAuthentication())
 
         if (getUser().user.role === 'admin') {
-            navigate('/produtos')
+            navigate('/panel')
         } else {
             console.log(auth)
             navigate('/retirar')
