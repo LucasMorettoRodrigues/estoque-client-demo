@@ -59,6 +59,12 @@ function App() {
     return children
   }
 
+  const AdminRoute = ({ children }: { children: JSX.Element }) => {
+    if (!authentication.authenticated) return <Navigate to="/login" />
+    if (authentication.role !== 'admin') return <Navigate to="/retirar" />
+    return children
+  }
+
   return (
     <BrowserRouter>
       <Loading />
@@ -67,23 +73,25 @@ function App() {
         <Routes>
           <Route path='/login' element={<Login />} />
           <Route path='/estoque-client' element={<Login />} />
-          <Route path='/produtos' element={<PrivateRoute><Produtos /></PrivateRoute>} />
-          <Route path='/produtos/detalhes' element={<PrivateRoute><Detalhes /></PrivateRoute>} />
-          <Route path='/produtos/escondidos' element={<PrivateRoute><ProdutosEscondidos /></PrivateRoute>} />
-          <Route path='/produtos/:id' element={<PrivateRoute><EditarProduto /></PrivateRoute>} />
-          <Route path='/produtos/:id_produto/subprodutos/:id_subproduto' element={<PrivateRoute><EditarSubProduto /></PrivateRoute>} />
-          <Route path='/novoProduto' element={<PrivateRoute><NovoProduto /></PrivateRoute>} />
-          <Route path='/fornecedores' element={<PrivateRoute><Fornecedores /></PrivateRoute>} />
-          <Route path='/fornecedores/:id' element={<PrivateRoute><EditarFornecedor /></PrivateRoute>} />
-          <Route path='/novoFornecedor' element={<PrivateRoute><NovoFornecedor /></PrivateRoute>} />
+
           <Route path='/comprar' element={<PrivateRoute><Comprar /></PrivateRoute>} />
           <Route path='/retirar' element={<PrivateRoute><Retirar /></PrivateRoute>} />
-          <Route path='/ajustar' element={<PrivateRoute><Ajustar /></PrivateRoute>} />
-          <Route path='/historico' element={<PrivateRoute><Historico /></PrivateRoute>} />
-          <Route path='/produtos/:id/historico' element={<PrivateRoute><ProdutoHistorico /></PrivateRoute>} />
-          <Route path='/usuarios' element={<PrivateRoute><Users /></PrivateRoute>} />
-          <Route path='/usuarios/novo' element={<PrivateRoute><CreateUser /></PrivateRoute>} />
-          <Route path='/panel' element={<PrivateRoute><AdminPanel /></PrivateRoute>} />
+
+          <Route path='/produtos' element={<AdminRoute><Produtos /></AdminRoute>} />
+          <Route path='/produtos/detalhes' element={<AdminRoute><Detalhes /></AdminRoute>} />
+          <Route path='/produtos/escondidos' element={<AdminRoute><ProdutosEscondidos /></AdminRoute>} />
+          <Route path='/produtos/:id' element={<AdminRoute><EditarProduto /></AdminRoute>} />
+          <Route path='/produtos/:id_produto/subprodutos/:id_subproduto' element={<AdminRoute><EditarSubProduto /></AdminRoute>} />
+          <Route path='/novoProduto' element={<AdminRoute><NovoProduto /></AdminRoute>} />
+          <Route path='/fornecedores' element={<AdminRoute><Fornecedores /></AdminRoute>} />
+          <Route path='/fornecedores/:id' element={<AdminRoute><EditarFornecedor /></AdminRoute>} />
+          <Route path='/novoFornecedor' element={<AdminRoute><NovoFornecedor /></AdminRoute>} />
+          <Route path='/ajustar' element={<AdminRoute><Ajustar /></AdminRoute>} />
+          <Route path='/historico' element={<AdminRoute><Historico /></AdminRoute>} />
+          <Route path='/produtos/:id/historico' element={<AdminRoute><ProdutoHistorico /></AdminRoute>} />
+          <Route path='/usuarios' element={<AdminRoute><Users /></AdminRoute>} />
+          <Route path='/usuarios/novo' element={<AdminRoute><CreateUser /></AdminRoute>} />
+          <Route path='/panel' element={<AdminRoute><AdminPanel /></AdminRoute>} />
         </Routes>
       </Container>
     </BrowserRouter >
