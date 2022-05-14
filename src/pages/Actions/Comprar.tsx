@@ -19,12 +19,14 @@ import { Autocomplete, TextField } from "@mui/material"
 import { createCart, deleteCart } from "../../features/cart/cartSlice"
 import { useLocation } from "react-router-dom"
 
-const InputContainer = styled.div<{ flex: number }>`
+const InputContainer = styled.div<{ flex: number, minWidth?: string }>`
     flex: ${props => props.flex};
+    min-width: ${props => props.minWidth};
     display: flex;
     margin-right: 20px;
     flex-direction: column;
     font-size: 14px;
+    margin-bottom: 10px;
 `
 const ProductListContainer = styled.div`
     margin-bottom: 30px;
@@ -147,7 +149,7 @@ export default function Comprar() {
             {warning && <Mensagem onClick={handleCreateProvider} onClose={() => setWarning('')} warning={warning} />}
             <Title title='Comprar Produtos' />
             <Form onSubmit={handleOnSubmit}>
-                <InputContainer flex={5}>
+                <InputContainer flex={5} minWidth='65vw'>
                     <Autocomplete
                         ref={elmRef}
                         disablePortal
@@ -163,7 +165,7 @@ export default function Comprar() {
                         renderInput={(params) => <TextField {...params} label="Produto" size='small' />}
                     />
                 </InputContainer>
-                <InputContainer flex={3}>
+                <InputContainer flex={3} minWidth='15vw'>
                     <Input
                         name="provider"
                         label="Fornecedor"
@@ -180,7 +182,7 @@ export default function Comprar() {
                         }
                     </datalist>
                 </InputContainer>
-                <InputContainer flex={1}>
+                <InputContainer flex={1} minWidth='150px'>
                     <Input
                         name="price"
                         label="Preço"
@@ -191,7 +193,7 @@ export default function Comprar() {
                         onChange={(e) => setPrice(e.target.value)}
                     />
                 </InputContainer>
-                <InputContainer flex={1}>
+                <InputContainer flex={1} minWidth='150px'>
                     <Input
                         name="lote"
                         label="Lote"
@@ -217,7 +219,9 @@ export default function Comprar() {
                         onChange={(e) => setQuantity(parseInt(e.target.value))}
                     />
                 </InputContainer>
-                <Button style={{ padding: '12px 24px', alignSelf: 'flex-end' }} text='Lançar' />
+                <Button
+                    style={{ padding: '12px 24px', alignSelf: 'flex-end', marginBottom: '11px' }}
+                    text='Lançar' />
             </Form>
             {
                 cart.length > 0 &&
