@@ -16,7 +16,7 @@ import ItemsContainer from "../../components/List/ItemsContainer"
 import Form from "../../components/Form"
 import Title from "../../components/Title"
 import { Autocomplete, TextField } from "@mui/material"
-import { createCart } from "../../features/cart/cartSlice"
+import { createCart, deleteCart } from "../../features/cart/cartSlice"
 import { useLocation } from "react-router-dom"
 
 const InputContainer = styled.div<{ flex: number }>`
@@ -124,6 +124,9 @@ export default function Comprar() {
         try {
             if (auth.role === 'admin') {
                 await dispatch(createStockIn(cart)).unwrap()
+                if (state) {
+                    await dispatch(deleteCart(state.id))
+                }
                 setMessage('Compra realizada com sucesso.')
             } else {
                 await dispatch(createCart(cart)).unwrap()
