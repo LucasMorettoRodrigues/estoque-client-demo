@@ -244,7 +244,7 @@ export default function Retirar() {
                                 type="password"
                                 name="sign"
                                 value={password}
-                                label="Assinar"
+                                label="Senha"
                                 display="flex"
                                 style={{ maxWidth: '250px' }}
                             />
