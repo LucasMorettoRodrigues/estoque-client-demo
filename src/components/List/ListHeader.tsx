@@ -1,6 +1,9 @@
 import styled from "styled-components"
 
 const ListHeader = styled.div<{ fontSize?: string }>`
+    position: sticky;
+    top: 0;
+    z-index: 100;
     height: 45px;
     background-color: #5fb4ff;
     display: flex;
