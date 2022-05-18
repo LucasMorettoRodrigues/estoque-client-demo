@@ -11,7 +11,6 @@ import Loading from "./components/Loading";
 import Navbar from "./components/Navbar";
 import { getFornecedores } from "./features/fornecedor/fornecedorSlice";
 import { getProdutos } from "./features/produtos/produtoSlice";
-import { getAllStockIns } from "./features/stockIn/stockIn";
 import { getAllStockOuts } from "./features/stockOut/stockOut";
 import Comprar from "./pages/Actions/Comprar";
 import Detalhes from "./pages/Produtos/Detalhes";
@@ -27,11 +26,9 @@ import Produtos from "./pages/Produtos/Produtos";
 import Retirar from "./pages/Actions/Retirar";
 import ProdutoHistorico from "./pages/ProdutoHistorico";
 import Ajustar from "./pages/Actions/Ajustar";
-import { getAllAdjustStock } from "./features/adjustStock/adjustStock";
 import Login from "./pages/Login";
 import Users from "./pages/Users/Users";
 import CreateUser from "./pages/Users/CreateUser";
-import { getAllCarts } from "./features/cart/cartSlice";
 import AdminPanel from "./pages/AdminPanel";
 import EditUser from "./pages/Users/EditUser";
 import RedefinePassword from "./pages/Users/RedefinePassword";
@@ -48,9 +45,6 @@ function App() {
 
       if (authentication.role === 'admin') {
         dispatch(getAllStockOuts())
-        dispatch(getAllStockIns())
-        dispatch(getAllAdjustStock())
-        dispatch(getAllCarts())
       }
     }
   }, [dispatch, authentication])

@@ -3,9 +3,10 @@ import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import EditDeleteButton from "../components/EditDeleteButton";
 import Title from "../components/Title";
-import { deleteCart } from "../features/cart/cartSlice";
+import { deleteCart, getAllCarts } from "../features/cart/cartSlice";
 import { formatValidity } from "../utils/functions";
 import { AiOutlineDelete } from 'react-icons/ai'
+import { useEffect } from "react";
 
 const Info = styled.div`
     font-size: 18px;
@@ -39,6 +40,10 @@ export default function AdminPanel() {
     const navigate = useNavigate()
     const carts = useAppSelector(state => state.cart.carts)
     const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(getAllCarts())
+    }, [dispatch])
 
     return (
         <>

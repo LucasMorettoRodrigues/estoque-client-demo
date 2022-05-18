@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { useAppSelector } from "../app/hooks"
+import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { useEffect, useState } from "react"
 import { TStockIn } from "../types/TStockIn"
 import { TStockOut } from "../types/TStockOut"
@@ -9,6 +9,9 @@ import Item from "../components/List/Item"
 import ItemsContainer from "../components/List/ItemsContainer"
 import Title from "../components/Title"
 import { formatValidity, groupStockByDate } from "../utils/functions"
+import { getAllStockOuts } from "../features/stockOut/stockOut"
+import { getAllStockIns } from "../features/stockIn/stockIn"
+import { getAllAdjustStock } from "../features/adjustStock/adjustStock"
 
 const Container = styled.div<{ show?: boolean }>`
     visibility: ${props => props.show === false ? 'hidden' : 'visible'};
@@ -38,6 +41,14 @@ export default function Historico({ productFilter }: Props) {
     const [filteredStocks, setFilteredStocks] = useState<{ [key: string]: any }>({})
     const [filter, setFilter] = useState('')
     const [show, setShow] = useState('')
+
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(getAllStockOuts())
+        dispatch(getAllStockIns())
+        dispatch(getAllAdjustStock())
+    }, [dispatch])
 
     useEffect(() => {
 
