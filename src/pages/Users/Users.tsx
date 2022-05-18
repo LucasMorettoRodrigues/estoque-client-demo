@@ -42,7 +42,10 @@ export default function Users() {
             </ListHeader>
             {
                 users.map((item) => (
-                    <ItemsContainer key={item.id}>
+                    <ItemsContainer
+                        key={item.id}
+                        onClick={() => navigate(`/usuarios/${item.id}`, { state: item })}
+                    >
                         <Item width="50px" align="center" text={item.id} />
                         <Item flex={1} text={item.name} />
                         <Item flex={2} text={item.email} />

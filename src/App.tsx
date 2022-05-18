@@ -33,6 +33,8 @@ import Users from "./pages/Users/Users";
 import CreateUser from "./pages/Users/CreateUser";
 import { getAllCarts } from "./features/cart/cartSlice";
 import AdminPanel from "./pages/AdminPanel";
+import EditUser from "./pages/Users/EditUser";
+import RedefinePassword from "./pages/Users/RedefinePassword";
 
 function App() {
 
@@ -94,6 +96,8 @@ function App() {
           <Route path='/usuarios' element={<AdminRoute><Users /></AdminRoute>} />
           <Route path='/usuarios/novo' element={<AdminRoute><CreateUser /></AdminRoute>} />
           <Route path='/panel' element={<AdminRoute><AdminPanel /></AdminRoute>} />
+          <Route path='/usuarios/:id' element={<AdminRoute><EditUser /></AdminRoute>} />
+          <Route path='/usuarios/:id/redefinirSenha' element={<AdminRoute><RedefinePassword /></AdminRoute>} />
         </Routes>
       </Container>
     </BrowserRouter >
