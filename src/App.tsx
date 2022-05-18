@@ -71,6 +71,8 @@ function App() {
       <Navbar />
       <Container>
         <Routes>
+          <Route path='/' element={<Login />} />
+
           <Route path='/login' element={<Login />} />
           <Route path='/estoque-client' element={<Login />} />
 
