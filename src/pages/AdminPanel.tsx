@@ -21,12 +21,12 @@ const Box = styled.div`
     margin: 5px auto;
     border-radius: 5px;
     background-color: white;
+    border: 2px solid #d8d8d8;
     align-self: center;
     justify-self:center;
     cursor: pointer;
 
     &:hover {
-        transform: scale(1.01);
         background-color: #badaf8;
     }
 `
@@ -49,11 +49,12 @@ export default function AdminPanel() {
         <>
             <Title title='Bem Vindo'></Title>
             <Info>Você possui {carts.length} solicitações pendentes.</Info>
-            {carts.map((cart, index) => (
+            {carts.length > 0 && carts.map((cart, index) => (
                 <Box key={index} >
                     <div style={{ display: 'flex', flex: 1, justifyContent: 'space-around' }} onClick={() => navigate('/comprar', { state: cart })}>
                         <BoxItem>Solicitação de Compra</BoxItem>
-                        <BoxItem>Data: {formatValidity(cart.createdAt)}</BoxItem>
+                        <BoxItem>Enviada por: {cart.user?.name}</BoxItem>
+                        <BoxItem>{formatValidity(cart.createdAt)}</BoxItem>
                     </div>
                     <EditDeleteButton onClick={() => dispatch(deleteCart(cart.id!))}>
                         <AiOutlineDelete />

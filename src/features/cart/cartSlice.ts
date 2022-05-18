@@ -2,10 +2,16 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { api } from '../../services/api.service'
 import { TStockIn } from '../../types/TStockIn'
 
+type cartRequest = {
+    cart: TStockIn[],
+    username: string,
+    password: string
+}
+
 export const createCart = createAsyncThunk(
     'carts/createCart',
-    async (cart: TStockIn[], thunkAPI) => {
-        await api.post('/carts', { cart: cart })
+    async ({ cart, username, password }: cartRequest, thunkAPI) => {
+        await api.post('/carts', { cart, username, password })
     }
 )
 

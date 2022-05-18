@@ -31,6 +31,13 @@ const InputContainer = styled.div<{ flex: number, minWidth?: string }>`
 const ProductListContainer = styled.div`
     margin-bottom: 30px;
 `
+const BottomContainer = styled.div`
+    display: flex;
+    align-items: center;
+`
+const BottomInputContainer = styled.div`
+    margin-right: 10px;
+`
 
 export default function Comprar() {
 
@@ -50,6 +57,8 @@ export default function Comprar() {
     const [error, setError] = useState('')
     const [warning, setWarning] = useState('')
     const [message, setMessage] = useState('')
+    const [password, setPassword] = useState('')
+    const [username, setUsername] = useState('')
     const elmRef = useRef(null as HTMLElement | null);
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -122,19 +131,30 @@ export default function Comprar() {
             .then(() => setMessage(`Fornecedor cadastrado com sucesso`))
     }
 
-    const handleOnClick = async () => {
+    const handleCheckout = async () => {
         try {
-            if (auth.role === 'admin') {
-                await dispatch(createStockIn(cart)).unwrap()
-                if (state) {
-                    await dispatch(deleteCart(state.id))
-                }
-                setMessage('Compra realizada com sucesso.')
-            } else {
-                await dispatch(createCart(cart)).unwrap()
-                setMessage('Solicitação de compra enviada com sucesso.')
+            await dispatch(createStockIn(cart)).unwrap()
+            if (state) {
+                await dispatch(deleteCart(state.id))
             }
+            setMessage('Compra realizada com sucesso.')
 
+            setCart([])
+
+        } catch (error) {
+            setError('Não foi possível realizar a compra.')
+        }
+    }
+
+    const handleSendToAdmin = async () => {
+        if (!password || !username) {
+            return setMessage('Assine a operação.')
+        }
+
+        try {
+
+            await dispatch(createCart({ cart, username, password })).unwrap()
+            setMessage('Solicitação de compra enviada com sucesso.')
             setCart([])
 
         } catch (error) {
@@ -256,9 +276,45 @@ export default function Comprar() {
                             }
                         </>
                     </ProductListContainer>
-                    <Button onClick={handleOnClick} text={'Finalizar Compra'} />
+                    {
+                        auth.role === 'admin' &&
+                        <Button onClick={handleCheckout} text={'Finalizar Compra'} />
+                    }
+                    {
+                        auth.role !== 'admin' &&
+                        <BottomContainer>
+                            <BottomInputContainer>
+                                <Input
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    type="text"
+                                    name="username"
+                                    value={username}
+                                    label="Usuario"
+                                    display="flex"
+                                    style={{ maxWidth: '250px' }}
+                                />
+                            </BottomInputContainer>
+                            <BottomInputContainer>
+                                <Input
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    type="password"
+                                    name="sign"
+                                    value={password}
+                                    label="Senha"
+                                    display="flex"
+                                    style={{ maxWidth: '250px' }}
+                                />
+                            </BottomInputContainer>
+                            <Button
+                                onClick={handleSendToAdmin}
+                                text={'Finalizar Compra'}
+                                style={{ padding: '12px 24px', alignSelf: 'flex-end' }}
+                            />
+                        </BottomContainer>
+                    }
                 </>
             }
+
         </>
     )
 }

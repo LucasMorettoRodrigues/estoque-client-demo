@@ -6,6 +6,9 @@ export type TStockIn = {
     lote: string | null,
     validade: string | null,
     quantity: number,
+    user?: {
+        name: string
+    }
     product?: {
         name: string,
         brand: string,

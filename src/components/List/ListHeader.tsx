@@ -3,7 +3,7 @@ import styled from "styled-components"
 const ListHeader = styled.div<{ fontSize?: string }>`
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1;
     height: 45px;
     background-color: #5fb4ff;
     display: flex;
