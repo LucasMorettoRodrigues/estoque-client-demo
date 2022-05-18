@@ -89,7 +89,7 @@ export const mergeProducts = (products: TProduct[]): TProduct[] => {
 
 export const compare = (array: TProduct[], property: string) => {
     if (property === 'category' || property === 'brand' || property === 'unit' ||
-        property === 'id' || property === 'name') {
+        property === 'id' || property === 'name' || property === 'providers') {
         return array.sort((a, b) => (a[property]! > b[property]!) ? 1 : ((b[property]! > a[property]!) ? -1 : 0))
     }
     return []

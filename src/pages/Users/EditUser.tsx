@@ -30,7 +30,6 @@ export default function EditUser() {
 
     const [username, setUsername] = useState(user.name)
     const [email, setEmail] = useState(user.email)
-    // const [password, setPassword] = useState(user.password)
     const [role, setRole] = useState(user.role)
     const [status, setStatus] = useState(user.status)
     const [error, setError] = useState('')
@@ -47,6 +46,7 @@ export default function EditUser() {
             setMessage('Usuário editado com sucesso.')
         } catch (error) {
             if (axios.isAxiosError(error)) {
+                console.log(error)
                 setError(`${error.response?.data}`)
             }
         }

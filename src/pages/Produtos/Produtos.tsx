@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
 import Button from "../../components/Button"
 import { useAppSelector } from "../../app/hooks"
-import { mergeProducts } from "../../utils/functions"
+import { compare, mergeProducts } from "../../utils/functions"
 import { useEffect, useState } from "react"
 import { TProduct } from "../../types/TProduct"
 import Select from "../../components/Select"
@@ -53,15 +53,24 @@ export default function Produtos() {
     const [filteredProducts, setFilteredProducts] = useState<TProduct[]>([])
     const [lowStockFilter, setLowStockFilter] = useState(false)
     const [search, setSearch] = useState('')
+    const [sort, setSort] = useState('')
+    const [sortedProducts, setSortedProducts] = useState<TProduct[]>([])
     const [provider, setProvider] = useState('')
+
+    useEffect(() => {
+        let produtos = products.slice()
+
+        sort ? setSortedProducts(compare(produtos, sort)) : setSortedProducts(produtos)
+
+    }, [sort, products])
 
     useEffect(() => {
         let filtered = []
 
         if (lowStockFilter) {
-            filtered = mergeProducts(products).filter(i => i.stock < i.min_stock)
+            filtered = mergeProducts(sortedProducts).filter(i => i.stock < i.min_stock)
         } else {
-            filtered = mergeProducts(products)
+            filtered = mergeProducts(sortedProducts)
         }
 
         if (search) {
@@ -73,7 +82,7 @@ export default function Produtos() {
         }
 
         setFilteredProducts(filtered)
-    }, [lowStockFilter, products, search, provider])
+    }, [lowStockFilter, sortedProducts, search, provider])
 
     return (
         <>
@@ -101,8 +110,8 @@ export default function Produtos() {
                 </Filter>
             </MenuContainer>
             <ListHeader>
-                <Item flex={8} text='Produto' />
-                <Item flex={2} text='Fornecedores' />
+                <Item flex={8} text='Produto' cursor='pointer' onClick={() => setSort('name')} />
+                <Item flex={2} text='Fornecedores' cursor='pointer' onClick={() => setSort('providers')} />
                 <Item flex={1} text='Estoque' align='center' />
                 <Item flex={1} text='Est. Mín' align='center' />
                 <Item flex={1} text='Est. Max' align='center' />

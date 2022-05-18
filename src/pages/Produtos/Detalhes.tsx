@@ -127,7 +127,7 @@ export default function Detalhes() {
                 <Item flex={3} text='Produto' onClick={() => setSort('name')} cursor='pointer' fontSize='12px' />
                 <Item flex={2} text='Observação' fontSize='12px' />
                 <Item width="90px" text='Código' fontSize='12px' />
-                <Item flex={2} text='Fornecedores' fontSize='12px' />
+                <Item flex={2} text='Fornecedores' fontSize='12px' onClick={() => setSort('providers')} cursor='pointer' />
                 <Item width="90px" text='Categoria' onClick={() => setSort('category')} cursor='pointer' fontSize='12px' />
                 <Item width="130px" text='Marca' onClick={() => setSort('brand')} cursor='pointer' fontSize='12px' />
                 <Item width="65px" text='Unidade' onClick={() => setSort('unit')} cursor='pointer' fontSize='12px' />
