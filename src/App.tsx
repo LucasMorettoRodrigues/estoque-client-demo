@@ -65,7 +65,8 @@ function App() {
     <BrowserRouter>
       <>
         {console.log('ak', `${process.env.REACT_APP_ABC}`)}
-        <Loading />
+        {console.log('ak2', process.env.REACT_APP_ABC)}
+        < Loading />
         <Navbar />
         <Container>
           <Routes>
