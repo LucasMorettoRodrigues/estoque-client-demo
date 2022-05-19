@@ -64,7 +64,7 @@ function App() {
   return (
     <BrowserRouter>
       <>
-        {console.log('ak', `${process.env.ABC}`)}
+        {console.log('ak', `${process.env.REACT_APP_ABC}`)}
         <Loading />
         <Navbar />
         <Container>
