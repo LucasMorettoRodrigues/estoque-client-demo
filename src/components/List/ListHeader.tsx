@@ -2,6 +2,7 @@ import styled from "styled-components"
 
 const ListHeader = styled.div<{ fontSize?: string }>`
     position: sticky;
+    width: 100%;
     top: 0;
     z-index: 1;
     height: 45px;

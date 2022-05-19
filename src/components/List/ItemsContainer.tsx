@@ -1,6 +1,7 @@
 import styled from "styled-components"
 
 const Container = styled.ul<{ type?: string, bg?: string, click: boolean }>`
+    width: 100%;
     height: 40px;
     background-color: ${props => props.bg ? props.bg : '#cbe6ff'};
     display: flex;

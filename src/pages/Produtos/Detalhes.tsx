@@ -12,6 +12,7 @@ import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import ProductBtn from "../../components/ProductBtn"
 import Title from "../../components/Title"
+import { BsArrowDownSquare } from 'react-icons/bs'
 
 const Container = styled.div``
 const TitleContainer = styled.div`
@@ -32,6 +33,20 @@ const InputContainer = styled.div`
     align-items: center;
     margin-right: 20px;
 `
+const ExpandIconContainer = styled.div<{ bg: string }>`
+    display: flex;
+    color: #555;
+    align-items: center;
+    cursor: pointer;
+    background-color: ${props => props.bg};
+    padding-left: 10px;
+    padding-right: 3px;
+    border-top: 1px solid #c9c9c9;
+
+    &:hover svg path {
+        color: black;
+    }
+`
 
 export default function Detalhes() {
 
@@ -45,6 +60,8 @@ export default function Detalhes() {
     const [sortedProducts, setSortedProducts] = useState<TProduct[]>([])
     const [sort, setSort] = useState('')
     const [search, setSearch] = useState('')
+    const [isOpen, setIsOpen] = useState<number[]>([])
+    const [isAllOpen, setIsAllOpen] = useState(false)
 
     let categories = Array.from(new Set(productsData.map(i => i.category)))
 
@@ -94,6 +111,13 @@ export default function Detalhes() {
 
     }, [category, sortedProducts, search, provider])
 
+    const handleClose = () => {
+        if (isAllOpen) {
+            setIsOpen([])
+        }
+        setIsAllOpen(!isAllOpen)
+    }
+
     return (
         <>
             <TitleContainer>
@@ -122,39 +146,60 @@ export default function Detalhes() {
                     </InputContainer>
                 </Filter>
             </MenuContainer>
-            <ListHeader fontSize='12px'>
-                <Item width="26px" text='Id' onClick={() => setSort('id')} cursor='pointer' fontSize='12px' />
-                <Item flex={3} text='Produto' onClick={() => setSort('name')} cursor='pointer' fontSize='12px' />
-                <Item flex={2} text='Observação' fontSize='12px' />
-                <Item width="90px" text='Código' fontSize='12px' />
-                <Item flex={2} text='Fornecedores' fontSize='12px' onClick={() => setSort('providers')} cursor='pointer' />
-                <Item width="90px" text='Categoria' onClick={() => setSort('category')} cursor='pointer' fontSize='12px' />
-                <Item width="130px" text='Marca' onClick={() => setSort('brand')} cursor='pointer' fontSize='12px' />
-                <Item width="65px" text='Unidade' onClick={() => setSort('unit')} cursor='pointer' fontSize='12px' />
-                <Item width="65px" text='Estoque' align='center' fontSize='12px' />
-                <Item width="65px" text='Est. Mín.' align='center' fontSize='12px' />
-                <Item width="65px" text='Est. Max.' align='center' fontSize='12px' />
-                <Item width="83px" text='Frequência Retirada' align='center' fontSize='12px' />
-            </ListHeader>
+            <div style={{ display: 'flex' }}>
+
+                <ExpandIconContainer
+                    bg='#5fb4ff'
+                    onClick={handleClose}>
+                    <BsArrowDownSquare />
+                </ExpandIconContainer>
+                <ListHeader fontSize='12px'>
+                    <Item width="26px" text='Id' onClick={() => setSort('id')} cursor='pointer' fontSize='12px' />
+                    <Item flex={3} text='Produto' onClick={() => setSort('name')} cursor='pointer' fontSize='12px' />
+                    <Item flex={2} text='Observação' fontSize='12px' />
+                    <Item width="90px" text='Código' fontSize='12px' />
+                    <Item flex={2} text='Fornecedores' fontSize='12px' onClick={() => setSort('providers')} cursor='pointer' />
+                    <Item width="90px" text='Categoria' onClick={() => setSort('category')} cursor='pointer' fontSize='12px' />
+                    <Item width="130px" text='Marca' onClick={() => setSort('brand')} cursor='pointer' fontSize='12px' />
+                    <Item width="65px" text='Unidade' onClick={() => setSort('unit')} cursor='pointer' fontSize='12px' />
+                    <Item width="65px" text='Estoque' align='center' fontSize='12px' />
+                    <Item width="65px" text='Est. Mín.' align='center' fontSize='12px' />
+                    <Item width="65px" text='Est. Max.' align='center' fontSize='12px' />
+                    <Item width="83px" text='Frequência Retirada' align='center' fontSize='12px' />
+                </ListHeader>
+            </div>
+
             {
                 filteredProducts.map((item) => (
                     <Container key={item.id}>
-                        <ItemsContainer onClick={() => navigate(`/produtos/${item.id}`, { state: item })}>
-                            <Item width="26px" text={item.id} fontSize='12px' />
-                            <Item flex={3} text={item.name} fontSize='12px' />
-                            <Item flex={2} text={item.observation} fontSize='12px' />
-                            <Item width="90px" text={item.code} fontSize='12px' />
-                            <Item flex={2} text={item.providers?.map((i) => `${i} `)} fontSize='12px' />
-                            <Item width="90px" text={item.category} fontSize='12px' />
-                            <Item width="130px" text={item.brand} fontSize='12px' />
-                            <Item width="65px" text={item.unit} fontSize='12px' />
-                            <Item width="65px" text={item.stock} align='center' fontSize='12px' />
-                            <Item width="65px" text={item.min_stock} align='center' fontSize='12px' />
-                            <Item width="65px" text={item.max_stock} align='center' fontSize='12px' />
-                            <Item width="83px" text={getStockOutFrequency(item.id!)} align='center' fontSize='12px' />
-                        </ItemsContainer>
+                        <div style={{ display: 'flex' }}>
+                            <ExpandIconContainer
+                                bg='#cbe6ff'
+                                onClick={() => (
+                                    isOpen.includes(item.id!)
+                                        ? setIsOpen(isOpen.filter(id => id !== item.id))
+                                        : setIsOpen([...isOpen, item.id!])
+                                )}>
+                                <BsArrowDownSquare />
+                            </ExpandIconContainer>
+                            <ItemsContainer onClick={() => navigate(`/produtos/${item.id}`, { state: item })}>
+                                <Item width="26px" text={item.id} fontSize='12px' />
+                                <Item flex={3} text={item.name} fontSize='12px' />
+                                <Item flex={2} text={item.observation} fontSize='12px' />
+                                <Item width="90px" text={item.code} fontSize='12px' />
+                                <Item flex={2} text={item.providers?.map((i) => `${i} `)} fontSize='12px' />
+                                <Item width="90px" text={item.category} fontSize='12px' />
+                                <Item width="130px" text={item.brand} fontSize='12px' />
+                                <Item width="65px" text={item.unit} fontSize='12px' />
+                                <Item width="65px" text={item.stock} align='center' fontSize='12px' />
+                                <Item width="65px" text={item.min_stock} align='center' fontSize='12px' />
+                                <Item width="65px" text={item.max_stock} align='center' fontSize='12px' />
+                                <Item width="83px" text={getStockOutFrequency(item.id!)} align='center' fontSize='12px' />
+                            </ItemsContainer>
 
-                        {item.subproducts &&
+                        </div>
+
+                        {item.subproducts && (isOpen.includes(item.id!) || isAllOpen) &&
                             item.subproducts.map((subitem) => (
                                 <ItemsContainer
                                     type="subItem"
