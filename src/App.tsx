@@ -63,42 +63,37 @@ function App() {
 
   return (
     <BrowserRouter>
-      <>
-        {console.log('ak', `${process.env.REACT_APP_ABC}`)}
-        {console.log('ak2', process.env.REACT_APP_ABC)}
-        < Loading />
-        <Navbar />
-        <Container>
-          <Routes>
-            <Route path='/' element={<Login />} />
+      < Loading />
+      <Navbar />
+      <Container>
+        <Routes>
+          <Route path='/' element={<Login />} />
 
-            <Route path='/login' element={<Login />} />
-            <Route path='/estoque-client' element={<Login />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/estoque-client' element={<Login />} />
 
-            <Route path='/comprar' element={<PrivateRoute><Comprar /></PrivateRoute>} />
-            <Route path='/retirar' element={<PrivateRoute><Retirar /></PrivateRoute>} />
+          <Route path='/comprar' element={<PrivateRoute><Comprar /></PrivateRoute>} />
+          <Route path='/retirar' element={<PrivateRoute><Retirar /></PrivateRoute>} />
 
-            <Route path='/produtos' element={<AdminRoute><Produtos /></AdminRoute>} />
-            <Route path='/produtos/detalhes' element={<AdminRoute><Detalhes /></AdminRoute>} />
-            <Route path='/produtos/escondidos' element={<AdminRoute><ProdutosEscondidos /></AdminRoute>} />
-            <Route path='/produtos/:id' element={<AdminRoute><EditarProduto /></AdminRoute>} />
-            <Route path='/produtos/:id_produto/subprodutos/:id_subproduto' element={<AdminRoute><EditarSubProduto /></AdminRoute>} />
-            <Route path='/novoProduto' element={<AdminRoute><NovoProduto /></AdminRoute>} />
-            <Route path='/fornecedores' element={<AdminRoute><Fornecedores /></AdminRoute>} />
-            <Route path='/fornecedores/:id' element={<AdminRoute><EditarFornecedor /></AdminRoute>} />
-            <Route path='/novoFornecedor' element={<AdminRoute><NovoFornecedor /></AdminRoute>} />
-            <Route path='/ajustar' element={<AdminRoute><Ajustar /></AdminRoute>} />
-            <Route path='/historico' element={<AdminRoute><Historico /></AdminRoute>} />
-            <Route path='/produtos/:id/historico' element={<AdminRoute><ProdutoHistorico /></AdminRoute>} />
-            <Route path='/usuarios' element={<AdminRoute><Users /></AdminRoute>} />
-            <Route path='/usuarios/novo' element={<AdminRoute><CreateUser /></AdminRoute>} />
-            <Route path='/panel' element={<AdminRoute><AdminPanel /></AdminRoute>} />
-            <Route path='/usuarios/:id' element={<AdminRoute><EditUser /></AdminRoute>} />
-            <Route path='/usuarios/:id/redefinirSenha' element={<AdminRoute><RedefinePassword /></AdminRoute>} />
-          </Routes>
-        </Container>
-      </>
-
+          <Route path='/produtos' element={<AdminRoute><Produtos /></AdminRoute>} />
+          <Route path='/produtos/detalhes' element={<AdminRoute><Detalhes /></AdminRoute>} />
+          <Route path='/produtos/escondidos' element={<AdminRoute><ProdutosEscondidos /></AdminRoute>} />
+          <Route path='/produtos/:id' element={<AdminRoute><EditarProduto /></AdminRoute>} />
+          <Route path='/produtos/:id_produto/subprodutos/:id_subproduto' element={<AdminRoute><EditarSubProduto /></AdminRoute>} />
+          <Route path='/novoProduto' element={<AdminRoute><NovoProduto /></AdminRoute>} />
+          <Route path='/fornecedores' element={<AdminRoute><Fornecedores /></AdminRoute>} />
+          <Route path='/fornecedores/:id' element={<AdminRoute><EditarFornecedor /></AdminRoute>} />
+          <Route path='/novoFornecedor' element={<AdminRoute><NovoFornecedor /></AdminRoute>} />
+          <Route path='/ajustar' element={<AdminRoute><Ajustar /></AdminRoute>} />
+          <Route path='/historico' element={<AdminRoute><Historico /></AdminRoute>} />
+          <Route path='/produtos/:id/historico' element={<AdminRoute><ProdutoHistorico /></AdminRoute>} />
+          <Route path='/usuarios' element={<AdminRoute><Users /></AdminRoute>} />
+          <Route path='/usuarios/novo' element={<AdminRoute><CreateUser /></AdminRoute>} />
+          <Route path='/panel' element={<AdminRoute><AdminPanel /></AdminRoute>} />
+          <Route path='/usuarios/:id' element={<AdminRoute><EditUser /></AdminRoute>} />
+          <Route path='/usuarios/:id/redefinirSenha' element={<AdminRoute><RedefinePassword /></AdminRoute>} />
+        </Routes>
+      </Container>
     </BrowserRouter >
   );
 }
