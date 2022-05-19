@@ -64,7 +64,7 @@ function App() {
   return (
     <BrowserRouter>
       <>
-        {console.log('ak', `${process.env.BASE_URL}`)}
+        {console.log('ak', `${process.env.ABC}`)}
         <Loading />
         <Navbar />
         <Container>
