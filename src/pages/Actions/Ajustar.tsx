@@ -18,6 +18,7 @@ import Form from "../../components/Form"
 import Title from "../../components/Title"
 import { Autocomplete, TextField } from "@mui/material"
 import { formatValidity } from '../../utils/functions'
+import Loading from "../../components/Loading"
 
 const InputContainer = styled.div<{ flex: number }>`
     flex: ${props => props.flex};
@@ -47,6 +48,7 @@ export default function Ajustar() {
     const [productList, setProductList] = useState<body[]>([])
     const [error, setError] = useState('')
     const [warning, setWarning] = useState('')
+    const [loading, setLoading] = useState(false)
     const elmRef = useRef(null as HTMLElement | null);
 
 
@@ -85,6 +87,7 @@ export default function Ajustar() {
     }
 
     const handleOnClick = async () => {
+        setLoading(true)
         for (const item of productList) {
             await dispatch(createAdjustStock({
                 product_id: item.product.id!,
@@ -94,11 +97,13 @@ export default function Ajustar() {
         }
 
         setProductList([])
+        setLoading(false)
         setWarning('Produtos ajustados com sucesso.')
     }
 
     return (
         <>
+            < Loading loading={loading} />
             {error && <Mensagem onClick={() => setError('')} error={error} />}
             {warning && <Mensagem onClick={() => setWarning('')} warning={warning} />}
             <Title title='Ajustar Estoque' />
@@ -177,7 +182,7 @@ export default function Ajustar() {
                             }
                         </>
                     </ProductListContainer>
-                    <Button onClick={handleOnClick} text={'Finalizar Retirada'} />
+                    <Button onClick={handleOnClick} text={'Finalizar Ajuste'} />
                 </>
             }
         </>
