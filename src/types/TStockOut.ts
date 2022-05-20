@@ -17,5 +17,6 @@ export type TStockOut = {
     user?: {
         name: string
     },
-    createdAt?: string
+    createdAt?: string,
+    notification?: string
 }

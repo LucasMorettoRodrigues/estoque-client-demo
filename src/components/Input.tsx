@@ -18,7 +18,7 @@ const SInput = styled.input`
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     name: string,
-    label: string,
+    label?: string,
     display?: string
 }
 

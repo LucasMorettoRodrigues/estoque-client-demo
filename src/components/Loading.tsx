@@ -3,6 +3,7 @@ import { useAppSelector } from "../app/hooks"
 
 const Container = styled.div`
     position: fixed;
+    z-index: 1000;
     top: 0;
     left: 0;
     bottom: 0;
@@ -40,13 +41,26 @@ const Loader = styled.div`
     }
 `
 
-export default function Loading() {
+export default function Loading({ loading }: { loading: boolean }) {
 
     const statusProvider = useAppSelector(state => state.fornecedor.status)
     const statusProduct = useAppSelector(state => state.produto.status)
     const statusStockIn = useAppSelector(state => state.stockIn.status)
     const statusStockOut = useAppSelector(state => state.stockOut.status)
     const statusAdjustStock = useAppSelector(state => state.adjustStock.status)
+
+    if (loading) {
+        return (
+            <Container>
+                <Wrapper>
+                    <Box>
+                        <p>Loading</p>
+                        <Loader></Loader>
+                    </Box>
+                </Wrapper>
+            </Container>
+        )
+    }
 
     if (
         statusProduct !== 'loading' ||

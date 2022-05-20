@@ -18,6 +18,7 @@ import Title from "../../components/Title"
 import { Autocomplete, TextField } from "@mui/material"
 import { createCart, deleteCart } from "../../features/cart/cartSlice"
 import { useLocation } from "react-router-dom"
+import Loading from "../../components/Loading"
 
 const InputContainer = styled.div<{ flex: number, minWidth?: string }>`
     flex: ${props => props.flex};
@@ -59,13 +60,14 @@ export default function Comprar() {
     const [message, setMessage] = useState('')
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
+    const [loading, setLoading] = useState(false)
     const elmRef = useRef(null as HTMLElement | null);
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         if (!productId || !providerId || !price || !lote || !quantity) {
-            return setError(`Por favor preencha todos os campo.`)
+            return setError(`Por favor preencha todos os campos.`)
         }
 
         if (!getProduct(products, productId)) {
@@ -132,6 +134,8 @@ export default function Comprar() {
     }
 
     const handleCheckout = async () => {
+        setLoading(true)
+
         try {
             await dispatch(createStockIn(cart)).unwrap()
             if (state) {
@@ -144,6 +148,8 @@ export default function Comprar() {
         } catch (error) {
             setError('Não foi possível realizar a compra.')
         }
+
+        setLoading(false)
     }
 
     const handleSendToAdmin = async () => {
@@ -164,6 +170,7 @@ export default function Comprar() {
 
     return (
         <>
+            < Loading loading={loading} />
             {error && <Mensagem onClick={() => setError('')} error={error} />}
             {message && <Mensagem onClick={() => setMessage('')} warning={message} />}
             {warning && <Mensagem onClick={handleCreateProvider} onClose={() => setWarning('')} warning={warning} />}

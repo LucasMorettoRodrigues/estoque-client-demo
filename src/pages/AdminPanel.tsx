@@ -55,6 +55,7 @@ export default function AdminPanel() {
                         <BoxItem>Solicitação de Compra</BoxItem>
                         <BoxItem>Enviada por: {cart.user?.name}</BoxItem>
                         <BoxItem>{formatValidity(cart.createdAt)}</BoxItem>
+                        {/* <BoxItem>{cart.cart?.notification ? cart.cart : 'no'}</BoxItem> */}
                     </div>
                     <EditDeleteButton onClick={() => dispatch(deleteCart(cart.id!))}>
                         <AiOutlineDelete />

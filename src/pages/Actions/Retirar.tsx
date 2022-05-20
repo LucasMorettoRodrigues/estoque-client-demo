@@ -18,6 +18,8 @@ import Form from "../../components/Form"
 import Title from "../../components/Title"
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import ModalInput from "../../components/ModalInput"
+import Loading from "../../components/Loading"
 
 const InputContainer = styled.div<{ flex: number }>`
     flex: ${props => props.flex};
@@ -41,7 +43,8 @@ const BottomInputContainer = styled.div`
 type body = {
     product: TProduct,
     subProduct: TSubProduct | null,
-    quantity: number
+    quantity: number,
+    notification: string
 }
 
 export default function Retirar() {
@@ -51,33 +54,51 @@ export default function Retirar() {
 
     const [quantity, setQuantity] = useState(1)
     const [subProductId, setSubProductId] = useState(0)
-    const [productId, setProductId] = useState<number | null>(null)
+    const [productId, setProductId] = useState(0)
     const [productList, setProductList] = useState<body[]>([])
     const [error, setError] = useState('')
     const [warning, setWarning] = useState('')
+    const [message, setMessage] = useState('')
     const [password, setPassword] = useState('')
     const [user, setUser] = useState('')
+    const [notification, setNotification] = useState('')
+    const [loading, setLoading] = useState(false)
     const elmRef = useRef(null as HTMLElement | null);
 
-    const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
+    const handleOnSubmit = (e?: FormEvent<HTMLFormElement>) => {
+        e?.preventDefault()
 
-        if (!productId) {
-            return setError('Selecione o produto.')
+        const result = validateProduct()
+
+        if (result) {
+            addProductToList(result.productToAdd, result.subProductToAdd)
+        } else {
+            return
         }
+
+        cleanInputs()
+    }
+
+    const validateProduct = (): any => {
+
+        if (!productId || !subProductId) return setError('Selecione o produto.')
 
         const productToAdd = getProduct(products, productId)
         const subProductToAdd = getSubProduct(products, productId, subProductId)
 
-        if (!productToAdd) return setError('Produto não encontrado.')
-        if (!subProductToAdd) return setError('Selecione o lote e validade.')
-        if (quantity > productToAdd.stock) return setError(`Existem ${productToAdd.stock} unidades do produto ${productToAdd.name}.`)
-        if (subProductToAdd && quantity > subProductToAdd?.quantity) return setError(`Existem apenas ${subProductToAdd.quantity} unidades do lote ${subProductToAdd.lote}.`)
-        if (subProductToAdd) {
-            let sorted = [...productToAdd.subproducts!].sort(function compare(a, b) { return compareDates(b.validade!, a.validade!) })
-            if (sorted[0].id !== subProductToAdd.id) setWarning(`O produto retirado não possui a data de validade mais próxima.`)
-        }
+        if (!productToAdd || !subProductToAdd) return setError('Produto não encontrado.')
 
+        if (quantity > productToAdd.stock) return setError(`Existem ${productToAdd.stock} unidades do produto ${productToAdd.name}.`)
+        if (quantity > subProductToAdd?.quantity) return setError(`Existem apenas ${subProductToAdd.quantity} unidades do lote ${subProductToAdd.lote}.`)
+
+        let sorted = [...productToAdd.subproducts!].sort(function compare(a, b) { return compareDates(b.validade!, a.validade!) })
+        // if (sorted[0].id !== subProductToAdd.id) setWarning(`O produto retirado não possui a data de validade mais próxima.`)
+        if (sorted[0].id !== subProductToAdd.id && !notification) return setMessage(`O produto retirado não possui a data de validade mais próxima.`)
+
+        return { productToAdd, subProductToAdd }
+    }
+
+    const addProductToList = (productToAdd: TProduct, subProductToAdd: TSubProduct) => {
         if (productList.find(i => i.product.id === productToAdd?.id &&
             productList.find(i => i.subProduct?.id === subProductToAdd?.id))) {
             setProductList(productList.map(item => (
@@ -90,10 +111,14 @@ export default function Retirar() {
             setProductList([...productList, {
                 product: productToAdd,
                 subProduct: subProductToAdd,
-                quantity: quantity
+                quantity: quantity,
+                notification: notification
             }])
+            setNotification('')
         }
+    }
 
+    const cleanInputs = () => {
         Array.from(document.querySelectorAll("input")).forEach(
             input => (input.value = '')
         );
@@ -103,6 +128,9 @@ export default function Retirar() {
         Array.from(document.querySelectorAll("select")).forEach(
             input => (input.value = '')
         );
+
+        setNotification('')
+        setMessage('')
     }
 
     const handleOnClick = async () => {
@@ -111,6 +139,8 @@ export default function Retirar() {
             return setWarning('Assine a operação.')
         }
 
+        setLoading(true)
+
         for (const item of productList) {
             try {
                 await dispatch(createStockOut({
@@ -118,12 +148,15 @@ export default function Retirar() {
                     quantity: item.quantity,
                     subproduct_id: item.subProduct?.id,
                     username: user,
-                    password
+                    password,
+                    notification: item.notification
                 })).unwrap()
             } catch (error) {
                 cleanAssign()
                 return setError('Não foi possivel retirar os produtos.')
             }
+
+            setLoading(false)
         }
 
         cleanAssign()
@@ -138,8 +171,20 @@ export default function Retirar() {
 
     return (
         <>
+            < Loading loading={loading} />
             {error && <Mensagem onClick={() => setError('')} error={error} />}
             {warning && <Mensagem onClick={() => setWarning('')} warning={warning} />}
+            {message && <ModalInput
+                onClose={() => {
+                    setMessage('')
+                    setNotification('')
+                }}
+                onConfirm={handleOnSubmit}
+                onChange={(e) => setNotification(e.target.value)}
+                placeholder={'Justificativa'}
+                message={message}
+                title='title'
+            />}
             <Title title='Retirar Produtos' />
             <div>
                 <Form onSubmit={handleOnSubmit}>
