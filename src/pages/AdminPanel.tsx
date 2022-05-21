@@ -66,7 +66,7 @@ export default function AdminPanel() {
                             <BoxItem style={{ flex: 1 }}>{item.description}</BoxItem>
                             <BoxItem style={{ flex: 1 }}><Text>Enviado por:</Text>{item.user?.name}</BoxItem>
                             <BoxItem style={{ width: '90px' }}>{formatValidity(item.createdAt)}</BoxItem>
-                            <EditDeleteButton onClick={() => dispatch(deleteCart(item.id!))}>
+                            <EditDeleteButton width="40px" onClick={() => dispatch(deleteCart(item.id!))}>
                                 <AiOutlineDelete />
                             </EditDeleteButton>
                         </div>
