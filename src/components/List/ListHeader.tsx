@@ -16,7 +16,7 @@ const ListHeader = styled.div<{ fontSize?: string }>`
 `
 
 type Props = {
-    children: JSX.Element[]
+    children: JSX.Element | JSX.Element[]
     fontSize?: string
 }
 

@@ -106,10 +106,10 @@ export default function Historico({ productFilter }: Props) {
             <ListHeader>
                 <Item flex={4} text='Produto' />
                 <Item flex={1} text='Fornecedor' />
-                <Item flex={1} text='Marca' />
+                <Item flex={1.5} text='Marca' />
                 <Item flex={1} text='Unidade' />
                 <Item flex={0.9} text='Preço' />
-                <Item flex={0.7} text='Lote' />
+                <Item flex={1} text='Lote' />
                 <Item flex={1} text='Validade' />
                 <Item flex={0.9} text='Quantidade' align='center' />
                 <Item flex={0.9} text='Usuário' />
@@ -130,10 +130,10 @@ export default function Historico({ productFilter }: Props) {
                                     <ItemsContainer bg={key.split('_')[1] === 'in' ? '#ceffbf' : key.split('_')[1] === 'out' ? '#ffc6c6' : '#c6caff'} >
                                         <Item flex={4} text={item.product.name} />
                                         <Item flex={1} text={item.provider?.name} />
-                                        <Item flex={1} text={item.product.brand} />
+                                        <Item flex={1.5} text={item.product.brand} />
                                         <Item flex={1} text={item.product.unit} />
                                         <Item flex={0.9} text={item.price} />
-                                        <Item flex={0.7} text={item.lote} />
+                                        <Item flex={1} text={item.lote} />
                                         <Item flex={1} text={formatValidity(item.validade)} />
                                         <Item flex={0.9} text={key.split('_')[1] === 'out' ? -item.quantity : item.quantity} align='center' />
                                         <Item flex={0.9} text={item.user?.name} />

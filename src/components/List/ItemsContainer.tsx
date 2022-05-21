@@ -16,7 +16,7 @@ const Container = styled.ul<{ type?: string, bg?: string, click: boolean }>`
 `
 
 type Props = {
-  children: JSX.Element[]
+  children: JSX.Element | JSX.Element[]
   onClick?: () => void;
   type?: string;
   bg?: string
