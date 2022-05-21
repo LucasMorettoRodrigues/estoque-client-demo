@@ -3,15 +3,18 @@ import { api } from '../../services/api.service'
 import { TStockIn } from '../../types/TStockIn'
 
 type cartRequest = {
-    cart: TStockIn[],
-    username: string,
+    notification: {
+        description: string,
+        data: TStockIn[]
+    }
+    username: string
     password: string
 }
 
 export const createCart = createAsyncThunk(
     'carts/createCart',
-    async ({ cart, username, password }: cartRequest, thunkAPI) => {
-        await api.post('/carts', { cart, username, password })
+    async ({ notification, username, password }: cartRequest, thunkAPI) => {
+        await api.post('/carts', { notification, username, password })
     }
 )
 

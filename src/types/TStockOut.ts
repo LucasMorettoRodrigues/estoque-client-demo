@@ -18,5 +18,8 @@ export type TStockOut = {
         name: string
     },
     createdAt?: string,
-    notification?: string
+    notification?: {
+        description: string,
+        data: any
+    } | null
 }

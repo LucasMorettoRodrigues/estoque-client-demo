@@ -48,7 +48,7 @@ export default function Comprar() {
     const providers = useAppSelector(state => state.fornecedor.fornecedores)
     const auth = useAppSelector(state => state.authentication)
 
-    const [cart, setCart] = useState<TStockIn[]>(state ? state.cart : [])
+    const [cart, setCart] = useState<TStockIn[]>(state ? state.data : [])
     const [productId, setProductId] = useState(0)
     const [providerId, setProviderId] = useState('')
     const [quantity, setQuantity] = useState(0)
@@ -158,12 +158,16 @@ export default function Comprar() {
         }
 
         try {
-
-            await dispatch(createCart({ cart, username, password })).unwrap()
+            await dispatch(createCart({
+                notification: { description: 'Solicitação de Compra', data: cart },
+                username,
+                password
+            })).unwrap()
             setMessage('Solicitação de compra enviada com sucesso.')
             setCart([])
 
         } catch (error) {
+            console.log(error)
             setError('Não foi possível realizar a compra.')
         }
     }
@@ -274,7 +278,15 @@ export default function Comprar() {
                                         <Item flex={1} text={item.price} />
                                         <Item flex={1} text={item.quantity} />
                                         <EditDeleteButton
-                                            onClick={() => setCart(cart.filter((p, i) => i !== index))}
+                                            onClick={() => {
+                                                setCart(cart.filter((p, i) => i !== index))
+                                                console.log(cart)
+                                                if (state && cart.length === 1) {
+                                                    console.log('ak')
+                                                    console.log(state, state.id)
+                                                    dispatch(deleteCart(state.id))
+                                                }
+                                            }}
                                         >
                                             <AiOutlineDelete />
                                         </EditDeleteButton>

@@ -17,5 +17,11 @@ export type TStockIn = {
     },
     createdAt?: string,
     notification?: string,
-    cart?: string
+    data?: {
+        message?: string,
+        product?: string,
+        subproduct?: string,
+        validity?: string
+    },
+    description?: string
 }

@@ -149,7 +149,18 @@ export default function Retirar() {
                     subproduct_id: item.subProduct?.id,
                     username: user,
                     password,
-                    notification: item.notification
+                    notification:
+                        item.notification
+                            ? {
+                                description: 'Notificação de Validade Incorreta',
+                                data: {
+                                    message: item.notification,
+                                    product: item.product.name,
+                                    subproduct: item.subProduct?.lote,
+                                    validity: item.subProduct?.validade
+                                }
+                            }
+                            : null
                 })).unwrap()
             } catch (error) {
                 cleanAssign()
