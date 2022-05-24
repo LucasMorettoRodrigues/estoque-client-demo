@@ -12,7 +12,7 @@ const Container = styled.div`
     z-index: 100;
 `
 const Title = styled.h2`
-    color: #ff3232;
+    color: black;
     margin-bottom: 15px;
 `
 const Wrapper = styled.div`
