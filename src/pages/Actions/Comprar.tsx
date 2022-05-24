@@ -215,7 +215,7 @@ export default function Comprar() {
                 <InputContainer flex={1} minWidth='150px'>
                     <Input
                         name="price"
-                        label="Preço"
+                        label="Preço unitário"
                         required
                         type='number'
                         step='.01'
