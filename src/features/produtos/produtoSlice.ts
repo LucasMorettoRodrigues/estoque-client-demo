@@ -46,6 +46,8 @@ type State = {
     produtos: TProduct[],
     status: string,
     missingFilter: boolean,
+    providerFilter: string | undefined,
+    categoryFilter: string | undefined
 }
 
 export const produtoSlice = createSlice({
@@ -53,11 +55,19 @@ export const produtoSlice = createSlice({
     initialState: {
         produtos: [],
         status: 'success',
-        missingFilter: false
+        missingFilter: false,
+        providerFilter: undefined,
+        categoryFilter: undefined
     } as State,
     reducers: {
         switchMissingFilter: (state) => {
             state.missingFilter = !state.missingFilter
+        },
+        setProviderFilter: (state, action) => {
+            state.providerFilter = action.payload
+        },
+        SetCategoryFilter: (state, action) => {
+            state.categoryFilter = action.payload
         }
     },
     extraReducers: (builder) => {
@@ -162,6 +172,6 @@ export const produtoSlice = createSlice({
     },
 })
 
-export const { switchMissingFilter } = produtoSlice.actions
+export const { switchMissingFilter, setProviderFilter, SetCategoryFilter } = produtoSlice.actions
 
 export default produtoSlice.reducer

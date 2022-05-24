@@ -11,7 +11,7 @@ import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import ProductBtn from "../../components/ProductBtn"
-import { switchMissingFilter } from "../../features/produtos/produtoSlice"
+import { setProviderFilter, switchMissingFilter } from "../../features/produtos/produtoSlice"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -50,14 +50,16 @@ export default function Produtos() {
 
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
+
     const products = useAppSelector(state => state.produto.produtos)
     const providers = useAppSelector(state => state.fornecedor.fornecedores)
     const missingFilter = useAppSelector(state => state.produto.missingFilter)
+    const providerFilter = useAppSelector(state => state.produto.providerFilter)
+
     const [filteredProducts, setFilteredProducts] = useState<TProduct[]>([])
     const [search, setSearch] = useState('')
     const [sort, setSort] = useState('')
     const [sortedProducts, setSortedProducts] = useState<TProduct[]>([])
-    const [provider, setProvider] = useState('')
 
     useEffect(() => {
         let produtos = products.slice()
@@ -79,12 +81,12 @@ export default function Produtos() {
             filtered = filtered.filter(i => i.name.toLowerCase().includes(search.toLowerCase()))
         }
 
-        if (provider) {
-            filtered = filtered.filter(i => i.providers?.includes(provider))
+        if (providerFilter) {
+            filtered = filtered.filter(i => i.providers?.includes(providerFilter))
         }
 
         setFilteredProducts(filtered)
-    }, [missingFilter, sortedProducts, search, provider])
+    }, [missingFilter, sortedProducts, search, providerFilter])
 
     return (
         <>
@@ -102,7 +104,9 @@ export default function Produtos() {
                         <Input name="search" label="Pesquisar:" display="flex" type='text' onChange={(e) => setSearch(e.target.value)}></Input>
                     </InputContainer>
                     <InputContainer>
-                        <Select name="providers" label="Fornecedores:" display="flex" onChange={(e) => setProvider(e.target.value)}>
+                        <Select name="providers" label="Fornecedores:"
+                            display="flex" value={providerFilter}
+                            onChange={(e) => dispatch(setProviderFilter(e.target.value))}>
                             <option></option>
                             {providers.map(i => <option key={i.id} value={i.name}>{i.name}</option>)}
                         </Select>

@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
 import Button from "../../components/Button"
-import { useAppSelector } from "../../app/hooks"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { useEffect, useState } from "react"
 import { TProduct } from "../../types/TProduct"
 import { compare, formatValidity } from "../../utils/functions"
@@ -13,6 +13,7 @@ import ItemsContainer from "../../components/List/ItemsContainer"
 import ProductBtn from "../../components/ProductBtn"
 import Title from "../../components/Title"
 import { BsFillPlusSquareFill } from 'react-icons/bs'
+import { SetCategoryFilter, setProviderFilter } from "../../features/produtos/produtoSlice"
 
 const Container = styled.div``
 const TitleContainer = styled.div`
@@ -57,11 +58,14 @@ const ExpandIconContainer = styled.div<{ bg: string }>`
 export default function Detalhes() {
 
     const navigate = useNavigate()
+    const dispatch = useAppDispatch()
+
     const productsData = useAppSelector(state => state.produto.produtos)
     const stockOuts = useAppSelector(state => state.stockOut.stockOuts)
     const providers = useAppSelector(state => state.fornecedor.fornecedores)
-    const [category, setCategory] = useState('')
-    const [provider, setProvider] = useState('')
+    const providerFilter = useAppSelector(state => state.produto.providerFilter)
+    const categoryFilter = useAppSelector(state => state.produto.categoryFilter)
+
     const [filteredProducts, setFilteredProducts] = useState<TProduct[]>([])
     const [sortedProducts, setSortedProducts] = useState<TProduct[]>([])
     const [sort, setSort] = useState('')
@@ -96,17 +100,17 @@ export default function Detalhes() {
 
         sort ? setSortedProducts(compare(products, sort)) : setSortedProducts(products)
 
-    }, [sort, productsData, category])
+    }, [sort, productsData])
 
     useEffect(() => {
         let filtered = sortedProducts
 
-        if (category) {
-            filtered = filtered.filter(i => i.category === category)
+        if (categoryFilter) {
+            filtered = filtered.filter(i => i.category === categoryFilter)
         }
 
-        if (provider) {
-            filtered = filtered.filter(i => i.providers?.includes(provider))
+        if (providerFilter) {
+            filtered = filtered.filter(i => i.providers?.includes(providerFilter))
         }
 
         if (search) {
@@ -115,7 +119,7 @@ export default function Detalhes() {
 
         setFilteredProducts(filtered)
 
-    }, [category, sortedProducts, search, provider])
+    }, [categoryFilter, sortedProducts, search, providerFilter])
 
     const handleClose = () => {
         if (isAllOpen) {
@@ -139,13 +143,19 @@ export default function Detalhes() {
                         <Input name="search" label="Pesquisar:" display="flex" type='text' onChange={(e) => setSearch(e.target.value)}></Input>
                     </InputContainer>
                     <InputContainer>
-                        <Select name="categories" label="Categoria:" display="flex" onChange={(e) => setCategory(e.target.value)}>
+                        <Select name="categories" label="Categoria:"
+                            display="flex" value={categoryFilter}
+                            onChange={(e) => dispatch(SetCategoryFilter(e.target.value))}
+                        >
                             <option></option>
                             {categories.map((i, index) => <option key={index}>{i}</option>)}
                         </Select>
                     </InputContainer>
                     <InputContainer>
-                        <Select name="providers" label="Fornecedor:" display="flex" onChange={(e) => setProvider(e.target.value)}>
+                        <Select name="providers" label="Fornecedor:"
+                            display="flex" value={providerFilter}
+                            onChange={(e) => dispatch(setProviderFilter(e.target.value))}
+                        >
                             <option></option>
                             {providers.map(i => <option key={i.id} value={i.name}>{i.name}</option>)}
                         </Select>
