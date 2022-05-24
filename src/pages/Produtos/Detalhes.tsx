@@ -33,6 +33,12 @@ const InputContainer = styled.div`
     align-items: center;
     margin-right: 20px;
 `
+const HeaderContainer = styled.div`
+    display: flex;
+    z-index: 1;
+    position: sticky;
+    top: 0;
+`
 const ExpandIconContainer = styled.div<{ bg: string }>`
     display: flex;
     color: #555;
@@ -146,8 +152,7 @@ export default function Detalhes() {
                     </InputContainer>
                 </Filter>
             </MenuContainer>
-            <div style={{ display: 'flex' }}>
-
+            <HeaderContainer>
                 <ExpandIconContainer
                     bg='#5fb4ff'
                     onClick={handleClose}>
@@ -167,7 +172,7 @@ export default function Detalhes() {
                     <Item width="65px" text='Est. Max.' align='center' fontSize='12px' />
                     <Item width="83px" text='Frequência Retirada' align='center' fontSize='12px' />
                 </ListHeader>
-            </div>
+            </HeaderContainer>
 
             {
                 filteredProducts.map((item) => (
