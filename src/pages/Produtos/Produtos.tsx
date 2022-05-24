@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
 import Button from "../../components/Button"
-import { useAppSelector } from "../../app/hooks"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { compare, mergeProducts } from "../../utils/functions"
 import { useEffect, useState } from "react"
 import { TProduct } from "../../types/TProduct"
@@ -11,6 +11,7 @@ import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import ProductBtn from "../../components/ProductBtn"
+import { switchMissingFilter } from "../../features/produtos/produtoSlice"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -48,10 +49,11 @@ const CheckBox = styled.input`
 export default function Produtos() {
 
     const navigate = useNavigate()
+    const dispatch = useAppDispatch()
     const products = useAppSelector(state => state.produto.produtos)
     const providers = useAppSelector(state => state.fornecedor.fornecedores)
+    const missingFilter = useAppSelector(state => state.produto.missingFilter)
     const [filteredProducts, setFilteredProducts] = useState<TProduct[]>([])
-    const [lowStockFilter, setLowStockFilter] = useState(false)
     const [search, setSearch] = useState('')
     const [sort, setSort] = useState('')
     const [sortedProducts, setSortedProducts] = useState<TProduct[]>([])
@@ -67,7 +69,7 @@ export default function Produtos() {
     useEffect(() => {
         let filtered = []
 
-        if (lowStockFilter) {
+        if (missingFilter) {
             filtered = mergeProducts(sortedProducts).filter(i => i.stock < i.min_stock)
         } else {
             filtered = mergeProducts(sortedProducts)
@@ -82,7 +84,7 @@ export default function Produtos() {
         }
 
         setFilteredProducts(filtered)
-    }, [lowStockFilter, sortedProducts, search, provider])
+    }, [missingFilter, sortedProducts, search, provider])
 
     return (
         <>
@@ -105,7 +107,15 @@ export default function Produtos() {
                             {providers.map(i => <option key={i.id} value={i.name}>{i.name}</option>)}
                         </Select>
                     </InputContainer>
-                    <CheckBox style={{ width: '18px', height: '18px', cursor: 'pointer' }} onChange={() => setLowStockFilter(!lowStockFilter)} id="lowStock" name="lowStock" type='checkbox'></CheckBox>
+                    <CheckBox
+                        style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                        onChange={() => dispatch(switchMissingFilter())}
+                        id="lowStock"
+                        name="lowStock"
+                        type='checkbox'
+                        checked={missingFilter}
+                    >
+                    </CheckBox>
                     <Label htmlFor="lowStock">Produtos em falta</Label>
                 </Filter>
             </MenuContainer>

@@ -12,7 +12,7 @@ import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import ProductBtn from "../../components/ProductBtn"
 import Title from "../../components/Title"
-import { BsArrowDownSquare } from 'react-icons/bs'
+import { BsFillPlusSquareFill } from 'react-icons/bs'
 
 const Container = styled.div``
 const TitleContainer = styled.div`
@@ -151,7 +151,7 @@ export default function Detalhes() {
                 <ExpandIconContainer
                     bg='#5fb4ff'
                     onClick={handleClose}>
-                    <BsArrowDownSquare />
+                    <BsFillPlusSquareFill color="#333" size='15px' />
                 </ExpandIconContainer>
                 <ListHeader fontSize='12px'>
                     <Item width="26px" text='Id' onClick={() => setSort('id')} cursor='pointer' fontSize='12px' />
@@ -180,7 +180,7 @@ export default function Detalhes() {
                                         ? setIsOpen(isOpen.filter(id => id !== item.id))
                                         : setIsOpen([...isOpen, item.id!])
                                 )}>
-                                <BsArrowDownSquare />
+                                <BsFillPlusSquareFill color="#333" size='15px' />
                             </ExpandIconContainer>
                             <ItemsContainer onClick={() => navigate(`/produtos/${item.id}`, { state: item })}>
                                 <Item width="26px" text={item.id} fontSize='12px' />

@@ -44,16 +44,21 @@ export const editSubProduct = createAsyncThunk(
 
 type State = {
     produtos: TProduct[],
-    status: string
+    status: string,
+    missingFilter: boolean,
 }
 
 export const produtoSlice = createSlice({
     name: 'fornecedor',
     initialState: {
         produtos: [],
-        status: 'success'
+        status: 'success',
+        missingFilter: false
     } as State,
     reducers: {
+        switchMissingFilter: (state) => {
+            state.missingFilter = !state.missingFilter
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(getProdutos.pending, (state) => {
@@ -156,5 +161,7 @@ export const produtoSlice = createSlice({
         })
     },
 })
+
+export const { switchMissingFilter } = produtoSlice.actions
 
 export default produtoSlice.reducer
