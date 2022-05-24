@@ -122,7 +122,7 @@ export default function Historico({ productFilter }: Props) {
                             onClick={() => setShow(show === key ? '' : key)}
                         >
                             <Item flex={1} text={key.split('_')[0]} />
-                            <Item flex={12} text={key.split('_')[1] === 'in' ? "Compra" : key.split('_')[1] === 'out' ? "Retirada" : "Ajuste"} />
+                            <Item flex={12} text={key.split('_')[1] === 'in' ? "Entrada" : key.split('_')[1] === 'out' ? "Retirada" : "Ajuste"} />
                         </ItemsContainer>
                         {
                             filteredStocks[key].map((item: any, index: any) => (
