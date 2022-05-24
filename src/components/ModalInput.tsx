@@ -58,22 +58,24 @@ const ButtonContainer = styled.div`
 `
 
 type Props = {
-    title: string,
-    message: string,
-    placeholder: string,
+    message: {
+        title: string,
+        message: string
+    },
+    placeholder?: string,
     onConfirm: () => void,
     onClose?: () => void
     onChange?: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function ModalInput({ title, message, placeholder, onConfirm, onClose, onChange }: Props) {
+export default function ModalInput({ message, placeholder, onConfirm, onClose, onChange }: Props) {
     return (
         <Container>
             <Wrapper>
                 <Box>
-                    <Title>{title}</Title>
+                    <Title>{message.title}</Title>
                     <ErrorsContainer>
-                        <p>{message}</p>
+                        <p>{message.message}</p>
                     </ErrorsContainer>
                     <Input onChange={onChange} required name='input' placeholder={placeholder}></Input>
                     <ButtonContainer>

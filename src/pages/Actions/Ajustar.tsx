@@ -46,8 +46,7 @@ export default function Ajustar() {
     const [subProductId, setSubProductId] = useState('')
     const [productId, setProductId] = useState(0)
     const [productList, setProductList] = useState<body[]>([])
-    const [error, setError] = useState('')
-    const [warning, setWarning] = useState('')
+    const [message, setMessage] = useState<any>('')
     const [loading, setLoading] = useState(false)
     const elmRef = useRef(null as HTMLElement | null);
 
@@ -58,15 +57,15 @@ export default function Ajustar() {
         const productToAdd = getProduct(products, productId)
         const subProductToAdd = getSubProduct(products, productId, parseInt(subProductId))
 
-        if (quantity === 0) return setError('A quantidade deve ser diferente de 0.')
-        if (!subProductId) return setError('Selecione o lote.')
-        if (!productToAdd) return setError('Produto não encontrado.')
+        if (quantity === 0) return setMessage({ title: 'Error', message: 'A quantidade deve ser diferente de 0.' })
+        if (!subProductId) return setMessage({ title: 'Error', message: 'Selecione o lote.' })
+        if (!productToAdd) return setMessage({ title: 'Error', message: 'Produto não encontrado.' })
         if (subProductToAdd && quantity < 0 && -quantity > subProductToAdd?.quantity) {
-            return setError(`Existem apenas ${subProductToAdd.quantity} unidades do lote ${subProductToAdd.lote}.`)
+            return setMessage({ title: 'Error', message: `Existem apenas ${subProductToAdd.quantity} unidades do lote ${subProductToAdd.lote}.` })
         }
         if (productList.find(i => i.product.id === productToAdd?.id &&
             productList.find(i => i.subProduct?.id === subProductToAdd?.id))) {
-            return setError(`O produto já foi lançado.`)
+            return setMessage({ title: 'Error', message: `O produto já foi lançado.` })
         }
 
         setProductList([...productList, {
@@ -98,14 +97,13 @@ export default function Ajustar() {
 
         setProductList([])
         setLoading(false)
-        setWarning('Produtos ajustados com sucesso.')
+        setMessage({ title: 'Sucesso', message: `O ajuste foi realizado.` })
     }
 
     return (
         <>
             < Loading loading={loading} />
-            {error && <Mensagem onClick={() => setError('')} error={error} />}
-            {warning && <Mensagem onClick={() => setWarning('')} warning={warning} />}
+            {message && <Mensagem onClick={() => setMessage('')} message={message} />}
             <Title title='Ajustar Estoque' />
             <Form onSubmit={handleOnSubmit}>
                 <InputContainer flex={5}>

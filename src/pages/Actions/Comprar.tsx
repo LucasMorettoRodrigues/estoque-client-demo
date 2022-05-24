@@ -55,9 +55,8 @@ export default function Comprar() {
     const [validade, setValidade] = useState<string | null>(null)
     const [lote, setLote] = useState('')
     const [price, setPrice] = useState('')
-    const [error, setError] = useState('')
-    const [warning, setWarning] = useState('')
-    const [message, setMessage] = useState('')
+    const [warning, setWarning] = useState<any>('')
+    const [message, setMessage] = useState<any>('')
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
     const [loading, setLoading] = useState(false)
@@ -67,11 +66,11 @@ export default function Comprar() {
         e.preventDefault()
 
         if (!productId || !providerId || !price || !lote || !quantity) {
-            return setError(`Por favor preencha todos os campos.`)
+            return setMessage({ title: 'Erro', message: 'Existem campos incompletos.' })
         }
 
         if (!getProduct(products, productId)) {
-            return setError(`O produto não existe.`)
+            return setMessage({ title: 'Erro', message: 'O produto não existe.' })
         }
 
         if (!findOrCreateProvider(providerId)) return
@@ -109,14 +108,16 @@ export default function Comprar() {
         setValidade(null)
         setLote('')
         setPrice('')
-        setError('')
     }
 
     const findOrCreateProvider = (provider: string) => {
         const res = providers.find(i => i.id === parseInt(provider))
 
         if (!res) {
-            setWarning(`Fornecedor ${provider} não cadastrado. Deseja cadastra-lo?`)
+            setWarning({
+                title: 'Atenção',
+                message: `Fornecedor ${provider} não cadastrado. Deseja cadastra-lo?`
+            })
             return false
         }
 
@@ -130,7 +131,7 @@ export default function Comprar() {
                 setProviderId(res.id)
             })
             .then(() => setWarning(''))
-            .then(() => setMessage(`Fornecedor cadastrado com sucesso`))
+            .then(() => setMessage({ title: 'Sucesso', message: 'O fornecedor foi cadastrado.' }))
     }
 
     const handleCheckout = async () => {
@@ -141,12 +142,12 @@ export default function Comprar() {
             if (state) {
                 await dispatch(deleteCart(state.id))
             }
-            setMessage('Compra realizada com sucesso.')
+            setMessage({ title: 'Sucesso', message: 'A compra foi realizada.' })
 
             setCart([])
 
         } catch (error) {
-            setError('Não foi possível realizar a compra.')
+            setMessage({ title: 'Erro', message: 'Não foi possível realizar a compra.' })
         }
 
         setLoading(false)
@@ -154,7 +155,7 @@ export default function Comprar() {
 
     const handleSendToAdmin = async () => {
         if (!password || !username) {
-            return setMessage('Assine a operação.')
+            return setMessage({ title: 'Erro', message: 'Assine a operação' })
         }
 
         try {
@@ -163,21 +164,19 @@ export default function Comprar() {
                 username,
                 password
             })).unwrap()
-            setMessage('Solicitação de compra enviada com sucesso.')
+            setMessage({ title: 'Sucesso', message: 'Solicitação de compra enviada.' })
             setCart([])
 
         } catch (error) {
-            console.log(error)
-            setError('Não foi possível realizar a compra.')
+            setMessage({ title: 'Erro', message: 'Não foi possível realizar a compra.' })
         }
     }
 
     return (
         <>
             < Loading loading={loading} />
-            {error && <Mensagem onClick={() => setError('')} error={error} />}
-            {message && <Mensagem onClick={() => setMessage('')} warning={message} />}
-            {warning && <Mensagem onClick={handleCreateProvider} onClose={() => setWarning('')} warning={warning} />}
+            {message && <Mensagem onClick={() => setMessage('')} message={message} />}
+            {warning && <Mensagem onClick={handleCreateProvider} onClose={() => setWarning('')} message={warning} />}
             <Title title='Comprar Produtos' />
             <Form onSubmit={handleOnSubmit}>
                 <InputContainer flex={5} minWidth='65vw'>

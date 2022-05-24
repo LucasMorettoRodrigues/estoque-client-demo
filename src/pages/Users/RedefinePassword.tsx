@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useState, FormEvent, ChangeEvent } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import styled from "styled-components"
 import Button from "../../components/Button"
 import Form from "../../components/Form"
@@ -22,33 +22,30 @@ const InputContainer = styled.div`
 
 export default function RedefinePassword() {
 
-    const navigate = useNavigate()
     const { id } = useParams()
 
     const [password, setPassword] = useState('')
-    const [error, setError] = useState('')
-    const [message, setMessage] = useState('')
+    const [message, setMessage] = useState<any>('')
 
     const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (!password) {
-            setError('Preencha a nova senha.')
+            setMessage({ title: 'Erro', message: 'Preencha a nova senha.' })
         }
 
         try {
             await api.patch(`users/${id}`, { password })
-            setMessage('Senha alterada com sucesso.')
+            setMessage({ title: 'Sucesso', message: ' A senha foi redefinida.' })
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                setError(`${error.response?.data}`)
+                setMessage({ title: 'Erro', message: `${error.response?.data}` })
             }
         }
     }
 
     return (
         <>
-            {error && <Mensagem error={error} onClick={() => setError('')} />}
-            {message && <Mensagem warning={message} onClick={() => navigate('/usuarios')} />}
+            {message && <Mensagem message={message} onClick={() => setMessage('')} />}
             <Title title='Editar Usuário' />
             <Form onSubmit={handleOnSubmit}>
                 <InputsContainer>

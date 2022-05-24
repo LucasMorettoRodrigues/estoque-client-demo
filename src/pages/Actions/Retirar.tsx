@@ -56,9 +56,8 @@ export default function Retirar() {
     const [subProductId, setSubProductId] = useState(0)
     const [productId, setProductId] = useState(0)
     const [productList, setProductList] = useState<body[]>([])
-    const [error, setError] = useState('')
-    const [warning, setWarning] = useState('')
-    const [message, setMessage] = useState('')
+    const [message, setMessage] = useState<any>('')
+    const [messageInput, setMessageInput] = useState<any>('')
     const [password, setPassword] = useState('')
     const [user, setUser] = useState('')
     const [notification, setNotification] = useState('')
@@ -81,19 +80,19 @@ export default function Retirar() {
 
     const validateProduct = (): any => {
 
-        if (!productId || !subProductId) return setError('Selecione o produto.')
+        if (!productId || !subProductId) return setMessage({ title: 'Erro', message: 'Selecione o produto.' })
 
         const productToAdd = getProduct(products, productId)
         const subProductToAdd = getSubProduct(products, productId, subProductId)
 
-        if (!productToAdd || !subProductToAdd) return setError('Produto não encontrado.')
+        if (!productToAdd || !subProductToAdd) return setMessage({ title: 'Erro', message: 'Produto não encontrado.' })
 
-        if (quantity > productToAdd.stock) return setError(`Existem ${productToAdd.stock} unidades do produto ${productToAdd.name}.`)
-        if (quantity > subProductToAdd?.quantity) return setError(`Existem apenas ${subProductToAdd.quantity} unidades do lote ${subProductToAdd.lote}.`)
+        // if (quantity > productToAdd.stock) return setMessage({ title: 'Erro', message: `Existem ${productToAdd.stock} unidades do produto ${productToAdd.name}.` })
+        if (quantity > subProductToAdd?.quantity) return setMessage({ title: 'Erro', message: `Existem apenas ${subProductToAdd.quantity} unidades do lote ${subProductToAdd.lote}.` })
 
         let sorted = [...productToAdd.subproducts!].sort(function compare(a, b) { return compareDates(b.validade!, a.validade!) })
         // if (sorted[0].id !== subProductToAdd.id) setWarning(`O produto retirado não possui a data de validade mais próxima.`)
-        if (sorted[0].id !== subProductToAdd.id && !notification) return setMessage(`O produto retirado não possui a data de validade mais próxima.`)
+        if (sorted[0].id !== subProductToAdd.id && !notification) return setMessageInput({ title: 'Atenção', message: 'O produto retirado não possui a data de validade mais próxima. Tem certeza que deseja retirar esse item? Se sim, justifique o motivo.' })
 
         return { productToAdd, subProductToAdd }
     }
@@ -130,13 +129,13 @@ export default function Retirar() {
         );
 
         setNotification('')
-        setMessage('')
+        setMessageInput('')
     }
 
     const handleOnClick = async () => {
 
         if (!password || !user) {
-            return setWarning('Assine a operação.')
+            return setMessage({ title: 'Erro', message: `Assine a operação` })
         }
 
         setLoading(true)
@@ -164,7 +163,8 @@ export default function Retirar() {
                 })).unwrap()
             } catch (error) {
                 cleanAssign()
-                return setError('Não foi possivel retirar os produtos.')
+                setLoading(false)
+                return setMessage({ title: 'Erro', message: `Não foi possível completar a retirada.` })
             }
 
             setLoading(false)
@@ -172,7 +172,7 @@ export default function Retirar() {
 
         cleanAssign()
         setProductList([])
-        setWarning('Produtos retirados com sucesso.')
+        setMessage({ title: 'Sucesso', message: 'Retirada de produtos enviada.' })
     }
 
     const cleanAssign = () => {
@@ -183,18 +183,16 @@ export default function Retirar() {
     return (
         <>
             < Loading loading={loading} />
-            {error && <Mensagem onClick={() => setError('')} error={error} />}
-            {warning && <Mensagem onClick={() => setWarning('')} warning={warning} />}
-            {message && <ModalInput
+            {message && <Mensagem onClick={() => setMessage('')} message={message} />}
+            {messageInput && <ModalInput
                 onClose={() => {
-                    setMessage('')
+                    setMessageInput('')
                     setNotification('')
                 }}
                 onConfirm={handleOnSubmit}
                 onChange={(e) => setNotification(e.target.value)}
                 placeholder={'Justificativa'}
-                message={message}
-                title='title'
+                message={messageInput}
             />}
             <Title title='Retirar Produtos' />
             <div>

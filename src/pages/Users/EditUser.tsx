@@ -32,13 +32,12 @@ export default function EditUser() {
     const [email, setEmail] = useState(user.email)
     const [role, setRole] = useState(user.role)
     const [status, setStatus] = useState(user.status)
-    const [error, setError] = useState('')
-    const [message, setMessage] = useState('')
+    const [message, setMessage] = useState<any>('')
 
     const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (!username || !email || !role || !status) {
-            setError('Preencha todos os campos')
+            setMessage({ title: 'Erro', message: 'Preencha todos os campos' })
         }
 
         try {
@@ -47,15 +46,14 @@ export default function EditUser() {
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 console.log(error)
-                setError(`${error.response?.data}`)
+                setMessage({ title: 'Erro', message: `${error.response?.data}` })
             }
         }
     }
 
     return (
         <>
-            {error && <Mensagem error={error} onClick={() => setError('')} />}
-            {message && <Mensagem warning={message} onClick={() => navigate('/usuarios')} />}
+            {message && <Mensagem message={message} onClick={() => setMessage('')} />}
             <Title title='Editar Usuário' />
             <Form onSubmit={handleOnSubmit}>
                 <InputsContainer>

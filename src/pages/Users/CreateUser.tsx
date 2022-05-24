@@ -29,12 +29,12 @@ export default function CreateUser() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [role, setRole] = useState('')
-    const [error, setError] = useState('')
+    const [message, setMessage] = useState<any>('')
 
     const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (!username || !email || !password || !role) {
-            setError('Preencha todos os campos')
+            setMessage({ title: 'Erro', message: 'Preencha todos os campos' })
         }
 
         try {
@@ -42,7 +42,7 @@ export default function CreateUser() {
             navigate('/usuarios')
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                setError(`${error.response?.data}`)
+                setMessage({ title: 'Erro', message: `${error.response?.data}` })
             }
         }
 
@@ -50,7 +50,7 @@ export default function CreateUser() {
 
     return (
         <>
-            {error && <Mensagem error={error} onClick={() => setError('')} />}
+            {message && <Mensagem message={message} onClick={() => setMessage('')} />}
             <Title title='Novo Usuário' />
             <Form onSubmit={handleOnSubmit}>
                 <InputsContainer>

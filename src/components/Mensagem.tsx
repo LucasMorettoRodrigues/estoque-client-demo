@@ -9,8 +9,12 @@ const Container = styled.div`
     background-color: #00000084;
     z-index: 100;
 `
-const Title = styled.h2`
-    color: #ff3232;
+const Title = styled.h2<{ message?: string }>`
+    color: ${props => props.message === "Sucesso"
+        ? '#3dc73d'
+        : props.message === 'Erro'
+            ? '#ff3232'
+            : 'black'};
     margin-bottom: 15px;
 `
 const Wrapper = styled.div`
@@ -56,20 +60,23 @@ const ButtonContainer = styled.div`
 `
 
 type Props = {
-    error?: string,
-    warning?: string,
     onClick: () => void,
-    onClose?: () => void
+    onClose?: () => void,
+    message: {
+        title: string,
+        message: string
+    }
 }
 
-export default function Mensagem({ error, warning, onClick, onClose }: Props) {
+export default function Mensagem({ onClick, onClose, message }: Props) {
     return (
         <Container>
             <Wrapper>
                 <Box>
-                    <Title>{error ? "Erro" : "Atenção"}</Title>
+
+                    <Title message={message.title}>{message.title}</Title>
                     <ErrorsContainer>
-                        <p>{error ? error : warning}</p>
+                        <p>{message.message}</p>
                     </ErrorsContainer>
                     <ButtonContainer>
                         {onClose &&
