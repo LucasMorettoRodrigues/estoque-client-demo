@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import moment from 'moment-timezone'
 import { api } from '../../services/api.service'
 import { TStockOut } from '../../types/TStockOut'
 
@@ -15,7 +16,13 @@ export const getAllStockOuts = createAsyncThunk(
     'stockOuts/getAllStockOuts',
     async (thunkAPI) => {
         const stockOuts = await api.get('/stockOuts')
-        return stockOuts.data
+        const res = stockOuts.data.map((item: any) => (
+            {
+                ...item,
+                createdAt: moment.tz(item.createdAt, "America/Sao_Paulo").format()
+            }
+        ))
+        return res
     }
 )
 
