@@ -19,6 +19,7 @@ import Title from "../../components/Title"
 import { Autocomplete, TextField } from "@mui/material"
 import { formatValidity } from '../../utils/functions'
 import Loading from "../../components/Loading"
+import { TMessage } from "../../types/TMessage"
 
 const InputContainer = styled.div<{ flex: number }>`
     flex: ${props => props.flex};
@@ -46,7 +47,7 @@ export default function Ajustar() {
     const [subProductId, setSubProductId] = useState('')
     const [productId, setProductId] = useState(0)
     const [productList, setProductList] = useState<body[]>([])
-    const [message, setMessage] = useState<any>('')
+    const [message, setMessage] = useState<TMessage>(null)
     const [loading, setLoading] = useState(false)
     const elmRef = useRef(null as HTMLElement | null);
 
@@ -100,7 +101,7 @@ export default function Ajustar() {
     return (
         <>
             < Loading loading={loading} />
-            {message && <Mensagem onClick={() => setMessage('')} message={message} />}
+            {message && <Mensagem onClick={() => setMessage(null)} message={message} />}
             <Title title='Ajustar Estoque' />
             <Form onSubmit={handleOnSubmit}>
                 <InputContainer flex={5}>

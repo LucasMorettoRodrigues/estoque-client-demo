@@ -19,6 +19,7 @@ import { Autocomplete, TextField } from "@mui/material"
 import { createCart, deleteCart } from "../../features/cart/cartSlice"
 import { useLocation } from "react-router-dom"
 import Loading from "../../components/Loading"
+import { TMessage } from "../../types/TMessage"
 
 const InputContainer = styled.div<{ flex: number, minWidth?: string }>`
     flex: ${props => props.flex};
@@ -55,8 +56,8 @@ export default function Comprar() {
     const [validade, setValidade] = useState<string | null>(null)
     const [lote, setLote] = useState('')
     const [price, setPrice] = useState('')
-    const [warning, setWarning] = useState<any>('')
-    const [message, setMessage] = useState<any>('')
+    const [warning, setWarning] = useState<TMessage>(null)
+    const [message, setMessage] = useState<TMessage>(null)
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
     const [loading, setLoading] = useState(false)
@@ -130,7 +131,7 @@ export default function Comprar() {
             .then((res) => {
                 setProviderId(res.id)
             })
-            .then(() => setWarning(''))
+            .then(() => setWarning(null))
             .then(() => setMessage({ title: 'Sucesso', message: 'O fornecedor foi cadastrado.' }))
     }
 
@@ -175,8 +176,8 @@ export default function Comprar() {
     return (
         <>
             < Loading loading={loading} />
-            {message && <Mensagem onClick={() => setMessage('')} message={message} />}
-            {warning && <Mensagem onClick={handleCreateProvider} onClose={() => setWarning('')} message={warning} />}
+            {message && <Mensagem onClick={() => setMessage(null)} message={message} />}
+            {warning && <Mensagem onClick={handleCreateProvider} onClose={() => setWarning(null)} message={warning} />}
             <Title title='Comprar Produtos' />
             <Form onSubmit={handleOnSubmit}>
                 <InputContainer flex={5} minWidth='65vw'>

@@ -1,13 +1,12 @@
 import styled from "styled-components"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { TProduct } from "../../types/TProduct"
 import { FormEvent, useRef, useState } from "react"
 import { AiOutlineDelete } from 'react-icons/ai'
-import Button from "../../components/Button"
 import { createStockOut } from "../../features/stockOut/stockOut"
-import { TSubProduct } from "../../types/TSubProduct"
-import EditDeleteButton from "../../components/EditDeleteButton"
 import { compareDates, formatValidity, getProduct, getSubProduct } from "../../utils/functions"
+
+import EditDeleteButton from "../../components/EditDeleteButton"
+import Button from "../../components/Button"
 import Mensagem from "../../components/Mensagem"
 import Input from "../../components/Input"
 import Select from "../../components/Select"
@@ -20,6 +19,10 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import ModalInput from "../../components/ModalInput"
 import Loading from "../../components/Loading"
+
+import { TProduct } from "../../types/TProduct"
+import { TMessage } from "../../types/TMessage"
+import { TSubProduct } from "../../types/TSubProduct"
 
 const InputContainer = styled.div<{ flex: number }>`
     flex: ${props => props.flex};
@@ -56,8 +59,8 @@ export default function Retirar() {
     const [subProductId, setSubProductId] = useState(0)
     const [productId, setProductId] = useState(0)
     const [productList, setProductList] = useState<body[]>([])
-    const [message, setMessage] = useState<any>('')
-    const [messageInput, setMessageInput] = useState<any>('')
+    const [message, setMessage] = useState<TMessage>(null)
+    const [messageInput, setMessageInput] = useState<TMessage>(null)
     const [password, setPassword] = useState('')
     const [user, setUser] = useState('')
     const [notification, setNotification] = useState('')
@@ -129,7 +132,7 @@ export default function Retirar() {
         );
 
         setNotification('')
-        setMessageInput('')
+        setMessageInput(null)
     }
 
     const handleOnClick = async () => {
@@ -183,10 +186,10 @@ export default function Retirar() {
     return (
         <>
             < Loading loading={loading} />
-            {message && <Mensagem onClick={() => setMessage('')} message={message} />}
+            {message && <Mensagem onClick={() => setMessage(null)} message={message} />}
             {messageInput && <ModalInput
                 onClose={() => {
-                    setMessageInput('')
+                    setMessageInput(null)
                     setNotification('')
                 }}
                 onConfirm={handleOnSubmit}
