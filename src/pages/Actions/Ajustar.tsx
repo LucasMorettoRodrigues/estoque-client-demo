@@ -57,15 +57,12 @@ export default function Ajustar() {
         const productToAdd = getProduct(products, productId)
         const subProductToAdd = getSubProduct(products, productId, parseInt(subProductId))
 
-        if (quantity === 0) return setMessage({ title: 'Error', message: 'A quantidade deve ser diferente de 0.' })
-        if (!subProductId) return setMessage({ title: 'Error', message: 'Selecione o lote.' })
-        if (!productToAdd) return setMessage({ title: 'Error', message: 'Produto não encontrado.' })
-        if (subProductToAdd && quantity < 0 && -quantity > subProductToAdd?.quantity) {
-            return setMessage({ title: 'Error', message: `Existem apenas ${subProductToAdd.quantity} unidades do lote ${subProductToAdd.lote}.` })
-        }
+        if (quantity < 0) return setMessage({ title: 'Erro', message: 'Quantidade invalida.' })
+        if (!subProductId) return setMessage({ title: 'Erro', message: 'Selecione o lote.' })
+        if (!productToAdd) return setMessage({ title: 'Erro', message: 'Produto não encontrado.' })
         if (productList.find(i => i.product.id === productToAdd?.id &&
             productList.find(i => i.subProduct?.id === subProductToAdd?.id))) {
-            return setMessage({ title: 'Error', message: `O produto já foi lançado.` })
+            return setMessage({ title: 'Erro', message: `O produto já foi lançado.` })
         }
 
         setProductList([...productList, {
@@ -142,6 +139,7 @@ export default function Ajustar() {
                     <Input
                         name="quantity"
                         label="Quantidade"
+                        min={0}
                         required
                         type='number'
                         onChange={(e) => setQuantity(parseInt(e.target.value))}>
