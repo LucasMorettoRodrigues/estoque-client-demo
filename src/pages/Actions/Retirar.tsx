@@ -42,6 +42,29 @@ const BottomContainer = styled.div`
 const BottomInputContainer = styled.div`
     margin-right: 10px;
 `
+const Selecta = styled.select`
+    display: block;
+    width: 100%;
+    padding: 10px;
+    outline-color: lightblue;
+    background-color: white;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    min-width: 180px;
+    cursor: pointer;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; 
+`
+const Label = styled.label<{ display?: string }>`
+    display: block;
+    margin-left: '4px';
+    margin-right: ${props => props.display === 'flex' ? '8px' : 0};
+    margin-bottom: 4px;
+`
 
 type body = {
     product: TProduct,
@@ -217,9 +240,12 @@ export default function Retirar() {
                         />
                     </InputContainer>
                     <InputContainer flex={1}>
-                        <Select
+                        <Label>
+                            Lote / Validade
+                        </Label>
+                        <Selecta
                             name='lote-validade'
-                            label='Lote / Validade'
+                            // label='Lote / Validade'
                             required
                             onChange={(e) => setSubProductId(parseInt(e.target.value))}
                         >
@@ -235,7 +261,7 @@ export default function Retirar() {
                                     ))
                                 ))
                             }
-                        </Select>
+                        </Selecta>
                     </InputContainer>
                     <InputContainer flex={1}>
                         <Input
