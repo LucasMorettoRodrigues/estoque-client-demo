@@ -6,6 +6,7 @@ const Label = styled.label<{ display?: string }>`
     margin-left: 4px;
     margin-right: ${props => props.display === 'flex' ? '8px' : 0};
     margin-bottom: 4px;
+    color: #777;
 `
 const SInput = styled.input`
     display: block;

@@ -5,18 +5,23 @@ import { AiOutlineDelete } from 'react-icons/ai'
 import { createStockOut } from "../../features/stockOut/stockOut"
 import { compareDates, formatValidity, getProduct, getSubProduct } from "../../utils/functions"
 
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 import EditDeleteButton from "../../components/EditDeleteButton"
 import Button from "../../components/Button"
 import Mensagem from "../../components/Mensagem"
 import Input from "../../components/Input"
-import Select from "../../components/Select"
+// import Select from "../../components/Select"
 import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import Form from "../../components/Form"
 import Title from "../../components/Title"
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
 import ModalInput from "../../components/ModalInput"
 import Loading from "../../components/Loading"
 
@@ -42,29 +47,29 @@ const BottomContainer = styled.div`
 const BottomInputContainer = styled.div`
     margin-right: 10px;
 `
-const Selecta = styled.select`
-    display: block;
-    width: 100%;
-    padding: 10px;
-    outline-color: lightblue;
-    background-color: white;
-    border: 1px solid lightgray;
-    border-radius: 5px;
-    min-width: 180px;
-    cursor: pointer;
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Old versions of Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; 
-`
-const Label = styled.label<{ display?: string }>`
-    display: block;
-    margin-left: '4px';
-    margin-right: ${props => props.display === 'flex' ? '8px' : 0};
-    margin-bottom: 4px;
-`
+// const Selecta = styled.select`
+//     display: block;
+//     width: 100%;
+//     padding: 10px;
+//     outline-color: lightblue;
+//     background-color: white;
+//     border: 1px solid lightgray;
+//     border-radius: 5px;
+//     min-width: 180px;
+//     cursor: pointer;
+//     -webkit-touch-callout: none; /* iOS Safari */
+//     -webkit-user-select: none; /* Safari */
+//     -khtml-user-select: none; /* Konqueror HTML */
+//     -moz-user-select: none; /* Old versions of Firefox */
+//     -ms-user-select: none; /* Internet Explorer/Edge */
+//     user-select: none; 
+// `
+// const Label = styled.label<{ display?: string }>`
+//     display: block;
+//     margin-left: '4px';
+//     margin-right: ${props => props.display === 'flex' ? '8px' : 0};
+//     margin-bottom: 4px;
+// `
 
 type body = {
     product: TProduct,
@@ -223,7 +228,7 @@ export default function Retirar() {
             <Title title='Retirar Produtos' />
             <div>
                 <Form onSubmit={handleOnSubmit}>
-                    <InputContainer flex={5}>
+                    <InputContainer flex={4}>
                         <Autocomplete
                             ref={elmRef}
                             disablePortal
@@ -235,12 +240,36 @@ export default function Retirar() {
                                     label: `${i.id} - ${i.name} - ${i.brand} - ${i.unit}`, id: i.id
                                 }))
                             }
-                            sx={{ backgroundColor: 'white', marginTop: '20px' }}
+                            sx={{ backgroundColor: 'white', marginTop: '18px' }}
                             renderInput={(params) => <TextField {...params} label="Produto" size='small' />}
                         />
                     </InputContainer>
                     <InputContainer flex={1}>
-                        <Label>
+                        <FormControl sx={{ m: 1, minWidth: 120, backgroundColor: 'white', marginTop: '27px' }} size="small">
+                            <InputLabel id="select-Lote/Validade">Lote/Validade</InputLabel>
+                            <Select
+                                sx={{ fontSize: '14px', padding: '2px' }}
+                                labelId="lote"
+                                id="lote"
+                                value={subProductId}
+                                required
+                                label="Lote/Validade"
+                                onChange={(e) => typeof e.target.value === 'string'
+                                    ? setSubProductId(parseInt(e.target.value))
+                                    : setSubProductId(e.target.value)}
+                            >
+                                {
+                                    products.filter(item => item.id === productId).map(item => (
+                                        item.subproducts?.map((item, index) => (
+                                            <MenuItem style={{ backgroundColor: `${index === 0 && 'lightgreen'}` }} key={item.id} value={item.id}>
+                                                {item.lote} / {formatValidity(item.validade)}
+                                            </MenuItem>
+                                        ))
+                                    ))
+                                }
+                            </Select>
+                        </FormControl>
+                        {/* <Label>
                             Lote / Validade
                         </Label>
                         <Selecta
@@ -261,9 +290,9 @@ export default function Retirar() {
                                     ))
                                 ))
                             }
-                        </Selecta>
+                        </Selecta> */}
                     </InputContainer>
-                    <InputContainer flex={1}>
+                    <InputContainer flex={0.5}>
                         <Input
                             name='quantity'
                             label='Quantidade'
@@ -273,7 +302,7 @@ export default function Retirar() {
                             required
                         />
                     </InputContainer>
-                    <Button style={{ padding: '12px 24px', alignSelf: 'flex-end' }} text={'Lançar'} />
+                    <Button style={{ padding: '12px 24px', marginTop: '21px' }} text={'Lançar'} />
                 </Form>
             </div>
 
