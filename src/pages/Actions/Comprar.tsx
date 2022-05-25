@@ -251,7 +251,7 @@ export default function Comprar() {
                     />
                 </InputContainer>
                 <Button
-                    style={{ padding: '12px 24px', alignSelf: 'flex-end', marginBottom: '11px' }}
+                    style={{ padding: '12px 24px', marginRight: '20px', marginTop: '10px' }}
                     text='Lançar' />
             </Form>
             {

@@ -29,12 +29,14 @@ import { TProduct } from "../../types/TProduct"
 import { TMessage } from "../../types/TMessage"
 import { TSubProduct } from "../../types/TSubProduct"
 
-const InputContainer = styled.div<{ flex: number }>`
+const InputContainer = styled.div<{ flex: number, minWidth?: string }>`
     flex: ${props => props.flex};
+    min-width: ${props => props.minWidth};
     display: flex;
     margin-right: 20px;
     flex-direction: column;
     font-size: 14px;
+    margin-bottom: 10px;
 `
 const ProductListContainer = styled.div`
     margin-bottom: 30px;
@@ -228,7 +230,7 @@ export default function Retirar() {
             <Title title='Retirar Produtos' />
             <div>
                 <Form onSubmit={handleOnSubmit}>
-                    <InputContainer flex={4}>
+                    <InputContainer flex={1} minWidth='80vw'>
                         <Autocomplete
                             ref={elmRef}
                             disablePortal
@@ -240,12 +242,14 @@ export default function Retirar() {
                                     label: `${i.id} - ${i.name} - ${i.brand} - ${i.unit}`, id: i.id
                                 }))
                             }
-                            sx={{ backgroundColor: 'white', marginTop: '18px' }}
-                            renderInput={(params) => <TextField {...params} label="Produto" size='small' />}
+                            sx={{ backgroundColor: 'white', marginTop: '20px' }}
+
+                            renderInput={(params) =>
+                                <TextField {...params} label="Produto" size='small' />}
                         />
                     </InputContainer>
-                    <InputContainer flex={1}>
-                        <FormControl sx={{ m: 1, minWidth: 120, backgroundColor: 'white', marginTop: '27px' }} size="small">
+                    <InputContainer flex={1} minWidth='60vw'>
+                        <FormControl sx={{ m: 0, minWidth: 120, backgroundColor: 'white', marginTop: '20px' }} size="small">
                             <InputLabel id="select-Lote/Validade">Lote/Validade</InputLabel>
                             <Select
                                 sx={{ fontSize: '14px', padding: '2px' }}
@@ -302,7 +306,7 @@ export default function Retirar() {
                             required
                         />
                     </InputContainer>
-                    <Button style={{ padding: '12px 24px', marginTop: '21px' }} text={'Lançar'} />
+                    <Button style={{ padding: '12px 24px', marginTop: '10px', marginRight: '20px' }} text={'Lançar'} />
                 </Form>
             </div>
 
