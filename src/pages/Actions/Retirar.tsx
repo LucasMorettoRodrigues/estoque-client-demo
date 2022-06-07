@@ -1,7 +1,6 @@
 import styled from "styled-components"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { FormEvent, useRef, useState } from "react"
-import { AiOutlineDelete } from 'react-icons/ai'
 import { createStockOut } from "../../features/stockOut/stockOut"
 import { compareDates, formatValidity, getProduct, getSubProduct } from "../../utils/functions"
 
@@ -12,14 +11,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-import EditDeleteButton from "../../components/EditDeleteButton"
 import Button from "../../components/Button"
 import Mensagem from "../../components/Mensagem"
 import Input from "../../components/Input"
-// import Select from "../../components/Select"
-import ListHeader from "../../components/List/ListHeader"
-import Item from "../../components/List/Item"
-import ItemsContainer from "../../components/List/ItemsContainer"
 import Form from "../../components/Form"
 import Title from "../../components/Title"
 import ModalInput from "../../components/ModalInput"
@@ -28,6 +22,8 @@ import Loading from "../../components/Loading"
 import { TProduct } from "../../types/TProduct"
 import { TMessage } from "../../types/TMessage"
 import { TSubProduct } from "../../types/TSubProduct"
+import RetirarEAjustarList from "../../components/Retirar/RetirarEAjustarList"
+import SignOperation from "../../components/SignOperation"
 
 const InputContainer = styled.div<{ flex: number, minWidth?: string }>`
     flex: ${props => props.flex};
@@ -38,19 +34,8 @@ const InputContainer = styled.div<{ flex: number, minWidth?: string }>`
     font-size: 14px;
     margin-bottom: 10px;
 `
-const ProductListContainer = styled.div`
-    margin-bottom: 30px;
-`
 
-const BottomContainer = styled.div`
-    display: flex;
-    align-items: center;
-`
-const BottomInputContainer = styled.div`
-    margin-right: 10px;
-`
-
-type body = {
+type TProductList = {
     product: TProduct,
     subProduct: TSubProduct | null,
     quantity: number,
@@ -65,11 +50,11 @@ export default function Retirar() {
     const [quantity, setQuantity] = useState(1)
     const [subProductId, setSubProductId] = useState(0)
     const [productId, setProductId] = useState(0)
-    const [productList, setProductList] = useState<body[]>([])
+    const [productList, setProductList] = useState<TProductList[]>([])
     const [message, setMessage] = useState<TMessage>(null)
     const [messageInput, setMessageInput] = useState<TMessage>(null)
-    const [password, setPassword] = useState('')
-    const [user, setUser] = useState('')
+    // const [password, setPassword] = useState('')
+    // const [user, setUser] = useState('')
     const [notification, setNotification] = useState('')
     const [loading, setLoading] = useState(false)
     const elmRef = useRef(null as HTMLElement | null);
@@ -97,11 +82,9 @@ export default function Retirar() {
 
         if (!productToAdd || !subProductToAdd) return setMessage({ title: 'Erro', message: 'Produto não encontrado.' })
 
-        // if (quantity > productToAdd.stock) return setMessage({ title: 'Erro', message: `Existem ${productToAdd.stock} unidades do produto ${productToAdd.name}.` })
         if (quantity > subProductToAdd?.quantity) return setMessage({ title: 'Erro', message: `Existem apenas ${subProductToAdd.quantity} unidades do lote ${subProductToAdd.lote}.` })
 
         let sorted = [...productToAdd.subproducts!].sort(function compare(a, b) { return compareDates(b.validade!, a.validade!) })
-        // if (sorted[0].id !== subProductToAdd.id) setWarning(`O produto retirado não possui a data de validade mais próxima.`)
         if (sorted[0].id !== subProductToAdd.id && !notification) return setMessageInput({ title: 'Atenção', message: 'O produto retirado não possui a data de validade mais próxima. Tem certeza que deseja retirar esse item? Se sim, justifique o motivo.' })
 
         return { productToAdd, subProductToAdd }
@@ -142,9 +125,52 @@ export default function Retirar() {
         setMessageInput(null)
     }
 
-    const handleOnClick = async () => {
+    // const handleOnClick = async () => {
 
-        if (!password || !user) {
+    //     if (!password || !user) {
+    //         return setMessage({ title: 'Erro', message: `Assine a operação` })
+    //     }
+
+    //     setLoading(true)
+
+    //     for (const item of productList) {
+    //         try {
+    //             await dispatch(createStockOut({
+    //                 product_id: item.product.id!,
+    //                 quantity: item.quantity,
+    //                 subproduct_id: item.subProduct?.id,
+    //                 username: user,
+    //                 password,
+    //                 notification:
+    //                     item.notification
+    //                         ? {
+    //                             description: 'Notificação de Validade Incorreta',
+    //                             data: {
+    //                                 message: item.notification,
+    //                                 product: item.product.name,
+    //                                 subproduct: item.subProduct?.lote,
+    //                                 validity: item.subProduct?.validade
+    //                             }
+    //                         }
+    //                         : null
+    //             })).unwrap()
+    //         } catch (error) {
+    //             cleanAssign()
+    //             setLoading(false)
+    //             return setMessage({ title: 'Erro', message: `Não foi possível completar a retirada.` })
+    //         }
+
+    //         setLoading(false)
+    //     }
+
+    //     cleanAssign()
+    //     setProductList([])
+    //     setMessage({ title: 'Sucesso', message: 'O(s) Produto(s) foram retirados.' })
+    // }
+
+    const teste = async (use: string, pass: string) => {
+
+        if (!use || !pass) {
             return setMessage({ title: 'Erro', message: `Assine a operação` })
         }
 
@@ -156,8 +182,8 @@ export default function Retirar() {
                     product_id: item.product.id!,
                     quantity: item.quantity,
                     subproduct_id: item.subProduct?.id,
-                    username: user,
-                    password,
+                    username: use,
+                    password: pass,
                     notification:
                         item.notification
                             ? {
@@ -172,7 +198,7 @@ export default function Retirar() {
                             : null
                 })).unwrap()
             } catch (error) {
-                cleanAssign()
+                // cleanAssign()
                 setLoading(false)
                 return setMessage({ title: 'Erro', message: `Não foi possível completar a retirada.` })
             }
@@ -180,15 +206,15 @@ export default function Retirar() {
             setLoading(false)
         }
 
-        cleanAssign()
+        // cleanAssign()
         setProductList([])
         setMessage({ title: 'Sucesso', message: 'O(s) Produto(s) foram retirados.' })
     }
 
-    const cleanAssign = () => {
-        setUser('')
-        setPassword('')
-    }
+    // const cleanAssign = () => {
+    //     setUser('')
+    //     setPassword('')
+    // }
 
     return (
         <>
@@ -264,8 +290,16 @@ export default function Retirar() {
                     <Button style={{ padding: '12px 24px', marginTop: '10px', marginRight: '20px' }} text={'Lançar'} />
                 </Form>
             </div>
-
-            {
+            <RetirarEAjustarList 
+                productList={productList}
+                deleteItem={(index) => setProductList(productList.filter((p, i) => i !== index))}
+                assign={true}
+            />
+            <SignOperation 
+                show={productList.length > 0}
+                handleSubmit={teste}
+            />
+            {/* {
                 productList.length > 0 &&
                 <>
                     <ProductListContainer>
@@ -327,7 +361,7 @@ export default function Retirar() {
                         />
                     </BottomContainer>
                 </>
-            }
+            } */}
         </>
     )
 }

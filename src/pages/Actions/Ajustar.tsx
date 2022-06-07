@@ -2,24 +2,20 @@ import styled from "styled-components"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { TProduct } from "../../types/TProduct"
 import { FormEvent, useRef, useState } from "react"
-import { AiOutlineDelete } from 'react-icons/ai'
 import Button from "../../components/Button"
 import { TSubProduct } from "../../types/TSubProduct"
-import EditDeleteButton from "../../components/EditDeleteButton"
 import { getProduct, getSubProduct } from "../../utils/functions"
 import Mensagem from "../../components/Mensagem"
 import { createAdjustStock } from "../../features/adjustStock/adjustStock"
 import Input from "../../components/Input"
 import Select from "../../components/Select"
-import ListHeader from "../../components/List/ListHeader"
-import Item from "../../components/List/Item"
-import ItemsContainer from "../../components/List/ItemsContainer"
 import Form from "../../components/Form"
 import Title from "../../components/Title"
 import { Autocomplete, TextField } from "@mui/material"
 import { formatValidity } from '../../utils/functions'
 import Loading from "../../components/Loading"
 import { TMessage } from "../../types/TMessage"
+import RetirarEAjustarList from "../../components/Retirar/RetirarEAjustarList"
 
 const InputContainer = styled.div<{ flex: number }>`
     flex: ${props => props.flex};
@@ -28,11 +24,8 @@ const InputContainer = styled.div<{ flex: number }>`
     flex-direction: column;
     font-size: 14px;
 `
-const ProductListContainer = styled.div`
-    margin-bottom: 30px;
-`
 
-type body = {
+type TProductList = {
     product: TProduct,
     subProduct: TSubProduct | null,
     quantity: number
@@ -46,7 +39,7 @@ export default function Ajustar() {
     const [quantity, setQuantity] = useState(1)
     const [subProductId, setSubProductId] = useState('')
     const [productId, setProductId] = useState(0)
-    const [productList, setProductList] = useState<body[]>([])
+    const [productList, setProductList] = useState<TProductList[]>([])
     const [message, setMessage] = useState<TMessage>(null)
     const [loading, setLoading] = useState(false)
     const elmRef = useRef(null as HTMLElement | null);
@@ -148,40 +141,12 @@ export default function Ajustar() {
                 </InputContainer>
                 <Button style={{ padding: '12px 24px', alignSelf: 'flex-end' }} text={'Lançar'} />
             </Form>
-            {
-                productList.length > 0 &&
-                <>
-                    <ProductListContainer>
-                        <ListHeader>
-                            <Item flex={3} text='Produto' />
-                            <Item flex={1} text='Marca' />
-                            <Item flex={1} text='Lote' />
-                            <Item flex={1} text='Validade' />
-                            <Item flex={1} text='Quantidade' />
-                            <Item width='90px' text='Remover' align='center' />
-                        </ListHeader>
-                        <>
-                            {
-                                productList.map((item, index) => (
-                                    <ItemsContainer key={index}>
-                                        <Item flex={3} text={item.product.name} />
-                                        <Item flex={1} text={item.product.brand} />
-                                        <Item flex={1} text={item.subProduct?.lote} />
-                                        <Item flex={1} text={formatValidity(item.subProduct?.validade)} />
-                                        <Item flex={1} text={item.quantity} />
-                                        <EditDeleteButton
-                                            onClick={() => setProductList(productList.filter((p, i) => i !== index))}
-                                        >
-                                            <AiOutlineDelete />
-                                        </EditDeleteButton>
-                                    </ItemsContainer>
-                                ))
-                            }
-                        </>
-                    </ProductListContainer>
-                    <Button onClick={handleOnClick} text={'Finalizar Ajuste'} />
-                </>
-            }
+            <RetirarEAjustarList 
+                productList={productList}
+                deleteItem={(index) => setProductList(productList.filter((p, i) => i !== index))}
+                assign={false}
+                handleSubmit={handleOnClick}
+            />
         </>
     )
 }
