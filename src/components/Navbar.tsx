@@ -36,6 +36,20 @@ const Item = styled.li`
         color: #ffffff;
     }
 `
+const LeaveBtn = styled.button`
+    padding: 12px;
+    border-radius: 5px;
+    border: none;
+    background-color: #168eff;
+    color: #222;
+    font-weight: 800;
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.8;
+    }
+`
 
 export default function Navbar() {
 
@@ -69,7 +83,9 @@ export default function Navbar() {
                                     <Link to='/historico'><Item>Histórico</Item></Link>
                                 </>
                             }
-                            <Item onClick={handleOnClick}>Sair</Item>
+                            <LeaveBtn onClick={handleOnClick}>
+                                Sair
+                            </LeaveBtn>
                         </List>
                     }
                 </Wrapper>
