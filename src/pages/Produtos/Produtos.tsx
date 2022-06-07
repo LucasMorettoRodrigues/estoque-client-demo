@@ -1,18 +1,16 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
 import Button from "../../components/Button"
-import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { useAppSelector } from "../../app/hooks"
 import { compare, mergeProducts } from "../../utils/functions"
 import { useEffect, useState } from "react"
 import { TProduct } from "../../types/TProduct"
-import Select from "../../components/Select"
-import Input from "../../components/Input"
 import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import ProductBtn from "../../components/ProductBtn"
-import { setProviderFilter, SetSearchFilter, switchMissingFilter } from "../../features/produtos/produtoSlice"
 import Title from "../../components/Title"
+import Filters from "./Filters"
 
 const Container = styled.div``
 const TitleContainer = styled.div`
@@ -24,32 +22,12 @@ const MenuContainer = styled.div`
     justify-content: space-between;
     margin-bottom: 20px;
 `
-const Filter = styled.div`
-    display: flex;
-    align-items: center;
-`
-const InputContainer = styled.div`
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-`
-const Label = styled.label`
-    margin-right: 5px;
-    cursor: pointer;
-    color: #777;
-`
-const CheckBox = styled.input`
-    padding: 5px 10px;
-    margin-right: 10px;
-`
 
 export default function Produtos() {
 
     const navigate = useNavigate()
-    const dispatch = useAppDispatch()
 
     const products = useAppSelector(state => state.produto.produtos)
-    const providers = useAppSelector(state => state.fornecedor.fornecedores)
     const missingFilter = useAppSelector(state => state.produto.missingFilter)
     const providerFilter = useAppSelector(state => state.produto.providerFilter)
     const searchFilter = useAppSelector(state => state.produto.searchFilter)
@@ -95,34 +73,7 @@ export default function Produtos() {
             </TitleContainer>
             <MenuContainer>
                 <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
-                <Filter>
-                    <InputContainer>
-                        <Input name="search" label="Pesquisar:" 
-                            display="flex" type='text' 
-                            value={searchFilter}
-                            onChange={(e) => dispatch(SetSearchFilter(e.target.value))}
-                        >
-                        </Input>
-                    </InputContainer>
-                    <InputContainer>
-                        <Select name="providers" label="Fornecedores:"
-                            display="flex" value={providerFilter}
-                            onChange={(e) => dispatch(setProviderFilter(e.target.value))}>
-                            <option></option>
-                            {providers.map(i => <option key={i.id} value={i.name}>{i.name}</option>)}
-                        </Select>
-                    </InputContainer>
-                    <CheckBox
-                        style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                        onChange={() => dispatch(switchMissingFilter())}
-                        id="lowStock"
-                        name="lowStock"
-                        type='checkbox'
-                        checked={missingFilter}
-                    >
-                    </CheckBox>
-                    <Label htmlFor="lowStock">Produtos em falta</Label>
-                </Filter>
+                <Filters hasCategoryFilter={false} hasMissingFilter />
             </MenuContainer>
             <ListHeader>
                 <Item flex={8} text='Produto' cursor='pointer' onClick={() => setSort('name')} />

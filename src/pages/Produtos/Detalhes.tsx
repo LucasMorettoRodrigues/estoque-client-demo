@@ -1,19 +1,17 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
 import Button from "../../components/Button"
-import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { useAppSelector } from "../../app/hooks"
 import { useEffect, useState } from "react"
 import { TProduct } from "../../types/TProduct"
 import { compare, formatValidity } from "../../utils/functions"
-import Input from "../../components/Input"
-import Select from "../../components/Select"
 import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import ProductBtn from "../../components/ProductBtn"
 import Title from "../../components/Title"
 import { BsFillPlusSquareFill } from 'react-icons/bs'
-import { SetCategoryFilter, setProviderFilter, SetSearchFilter } from "../../features/produtos/produtoSlice"
+import Filters from "./Filters"
 
 const Container = styled.div``
 const TitleContainer = styled.div`
@@ -24,15 +22,6 @@ const MenuContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
-`
-const Filter = styled.div`
-    display: flex;
-    align-items: center;
-`
-const InputContainer = styled.div`
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
 `
 const HeaderContainer = styled.div`
     display: flex;
@@ -58,11 +47,9 @@ const ExpandIconContainer = styled.div<{ bg: string }>`
 export default function Detalhes() {
 
     const navigate = useNavigate()
-    const dispatch = useAppDispatch()
 
     const productsData = useAppSelector(state => state.produto.produtos)
     const stockOuts = useAppSelector(state => state.stockOut.stockOuts)
-    const providers = useAppSelector(state => state.fornecedor.fornecedores)
     const providerFilter = useAppSelector(state => state.produto.providerFilter)
     const categoryFilter = useAppSelector(state => state.produto.categoryFilter)
     const searchFilter = useAppSelector(state => state.produto.searchFilter)
@@ -72,8 +59,6 @@ export default function Detalhes() {
     const [sort, setSort] = useState('')
     const [isOpen, setIsOpen] = useState<number[]>([])
     const [isAllOpen, setIsAllOpen] = useState(false)
-
-    let categories = Array.from(new Set(productsData.map(i => i.category)))
 
     const getStockOutFrequency = (id: number): number | null => {
 
@@ -138,34 +123,7 @@ export default function Detalhes() {
             </TitleContainer>
             <MenuContainer>
                 <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
-                <Filter>
-                    <InputContainer>
-                        <Input name="search" label="Pesquisar:" 
-                            display="flex" type='text' 
-                            value={searchFilter}
-                            onChange={(e) => dispatch(SetSearchFilter(e.target.value))}
-                        >
-                        </Input>
-                    </InputContainer>
-                    <InputContainer>
-                        <Select name="categories" label="Categoria:"
-                            display="flex" value={categoryFilter}
-                            onChange={(e) => dispatch(SetCategoryFilter(e.target.value))}
-                        >
-                            <option></option>
-                            {categories.map((i, index) => <option key={index}>{i}</option>)}
-                        </Select>
-                    </InputContainer>
-                    <InputContainer>
-                        <Select name="providers" label="Fornecedor:"
-                            display="flex" value={providerFilter}
-                            onChange={(e) => dispatch(setProviderFilter(e.target.value))}
-                        >
-                            <option></option>
-                            {providers.map(i => <option key={i.id} value={i.name}>{i.name}</option>)}
-                        </Select>
-                    </InputContainer>
-                </Filter>
+                <Filters hasMissingFilter={false} hasCategoryFilter />
             </MenuContainer>
             <HeaderContainer>
                 <ExpandIconContainer
