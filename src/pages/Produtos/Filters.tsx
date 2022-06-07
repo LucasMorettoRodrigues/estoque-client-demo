@@ -11,7 +11,7 @@ const Filter = styled.div`
 const InputContainer = styled.div`
     display: flex;
     align-items: center;
-    margin-right: 20px;
+    margin-left: 20px;
 `
 const Label = styled.label`
     margin-right: 5px;
@@ -20,7 +20,8 @@ const Label = styled.label`
 `
 const CheckBox = styled.input`
     padding: 5px 10px;
-    margin-right: 10px;
+    margin-right: 5px;
+    margin-left: 15px;
 `
 
 type Props = {
