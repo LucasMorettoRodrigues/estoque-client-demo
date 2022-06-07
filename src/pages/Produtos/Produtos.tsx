@@ -12,14 +12,10 @@ import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import ProductBtn from "../../components/ProductBtn"
 import { setProviderFilter, switchMissingFilter } from "../../features/produtos/produtoSlice"
+import Title from "../../components/Title"
 
 const Container = styled.div``
-const Title = styled.h1`
-    display: flex;
-    color: #222;
-    margin: 30px 0;
-`
-const ProductsBtnContainer = styled.div`
+const TitleContainer = styled.div`
     display: flex;
 `
 const MenuContainer = styled.div`
@@ -90,13 +86,12 @@ export default function Produtos() {
 
     return (
         <>
-            <Title>Produtos /
-                <ProductsBtnContainer>
-                    <ProductBtn onClick={() => navigate('/produtos/detalhes')} text='Detalhes' />
-                    <ProductBtn active={true} text='Resumo' />
-                    <ProductBtn onClick={() => navigate('/produtos/escondidos')} text='Arquivados' />
-                </ProductsBtnContainer>
-            </Title>
+            <TitleContainer>
+                <Title title='Produtos /' />
+                <ProductBtn onClick={() => navigate('/produtos/detalhes')} text='Detalhes' />
+                <ProductBtn active={true} text='Resumo' />
+                <ProductBtn onClick={() => navigate('/produtos/escondidos')} text='Arquivados' />
+            </TitleContainer>
             <MenuContainer>
                 <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
                 <Filter>

@@ -63,7 +63,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      < Loading loading={false} />
+      <Loading loading={false} />
       <Navbar />
       <Container>
         <Routes>
