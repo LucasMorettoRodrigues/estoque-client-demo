@@ -63,7 +63,9 @@ export default function AdminPanel() {
                                     navigate('/inserir', { state: item })
                                 console.log(item.data)
                             }}>
-                            <BoxItem style={{ flex: 1 }}>{item.description}</BoxItem>
+                            <BoxItem style={{ flex: 1, color: item.description === 'Solicitação para Inserir' ? 'green' : 'red' }}>
+                                {item.description}
+                            </BoxItem>
                             <BoxItem style={{ flex: 1 }}><Text>Enviado por:</Text>{item.user?.name}</BoxItem>
                             <BoxItem style={{ width: '90px' }}>{formatValidity(item.createdAt)}</BoxItem>
                             <EditDeleteButton width="40px" onClick={() => dispatch(deleteCart(item.id!))}>
