@@ -1,12 +1,12 @@
 import { fireEvent, render } from '@testing-library/react';
-import Comprar from '../Comprar'
+import Inserir from '../Inserir'
 import { BrowserRouter } from 'react-router-dom';
 import { mockStore, useDispatchMock, useSelectorMock } from '../../../__mocks__/redux';
 
-const MockComprar = () => {
+const MockInserir = () => {
     return (
         <BrowserRouter>
-            <Comprar />
+            <Inserir />
         </BrowserRouter>
     )
 }
@@ -16,7 +16,7 @@ jest.mock("react-redux", () => ({
     useDispatch: jest.fn(),
 }))
 
-describe('Integration test of Comprar Form', () => {
+describe('Integration test of Inserir Form', () => {
 
     beforeEach(() => {
         useDispatchMock.mockImplementation(() => () => { });
@@ -30,7 +30,7 @@ describe('Integration test of Comprar Form', () => {
 
     it('should add product to list', async () => {
         const { getByLabelText, getByRole, getByText } = render(
-            <MockComprar />
+            <MockInserir />
         );
 
         fireEvent.change(getByLabelText('Produto'), { target: { value: '1' } })
@@ -51,7 +51,7 @@ describe('Integration test of Comprar Form', () => {
 
     it('should sum quantities when two equal products are added to list', async () => {
         const { getByLabelText, getByRole, getByText } = render(
-            <MockComprar />
+            <MockInserir />
         );
 
         let i = 0
@@ -72,7 +72,7 @@ describe('Integration test of Comprar Form', () => {
 
     it('should get Error if product does not exists', async () => {
         const { getByLabelText, getByRole, getByText } = render(
-            <MockComprar />
+            <MockInserir />
         );
 
         fireEvent.change(getByLabelText('Produto'), { target: { value: '3' } })
@@ -88,7 +88,7 @@ describe('Integration test of Comprar Form', () => {
 
     it('should get Message if provider does not exists', async () => {
         const { getByLabelText, getByRole, getByText } = render(
-            <MockComprar />
+            <MockInserir />
         );
 
         fireEvent.change(getByLabelText('Produto'), { target: { value: '1' } })
@@ -104,7 +104,7 @@ describe('Integration test of Comprar Form', () => {
 
     it('should get Error if price is not declared', async () => {
         const { getByLabelText, getByRole, getByText } = render(
-            <MockComprar />
+            <MockInserir />
         );
 
         fireEvent.change(getByLabelText('Produto'), { target: { value: '1' } })
@@ -119,7 +119,7 @@ describe('Integration test of Comprar Form', () => {
 
     it('should get Error if lote is not declared', async () => {
         const { getByLabelText, getByRole, getByText } = render(
-            <MockComprar />
+            <MockInserir />
         );
 
         fireEvent.change(getByLabelText('Produto'), { target: { value: '2' } })
@@ -134,7 +134,7 @@ describe('Integration test of Comprar Form', () => {
 
     it('should get Error if validity is not declared', async () => {
         const { getByLabelText, getByRole, getByText } = render(
-            <MockComprar />
+            <MockInserir />
         );
 
         fireEvent.change(getByLabelText('Produto'), { target: { value: '2' } })
@@ -149,7 +149,7 @@ describe('Integration test of Comprar Form', () => {
 
     it('should get Error if quantity is not declared', async () => {
         const { getByLabelText, getByRole, getByText } = render(
-            <MockComprar />
+            <MockInserir />
         );
 
         fireEvent.change(getByLabelText('Produto'), { target: { value: '2' } })

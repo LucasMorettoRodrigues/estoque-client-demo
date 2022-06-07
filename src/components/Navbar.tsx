@@ -61,7 +61,7 @@ export default function Navbar() {
                                     <Link to='/fornecedores'><Item>Fornecedores</Item></Link>
                                 </>
                             }
-                            <Link to='/comprar'><Item>Comprar</Item></Link>
+                            <Link to='/inserir'><Item>Inserir</Item></Link>
                             <Link to='/retirar'><Item>Retirar</Item></Link>
                             {auth.role === 'admin' &&
                                 <>

@@ -12,7 +12,7 @@ import Navbar from "./components/Navbar";
 import { getFornecedores } from "./features/fornecedor/fornecedorSlice";
 import { getProdutos } from "./features/produtos/produtoSlice";
 import { getAllStockOuts } from "./features/stockOut/stockOut";
-import Comprar from "./pages/Actions/Comprar";
+import Inserir from "./pages/Actions/Inserir";
 import Detalhes from "./pages/Produtos/Detalhes";
 import ProdutosEscondidos from "./pages/Produtos/ProdutosEscondidos";
 import EditarFornecedor from "./pages/Providers/EditarFornecedor";
@@ -72,7 +72,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/estoque-client' element={<Login />} />
 
-          <Route path='/comprar' element={<PrivateRoute><Comprar /></PrivateRoute>} />
+          <Route path='/inserir' element={<PrivateRoute><Inserir /></PrivateRoute>} />
           <Route path='/retirar' element={<PrivateRoute><Retirar /></PrivateRoute>} />
 
           <Route path='/produtos' element={<AdminRoute><Produtos /></AdminRoute>} />

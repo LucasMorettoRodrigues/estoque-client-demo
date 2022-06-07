@@ -59,8 +59,8 @@ export default function AdminPanel() {
                     <>
                         <div style={{ display: 'flex', flex: 1 }}
                             onClick={() => {
-                                item.description === 'Solicitação de Compra' &&
-                                    navigate('/comprar', { state: item })
+                                item.description === 'Solicitação para Inserir' &&
+                                    navigate('/inserir', { state: item })
                                 console.log(item.data)
                             }}>
                             <BoxItem style={{ flex: 1 }}>{item.description}</BoxItem>

@@ -41,7 +41,7 @@ const BottomInputContainer = styled.div`
     margin-right: 10px;
 `
 
-export default function Comprar() {
+export default function Inserir() {
 
     const dispatch = useAppDispatch()
     const { state }: any = useLocation()
@@ -143,12 +143,12 @@ export default function Comprar() {
             if (state) {
                 await dispatch(deleteCart(state.id))
             }
-            setMessage({ title: 'Sucesso', message: 'A compra foi realizada.' })
+            setMessage({ title: 'Sucesso', message: 'A inserção foi realizada.' })
 
             setCart([])
 
         } catch (error) {
-            setMessage({ title: 'Erro', message: 'Não foi possível realizar a compra.' })
+            setMessage({ title: 'Erro', message: 'Não foi possível realizar a inserção.' })
         }
 
         setLoading(false)
@@ -161,15 +161,15 @@ export default function Comprar() {
 
         try {
             await dispatch(createCart({
-                notification: { description: 'Solicitação de Compra', data: cart },
+                notification: { description: 'Solicitação para Inserir', data: cart },
                 username,
                 password
             })).unwrap()
-            setMessage({ title: 'Sucesso', message: 'Solicitação de compra enviada.' })
+            setMessage({ title: 'Sucesso', message: 'Solicitação para inserir enviada.' })
             setCart([])
 
         } catch (error) {
-            setMessage({ title: 'Erro', message: 'Não foi possível realizar a compra.' })
+            setMessage({ title: 'Erro', message: 'Não foi possível realizar a inserção.' })
         }
     }
 
@@ -178,7 +178,7 @@ export default function Comprar() {
             < Loading loading={loading} />
             {message && <Mensagem onClick={() => setMessage(null)} message={message} />}
             {warning && <Mensagem onClick={handleCreateProvider} onClose={() => setWarning(null)} message={warning} />}
-            <Title title='Comprar Produtos' />
+            <Title title='Inserir Produtos' />
             <Form onSubmit={handleOnSubmit}>
                 <InputContainer flex={5} minWidth='65vw'>
                     <Autocomplete
@@ -297,7 +297,7 @@ export default function Comprar() {
                     </ProductListContainer>
                     {
                         auth.role === 'admin' &&
-                        <Button onClick={handleCheckout} text={'Finalizar Compra'} />
+                        <Button onClick={handleCheckout} text={'Finalizar Inserção'} />
                     }
                     {
                         auth.role !== 'admin' &&
@@ -326,7 +326,7 @@ export default function Comprar() {
                             </BottomInputContainer>
                             <Button
                                 onClick={handleSendToAdmin}
-                                text={'Finalizar Compra'}
+                                text={'Finalizar Inserção'}
                                 style={{ padding: '12px 24px', alignSelf: 'flex-end' }}
                             />
                         </BottomContainer>
