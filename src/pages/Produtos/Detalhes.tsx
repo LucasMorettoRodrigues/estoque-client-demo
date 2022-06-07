@@ -13,7 +13,7 @@ import ItemsContainer from "../../components/List/ItemsContainer"
 import ProductBtn from "../../components/ProductBtn"
 import Title from "../../components/Title"
 import { BsFillPlusSquareFill } from 'react-icons/bs'
-import { SetCategoryFilter, setProviderFilter } from "../../features/produtos/produtoSlice"
+import { SetCategoryFilter, setProviderFilter, SetSearchFilter } from "../../features/produtos/produtoSlice"
 
 const Container = styled.div``
 const TitleContainer = styled.div`
@@ -65,11 +65,11 @@ export default function Detalhes() {
     const providers = useAppSelector(state => state.fornecedor.fornecedores)
     const providerFilter = useAppSelector(state => state.produto.providerFilter)
     const categoryFilter = useAppSelector(state => state.produto.categoryFilter)
+    const searchFilter = useAppSelector(state => state.produto.searchFilter)
 
     const [filteredProducts, setFilteredProducts] = useState<TProduct[]>([])
     const [sortedProducts, setSortedProducts] = useState<TProduct[]>([])
     const [sort, setSort] = useState('')
-    const [search, setSearch] = useState('')
     const [isOpen, setIsOpen] = useState<number[]>([])
     const [isAllOpen, setIsAllOpen] = useState(false)
 
@@ -113,13 +113,13 @@ export default function Detalhes() {
             filtered = filtered.filter(i => i.providers?.includes(providerFilter))
         }
 
-        if (search) {
-            filtered = filtered.filter(i => i.name.toLowerCase().includes(search.toLowerCase()))
+        if (searchFilter) {
+            filtered = filtered.filter(i => i.name.toLowerCase().includes(searchFilter))
         }
 
         setFilteredProducts(filtered)
 
-    }, [categoryFilter, sortedProducts, search, providerFilter])
+    }, [categoryFilter, sortedProducts, searchFilter, providerFilter])
 
     const handleClose = () => {
         if (isAllOpen) {
@@ -140,7 +140,12 @@ export default function Detalhes() {
                 <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
                 <Filter>
                     <InputContainer>
-                        <Input name="search" label="Pesquisar:" display="flex" type='text' onChange={(e) => setSearch(e.target.value)}></Input>
+                        <Input name="search" label="Pesquisar:" 
+                            display="flex" type='text' 
+                            value={searchFilter}
+                            onChange={(e) => dispatch(SetSearchFilter(e.target.value))}
+                        >
+                        </Input>
                     </InputContainer>
                     <InputContainer>
                         <Select name="categories" label="Categoria:"

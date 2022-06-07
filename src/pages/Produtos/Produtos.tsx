@@ -11,7 +11,7 @@ import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import ProductBtn from "../../components/ProductBtn"
-import { setProviderFilter, switchMissingFilter } from "../../features/produtos/produtoSlice"
+import { setProviderFilter, SetSearchFilter, switchMissingFilter } from "../../features/produtos/produtoSlice"
 import Title from "../../components/Title"
 
 const Container = styled.div``
@@ -36,6 +36,7 @@ const InputContainer = styled.div`
 const Label = styled.label`
     margin-right: 5px;
     cursor: pointer;
+    color: #777;
 `
 const CheckBox = styled.input`
     padding: 5px 10px;
@@ -51,9 +52,9 @@ export default function Produtos() {
     const providers = useAppSelector(state => state.fornecedor.fornecedores)
     const missingFilter = useAppSelector(state => state.produto.missingFilter)
     const providerFilter = useAppSelector(state => state.produto.providerFilter)
+    const searchFilter = useAppSelector(state => state.produto.searchFilter)
 
     const [filteredProducts, setFilteredProducts] = useState<TProduct[]>([])
-    const [search, setSearch] = useState('')
     const [sort, setSort] = useState('')
     const [sortedProducts, setSortedProducts] = useState<TProduct[]>([])
 
@@ -73,8 +74,8 @@ export default function Produtos() {
             filtered = mergeProducts(sortedProducts)
         }
 
-        if (search) {
-            filtered = filtered.filter(i => i.name.toLowerCase().includes(search.toLowerCase()))
+        if (searchFilter) {
+            filtered = filtered.filter(i => i.name.toLowerCase().includes(searchFilter))
         }
 
         if (providerFilter) {
@@ -82,7 +83,7 @@ export default function Produtos() {
         }
 
         setFilteredProducts(filtered)
-    }, [missingFilter, sortedProducts, search, providerFilter])
+    }, [missingFilter, sortedProducts, searchFilter, providerFilter])
 
     return (
         <>
@@ -96,7 +97,12 @@ export default function Produtos() {
                 <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
                 <Filter>
                     <InputContainer>
-                        <Input name="search" label="Pesquisar:" display="flex" type='text' onChange={(e) => setSearch(e.target.value)}></Input>
+                        <Input name="search" label="Pesquisar:" 
+                            display="flex" type='text' 
+                            value={searchFilter}
+                            onChange={(e) => dispatch(SetSearchFilter(e.target.value))}
+                        >
+                        </Input>
                     </InputContainer>
                     <InputContainer>
                         <Select name="providers" label="Fornecedores:"
