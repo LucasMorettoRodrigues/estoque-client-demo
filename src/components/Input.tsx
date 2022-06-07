@@ -3,7 +3,7 @@ import styled from "styled-components"
 
 const Label = styled.label<{ display?: string }>`
     display: block;
-    margin-left: 4px;
+    margin-left: 2px;
     margin-right: ${props => props.display === 'flex' ? '8px' : 0};
     margin-bottom: 4px;
     color: #777;
