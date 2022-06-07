@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 const SContainer = styled.div`
-    background-color: #f5f5f5;
+    background-color: #f7f7f7;
 `
 const Wrapper = styled.div`
     max-width: 1300px;
