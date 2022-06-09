@@ -65,12 +65,12 @@ export default function Retirar() {
             setProductId(productId)
             setSubProductId(subProductId)
             setQuantity(quantity)
-            
-            return setMessageInput({ 
-                title: 'Atenção', 
-                message: 'O produto retirado não possui a data de validade mais próxima. Tem certeza que deseja retirar esse item? Se sim, justifique o motivo.' 
+
+            return setMessageInput({
+                title: 'Atenção',
+                message: 'O produto retirado não possui a data de validade mais próxima. Tem certeza que deseja retirar esse item? Se sim, justifique o motivo.'
             })
-        } 
+        }
 
         return { productToAdd, subProductToAdd }
     }
@@ -156,12 +156,12 @@ export default function Retirar() {
             />}
             <Title title='Retirar Produtos' />
             <RetirarForm onSubmit={handleOnSubmit} />
-                        <RetirarEAjustarList 
+            <RetirarEAjustarList
                 productList={productList}
                 deleteItem={(index) => setProductList(productList.filter((p, i) => i !== index))}
                 assign={true}
             />
-            <SignOperation 
+            <SignOperation
                 show={productList.length > 0}
                 handleSubmit={sendRequest}
             />
