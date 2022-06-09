@@ -30,13 +30,12 @@ export default function Ajustar() {
     const handleOnSubmit = (productId: number, subProductId: number, quantity: number) => {
 
         if (quantity < 0) return setMessage({ title: 'Erro', message: 'Quantidade invalida.' })
-        if (!subProductId || !subProductId) return setMessage({ title: 'Erro', message: 'Selecione o produto e o lote.' })
+        if (!subProductId || !subProductId) return setMessage({ title: 'Erro', message: 'Selecione o produto.' })
 
         const productToAdd = getProduct(products, productId)
         const subProductToAdd = getSubProduct(products, productId, subProductId)
 
-        if (!productToAdd) return setMessage({ title: 'Erro', message: 'Produto não encontrado.' })
-        if (!subProductToAdd) return setMessage({ title: 'Erro', message: 'Lote não encontrado.' })
+        if (!productToAdd || !subProductToAdd) return setMessage({ title: 'Erro', message: 'Produto não encontrado.' })
 
         if (productList.find(i => i.product.id === productToAdd?.id &&
             productList.find(i => i.subProduct?.id === subProductToAdd?.id))) {

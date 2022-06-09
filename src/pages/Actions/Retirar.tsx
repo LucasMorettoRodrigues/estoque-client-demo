@@ -1,23 +1,23 @@
-import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { useState } from "react"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { createStockOut } from "../../features/stockOut/stockOut"
 import { compareDates, getProduct, getSubProduct } from "../../utils/functions"
+
+import { TProduct } from "../../types/TProduct"
+import { TMessage } from "../../types/TMessage"
+import { TSubProduct } from "../../types/TSubProduct"
 
 import Mensagem from "../../components/Mensagem"
 import Title from "../../components/Title"
 import ModalInput from "../../components/ModalInput"
 import Loading from "../../components/Loading"
-
-import { TProduct } from "../../types/TProduct"
-import { TMessage } from "../../types/TMessage"
-import { TSubProduct } from "../../types/TSubProduct"
 import RetirarEAjustarList from "../../components/Retirar/RetirarEAjustarList"
 import SignOperation from "../../components/SignOperation"
 import RetirarForm from "../../components/Retirar/RetirarForm"
 
 type TProductList = {
     product: TProduct,
-    subProduct: TSubProduct | null,
+    subProduct: TSubProduct,
     quantity: number,
     notification: string
 }
@@ -27,9 +27,9 @@ export default function Retirar() {
     const dispatch = useAppDispatch()
     const products = useAppSelector(state => state.produto.produtos)
 
-    const [quantity, setQuantity] = useState(1)
-    const [subProductId, setSubProductId] = useState(0)
-    const [productId, setProductId] = useState(0)
+    const [memoQuantity, setMemoQuantity] = useState(1)
+    const [memoSubProductId, setMemoSubProductId] = useState(0)
+    const [memoProductId, setMemoProductId] = useState(0)
     const [productList, setProductList] = useState<TProductList[]>([])
     const [message, setMessage] = useState<TMessage>(null)
     const [messageInput, setMessageInput] = useState<TMessage>(null)
@@ -41,7 +41,7 @@ export default function Retirar() {
         const result = validateProduct(productId, subProductId, quantity)
 
         if (result) {
-            addProductToList(result.productToAdd, result.subProductToAdd)
+            addProductToList(result.productToAdd, result.subProductToAdd, quantity)
         } else {
             return
         }
@@ -57,14 +57,13 @@ export default function Retirar() {
         const subProductToAdd = getSubProduct(products, productId, subProductId)
 
         if (!productToAdd || !subProductToAdd) return setMessage({ title: 'Erro', message: 'Produto não encontrado.' })
-
-        if (quantity > subProductToAdd?.quantity) return setMessage({ title: 'Erro', message: `Existem apenas ${subProductToAdd.quantity} unidades do lote ${subProductToAdd.lote}.` })
+        if (quantity > subProductToAdd.quantity) return setMessage({ title: 'Erro', message: `Existem apenas ${subProductToAdd.quantity} unidades do lote ${subProductToAdd.lote}.` })
 
         let sorted = [...productToAdd.subproducts!].sort(function compare(a, b) { return compareDates(b.validade!, a.validade!) })
         if (sorted[0].id !== subProductToAdd.id && !notification) {
-            setProductId(productId)
-            setSubProductId(subProductId)
-            setQuantity(quantity)
+            setMemoProductId(productId)
+            setMemoSubProductId(subProductId)
+            setMemoQuantity(quantity)
 
             return setMessageInput({
                 title: 'Atenção',
@@ -75,8 +74,9 @@ export default function Retirar() {
         return { productToAdd, subProductToAdd }
     }
 
-    const addProductToList = (productToAdd: TProduct, subProductToAdd: TSubProduct) => {
-        if (productList.find(i => i.product.id === productToAdd?.id &&
+    const addProductToList = (productToAdd: TProduct, subProductToAdd: TSubProduct, quantity: number) => {
+        if (productList.find(i =>
+            i.product.id === productToAdd?.id &&
             productList.find(i => i.subProduct?.id === subProductToAdd?.id))) {
             setProductList(productList.map(item => (
                 item.product.id === productToAdd.id &&
@@ -92,6 +92,7 @@ export default function Retirar() {
                 notification: notification
             }])
         }
+        console.log(productList)
     }
 
     const cleanInputs = () => {
@@ -149,7 +150,7 @@ export default function Retirar() {
                     setMessageInput(null)
                     setNotification('')
                 }}
-                onConfirm={() => handleOnSubmit(productId, subProductId, quantity)}
+                onConfirm={() => handleOnSubmit(memoProductId, memoSubProductId, memoQuantity)}
                 onChange={(e) => setNotification(e.target.value)}
                 placeholder={'Justificativa'}
                 message={messageInput}
