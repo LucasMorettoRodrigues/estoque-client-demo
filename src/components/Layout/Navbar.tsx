@@ -37,17 +37,19 @@ const Item = styled.li`
     }
 `
 const LeaveBtn = styled.button`
-    padding: 12px;
+    padding: 8px 14px;
     border-radius: 5px;
     border: none;
     background-color: #168eff;
+    font-size: 14px;
+    margin-left: 10px;
     color: #222;
     font-weight: 800;
     transition: all .2s ease-in-out;
     cursor: pointer;
 
     &:hover {
-        opacity: 0.8;
+        background-color: #007bee;
     }
 `
 
