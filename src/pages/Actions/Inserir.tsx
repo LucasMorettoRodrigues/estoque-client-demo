@@ -139,47 +139,38 @@ export default function Inserir() {
     const handleCheckout = async () => {
         setLoading(true)
 
-        try {
-            await dispatch(createStockIn(cart)).unwrap()
+        const prs: TStockIn[] = []
+        const prsError: TStockIn[] = []
+
+        for (const item of cart) {
+            try {
+                await dispatch(createStockIn(item)).unwrap()
+                prs.push(item)
+            } catch (error) {
+                prsError.push(item)
+            }
+        }
+
+        setCart(prsError)
+        setLoading(false)
+
+        dispatch(getAllStockIns())
+        dispatch(getProdutos())
+
+        if (!prsError) {
+            setMessage({ title: 'Sucesso', message: 'O(s) produto(s) foram inseridos com sucesso.' })
+
             if (state) {
                 await dispatch(deleteNotification(state.id))
             }
-            setMessage({ title: 'Sucesso', message: 'A inserção foi realizada.' })
-
-            setCart([])
-
-        } catch (error) {
-            setMessage({ title: 'Erro', message: 'Não foi possível realizar a inserção.' })
+        } else {
+            setMessage({
+                title: 'Erro',
+                message:
+                    `${prs.length > 0 ? `Produto(s) inseridos: \n ${prs.map(item => `${getProduct(products, item.product_id)?.name} \n`)} \n` : ''} Não foi possível inserir o(s) produto(s): \n ${prsError.map(item => `${getProduct(products, item.product_id)?.name} \n`)}`
+            })
         }
-
-        setLoading(false)
     }
-
-    // const handleCheckout = async () => {
-    //     setLoading(true)
-
-    //     try {
-    //         for(const item of cart) {
-    //             await dispatch(createStockIn(item)).unwrap()
-    //         }
-
-    //         if (state) {
-    //             await dispatch(deleteNotification(state.id))
-    //         }
-    //         setMessage({ title: 'Sucesso', message: 'A inserção foi realizada.' })
-
-    //         setCart([])
-
-    //     } catch (error) {
-    //         setMessage({ title: 'Erro', message: 'Não foi possível realizar a inserção.' })
-    //     } finally {
-
-    //         setLoading(false)
-
-    //         dispatch(getAllStockIns())
-    //         dispatch(getProdutos())
-    //     }
-    // }
 
     const handleSendToAdmin = async () => {
         if (!password || !username) {

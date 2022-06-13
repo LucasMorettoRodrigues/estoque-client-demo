@@ -35,10 +35,10 @@ const Box = styled.div`
 `
 const ErrorsContainer = styled.div`
     margin-bottom: 20px;
-
-    >p {
-        font-size: 14px;
-    }
+`
+const Text = styled.p`
+    font-size: 14px;
+    white-space: "pre-line";
 `
 const Button = styled.button<{ bg: string }>`
     background-color: ${props => props.bg};
@@ -75,7 +75,9 @@ export default function Mensagem({ onClick, onClose, message }: Props) {
                 <Box>
                     <Title message={message.title}>{message.title}</Title>
                     <ErrorsContainer>
-                        <p>{message.message}</p>
+                        <Text style={{ whiteSpace: "pre-line" }}>
+                            {message.message.replaceAll(',', '')}
+                        </Text>
                     </ErrorsContainer>
                     <ButtonContainer>
                         {onClose &&
