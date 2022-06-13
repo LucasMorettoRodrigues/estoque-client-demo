@@ -73,7 +73,6 @@ export default function Mensagem({ onClick, onClose, message }: Props) {
         <Container>
             <Wrapper>
                 <Box>
-
                     <Title message={message.title}>{message.title}</Title>
                     <ErrorsContainer>
                         <p>{message.message}</p>

@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react"
 import styled from "styled-components"
-import Input from "./Input"
+import Input from "./UI/Input"
 
 const Container = styled.div`
     position: fixed;

@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { logout } from "../services/auth.service";
-import { updateAuthentication } from '../features/authentication/authentication'
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { logout } from "../../services/auth.service";
+import { updateAuthentication } from '../../features/authentication/authentication'
 
 const Container = styled.div`
     background-color: #5fb4ff;

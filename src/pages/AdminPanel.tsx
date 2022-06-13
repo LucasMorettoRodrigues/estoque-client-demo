@@ -1,13 +1,20 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import EditDeleteButton from "../components/EditDeleteButton";
-import Title from "../components/Title";
-import { deleteCart, getAllCarts } from "../features/cart/cartSlice";
+import EditDeleteButton from "../components/UI/EditDeleteButton";
+import Title from "../components/UI/Title";
+import { archiveNotification, deleteNotification, getAllNotifications } from "../features/notification/notificationSlice";
 import { formatValidity } from "../utils/functions";
 import { AiOutlineDelete } from 'react-icons/ai'
 import { useEffect } from "react";
+import Button from "../components/UI/Button";
+import { TNotification } from "../types/TNotification";
 
+const HeaderContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
 const Info = styled.div`
     font-size: 18px;
     margin-bottom: 30px;
@@ -43,32 +50,44 @@ const Text = styled.span`
 export default function AdminPanel() {
 
     const navigate = useNavigate()
-    const carts = useAppSelector(state => state.cart.carts)
+    const notifications = useAppSelector(state =>
+        state.notification.notifications.filter(i => !i.archived))
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        dispatch(getAllCarts())
+        dispatch(getAllNotifications())
     }, [dispatch])
+
+    const handleDelete = (item: TNotification) => {
+        if (item.description === 'Solicitação para Inserir') {
+            dispatch(deleteNotification(item.id!))
+        } else if (item.description === 'Notificação de Validade Incorreta') {
+            dispatch(archiveNotification({ ...item, archived: true }))
+        }
+    }
 
     return (
         <>
-            <Title title='Bem Vindo'></Title>
-            <Info>Você possui {carts.length} solicitações pendentes.</Info>
-            {carts.length > 0 && carts.map((item, index) => (
+            <HeaderContainer>
+                <Title title='Bem Vindo'></Title>
+                <Button text='Histórico de Notificações' onClick={() => navigate('/notificacoes')} />
+            </HeaderContainer>
+            <Info>Você possui {notifications.length} solicitações pendentes.</Info>
+            {notifications.length > 0 && notifications.map((item, index) => (
                 <Box key={index} >
                     <>
                         <div style={{ display: 'flex', flex: 1 }}
                             onClick={() => {
                                 (item.description === 'Solicitação para Inserir' || item.description === 'Solicitação de Compra') &&
                                     navigate('/inserir', { state: item })
-                                console.log(item.data)
                             }}>
                             <BoxItem style={{ flex: 1, color: item.description === 'Solicitação para Inserir' ? 'green' : 'red' }}>
                                 {item.description}
                             </BoxItem>
                             <BoxItem style={{ flex: 1 }}><Text>Enviado por:</Text>{item.user?.name}</BoxItem>
                             <BoxItem style={{ width: '90px' }}>{formatValidity(item.createdAt)}</BoxItem>
-                            <EditDeleteButton width="40px" onClick={() => dispatch(deleteCart(item.id!))}>
+                            <EditDeleteButton width="40px"
+                                onClick={() => handleDelete(item)}>
                                 <AiOutlineDelete />
                             </EditDeleteButton>
                         </div>

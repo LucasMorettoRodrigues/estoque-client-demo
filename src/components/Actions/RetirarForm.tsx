@@ -3,9 +3,9 @@ import { FormEvent, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { useAppSelector } from '../../app/hooks'
 import { formatValidity } from '../../utils/functions'
-import Button from '../Button'
-import Form from '../Form'
-import Input from '../Input'
+import Button from '../UI/Button'
+import Form from '../UI/Form'
+import Input from '../UI/Input'
 
 const InputContainer = styled.div<{ flex: number, minWidth?: string }>`
     flex: ${props => props.flex};
@@ -21,7 +21,7 @@ type Props = {
     onSubmit: (productId: number, subProductId: number, quantity: number) => void,
 }
 
-export default function RetirarForm({onSubmit}: Props) {
+export default function RetirarForm({ onSubmit }: Props) {
 
     const products = useAppSelector(state => state.produto.produtos)
 

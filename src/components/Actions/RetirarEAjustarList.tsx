@@ -1,9 +1,9 @@
 import styled from "styled-components"
 import { TProduct } from "../../types/TProduct"
 import { AiOutlineDelete } from 'react-icons/ai'
-import Button from "../Button"
+import Button from "../UI/Button"
 import { TSubProduct } from "../../types/TSubProduct"
-import EditDeleteButton from "../EditDeleteButton"
+import EditDeleteButton from "../UI/EditDeleteButton"
 import ListHeader from "../List/ListHeader"
 import Item from "../List/Item"
 import ItemsContainer from "../List/ItemsContainer"
@@ -26,7 +26,7 @@ type Props = {
     handleSubmit?: () => void,
 }
 
-export default function RetirarEAjustarList({productList, deleteItem, handleSubmit, assign}: Props) {
+export default function RetirarEAjustarList({ productList, deleteItem, handleSubmit, assign }: Props) {
 
     return (
         <>
@@ -62,7 +62,7 @@ export default function RetirarEAjustarList({productList, deleteItem, handleSubm
                             }
                         </>
                     </ProductListContainer>
-                    {   !assign && 
+                    {!assign &&
                         <Button onClick={handleSubmit} text={'Finalizar Ajuste'} />
                     }
                 </>

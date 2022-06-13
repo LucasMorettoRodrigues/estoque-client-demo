@@ -6,9 +6,9 @@ import {
   Navigate,
 } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
-import Container from "./components/Container";
-import Loading from "./components/Loading";
-import Navbar from "./components/Navbar";
+import Container from "./components/UI/Container";
+import Loading from "./components/UI/Loading";
+import Navbar from "./components/Layout/Navbar";
 import { getFornecedores } from "./features/fornecedor/fornecedorSlice";
 import { getProdutos } from "./features/produtos/produtoSlice";
 import { getAllStockOuts } from "./features/stockOut/stockOut";
@@ -17,14 +17,14 @@ import Detalhes from "./pages/Produtos/Detalhes";
 import ProdutosEscondidos from "./pages/Produtos/ProdutosEscondidos";
 import EditarFornecedor from "./pages/Providers/EditarFornecedor";
 import EditarProduto from "./pages/Produtos/EditarProduto";
-import EditarSubProduto from "./pages/EditarSubProduto";
+import EditarSubProduto from "./pages/Produtos/EditarSubProduto";
 import Fornecedores from "./pages/Providers/Fornecedores";
 import Historico from "./pages/Historico";
 import NovoFornecedor from "./pages/Providers/NovoFornecedor";
 import NovoProduto from "./pages/Produtos/NovoProduto";
 import Produtos from "./pages/Produtos/Produtos";
 import Retirar from "./pages/Actions/Retirar";
-import ProdutoHistorico from "./pages/ProdutoHistorico";
+import ProdutoHistorico from "./components/ProdutoHistorico";
 import Ajustar from "./pages/Actions/Ajustar";
 import Login from "./pages/Login";
 import Users from "./pages/Users/Users";
@@ -32,6 +32,7 @@ import CreateUser from "./pages/Users/CreateUser";
 import AdminPanel from "./pages/AdminPanel";
 import EditUser from "./pages/Users/EditUser";
 import RedefinePassword from "./pages/Users/RedefinePassword";
+import Notificacoes from "./pages/Notificacoes";
 
 function App() {
 
@@ -74,6 +75,7 @@ function App() {
 
           <Route path='/inserir' element={<PrivateRoute><Inserir /></PrivateRoute>} />
           <Route path='/retirar' element={<PrivateRoute><Retirar /></PrivateRoute>} />
+          <Route path='/notificacoes' element={<PrivateRoute><Notificacoes /></PrivateRoute>} />
 
           <Route path='/produtos' element={<AdminRoute><Produtos /></AdminRoute>} />
           <Route path='/produtos/detalhes' element={<AdminRoute><Detalhes /></AdminRoute>} />

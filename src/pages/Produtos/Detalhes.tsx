@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
-import Button from "../../components/Button"
+import Button from "../../components/UI/Button"
 import { useAppSelector } from "../../app/hooks"
 import { useEffect, useState } from "react"
 import { TProduct } from "../../types/TProduct"
@@ -8,8 +8,8 @@ import { compare, formatValidity } from "../../utils/functions"
 import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
-import ProductBtn from "../../components/ProductBtn"
-import Title from "../../components/Title"
+import ProductBtn from "../../components/UI/ProductBtn"
+import Title from "../../components/UI/Title"
 import { BsFillPlusSquareFill } from 'react-icons/bs'
 import Filters from "./Filters"
 

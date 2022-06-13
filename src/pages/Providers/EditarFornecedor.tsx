@@ -2,11 +2,11 @@ import { useState, FormEvent, ChangeEvent } from "react"
 import { useAppDispatch } from "../../app/hooks"
 import { useLocation, useNavigate } from "react-router-dom"
 import styled from "styled-components"
-import Button from "../../components/Button"
-import Input from "../../components/Input"
+import Button from "../../components/UI/Button"
+import Input from "../../components/UI/Input"
 import { editProvider } from "../../features/fornecedor/fornecedorSlice"
-import Title from "../../components/Title"
-import Form from "../../components/Form"
+import Title from "../../components/UI/Title"
+import Form from "../../components/UI/Form"
 
 const InputContainer = styled.div`
     margin-bottom: 20px;

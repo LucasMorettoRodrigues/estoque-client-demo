@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import Button from './Button'
-import Input from './Input'
+import Button from '../UI/Button'
+import Input from '../UI/Input'
 
 const Container = styled.div`
     display: flex;
@@ -16,7 +16,7 @@ type Props = {
     handleSubmit: (user: string, password: string) => void
 }
 
-export default function SignOperation({show, handleSubmit}: Props) {
+export default function SignOperation({ show, handleSubmit }: Props) {
 
     const [user, setUser] = useState('')
     const [password, setPassword] = useState('')
@@ -28,7 +28,7 @@ export default function SignOperation({show, handleSubmit}: Props) {
 
     return (
         <>
-            { show && 
+            {show &&
                 <Container>
                     <InputContainer>
                         <Input

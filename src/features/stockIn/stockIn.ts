@@ -18,6 +18,14 @@ export const createStockIn = createAsyncThunk(
     }
 )
 
+// export const createStockIn = createAsyncThunk(
+//     'stockIns/createStockIn',
+//     async (newStockIn: TStockIn, thunkAPI) => {
+//         await api.post('/stockIns', newStockIn)
+//         return
+//     }
+// )
+
 export const getAllStockIns = createAsyncThunk(
     'stockIns/getAllStockIns',
     async (thunkAPI) => {
@@ -49,7 +57,7 @@ export const stockInSlice = createSlice({
         builder.addCase(createStockIn.pending, (state) => {
             state.status = 'loading'
         })
-        builder.addCase(createStockIn.fulfilled, (state, action) => {
+        builder.addCase(createStockIn.fulfilled, (state) => {
             state.status = 'success'
         })
         builder.addCase(createStockIn.rejected, (state) => {

@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom"
 import { TProduct } from "../types/TProduct"
-import Historico from "./Historico"
+import Historico from "../pages/Historico"
 
 export default function ProdutoHistorico() {
 

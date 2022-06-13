@@ -8,10 +8,10 @@ import { TProduct } from "../../types/TProduct"
 import { TMessage } from "../../types/TMessage"
 
 import Mensagem from "../../components/Mensagem"
-import Title from "../../components/Title"
-import Loading from "../../components/Loading"
-import RetirarEAjustarList from "../../components/Retirar/RetirarEAjustarList"
-import RetirarForm from "../../components/Retirar/RetirarForm"
+import Title from "../../components/UI/Title"
+import Loading from "../../components/UI/Loading"
+import RetirarEAjustarList from "../../components/Actions/RetirarEAjustarList"
+import RetirarForm from "../../components/Actions/RetirarForm"
 
 type TProductList = {
     product: TProduct,

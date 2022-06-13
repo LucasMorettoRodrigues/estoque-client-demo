@@ -2,24 +2,25 @@ import styled from "styled-components"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { FormEvent, useRef, useState } from "react"
 import { AiOutlineDelete } from 'react-icons/ai'
-import Button from "../../components/Button"
+import Button from "../../components/UI/Button"
 import { TStockIn } from "../../types/TStockIn"
 import { getProduct, getProvider } from "../../utils/functions"
-import { createStockIn } from "../../features/stockIn/stockIn"
-import EditDeleteButton from "../../components/EditDeleteButton"
+import { createStockIn, getAllStockIns } from "../../features/stockIn/stockIn"
+import EditDeleteButton from "../../components/UI/EditDeleteButton"
 import Mensagem from "../../components/Mensagem"
 import { createProvider } from "../../features/fornecedor/fornecedorSlice"
-import Input from "../../components/Input"
+import Input from "../../components/UI/Input"
 import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
-import Form from "../../components/Form"
-import Title from "../../components/Title"
+import Form from "../../components/UI/Form"
+import Title from "../../components/UI/Title"
 import { Autocomplete, TextField } from "@mui/material"
-import { createCart, deleteCart } from "../../features/cart/cartSlice"
+import { createNotification, deleteNotification } from "../../features/notification/notificationSlice"
 import { useLocation } from "react-router-dom"
-import Loading from "../../components/Loading"
+import Loading from "../../components/UI/Loading"
 import { TMessage } from "../../types/TMessage"
+import { getProdutos } from "../../features/produtos/produtoSlice"
 
 const InputContainer = styled.div<{ flex: number, minWidth?: string }>`
     flex: ${props => props.flex};
@@ -141,7 +142,7 @@ export default function Inserir() {
         try {
             await dispatch(createStockIn(cart)).unwrap()
             if (state) {
-                await dispatch(deleteCart(state.id))
+                await dispatch(deleteNotification(state.id))
             }
             setMessage({ title: 'Sucesso', message: 'A inserção foi realizada.' })
 
@@ -154,13 +155,39 @@ export default function Inserir() {
         setLoading(false)
     }
 
+    // const handleCheckout = async () => {
+    //     setLoading(true)
+
+    //     try {
+    //         for(const item of cart) {
+    //             await dispatch(createStockIn(item)).unwrap()
+    //         }
+
+    //         if (state) {
+    //             await dispatch(deleteNotification(state.id))
+    //         }
+    //         setMessage({ title: 'Sucesso', message: 'A inserção foi realizada.' })
+
+    //         setCart([])
+
+    //     } catch (error) {
+    //         setMessage({ title: 'Erro', message: 'Não foi possível realizar a inserção.' })
+    //     } finally {
+
+    //         setLoading(false)
+
+    //         dispatch(getAllStockIns())
+    //         dispatch(getProdutos())
+    //     }
+    // }
+
     const handleSendToAdmin = async () => {
         if (!password || !username) {
             return setMessage({ title: 'Erro', message: 'Assine a operação' })
         }
 
         try {
-            await dispatch(createCart({
+            await dispatch(createNotification({
                 notification: { description: 'Solicitação para Inserir', data: cart },
                 username,
                 password
@@ -280,11 +307,8 @@ export default function Inserir() {
                                         <EditDeleteButton
                                             onClick={() => {
                                                 setCart(cart.filter((p, i) => i !== index))
-                                                console.log(cart)
                                                 if (state && cart.length === 1) {
-                                                    console.log('ak')
-                                                    console.log(state, state.id)
-                                                    dispatch(deleteCart(state.id))
+                                                    dispatch(deleteNotification(state.id))
                                                 }
                                             }}
                                         >

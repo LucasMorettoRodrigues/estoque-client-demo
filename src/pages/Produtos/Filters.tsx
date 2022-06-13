@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import Input from "../../components/Input"
-import Select from "../../components/Select"
+import Input from "../../components/UI/Input"
+import Select from "../../components/UI/Select"
 import { SetCategoryFilter, setProviderFilter, SetSearchFilter, switchMissingFilter } from "../../features/produtos/produtoSlice"
 
 const Filter = styled.div`
@@ -29,7 +29,7 @@ type Props = {
     hasCategoryFilter: boolean
 }
 
-export default function Filters({hasMissingFilter, hasCategoryFilter}: Props) {
+export default function Filters({ hasMissingFilter, hasCategoryFilter }: Props) {
 
     const dispatch = useAppDispatch()
     const productsData = useAppSelector(state => state.produto.produtos)
@@ -44,14 +44,14 @@ export default function Filters({hasMissingFilter, hasCategoryFilter}: Props) {
     return (
         <Filter>
             <InputContainer>
-                <Input name="search" label="Pesquisar:" 
-                    display="flex" type='text' 
+                <Input name="search" label="Pesquisar:"
+                    display="flex" type='text'
                     value={searchFilter}
                     onChange={(e) => dispatch(SetSearchFilter(e.target.value))}
                 >
                 </Input>
             </InputContainer>
-            { hasCategoryFilter && 
+            {hasCategoryFilter &&
                 <InputContainer>
                     <Select name="categories" label="Categoria:"
                         display="flex" value={categoryFilter}
@@ -60,7 +60,7 @@ export default function Filters({hasMissingFilter, hasCategoryFilter}: Props) {
                         <option></option>
                         {categories.map((i, index) => <option key={index}>{i}</option>)}
                     </Select>
-                </InputContainer>            
+                </InputContainer>
             }
             <InputContainer>
                 <Select name="providers" label="Fornecedor:"
@@ -71,7 +71,7 @@ export default function Filters({hasMissingFilter, hasCategoryFilter}: Props) {
                     {providers.map(i => <option key={i.id} value={i.name}>{i.name}</option>)}
                 </Select>
             </InputContainer>
-            { hasMissingFilter && 
+            {hasMissingFilter &&
                 <>
                     <CheckBox
                         style={{ width: '18px', height: '18px', cursor: 'pointer' }}

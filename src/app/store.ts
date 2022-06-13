@@ -5,7 +5,7 @@ import stockInReducer from '../features/stockIn/stockIn';
 import stockOutReducer from '../features/stockOut/stockOut';
 import adjustStockReducer from '../features/adjustStock/adjustStock'
 import authenticationReducer from '../features/authentication/authentication'
-import cartReducer from '../features/cart/cartSlice';
+import notificationReducer from '../features/notification/notificationSlice';
 
 export const store = configureStore({
   reducer: {
@@ -15,7 +15,7 @@ export const store = configureStore({
     stockIn: stockInReducer,
     adjustStock: adjustStockReducer,
     authentication: authenticationReducer,
-    cart: cartReducer
+    notification: notificationReducer
   },
 });
 

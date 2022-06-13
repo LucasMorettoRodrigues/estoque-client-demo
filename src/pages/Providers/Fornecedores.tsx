@@ -1,11 +1,11 @@
 import styled from "styled-components"
 import { useAppSelector } from "../../app/hooks"
 import { useNavigate } from "react-router-dom"
-import Button from "../../components/Button"
+import Button from "../../components/UI/Button"
 import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
-import Title from "../../components/Title"
+import Title from "../../components/UI/Title"
 
 const ButtonContainer = styled.div`
     margin-bottom: 20px;

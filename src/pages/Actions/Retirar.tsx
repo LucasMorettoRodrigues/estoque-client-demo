@@ -8,12 +8,12 @@ import { TMessage } from "../../types/TMessage"
 import { TSubProduct } from "../../types/TSubProduct"
 
 import Mensagem from "../../components/Mensagem"
-import Title from "../../components/Title"
+import Title from "../../components/UI/Title"
 import ModalInput from "../../components/ModalInput"
-import Loading from "../../components/Loading"
-import RetirarEAjustarList from "../../components/Retirar/RetirarEAjustarList"
-import SignOperation from "../../components/SignOperation"
-import RetirarForm from "../../components/Retirar/RetirarForm"
+import Loading from "../../components/UI/Loading"
+import RetirarEAjustarList from "../../components/Actions/RetirarEAjustarList"
+import SignOperation from "../../components/Actions/SignOperation"
+import RetirarForm from "../../components/Actions/RetirarForm"
 
 type TProductList = {
     product: TProduct,
