@@ -1,22 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { api } from '../../services/api.service'
 import { TStockIn } from '../../types/TStockIn'
-import { getProdutos } from '../produtos/produtoSlice'
 import moment from 'moment-timezone';
-
-// export const createStockIn = createAsyncThunk(
-//     'stockIns/createStockIn',
-//     async (newStockIns: TStockIn[], thunkAPI) => {
-//         let res: TStockIn[] = []
-//         for (const stockIn of newStockIns) {
-//             const singleRes: any = await api.post('/stockIns', stockIn)
-//             res = [...res, singleRes.data]
-//         }
-//         thunkAPI.dispatch(getProdutos())
-//         thunkAPI.dispatch(getAllStockIns())
-//         return
-//     }
-// )
 
 export const createStockIn = createAsyncThunk(
     'stockIns/createStockIn',
