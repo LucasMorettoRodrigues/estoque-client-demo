@@ -102,11 +102,15 @@ export default function Retirar() {
 
     const sendRequest = async (user: string, password: string) => {
 
+        setLoading(true)
+
         if (!user || !password) {
+            setLoading(false)
             return setMessage({ title: 'Erro', message: `Assine a operação` })
         }
 
-        setLoading(true)
+        const prs: TProductList[] = []
+        const prsError: TProductList[] = []
 
         for (const item of productList) {
             try {
@@ -129,16 +133,25 @@ export default function Retirar() {
                             }
                             : null
                 })).unwrap()
-            } catch (error) {
-                setLoading(false)
-                return setMessage({ title: 'Erro', message: `Não foi possível completar a retirada.` })
-            }
+                prs.push(item)
 
-            setLoading(false)
+            } catch (error) {
+                prsError.push(item)
+            }
         }
 
-        setProductList([])
-        setMessage({ title: 'Sucesso', message: 'O(s) Produto(s) foram retirados.' })
+        setProductList(prsError)
+        setLoading(false)
+
+        if (prsError.length === 0) {
+            setMessage({ title: 'Sucesso', message: 'O(s) Produto(s) foram retirados com sucesso.' })
+        } else {
+            setMessage({
+                title: 'Erro',
+                message:
+                    `${prs.length > 0 ? `Produto(s) retirado(s): \n ${prs.map(item => `${item.product.name} \n`)} \n` : ''} Não foi possível retirar o(s) produto(s): \n ${prsError.map(item => `${item.product.name} \n`)}`
+            })
+        }
     }
 
     return (

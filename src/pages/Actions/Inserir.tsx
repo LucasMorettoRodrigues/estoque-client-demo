@@ -167,7 +167,7 @@ export default function Inserir() {
             setMessage({
                 title: 'Erro',
                 message:
-                    `${prs.length > 0 ? `Produto(s) inseridos: \n ${prs.map(item => `${getProduct(products, item.product_id)?.name} \n`)} \n` : ''} Não foi possível inserir o(s) produto(s): \n ${prsError.map(item => `${getProduct(products, item.product_id)?.name} \n`)}`
+                    `${prs.length > 0 ? `Produto(s) inserido(s): \n ${prs.map(item => `${getProduct(products, item.product_id)?.name} \n`)} \n` : ''} Não foi possível inserir o(s) produto(s): \n ${prsError.map(item => `${getProduct(products, item.product_id)?.name} \n`)}`
             })
         }
     }
