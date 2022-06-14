@@ -157,7 +157,7 @@ export default function Inserir() {
         dispatch(getAllStockIns())
         dispatch(getProdutos())
 
-        if (!prsError) {
+        if (prsError.length === 0) {
             setMessage({ title: 'Sucesso', message: 'O(s) produto(s) foram inseridos com sucesso.' })
 
             if (state) {
