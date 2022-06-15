@@ -50,13 +50,15 @@ export default function Inventario() {
     const handleSubmit = () => {
         if (!isValidated()) return
 
+        const subProductsWrong = []
+
         for (const [key,] of Object.entries(systemStock)) {
-            if (systemStock[key] === verifiedStock[key]) {
-                console.log(key, 'esta correto.')
-            } else {
-                console.log(key, '')
+            if (systemStock[key] !== verifiedStock[key]) {
+                subProductsWrong.push(key)
             }
         }
+
+        console.log(subProductsWrong)
     }
 
     const isValidated = () => {
@@ -65,7 +67,7 @@ export default function Inventario() {
             return false
         }
 
-        return
+        return true
     }
 
     return (
