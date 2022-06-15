@@ -6,8 +6,9 @@ import ListHeader from "../components/List/ListHeader"
 import Item from "../components/List/Item"
 import ItemsContainer from "../components/List/ItemsContainer"
 import { formatValidity } from "../utils/functions"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import SignOperation from "../components/Actions/SignOperation"
+import { TProduct } from "../types/TProduct"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -32,36 +33,75 @@ const InputQuantidade = styled.input`
 
 export default function Inventario() {
 
+    const productsData = useAppSelector(state => state.produto.produtos)
+
+    const [products, setProducts] = useState<TProduct[]>([])
     const [verifiedStock, setVerifiedStock] = useState<any>({})
+    const [subProductsWrong, setSubProductsWrong] = useState<number[]>([])
+    const [isReviewing, setIsReviewing] = useState(false)
 
-    const products = useAppSelector(state => state.produto.produtos.filter(i => i.hide === false))
+    useEffect(() => {
+
+        let products = productsData.filter(i => i.hide === false && i.subproducts!.length > 0)
+
+        if (subProductsWrong.length > 0) {
+            products = products.map(i => ({ ...i, subproducts: i.subproducts?.filter(j => subProductsWrong.includes(j.id)) }))
+            products = products.filter(i => i.subproducts!.length > 0)
+        }
+
+        setProducts(products)
+
+    }, [productsData, subProductsWrong])
+
     const systemStock: any = {}
-    products.forEach((product) => {
-        product.subproducts && product.subproducts.forEach((subproduct) => {
-            systemStock[subproduct.id] = subproduct.quantity
-        })
-    })
-    products.forEach((product) => {
+    productsData.forEach((product) => {
         product.subproducts && product.subproducts.forEach((subproduct) => {
             systemStock[subproduct.id] = subproduct.quantity
         })
     })
 
-    const handleSubmit = () => {
+    const verifyStock = () => {
         if (!isValidated()) return
 
-        const subProductsWrong = []
+        const invalid: number[] = []
 
         for (const [key,] of Object.entries(systemStock)) {
             if (systemStock[key] !== verifiedStock[key]) {
-                subProductsWrong.push(key)
+                invalid.push(Number(key))
             }
         }
 
-        console.log(subProductsWrong)
+        if (invalid.length === 0) {
+            return console.log('Tudo certo.')
+        }
+
+        console.log('Verifique')
+        setSubProductsWrong(invalid)
+        setIsReviewing(true)
+    }
+
+    const submitInventory = () => {
+        if (!isValidated()) return
+
+        const invalid: number[] = []
+
+        for (const [key,] of Object.entries(systemStock)) {
+            if (systemStock[key] !== verifiedStock[key]) {
+                invalid.push(Number(key))
+            }
+        }
+
+        if (invalid.length === 0) {
+            return console.log('Tudo certo.')
+        }
+
+        console.log('Produtos com erro: ', invalid)
     }
 
     const isValidated = () => {
+        console.log(verifiedStock)
+        console.log(systemStock)
+
         if (JSON.stringify(Object.keys(verifiedStock).sort()) !== JSON.stringify(Object.keys(systemStock).sort())) {
             console.log('Preencha todos os campos.')
             return false
@@ -72,8 +112,6 @@ export default function Inventario() {
 
     return (
         <>
-            {console.log(verifiedStock)}
-            {console.log(systemStock)}
             <Title title='Inventario' />
             <HeaderContainer>
                 <ListHeader fontSize='12px'>
@@ -128,9 +166,18 @@ export default function Inventario() {
                     </Container>
                 ))
             }
-            <div style={{ margin: '30px 0' }}>
-                <SignOperation show={true} handleSubmit={handleSubmit} />
-            </div>
+            {!isReviewing &&
+                <div style={{ margin: '30px 0' }}>
+                    Verficar
+                    <SignOperation show={true} handleSubmit={verifyStock} />
+                </div>
+            }
+            {isReviewing &&
+                <div style={{ margin: '30px 0' }}>
+                    Revisar e enviar
+                    <SignOperation show={true} handleSubmit={submitInventory} />
+                </div>
+            }
         </>
     )
 }
