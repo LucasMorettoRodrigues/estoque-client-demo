@@ -33,6 +33,7 @@ import AdminPanel from "./pages/AdminPanel";
 import EditUser from "./pages/Users/EditUser";
 import RedefinePassword from "./pages/Users/RedefinePassword";
 import Notificacoes from "./pages/Notificacoes";
+import Inventario from "./pages/Inventario";
 
 function App() {
 
@@ -94,6 +95,8 @@ function App() {
           <Route path='/panel' element={<AdminRoute><AdminPanel /></AdminRoute>} />
           <Route path='/usuarios/:id' element={<AdminRoute><EditUser /></AdminRoute>} />
           <Route path='/usuarios/:id/redefinirSenha' element={<AdminRoute><RedefinePassword /></AdminRoute>} />
+
+          <Route path='/inventario' element={<Inventario />} />
         </Routes>
       </Container>
     </BrowserRouter >

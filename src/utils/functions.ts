@@ -100,7 +100,7 @@ export const formatValidity = (date: string | null | undefined) => {
         return date.slice(0, 10)
         // 
     }
-    return 'Indeterminada'
+    return 'Ind.'
 }
 
 export const groupStockByDate = (stockList: (TStockIn[] | TStockOut[]), suffix: string) => {
