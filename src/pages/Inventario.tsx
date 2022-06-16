@@ -9,6 +9,8 @@ import { formatValidity } from "../utils/functions"
 import { useEffect, useState } from "react"
 import SignOperation from "../components/Actions/SignOperation"
 import { TProduct } from "../types/TProduct"
+import Mensagem from "../components/Mensagem"
+import { TMessage } from "../types/TMessage"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -30,6 +32,15 @@ const InputQuantidade = styled.input`
     margin-left: 10px;
     margin-right: 20px;
 `
+const InputJustification = styled.input`
+    padding: 6px;
+    border-radius: 5px;
+    width: 20%;
+    border: 2px solid #e6e6e6;
+    outline-color: lightblue;
+    margin-left: 10px;
+    margin-right: 20px;
+`
 
 export default function Inventario() {
 
@@ -37,21 +48,22 @@ export default function Inventario() {
 
     const [products, setProducts] = useState<TProduct[]>([])
     const [verifiedStock, setVerifiedStock] = useState<any>({})
-    const [subProductsWrong, setSubProductsWrong] = useState<number[]>([])
-    const [isReviewing, setIsReviewing] = useState(false)
+    const [divergentItemsList, setDivergentItemsList] = useState<number[]>([])
+    const [message, setMessage] = useState<TMessage>(null)
+    const [submissionCounter, setSubmissionCounter] = useState(0)
 
     useEffect(() => {
 
         let products = productsData.filter(i => i.hide === false && i.subproducts!.length > 0)
 
-        if (subProductsWrong.length > 0) {
-            products = products.map(i => ({ ...i, subproducts: i.subproducts?.filter(j => subProductsWrong.includes(j.id)) }))
+        if (divergentItemsList.length > 0) {
+            products = products.map(i => ({ ...i, subproducts: i.subproducts?.filter(j => divergentItemsList.includes(j.id)) }))
             products = products.filter(i => i.subproducts!.length > 0)
         }
 
         setProducts(products)
 
-    }, [productsData, subProductsWrong])
+    }, [productsData, divergentItemsList])
 
     const systemStock: any = {}
     productsData.forEach((product) => {
@@ -60,58 +72,104 @@ export default function Inventario() {
         })
     })
 
-    const verifyStock = () => {
-        if (!isValidated()) return
-
-        const invalid: number[] = []
-
-        for (const [key,] of Object.entries(systemStock)) {
-            if (systemStock[key] !== verifiedStock[key]) {
-                invalid.push(Number(key))
-            }
-        }
-
-        if (invalid.length === 0) {
-            return console.log('Tudo certo.')
-        }
-
-        console.log('Verifique')
-        setSubProductsWrong(invalid)
-        setIsReviewing(true)
-    }
-
     const submitInventory = () => {
         if (!isValidated()) return
 
-        const invalid: number[] = []
+        if (submissionCounter === 0) firstSubmition()
+        if (submissionCounter === 1) secoundSubmition()
+        if (submissionCounter === 2) thirdSubmition()
+    }
 
-        for (const [key,] of Object.entries(systemStock)) {
-            if (systemStock[key] !== verifiedStock[key]) {
-                invalid.push(Number(key))
+    const firstSubmition = () => {
+        const divergentItems = getDivergentItems()
+
+        if (divergentItems.length === 0) {
+            sendInventory()
+        }
+
+        setDivergentItemsList(divergentItems)
+        setMessage({
+            title: 'Atenção',
+            message: `${divergentItems.length} items apresentaram divergência. Confira o estoque novamente por favor.`
+        })
+        setSubmissionCounter(1)
+    }
+
+    const secoundSubmition = () => {
+        const divergentItems = getDivergentItems()
+
+        if (divergentItems.length === 0) {
+            sendInventory()
+        }
+
+        setDivergentItemsList(divergentItems)
+        setSubmissionCounter(2)
+        setMessage({
+            title: 'Atenção',
+            message: `${divergentItems.length} items ainda apresentam divergência. 
+                Verifique a quantidade no sistema e justifique a divergência.`
+        })
+    }
+
+    const thirdSubmition = () => {
+        sendInventory()
+    }
+
+    const sendInventory = () => {
+
+        if (!justificationIsValid()) {
+            return setMessage({ title: 'Erro', message: 'Por favor preencha todos os campos.' })
+        }
+
+        const data = productsData.slice().map(item => (
+            {
+                ...item, subproducts:
+                    item.subproducts!.map(subitem => (
+                        {
+                            ...subitem,
+                            inventory: verifiedStock[subitem.id].inventory,
+                            justification: verifiedStock[subitem.id].justification
+                        }
+                    ))
+            }
+        ))
+
+        setMessage({ title: 'Sucesso', message: 'O inventário foi submetido.' })
+        console.log('ak', data)
+    }
+
+    const justificationIsValid = () => {
+        for (const value of divergentItemsList) {
+            if (!verifiedStock[value].justification) {
+                return false
             }
         }
-
-        if (invalid.length === 0) {
-            return console.log('Tudo certo.')
-        }
-
-        console.log('Produtos com erro: ', invalid)
+        return true
     }
 
     const isValidated = () => {
-        console.log(verifiedStock)
-        console.log(systemStock)
-
-        if (JSON.stringify(Object.keys(verifiedStock).sort()) !== JSON.stringify(Object.keys(systemStock).sort())) {
-            console.log('Preencha todos os campos.')
+        if (Object.keys(verifiedStock).length !== Object.keys(systemStock).length) {
+            setMessage({ title: 'Erro', message: 'Por favor preencha todos os campos.' })
             return false
         }
-
         return true
+    }
+
+    const getDivergentItems = () => {
+        const divergentItems: number[] = []
+
+        for (const [key,] of Object.entries(systemStock)) {
+            if (systemStock[key] !== verifiedStock[key].inventory) {
+                divergentItems.push(Number(key))
+            }
+        }
+
+        return divergentItems
     }
 
     return (
         <>
+            {message && <Mensagem onClick={() => setMessage(null)} message={message} />}
             <Title title='Inventario' />
             <HeaderContainer>
                 <ListHeader fontSize='12px'>
@@ -122,7 +180,6 @@ export default function Inventario() {
                     <Item width="90px" text='Categoria' fontSize='12px' />
                     <Item width="180px" text='Marca' fontSize='12px' />
                     <Item width="65px" text='Unidade' fontSize='12px' />
-                    <Item width="65px" text='Estoque' align='center' fontSize='12px' />
                 </ListHeader>
             </HeaderContainer>
 
@@ -138,7 +195,6 @@ export default function Inventario() {
                                 <Item width="90px" text={item.category} fontSize='12px' />
                                 <Item width="180px" text={item.brand} fontSize='12px' />
                                 <Item width="65px" text={item.unit} fontSize='12px' />
-                                <Item width="65px" text={item.stock} align='center' fontSize='12px' />
                             </ItemsContainer>
                         </div>
 
@@ -149,35 +205,36 @@ export default function Inventario() {
                                     bg='#eef7ff'
                                     key={subitem.id}
                                 >
-                                    <div style={{ marginLeft: '60px' }}>
-                                        <Item width='160px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
-                                    </div>
+                                    <Item width='160px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
                                     <Item width='160px' color='#3142a0' text={`Validade: ${formatValidity(subitem.validade)}`} />
-                                    <Item width='100px' color='#3142a0' text={`Qtd: ${subitem.quantity}`} />
-                                    <Label>Em estoque:</Label>
-                                    <InputQuantidade
-                                        type='number'
-                                        min='0'
-                                        onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: Number(e.target.value) })}
-                                    />
+                                    {submissionCounter === 2
+                                        ? <>
+                                            <Item width='100px' color='#ff0000' text={`Qtd (sis): ${subitem.quantity}`} />
+                                            <Item width='100px' color='#ff0000' text={`Qtd (inv): ${verifiedStock[subitem.id].inventory}`} />
+                                            <Label>Justificativa:</Label>
+                                            <InputJustification
+                                                type='text'
+                                                onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { ...verifiedStock[subitem.id], justification: e.target.value } })}
+                                            />
+                                        </>
+                                        : <>
+                                            <Label>Em estoque:</Label>
+                                            <InputQuantidade
+                                                type='number'
+                                                min='0'
+                                                onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { inventory: Number(e.target.value) } })}
+                                            />
+                                        </>
+                                    }
                                 </ItemsContainer>
                             ))
                         }
                     </Container>
                 ))
             }
-            {!isReviewing &&
-                <div style={{ margin: '30px 0' }}>
-                    Verficar
-                    <SignOperation show={true} handleSubmit={verifyStock} />
-                </div>
-            }
-            {isReviewing &&
-                <div style={{ margin: '30px 0' }}>
-                    Revisar e enviar
-                    <SignOperation show={true} handleSubmit={submitInventory} />
-                </div>
-            }
+            <div style={{ margin: '30px 0' }}>
+                <SignOperation show={true} handleSubmit={submitInventory} />
+            </div>
         </>
     )
 }

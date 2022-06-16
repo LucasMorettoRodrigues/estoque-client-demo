@@ -14,6 +14,7 @@ export type TProduct = {
     observation: string | null,
     hide?: boolean,
     providers?: string[],
+    inventory?: number,
     subproducts?: {
         id: number,
         lote: string,
