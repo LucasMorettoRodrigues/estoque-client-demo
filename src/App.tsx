@@ -34,6 +34,7 @@ import EditUser from "./pages/Users/EditUser";
 import RedefinePassword from "./pages/Users/RedefinePassword";
 import Notificacoes from "./pages/Notificacoes";
 import Inventario from "./pages/Inventario";
+import VizualizarInventario from "./pages/VisualizarInventario";
 
 function App() {
 
@@ -96,7 +97,9 @@ function App() {
           <Route path='/usuarios/:id' element={<AdminRoute><EditUser /></AdminRoute>} />
           <Route path='/usuarios/:id/redefinirSenha' element={<AdminRoute><RedefinePassword /></AdminRoute>} />
 
-          <Route path='/inventario' element={<Inventario />} />
+          <Route path='/novoInventario' element={<Inventario />} />
+          <Route path='/inventario/:id' element={<VizualizarInventario />} />
+
         </Routes>
       </Container>
     </BrowserRouter >

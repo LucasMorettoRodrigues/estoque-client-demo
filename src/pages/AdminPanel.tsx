@@ -6,7 +6,7 @@ import Title from "../components/UI/Title";
 import { archiveNotification, deleteNotification, getAllNotifications } from "../features/notification/notificationSlice";
 import { formatValidity } from "../utils/functions";
 import { AiOutlineDelete } from 'react-icons/ai'
-import { useEffect } from "react";
+import { MouseEvent, useEffect } from "react";
 import Button from "../components/UI/Button";
 import { TNotification } from "../types/TNotification";
 
@@ -40,6 +40,14 @@ const BoxItem = styled.div`
     display: flex;
     align-items: center;
 `
+const Description = styled.div<{ bk: string }>`
+    width: fit-content;
+    padding: 2px 6px;
+    border-radius: 5px;
+    color: white;
+    font-weight: 600;
+    background-color: ${props => props.bk === 'Solicitação para Inserir' ? '#3dc73d' : props.bk === 'Inventário' ? '#168eff' : '#ff3e3e'};
+`
 const Text = styled.span`
     margin-top: 2px;    
     margin-right: 5px;
@@ -58,11 +66,29 @@ export default function AdminPanel() {
         dispatch(getAllNotifications())
     }, [dispatch])
 
-    const handleDelete = (item: TNotification) => {
+    const handleDelete = (e: MouseEvent<HTMLLIElement>, item: TNotification) => {
+        e.stopPropagation()
+
         if (item.description === 'Solicitação para Inserir') {
             dispatch(deleteNotification(item.id!))
-        } else if (item.description === 'Notificação de Validade Incorreta') {
+        }
+
+        if (item.description === 'Notificação de Validade Incorreta') {
             dispatch(archiveNotification({ ...item, archived: true }))
+        }
+
+        if (item.description === 'Inventário') {
+            dispatch(deleteNotification(item.id!))
+        }
+    }
+
+    const handleClick = (item: TNotification) => {
+        if (item.description === 'Solicitação para Inserir') {
+            navigate('/inserir', { state: item })
+        }
+
+        if (item.description === 'Inventário') {
+            navigate(`/inventario/${item.id}`, { state: item })
         }
     }
 
@@ -72,22 +98,21 @@ export default function AdminPanel() {
                 <Title title='Bem Vindo'></Title>
                 <Button text='Histórico de Notificações' onClick={() => navigate('/notificacoes')} />
             </HeaderContainer>
-            <Info>Você possui {notifications.length} solicitações pendentes.</Info>
+            <Info>Você possui {notifications.length} notificações.</Info>
             {notifications.length > 0 && notifications.map((item, index) => (
                 <Box key={index} >
                     <>
                         <div style={{ display: 'flex', flex: 1 }}
-                            onClick={() => {
-                                (item.description === 'Solicitação para Inserir' || item.description === 'Solicitação de Compra') &&
-                                    navigate('/inserir', { state: item })
-                            }}>
-                            <BoxItem style={{ flex: 1, color: item.description === 'Solicitação para Inserir' ? 'green' : 'red' }}>
-                                {item.description}
+                            onClick={() => handleClick(item)}>
+                            <BoxItem style={{ flex: 1 }}>
+                                <Description bk={item.description}>
+                                    {item.description}
+                                </Description>
                             </BoxItem>
                             <BoxItem style={{ flex: 1 }}><Text>Enviado por:</Text>{item.user?.name}</BoxItem>
                             <BoxItem style={{ width: '90px' }}>{formatValidity(item.createdAt)}</BoxItem>
                             <EditDeleteButton width="40px"
-                                onClick={() => handleDelete(item)}>
+                                onClick={(e) => handleDelete(e, item)}>
                                 <AiOutlineDelete />
                             </EditDeleteButton>
                         </div>

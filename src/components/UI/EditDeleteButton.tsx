@@ -1,3 +1,4 @@
+import { MouseEvent } from "react"
 import styled from "styled-components"
 
 const ActionButton = styled.li<{ width?: string }>`
@@ -16,14 +17,14 @@ const ActionButton = styled.li<{ width?: string }>`
 `
 
 type Props = {
-    onClick: () => void,
+    onClick: (e: MouseEvent<HTMLLIElement>) => void,
     width?: string,
     children: JSX.Element | JSX.Element[],
 }
 
 export default function EditDeleteButton({ onClick, children, width }: Props) {
     return (
-        <ActionButton onClick={onClick} width={width}>
+        <ActionButton onClick={(e) => onClick(e)} width={width}>
             {children}
         </ActionButton>
     )
