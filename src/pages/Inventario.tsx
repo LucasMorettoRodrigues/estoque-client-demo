@@ -230,7 +230,7 @@ export default function Inventario() {
                 ))
             }
             <div style={{ margin: '30px 0' }}>
-                <SignOperation show={true} handleSubmit={submitInventory} />
+                <SignOperation show={true} handleSubmit={submitInventory} buttonText='Submeter Inventário' />
             </div>
         </>
     )

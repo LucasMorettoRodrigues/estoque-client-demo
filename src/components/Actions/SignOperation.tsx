@@ -14,9 +14,10 @@ const InputContainer = styled.div`
 type Props = {
     show: boolean,
     handleSubmit: (user: string, password: string) => void
+    buttonText?: string
 }
 
-export default function SignOperation({ show, handleSubmit }: Props) {
+export default function SignOperation({ show, handleSubmit, buttonText }: Props) {
 
     const [user, setUser] = useState('')
     const [password, setPassword] = useState('')
@@ -54,7 +55,7 @@ export default function SignOperation({ show, handleSubmit }: Props) {
                     </InputContainer>
                     <Button
                         onClick={() => handleSubmit(user, password)}
-                        text={'Finalizar Retirada'}
+                        text={buttonText ? buttonText : 'Finalizar Retirada'}
                         style={{ padding: '12px 24px', alignSelf: 'flex-end' }}
                     />
                 </Container>
