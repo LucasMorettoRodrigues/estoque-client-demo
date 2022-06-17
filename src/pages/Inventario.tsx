@@ -88,15 +88,16 @@ export default function Inventario() {
         if (submissionCounter === 0) {
             setMessage({
                 title: 'Atenção',
-                message: `${divergentItems.length} items apresentaram divergência. Confira o estoque novamente por favor.`
+                message: `${divergentItems.length} itens apresentaram divergência. 
+                Confira novamente o estoque dos itens a seguir por favor.`
             })
             setSubmissionCounter(1)
         }
         if (submissionCounter === 1) {
             setMessage({
                 title: 'Atenção',
-                message: `${divergentItems.length} items ainda apresentam divergência. 
-                Verifique a quantidade no sistema e justifique a divergência.`
+                message: `${divergentItems.length} itens ainda apresentam divergência. 
+                Compare com a quantidade no sistema e justifique a divergência.`
             })
             setSubmissionCounter(2)
         }
