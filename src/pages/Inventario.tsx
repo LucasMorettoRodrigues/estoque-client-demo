@@ -12,7 +12,6 @@ import { TProduct } from "../types/TProduct"
 import Mensagem from "../components/Mensagem"
 import { TMessage } from "../types/TMessage"
 import { createNotification } from "../features/notification/notificationSlice"
-import { useNavigate } from "react-router-dom"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -48,7 +47,6 @@ export default function Inventario() {
 
     const productsData = useAppSelector(state => state.produto.produtos)
     const dispatch = useAppDispatch()
-    const navigate = useNavigate()
 
     const [products, setProducts] = useState<TProduct[]>([])
     const [verifiedStock, setVerifiedStock] = useState<any>({})
@@ -130,7 +128,6 @@ export default function Inventario() {
                 password
             })).unwrap()
             setMessage({ title: 'Sucesso', message: 'O inventário foi submetido.' })
-            navigate('/retirar')
         } catch (error) {
             console.log(error)
             setMessage({ title: 'Erro', message: 'Não foi possivel concluir a ação.' })
@@ -217,7 +214,7 @@ export default function Inventario() {
                                             />
                                         </>
                                         : <>
-                                            <Label>Em estoque:</Label>
+                                            <Label>Contagem:</Label>
                                             <InputQuantidade
                                                 type='number'
                                                 min='0'
