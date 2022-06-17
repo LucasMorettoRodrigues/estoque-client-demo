@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { useAppSelector } from "../app/hooks"
+import { useAppDispatch, useAppSelector } from "../app/hooks"
 
 import Title from "../components/UI/Title"
 import ListHeader from "../components/List/ListHeader"
@@ -11,6 +11,8 @@ import SignOperation from "../components/Actions/SignOperation"
 import { TProduct } from "../types/TProduct"
 import Mensagem from "../components/Mensagem"
 import { TMessage } from "../types/TMessage"
+import { createNotification } from "../features/notification/notificationSlice"
+import { useNavigate } from "react-router-dom"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -45,6 +47,8 @@ const InputJustification = styled.input`
 export default function Inventario() {
 
     const productsData = useAppSelector(state => state.produto.produtos)
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     const [products, setProducts] = useState<TProduct[]>([])
     const [verifiedStock, setVerifiedStock] = useState<any>({})
@@ -72,50 +76,35 @@ export default function Inventario() {
         })
     })
 
-    const submitInventory = () => {
+    const submitInventory = (username: string, password: string) => {
         if (!isValidated()) return
 
-        if (submissionCounter === 0) firstSubmition()
-        if (submissionCounter === 1) secoundSubmition()
-        if (submissionCounter === 2) thirdSubmition()
-    }
-
-    const firstSubmition = () => {
         const divergentItems = getDivergentItems()
 
-        if (divergentItems.length === 0) {
-            sendInventory()
+        if (divergentItems.length === 0 || submissionCounter === 2) {
+            sendInventory(username, password)
         }
 
         setDivergentItemsList(divergentItems)
-        setMessage({
-            title: 'Atenção',
-            message: `${divergentItems.length} items apresentaram divergência. Confira o estoque novamente por favor.`
-        })
-        setSubmissionCounter(1)
-    }
 
-    const secoundSubmition = () => {
-        const divergentItems = getDivergentItems()
-
-        if (divergentItems.length === 0) {
-            sendInventory()
+        if (submissionCounter === 0) {
+            setMessage({
+                title: 'Atenção',
+                message: `${divergentItems.length} items apresentaram divergência. Confira o estoque novamente por favor.`
+            })
+            setSubmissionCounter(1)
         }
-
-        setDivergentItemsList(divergentItems)
-        setSubmissionCounter(2)
-        setMessage({
-            title: 'Atenção',
-            message: `${divergentItems.length} items ainda apresentam divergência. 
+        if (submissionCounter === 1) {
+            setMessage({
+                title: 'Atenção',
+                message: `${divergentItems.length} items ainda apresentam divergência. 
                 Verifique a quantidade no sistema e justifique a divergência.`
-        })
+            })
+            setSubmissionCounter(2)
+        }
     }
 
-    const thirdSubmition = () => {
-        sendInventory()
-    }
-
-    const sendInventory = () => {
+    const sendInventory = async (username: string, password: string) => {
 
         if (!justificationIsValid()) {
             return setMessage({ title: 'Erro', message: 'Por favor preencha todos os campos.' })
@@ -134,8 +123,18 @@ export default function Inventario() {
             }
         ))
 
-        setMessage({ title: 'Sucesso', message: 'O inventário foi submetido.' })
-        console.log('ak', data)
+        try {
+            await dispatch(createNotification({
+                notification: { description: 'Inventário', data },
+                username,
+                password
+            })).unwrap()
+            setMessage({ title: 'Sucesso', message: 'O inventário foi submetido.' })
+            navigate('/retirar')
+        } catch (error) {
+            console.log(error)
+            setMessage({ title: 'Erro', message: 'Não foi possivel concluir a ação.' })
+        }
     }
 
     const justificationIsValid = () => {
