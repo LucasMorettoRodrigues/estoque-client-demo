@@ -27,7 +27,7 @@ const List = styled.ul`
     justify-content: space-between;
 `
 const Item = styled.li`
-    padding: 20px;
+    padding: 14px;
     color: #111;
     transition: all .2s ease-in-out;
     cursor: pointer;
@@ -85,6 +85,7 @@ export default function Navbar() {
                                     <Link to='/historico'><Item>Histórico</Item></Link>
                                 </>
                             }
+                            <Link to='/novoInventario'><Item>Inventário</Item></Link>
                             <LeaveBtn onClick={handleOnClick}>
                                 Sair
                             </LeaveBtn>
