@@ -56,7 +56,7 @@ const CategoryButton = styled.div`
 `
 
 type Props = {
-    selectCategory: ([]) => void
+    selectCategory: (categories: string[]) => void
 }
 
 export default function Modal({ selectCategory }: Props) {

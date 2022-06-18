@@ -92,7 +92,7 @@ export default function Inventario() {
         const divergentItems = getDivergentItems()
 
         if (divergentItems.length === 0 || submissionCounter === 2) {
-            sendInventory(username, password)
+            return sendInventory(username, password)
         }
 
         setDivergentItemsList(divergentItems)
