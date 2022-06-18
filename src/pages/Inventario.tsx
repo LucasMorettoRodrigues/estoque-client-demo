@@ -12,6 +12,7 @@ import { TProduct } from "../types/TProduct"
 import Mensagem from "../components/Mensagem"
 import { TMessage } from "../types/TMessage"
 import { createNotification } from "../features/notification/notificationSlice"
+import Modal from "../components/Modal"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -53,26 +54,37 @@ export default function Inventario() {
     const [divergentItemsList, setDivergentItemsList] = useState<number[]>([])
     const [message, setMessage] = useState<TMessage>(null)
     const [submissionCounter, setSubmissionCounter] = useState(0)
+    const [modalIsOpen, setModalIsOpen] = useState(true)
+    const [category, setCategory] = useState<string[]>([])
+    const [systemStock, setSystemStock] = useState<any>({})
 
     useEffect(() => {
 
-        let products = productsData.filter(i => i.hide === false && i.subproducts!.length > 0)
+        if (category.length > 0) {
+            let products = productsData.filter(i => i.hide === false && i.subproducts!.length > 0)
+            products = productsData.filter(i => category.includes(i.category))
 
-        if (divergentItemsList.length > 0) {
-            products = products.map(i => ({ ...i, subproducts: i.subproducts?.filter(j => divergentItemsList.includes(j.id)) }))
-            products = products.filter(i => i.subproducts!.length > 0)
+            if (divergentItemsList.length > 0) {
+                products = products.map(i => ({ ...i, subproducts: i.subproducts?.filter(j => divergentItemsList.includes(j.id)) }))
+                products = products.filter(i => i.subproducts!.length > 0)
+            }
+
+            setProducts(products)
         }
 
-        setProducts(products)
+    }, [productsData, divergentItemsList, category])
 
-    }, [productsData, divergentItemsList])
-
-    const systemStock: any = {}
-    productsData.forEach((product) => {
-        product.subproducts && product.subproducts.forEach((subproduct) => {
-            systemStock[subproduct.id] = subproduct.quantity
-        })
-    })
+    useEffect(() => {
+        if (category.length > 0) {
+            const systemStockObj: any = {}
+            productsData.filter(i => category.includes(i.category)).forEach((product) => {
+                product.subproducts && product.subproducts.forEach((subproduct) => {
+                    systemStockObj[subproduct.id] = subproduct.quantity
+                })
+            })
+            setSystemStock(systemStockObj)
+        }
+    }, [category, productsData])
 
     const submitInventory = (username: string, password: string) => {
         if (!isValidated()) return
@@ -109,7 +121,7 @@ export default function Inventario() {
             return setMessage({ title: 'Erro', message: 'Por favor preencha todos os campos.' })
         }
 
-        const data = productsData.slice().map(item => (
+        const data = productsData.filter(i => category.includes(i.category)).slice().map(item => (
             {
                 ...item, subproducts:
                     item.subproducts!.map(subitem => (
@@ -145,6 +157,7 @@ export default function Inventario() {
     }
 
     const isValidated = () => {
+        console.log(verifiedStock, systemStock)
         if (Object.keys(verifiedStock).length !== Object.keys(systemStock).length) {
             setMessage({ title: 'Erro', message: 'Por favor preencha todos os campos.' })
             return false
@@ -164,8 +177,14 @@ export default function Inventario() {
         return divergentItems
     }
 
+    const selectCategory = (category: string[]) => {
+        setCategory(category)
+        setModalIsOpen(false)
+    }
+
     return (
         <>
+            {modalIsOpen && <Modal selectCategory={selectCategory} />}
             {message && <Mensagem onClick={() => setMessage(null)} message={message} />}
             <Title title='Inventario' />
             <HeaderContainer>
