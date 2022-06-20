@@ -168,8 +168,6 @@ export default function Inventario() {
     }
 
     const isValidated = () => {
-        console.log(verifiedStock, systemStock)
-        console.log(Object.keys(verifiedStock).length, Object.keys(systemStock).length)
         if (Object.keys(verifiedStock).length !== Object.keys(systemStock).length) {
             setMessage({ title: 'Erro', message: 'Por favor preencha todos os campos.' })
             return false
