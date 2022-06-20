@@ -104,7 +104,14 @@ export default function Inventario() {
                 Confira novamente o estoque dos itens a seguir por favor.`
             })
             setSubmissionCounter(1)
+            let newVerifiedStock = { ...verifiedStock }
+            divergentItems.forEach(i => delete newVerifiedStock[i])
+            Array.from(document.querySelectorAll("input")).forEach(
+                input => (input.value = '')
+            );
+            setVerifiedStock(newVerifiedStock)
         }
+
         if (submissionCounter === 1) {
             setMessage({
                 title: 'Atenção',
@@ -117,8 +124,12 @@ export default function Inventario() {
 
     const sendInventory = async (username: string, password: string) => {
 
-        if (!justificationIsValid()) {
-            return setMessage({ title: 'Erro', message: 'Por favor preencha todos os campos.' })
+        if (submissionCounter === 2 && !justificationIsValid()) {
+            return setMessage({ title: 'Erro', message: 'Por favor preencha todas as justificativas.' })
+        }
+
+        if (!username || !password) {
+            return setMessage({ title: 'Erro', message: 'Por favor preencha o usuário e senha.' })
         }
 
         const data = productsData.filter(i => category.includes(i.category)).slice().map(item => (
@@ -158,6 +169,7 @@ export default function Inventario() {
 
     const isValidated = () => {
         console.log(verifiedStock, systemStock)
+        console.log(Object.keys(verifiedStock).length, Object.keys(systemStock).length)
         if (Object.keys(verifiedStock).length !== Object.keys(systemStock).length) {
             setMessage({ title: 'Erro', message: 'Por favor preencha todos os campos.' })
             return false
