@@ -60,7 +60,7 @@ const ButtonContainer = styled.div`
 `
 
 type Props = {
-    onClick: () => void,
+    onClick: (arg0: string) => void,
     onClose?: () => void,
     message: {
         title: string,
@@ -83,7 +83,7 @@ export default function Mensagem({ onClick, onClose, message }: Props) {
                         {onClose &&
                             <Button bg={'#ff3232'} onClick={onClose}>Cancelar</Button>
                         }
-                        <Button bg={'#3dc73d'} onClick={onClick}>OK</Button>
+                        <Button bg={'#3dc73d'} onClick={() => onClick(message.title)}>OK</Button>
                     </ButtonContainer>
                 </Box>
             </Wrapper>

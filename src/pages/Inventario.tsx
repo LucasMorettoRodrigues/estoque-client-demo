@@ -13,6 +13,7 @@ import Mensagem from "../components/Mensagem"
 import { TMessage } from "../types/TMessage"
 import { createNotification } from "../features/notification/notificationSlice"
 import Modal from "../components/Modal"
+import { useNavigate } from "react-router-dom"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -48,6 +49,7 @@ export default function Inventario() {
 
     const productsData = useAppSelector(state => state.produto.produtos)
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     const [products, setProducts] = useState<TProduct[]>([])
     const [verifiedStock, setVerifiedStock] = useState<any>({})
@@ -192,10 +194,18 @@ export default function Inventario() {
         setModalIsOpen(false)
     }
 
+    const handleMessageClick = (title: string) => {
+        if (title === "Sucesso") {
+            navigate('/inserir')
+        }
+
+        setMessage(null)
+    }
+
     return (
         <>
             {modalIsOpen && <Modal selectCategory={selectCategory} />}
-            {message && <Mensagem onClick={() => setMessage(null)} message={message} />}
+            {message && <Mensagem onClick={handleMessageClick} message={message} />}
             <Title title='Inventario' />
             <HeaderContainer>
                 <ListHeader fontSize='12px'>
