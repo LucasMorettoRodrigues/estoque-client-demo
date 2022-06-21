@@ -35,6 +35,8 @@ import RedefinePassword from "./pages/Users/RedefinePassword";
 import Notificacoes from "./pages/Notificacoes";
 import Inventario from "./pages/Inventario";
 import VizualizarInventario from "./pages/VisualizarInventario";
+import Inventarios from "./pages/Inventarios";
+import HistoricoInventario from "./pages/HistoricoInventario";
 
 function App() {
 
@@ -99,6 +101,8 @@ function App() {
 
           <Route path='/novoInventario' element={<Inventario />} />
           <Route path='/inventario/:id' element={<VizualizarInventario />} />
+          <Route path='/historico/inventarios' element={<Inventarios />} />
+          <Route path='/historico/inventarios/:id' element={<HistoricoInventario />} />
 
         </Routes>
       </Container>

@@ -55,6 +55,7 @@ const Login = () => {
         try {
             await login(user, password)
         } catch (error: any) {
+            console.log(error)
             return setError(error.response.data)
         }
         dispatch(updateAuthentication())

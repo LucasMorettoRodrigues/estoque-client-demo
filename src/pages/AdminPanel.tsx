@@ -78,7 +78,7 @@ export default function AdminPanel() {
         }
 
         if (item.description === 'Inventário') {
-            dispatch(deleteNotification(item.id!))
+            dispatch(archiveNotification({ ...item, archived: true }))
         }
     }
 
@@ -96,7 +96,8 @@ export default function AdminPanel() {
         <>
             <HeaderContainer>
                 <Title title='Bem Vindo'></Title>
-                <Button text='Histórico de Notificações' onClick={() => navigate('/notificacoes')} />
+                <Button text='Histórico/Notificações' onClick={() => navigate('/notificacoes')} />
+                <Button text='Histórico/Inventários' onClick={() => navigate('/historico/inventarios')} />
             </HeaderContainer>
             <Info>Você possui {notifications.length} notificações.</Info>
             {notifications.length > 0 && notifications.map((item, index) => (
