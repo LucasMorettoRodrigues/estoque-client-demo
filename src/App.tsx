@@ -77,6 +77,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/estoque-client' element={<Login />} />
 
+          <Route path='/novoInventario' element={<PrivateRoute><Inventario /></PrivateRoute>} />
           <Route path='/inserir' element={<PrivateRoute><Inserir /></PrivateRoute>} />
           <Route path='/retirar' element={<PrivateRoute><Retirar /></PrivateRoute>} />
           <Route path='/notificacoes' element={<PrivateRoute><Notificacoes /></PrivateRoute>} />
@@ -98,11 +99,9 @@ function App() {
           <Route path='/panel' element={<AdminRoute><AdminPanel /></AdminRoute>} />
           <Route path='/usuarios/:id' element={<AdminRoute><EditUser /></AdminRoute>} />
           <Route path='/usuarios/:id/redefinirSenha' element={<AdminRoute><RedefinePassword /></AdminRoute>} />
-
-          <Route path='/novoInventario' element={<Inventario />} />
-          <Route path='/inventario/:id' element={<VizualizarInventario />} />
-          <Route path='/historico/inventarios' element={<Inventarios />} />
-          <Route path='/historico/inventarios/:id' element={<HistoricoInventario />} />
+          <Route path='/inventario/:id' element={<AdminRoute><VizualizarInventario /></AdminRoute>} />
+          <Route path='/historico/inventarios' element={<AdminRoute><Inventarios /></AdminRoute>} />
+          <Route path='/historico/inventarios/:id' element={<AdminRoute><HistoricoInventario /></AdminRoute>} />
 
         </Routes>
       </Container>
