@@ -7,7 +7,7 @@ import { TSubProduct } from "../../types/TSubProduct"
 import { TProduct } from "../../types/TProduct"
 import { TMessage } from "../../types/TMessage"
 
-import Mensagem from "../../components/Mensagem"
+import Mensagem from "../../components/UI/Mensagem"
 import Title from "../../components/UI/Title"
 import Loading from "../../components/UI/Loading"
 import RetirarEAjustarList from "../../components/Actions/RetirarEAjustarList"

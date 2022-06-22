@@ -9,10 +9,10 @@ import { formatValidity } from "../../utils/functions"
 import { useEffect, useState } from "react"
 import SignOperation from "../../components/Actions/SignOperation"
 import { TProduct } from "../../types/TProduct"
-import Mensagem from "../../components/Mensagem"
+import Mensagem from "../../components/UI/Mensagem"
 import { TMessage } from "../../types/TMessage"
 import { createNotification } from "../../features/notification/notificationSlice"
-import Modal from "../../components/Modal"
+import Modal from "../../components/UI/Modal"
 import { useNavigate } from "react-router-dom"
 
 const Container = styled.div``

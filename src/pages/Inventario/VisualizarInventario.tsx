@@ -8,11 +8,11 @@ import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import Title from "../../components/UI/Title"
-import AdjustButton from "../../components/AdjustButton"
+import AdjustButton from "../../components/Inventario/AdjustButton"
 import { archiveNotification } from "../../features/notification/notificationSlice"
 import Button from "../../components/UI/Button"
 import { TMessage } from "../../types/TMessage"
-import Mensagem from "../../components/Mensagem"
+import Mensagem from "../../components/UI/Mensagem"
 import InventarioList from "../../components/Inventario/InventarioList"
 
 const Container = styled.div``

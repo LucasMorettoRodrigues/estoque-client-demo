@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
-import { useAppDispatch } from "../app/hooks"
-import { createAdjustStock } from "../features/adjustStock/adjustStock"
-import { TMessage } from "../types/TMessage"
-import Mensagem from "./Mensagem"
-import Button from "./UI/Button"
+import { useAppDispatch } from "../../app/hooks"
+import { createAdjustStock } from "../../features/adjustStock/adjustStock"
+import { TMessage } from "../../types/TMessage"
+import Mensagem from "../UI/Mensagem"
+import Button from "../UI/Button"
 
 type Props = {
     subProduct: any
