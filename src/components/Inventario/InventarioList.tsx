@@ -36,15 +36,6 @@ export default function InventarioList({ products }: Props) {
                 products.map((item) => (
                     <Container key={item.id}>
                         <div style={{ display: 'flex' }}>
-                            {/* <ExpandIconContainer
-                                bg='#cbe6ff'
-                                onClick={() => (
-                                    isOpen.includes(item.id!)
-                                        ? setIsOpen(isOpen.filter(id => id !== item.id))
-                                        : setIsOpen([...isOpen, item.id!])
-                                )}>
-                                <BsFillPlusSquareFill color="#333" size='15px' />
-                            </ExpandIconContainer> */}
                             <ItemsContainer>
                                 <Item width="26px" text={item.id} fontSize='12px' />
                                 <Item flex={3} text={item.name} fontSize='12px' />
@@ -54,13 +45,9 @@ export default function InventarioList({ products }: Props) {
                                 <Item width="130px" text={item.brand} fontSize='12px' />
                                 <Item width="65px" text={item.unit} fontSize='12px' />
                                 <Item width="65px" text={item.stock} align='center' fontSize='12px' />
-                                {/* <Item width="65px" text={item.min_stock} align='center' fontSize='12px' /> */}
-                                {/* <Item width="65px" text={item.max_stock} align='center' fontSize='12px' /> */}
                             </ItemsContainer>
-
                         </div>
 
-                        {/* {item.subproducts && (isOpen.includes(item.id!) || isAllOpen) && */}
                         {item.subproducts &&
                             item.subproducts.map((subitem) => (
                                 <ItemsContainer
