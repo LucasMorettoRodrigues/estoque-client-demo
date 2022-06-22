@@ -33,10 +33,10 @@ import AdminPanel from "./pages/AdminPanel";
 import EditUser from "./pages/Users/EditUser";
 import RedefinePassword from "./pages/Users/RedefinePassword";
 import Notificacoes from "./pages/Notificacoes";
-import Inventario from "./pages/Inventario";
-import VizualizarInventario from "./pages/VisualizarInventario";
-import Inventarios from "./pages/ListInventarios";
-import HistoricoInventario from "./pages/HistoricoInventario";
+import Inventario from "./pages/Inventario/Inventario";
+import VizualizarInventario from "./pages/Inventario/VisualizarInventario";
+import Inventarios from "./pages/Inventario/HistoricoInventarios";
+import HistoricoInventario from "./pages/Inventario/HistoricoInventario";
 
 function App() {
 
@@ -80,7 +80,6 @@ function App() {
           <Route path='/novoInventario' element={<PrivateRoute><Inventario /></PrivateRoute>} />
           <Route path='/inserir' element={<PrivateRoute><Inserir /></PrivateRoute>} />
           <Route path='/retirar' element={<PrivateRoute><Retirar /></PrivateRoute>} />
-          <Route path='/notificacoes' element={<PrivateRoute><Notificacoes /></PrivateRoute>} />
 
           <Route path='/produtos' element={<AdminRoute><Produtos /></AdminRoute>} />
           <Route path='/produtos/detalhes' element={<AdminRoute><Detalhes /></AdminRoute>} />
@@ -100,6 +99,8 @@ function App() {
           <Route path='/usuarios/:id' element={<AdminRoute><EditUser /></AdminRoute>} />
           <Route path='/usuarios/:id/redefinirSenha' element={<AdminRoute><RedefinePassword /></AdminRoute>} />
           <Route path='/inventario/:id' element={<AdminRoute><VizualizarInventario /></AdminRoute>} />
+
+          <Route path='/historico/notificacoes' element={<AdminRoute><Notificacoes /></AdminRoute>} />
           <Route path='/historico/inventarios' element={<AdminRoute><Inventarios /></AdminRoute>} />
           <Route path='/historico/inventarios/:id' element={<AdminRoute><HistoricoInventario /></AdminRoute>} />
 

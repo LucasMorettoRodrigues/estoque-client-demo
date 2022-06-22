@@ -1,8 +1,8 @@
 import styled from "styled-components"
 import { useLocation } from "react-router-dom"
-import { formatValidity } from "../utils/functions"
-import Title from "../components/UI/Title"
-import InventarioList from "../components/Inventario/InventarioList"
+import { formatValidity } from "../../utils/functions"
+import Title from "../../components/UI/Title"
+import InventarioList from "../../components/Inventario/InventarioList"
 
 const MenuContainer = styled.div`
     display: flex;

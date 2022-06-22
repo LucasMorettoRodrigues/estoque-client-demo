@@ -96,7 +96,7 @@ export default function AdminPanel() {
         <>
             <HeaderContainer>
                 <Title title='Bem Vindo'></Title>
-                <Button text='Histórico/Notificações' onClick={() => navigate('/notificacoes')} />
+                <Button text='Histórico/Notificações' onClick={() => navigate('/historico/notificacoes')} />
                 <Button text='Histórico/Inventários' onClick={() => navigate('/historico/inventarios')} />
             </HeaderContainer>
             <Info>Você possui {notifications.length} notificações.</Info>
