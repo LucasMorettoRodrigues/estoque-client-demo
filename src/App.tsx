@@ -19,7 +19,7 @@ import EditarFornecedor from "./pages/Providers/EditarFornecedor";
 import EditarProduto from "./pages/Produtos/EditarProduto";
 import EditarSubProduto from "./pages/Produtos/EditarSubProduto";
 import Fornecedores from "./pages/Providers/Fornecedores";
-import Historico from "./pages/Historico";
+import Historico from "./pages/Historico/Historico";
 import NovoFornecedor from "./pages/Providers/NovoFornecedor";
 import NovoProduto from "./pages/Produtos/NovoProduto";
 import Produtos from "./pages/Produtos/Produtos";
@@ -32,11 +32,11 @@ import CreateUser from "./pages/Users/CreateUser";
 import AdminPanel from "./pages/AdminPanel";
 import EditUser from "./pages/Users/EditUser";
 import RedefinePassword from "./pages/Users/RedefinePassword";
-import Notificacoes from "./pages/Notificacoes";
+import Notificacoes from "./pages/Historico/HistoricoNotificacoes";
 import Inventario from "./pages/Inventario/Inventario";
 import VizualizarInventario from "./pages/Inventario/VisualizarInventario";
-import Inventarios from "./pages/Inventario/HistoricoInventarios";
-import HistoricoInventario from "./pages/Inventario/HistoricoInventario";
+import Inventarios from "./pages/Historico/HistoricoInventarios";
+import HistoricoInventario from "./pages/Historico/HistoricoInventario";
 
 function App() {
 

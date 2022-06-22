@@ -1,17 +1,17 @@
 import styled from "styled-components"
-import { useAppDispatch, useAppSelector } from "../app/hooks"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { useEffect, useState } from "react"
-import { TStockIn } from "../types/TStockIn"
-import { TStockOut } from "../types/TStockOut"
-import Select from '../components/UI/Select'
-import ListHeader from "../components/List/ListHeader"
-import Item from "../components/List/Item"
-import ItemsContainer from "../components/List/ItemsContainer"
-import Title from "../components/UI/Title"
-import { formatValidity, groupStockByDate } from "../utils/functions"
-import { getAllStockOuts } from "../features/stockOut/stockOut"
-import { getAllStockIns } from "../features/stockIn/stockIn"
-import { getAllAdjustStock } from "../features/adjustStock/adjustStock"
+import { TStockIn } from "../../types/TStockIn"
+import { TStockOut } from "../../types/TStockOut"
+import Select from '../../components/UI/Select'
+import ListHeader from "../../components/List/ListHeader"
+import Item from "../../components/List/Item"
+import ItemsContainer from "../../components/List/ItemsContainer"
+import Title from "../../components/UI/Title"
+import { formatValidity, groupStockByDate } from "../../utils/functions"
+import { getAllStockOuts } from "../../features/stockOut/stockOut"
+import { getAllStockIns } from "../../features/stockIn/stockIn"
+import { getAllAdjustStock } from "../../features/adjustStock/adjustStock"
 
 const Container = styled.div<{ show?: boolean }>`
     visibility: ${props => props.show === false ? 'hidden' : 'visible'};
