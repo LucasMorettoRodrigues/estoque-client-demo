@@ -3,8 +3,15 @@ import { TProduct } from "../../types/TProduct"
 import { formatValidity } from "../../utils/functions"
 import Item from "../List/Item"
 import ItemsContainer from "../List/ItemsContainer"
+import ListHeader from "../../components/List/ListHeader"
 
 const Container = styled.div``
+const HeaderContainer = styled.div`
+    display: flex;
+    z-index: 1;
+    position: sticky;
+    top: 0;
+`
 
 type Props = {
     products: TProduct[]
@@ -13,6 +20,18 @@ type Props = {
 export default function InventarioList({ products }: Props) {
     return (
         <>
+            <HeaderContainer>
+                <ListHeader fontSize='12px'>
+                    <Item width="26px" text='Id' fontSize='12px' />
+                    <Item flex={3} text='Produto' fontSize='12px' />
+                    <Item flex={2} text='Observação' fontSize='12px' />
+                    <Item width="90px" text='Código' fontSize='12px' />
+                    <Item width="90px" text='Categoria' fontSize='12px' />
+                    <Item width="130px" text='Marca' fontSize='12px' />
+                    <Item width="65px" text='Unidade' fontSize='12px' />
+                    <Item width="65px" text='Estoque' align='center' fontSize='12px' />
+                </ListHeader>
+            </HeaderContainer>
             {
                 products.map((item) => (
                     <Container key={item.id}>
