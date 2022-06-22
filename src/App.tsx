@@ -35,7 +35,7 @@ import RedefinePassword from "./pages/Users/RedefinePassword";
 import Notificacoes from "./pages/Notificacoes";
 import Inventario from "./pages/Inventario";
 import VizualizarInventario from "./pages/VisualizarInventario";
-import Inventarios from "./pages/Inventarios";
+import Inventarios from "./pages/ListInventarios";
 import HistoricoInventario from "./pages/HistoricoInventario";
 
 function App() {
