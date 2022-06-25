@@ -11,7 +11,7 @@ export type TProduct = {
     lote?: string,
     validade?: string,
     quantity?: number,
-    observation: string | null,
+    observation: string | null
     hide?: boolean,
     providers?: string[],
     subproducts?: {
@@ -20,6 +20,7 @@ export type TProduct = {
         validade: string | null,
         quantity: number,
         inventory?: number,
-        justification?: string | undefined
+        justification?: string | undefined,
+        obs?: string
     }[]
 }
