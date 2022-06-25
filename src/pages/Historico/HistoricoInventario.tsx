@@ -27,19 +27,6 @@ const HeaderContainer = styled.div`
     position: sticky;
     top: 0;
 `
-const InputJustification = styled.input`
-    padding: 6px;
-    border-radius: 5px;
-    width: 20%;
-    border: 2px solid #e6e6e6;
-    outline-color: lightblue;
-    margin-left: 10px;
-    margin-right: 20px;
-`
-const Label = styled.label`
-    margin-left: auto;
-    font-size: 12px;
-`
 
 export default function HistoricoInventario() {
 
@@ -91,18 +78,18 @@ export default function HistoricoInventario() {
                 onChange={(e) => setObs(e.target.value)}
                 onClose={() => setShowModal(false)}
             />}
-            <div style={{ display: 'flex' }}>
-                <div>
-                    <Title title='Inventário' />
-                    <MenuContainer>
-                        <div style={{ flex: 1 }}>
-                            <p style={{ marginBottom: '8px' }}>Realizado por {state.user?.name}</p>
-                            <p>em {formatValidity(state.createdAt)} </p>
-                        </div>
-                    </MenuContainer>
-                </div>
-                <InventoryAnalisys products={products} />
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Title title='Inventário' />
+                <MenuContainer>
+                    <div style={{ marginTop: '20px' }}>
+                        <p style={{ marginBottom: '8px' }}>Realizado por {state.user?.name}</p>
+                        <p>em {formatValidity(state.createdAt)} </p>
+                    </div>
+                </MenuContainer>
             </div>
+            <InventoryAnalisys products={products} />
+
 
             <h3 style={{ marginTop: '30px', marginBottom: '10px' }}>Produtos com Divergência</h3>
             <HeaderContainer>

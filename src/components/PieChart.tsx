@@ -10,6 +10,7 @@ type Props = {
 }
 
 export default function ChartPie({ data, radius }: Props) {
+
     return (
         <ResponsiveContainer>
             <PieChart>
