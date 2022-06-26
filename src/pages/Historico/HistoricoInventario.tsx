@@ -13,6 +13,7 @@ import { useState } from "react"
 import ModalInput from "../../components/UI/ModalInput"
 import { useAppDispatch } from "../../app/hooks"
 import { archiveNotification } from "../../features/notification/notificationSlice"
+import Button from "../../components/UI/Button"
 
 const Container = styled.div``
 const MenuContainer = styled.div`
@@ -138,13 +139,8 @@ export default function HistoricoInventario() {
                                             <Item width='90px' color='#3142a0' text={`Qtd (sis): ${subitem.quantity}`} />
                                             <Item width='90px' color='#3142a0' text={`Qtd (inv): ${subitem.inventory}`} />
                                             <Item flex={1} color='#3142a0' text={`Motivo: ${subitem.justification}`} />
-
-
                                             <Item flex={1} color='#3142a0' text={`Obs: ${subitem.obs}`} />
-                                            <button onClick={() => handleEdit(item.id!, subitem.id)}>Editar</button>
-
-
-
+                                            <Button style={{ padding: '8px 16px', marginRight: '10px' }} text='Editar' onClick={() => handleEdit(item.id!, subitem.id)} bg='blue' />
                                         </ItemsContainer>
                                     ))
                             }
