@@ -12,6 +12,7 @@ import { formatValidity, groupStockByDate } from "../../utils/functions"
 import { getAllStockOuts } from "../../features/stockOut/stockOut"
 import { getAllStockIns } from "../../features/stockIn/stockIn"
 import { getAllAdjustStock } from "../../features/adjustStock/adjustStock"
+import Button from "../../components/UI/Button"
 
 const Container = styled.div<{ show?: boolean }>`
     visibility: ${props => props.show === false ? 'hidden' : 'visible'};
@@ -85,6 +86,21 @@ export default function Historico({ productFilter }: Props) {
         }
     }, [filter, orderedStocks])
 
+    const handleExport = () => {
+        const blob = new Blob([JSON.stringify(filteredStocks)], { type: 'text/json' })
+
+        const a = document.createElement('a')
+        a.download = 'historico.json'
+        a.href = window.URL.createObjectURL(blob)
+        const clickEvt = new MouseEvent('click', {
+            view: window,
+            bubbles: true,
+            cancelable: true,
+        })
+        a.dispatchEvent(clickEvt)
+        a.remove()
+    }
+
     return (
         <>
             <HeaderContainer>
@@ -144,6 +160,7 @@ export default function Historico({ productFilter }: Props) {
                     </Container>
                 ))
             }
+            <Button text='Exportar' onClick={handleExport} bg='blue' style={{ marginTop: '30px', float: 'right' }} />
         </>
     )
 }

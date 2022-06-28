@@ -12,6 +12,7 @@ import Title from "../../components/UI/Title"
 import Loading from "../../components/UI/Loading"
 import RetirarEAjustarList from "../../components/Actions/RetirarEAjustarList"
 import RetirarForm from "../../components/Actions/RetirarForm"
+import SignOperation from "../../components/Actions/SignOperation"
 
 type TProductList = {
     product: TProduct,
@@ -49,8 +50,9 @@ export default function Ajustar() {
         }])
     }
 
-    const handleOnClick = async () => {
+    const handleOnConclude = async (user: string, password: string) => {
         setLoading(true)
+
         for (const item of productList) {
             await dispatch(createAdjustStock({
                 product_id: item.product.id!,
@@ -62,6 +64,7 @@ export default function Ajustar() {
         setProductList([])
         setLoading(false)
         setMessage({ title: 'Sucesso', message: `O ajuste foi realizado.` })
+
     }
 
     return (
@@ -73,8 +76,11 @@ export default function Ajustar() {
             <RetirarEAjustarList
                 productList={productList}
                 deleteItem={(index) => setProductList(productList.filter((p, i) => i !== index))}
-                assign={false}
-                handleSubmit={handleOnClick}
+            />
+            <SignOperation
+                show={productList.length > 0}
+                handleSubmit={handleOnConclude}
+                buttonText='Concluir'
             />
         </>
     )

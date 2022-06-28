@@ -104,11 +104,6 @@ export default function Retirar() {
 
         setLoading(true)
 
-        if (!user || !password) {
-            setLoading(false)
-            return setMessage({ title: 'Erro', message: `Assine a operação` })
-        }
-
         const prs: TProductList[] = []
         const prsError: TProductList[] = []
 
@@ -173,7 +168,6 @@ export default function Retirar() {
             <RetirarEAjustarList
                 productList={productList}
                 deleteItem={(index) => setProductList(productList.filter((p, i) => i !== index))}
-                assign={true}
             />
             <SignOperation
                 show={productList.length > 0}

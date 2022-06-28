@@ -10,6 +10,11 @@ const Container = styled.div`
 const InputContainer = styled.div`
     margin-right: 10px;
 `
+const Error = styled.p`
+    color: red;
+    font-size: 12px;
+    margin: 10px 5px;
+`
 
 type Props = {
     show: boolean,
@@ -21,11 +26,22 @@ export default function SignOperation({ show, handleSubmit, buttonText }: Props)
 
     const [user, setUser] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState(false)
 
     useEffect(() => {
         setUser('')
         setPassword('')
     }, [show])
+
+    const handleOnClick = () => {
+        if (!user || !password) {
+            return setError(true)
+        }
+
+        error && setError(false)
+
+        handleSubmit(user, password)
+    }
 
     return (
         <>
@@ -54,12 +70,13 @@ export default function SignOperation({ show, handleSubmit, buttonText }: Props)
                         />
                     </InputContainer>
                     <Button
-                        onClick={() => handleSubmit(user, password)}
+                        onClick={handleOnClick}
                         text={buttonText ? buttonText : 'Finalizar Retirada'}
                         style={{ padding: '12px 24px', alignSelf: 'flex-end' }}
                     />
                 </Container>
             }
+            {show && error && <Error>Por favor, digite o usuário e senha.</Error>}
         </>
     )
 }

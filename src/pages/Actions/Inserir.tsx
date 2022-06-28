@@ -21,6 +21,7 @@ import { useLocation } from "react-router-dom"
 import Loading from "../../components/UI/Loading"
 import { TMessage } from "../../types/TMessage"
 import { getProdutos } from "../../features/produtos/produtoSlice"
+import SignOperation from "../../components/Actions/SignOperation"
 
 const InputContainer = styled.div<{ flex: number, minWidth?: string }>`
     flex: ${props => props.flex};
@@ -33,13 +34,6 @@ const InputContainer = styled.div<{ flex: number, minWidth?: string }>`
 `
 const ProductListContainer = styled.div`
     margin-bottom: 30px;
-`
-const BottomContainer = styled.div`
-    display: flex;
-    align-items: center;
-`
-const BottomInputContainer = styled.div`
-    margin-right: 10px;
 `
 
 export default function Inserir() {
@@ -59,8 +53,6 @@ export default function Inserir() {
     const [price, setPrice] = useState('')
     const [warning, setWarning] = useState<TMessage>(null)
     const [message, setMessage] = useState<TMessage>(null)
-    const [password, setPassword] = useState('')
-    const [username, setUsername] = useState('')
     const [loading, setLoading] = useState(false)
     const elmRef = useRef(null as HTMLElement | null);
 
@@ -136,8 +128,7 @@ export default function Inserir() {
             .then(() => setMessage({ title: 'Sucesso', message: 'O fornecedor foi cadastrado.' }))
     }
 
-    const handleCheckout = async () => {
-        setLoading(true)
+    const handleCheckout = async (username: string, password: string) => {
 
         const prs: TStockIn[] = []
         const prsError: TStockIn[] = []
@@ -170,13 +161,11 @@ export default function Inserir() {
                     `${prs.length > 0 ? `Produto(s) inserido(s): \n ${prs.map(item => `${getProduct(products, item.product_id)?.name} \n`)} \n` : ''} Não foi possível inserir o(s) produto(s): \n ${prsError.map(item => `${getProduct(products, item.product_id)?.name} \n`)}`
             })
         }
+
+        setLoading(false)
     }
 
-    const handleSendToAdmin = async () => {
-        if (!password || !username) {
-            return setMessage({ title: 'Erro', message: 'Assine a operação' })
-        }
-
+    const handleSendToAdmin = async (username: string, password: string) => {
         try {
             await dispatch(createNotification({
                 notification: { description: 'Solicitação para Inserir', data: cart },
@@ -188,6 +177,20 @@ export default function Inserir() {
 
         } catch (error) {
             setMessage({ title: 'Erro', message: 'Não foi possível realizar a inserção.' })
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const handleOnConclude = (user: string, password: string) => {
+        setLoading(true)
+
+        if (auth.role === 'admin') {
+            handleCheckout(user, password)
+        }
+
+        if (auth.role !== 'admin') {
+            handleSendToAdmin(user, password)
         }
     }
 
@@ -310,45 +313,13 @@ export default function Inserir() {
                             }
                         </>
                     </ProductListContainer>
-                    {
-                        auth.role === 'admin' &&
-                        <Button onClick={handleCheckout} text={'Finalizar Inserção'} />
-                    }
-                    {
-                        auth.role !== 'admin' &&
-                        <BottomContainer>
-                            <BottomInputContainer>
-                                <Input
-                                    onChange={(e) => setUsername(e.target.value)}
-                                    type="text"
-                                    name="username"
-                                    value={username}
-                                    label="Usuario"
-                                    display="flex"
-                                    style={{ maxWidth: '250px' }}
-                                />
-                            </BottomInputContainer>
-                            <BottomInputContainer>
-                                <Input
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    type="password"
-                                    name="sign"
-                                    value={password}
-                                    label="Senha"
-                                    display="flex"
-                                    style={{ maxWidth: '250px' }}
-                                />
-                            </BottomInputContainer>
-                            <Button
-                                onClick={handleSendToAdmin}
-                                text={'Finalizar Inserção'}
-                                style={{ padding: '12px 24px', alignSelf: 'flex-end' }}
-                            />
-                        </BottomContainer>
-                    }
+                    <SignOperation
+                        show={cart.length > 0}
+                        handleSubmit={handleOnConclude}
+                        buttonText='Concluir'
+                    />
                 </>
             }
-
         </>
     )
 }
