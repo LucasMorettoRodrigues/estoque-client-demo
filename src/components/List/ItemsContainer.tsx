@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components"
 
 const Container = styled.ul<{ type?: string, bg?: string, click: boolean }>`
@@ -7,7 +8,7 @@ const Container = styled.ul<{ type?: string, bg?: string, click: boolean }>`
     display: flex;
     align-items: center;
     border-top: ${props => props.type === 'subItem' ? 'none' : '1px solid #c9c9c9'} ;
-    cursor: ${props => props.click && 'pointer'};
+    cursor: pointer;
 
     &:hover {
       filter: ${props => props.click && 'contrast(1.1)'};
@@ -19,13 +20,29 @@ type Props = {
   children: JSX.Element | JSX.Element[]
   onClick?: () => void;
   type?: string;
-  bg?: string
+  bg?: string,
+  subproducts?: JSX.Element | JSX.Element[]
 }
 
-export default function ItemsContainer({ children, onClick, type, bg }: Props) {
+export default function ItemsContainer({ children, onClick, type, bg, subproducts }: Props) {
+
+  const [showSubProducts, setShowSubproducts] = useState(false)
+
+  const handleOnClick = () => {
+    if (onClick !== undefined) {
+      onClick()
+    } else {
+      setShowSubproducts(!showSubProducts)
+    }
+  }
+
   return (
-    <Container onClick={onClick} type={type} bg={bg} click={onClick ? true : false}>
-      {children}
-    </Container>
+    <>
+      <Container onClick={handleOnClick} type={type} bg={bg} click={onClick ? true : false}>
+        {children}
+      </Container>
+      {showSubProducts && subproducts}
+    </>
+
   )
 }

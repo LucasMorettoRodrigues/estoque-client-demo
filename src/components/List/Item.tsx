@@ -6,7 +6,7 @@ const SItem = styled.div<{
 }>`
     flex: ${props => props.flex ? props.flex : null};
     padding: 10px;
-    font-size: ${props => props.fontSize ? props.fontSize : '14px'};
+    font-size: ${props => props.fontSize ? props.fontSize : '12px'};
     flex: ${props => props.flex ? props.flex : null};
     width: ${props => props.width ? props.width : null};
     text-align: ${props => props.align === 'center' ? props.align : null};

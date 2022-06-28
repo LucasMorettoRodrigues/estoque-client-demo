@@ -23,5 +23,7 @@ export type TStockIn = {
         subproduct?: string,
         validity?: string
     },
-    description?: string
+    description?: string,
+    username?: string,
+    password?: string,
 }

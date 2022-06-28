@@ -14,10 +14,6 @@ import { getAllStockIns } from "../../features/stockIn/stockIn"
 import { getAllAdjustStock } from "../../features/adjustStock/adjustStock"
 import Button from "../../components/UI/Button"
 
-const Container = styled.div<{ show?: boolean }>`
-    visibility: ${props => props.show === false ? 'hidden' : 'visible'};
-    height: ${props => props.show === false ? '0px' : 'auto'};
-`
 const HeaderContainer = styled.div`
     display: flex;
     align-items: center;
@@ -41,7 +37,6 @@ export default function Historico({ productFilter }: Props) {
     const [orderedStocks, setOrderedStocks] = useState<{ [key: string]: any }>({})
     const [filteredStocks, setFilteredStocks] = useState<{ [key: string]: any }>({})
     const [filter, setFilter] = useState('')
-    const [show, setShow] = useState('')
 
     const dispatch = useAppDispatch()
 
@@ -132,17 +127,11 @@ export default function Historico({ productFilter }: Props) {
             </ListHeader>
             {
                 Object.keys(filteredStocks).reverse().map(key => (
-                    < Container key={key} >
-                        <ItemsContainer
-                            bg={key.split('_')[1] === 'in' ? '#a3ff86' : key.split('_')[1] === 'out' ? '#ffa7a7' : '#a8aeff'}
-                            onClick={() => setShow(show === key ? '' : key)}
-                        >
-                            <Item flex={1} text={key.split('_')[0]} />
-                            <Item flex={12} text={key.split('_')[1] === 'in' ? "Entrada" : key.split('_')[1] === 'out' ? "Retirada" : "Ajuste"} />
-                        </ItemsContainer>
-                        {
+                    <ItemsContainer
+                        key={key}
+                        subproducts={
                             filteredStocks[key].map((item: any, index: any) => (
-                                < Container key={index} show={show === key ? true : false} >
+                                < div key={index}  >
                                     <ItemsContainer bg={key.split('_')[1] === 'in' ? '#ceffbf' : key.split('_')[1] === 'out' ? '#ffc6c6' : '#c6caff'} >
                                         <Item flex={4} text={item.product.name} />
                                         <Item flex={1} text={item.provider?.name} />
@@ -154,10 +143,14 @@ export default function Historico({ productFilter }: Props) {
                                         <Item flex={0.9} text={key.split('_')[1] === 'out' ? -item.quantity : item.quantity} align='center' />
                                         <Item flex={0.9} text={item.user?.name} />
                                     </ItemsContainer>
-                                </Container>
+                                </div>
                             ))
                         }
-                    </Container>
+                        bg={key.split('_')[1] === 'in' ? '#a3ff86' : key.split('_')[1] === 'out' ? '#ffa7a7' : '#a8aeff'}
+                    >
+                        <Item flex={1} text={key.split('_')[0]} />
+                        <Item flex={12} text={key.split('_')[1] === 'in' ? "Entrada" : key.split('_')[1] === 'out' ? "Retirada" : "Ajuste"} />
+                    </ItemsContainer>
                 ))
             }
             <Button text='Exportar' onClick={handleExport} bg='blue' style={{ marginTop: '30px', float: 'right' }} />

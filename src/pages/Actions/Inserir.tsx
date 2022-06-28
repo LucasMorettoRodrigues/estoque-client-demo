@@ -135,7 +135,7 @@ export default function Inserir() {
 
         for (const item of cart) {
             try {
-                await dispatch(createStockIn(item)).unwrap()
+                await dispatch(createStockIn({ ...item, username, password })).unwrap()
                 prs.push(item)
             } catch (error) {
                 prsError.push(item)
