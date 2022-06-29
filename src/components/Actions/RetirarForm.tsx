@@ -102,7 +102,7 @@ export default function RetirarForm({ onSubmit }: Props) {
                     required
                 />
             </InputContainer>
-            <Button style={{ padding: '12px 24px', marginTop: '10px', marginRight: '20px' }} text={'Lançar'} />
+            <Button style={{ marginTop: '10px', marginRight: '20px' }} text={'Lançar'} />
         </Form>
     )
 }

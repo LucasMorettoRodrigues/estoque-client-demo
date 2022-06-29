@@ -272,7 +272,7 @@ export default function Inserir() {
                     />
                 </InputContainer>
                 <Button
-                    style={{ padding: '12px 24px', marginRight: '20px', marginTop: '10px' }}
+                    style={{ marginRight: '20px', marginTop: '10px' }}
                     text='Lançar' />
             </Form>
             {

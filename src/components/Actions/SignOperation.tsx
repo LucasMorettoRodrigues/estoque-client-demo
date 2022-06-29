@@ -72,7 +72,7 @@ export default function SignOperation({ show, handleSubmit, buttonText }: Props)
                     <Button
                         onClick={handleOnClick}
                         text={buttonText ? buttonText : 'Finalizar Retirada'}
-                        style={{ padding: '12px 24px', alignSelf: 'flex-end' }}
+                        style={{ marginTop: '22px' }}
                     />
                 </Container>
             }
