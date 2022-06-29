@@ -10,7 +10,7 @@ import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import ProductBtn from "../../components/UI/ProductBtn"
 import Title from "../../components/UI/Title"
-import Filters from "./Filters"
+import Filters from "../../components/Filters"
 
 const Container = styled.div``
 const TitleContainer = styled.div`

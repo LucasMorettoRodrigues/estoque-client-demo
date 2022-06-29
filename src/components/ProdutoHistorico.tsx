@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom"
 import { TProduct } from "../types/TProduct"
-import Historico from "../pages/Historico/Historico"
+import ListOperations from "../pages/History/ListOperations"
 
 export default function ProdutoHistorico() {
 
@@ -8,6 +8,6 @@ export default function ProdutoHistorico() {
     const product = location.state as TProduct;
 
     return (
-        <Historico productFilter={product.name} />
+        <ListOperations productFilter={product.name} />
     )
 }

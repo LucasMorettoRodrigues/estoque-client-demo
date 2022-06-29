@@ -28,7 +28,7 @@ type Props = {
     productFilter?: string
 }
 
-export default function Historico({ productFilter }: Props) {
+export default function ListOperations({ productFilter }: Props) {
 
     const stockOuts = useAppSelector(state => state.stockOut.stockOuts)
     const adjustStock = useAppSelector(state => state.adjustStock.adjustStock)

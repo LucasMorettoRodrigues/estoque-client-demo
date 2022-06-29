@@ -19,7 +19,7 @@ import EditarFornecedor from "./pages/Providers/EditarFornecedor";
 import EditarProduto from "./pages/Produtos/EditarProduto";
 import EditarSubProduto from "./pages/Produtos/EditarSubProduto";
 import Fornecedores from "./pages/Providers/Fornecedores";
-import Historico from "./pages/Historico/Historico";
+import ListOperations from "./pages/History/ListOperations";
 import NovoFornecedor from "./pages/Providers/NovoFornecedor";
 import NovoProduto from "./pages/Produtos/NovoProduto";
 import Produtos from "./pages/Produtos/Produtos";
@@ -32,11 +32,11 @@ import CreateUser from "./pages/Users/CreateUser";
 import AdminPanel from "./pages/AdminPanel";
 import EditUser from "./pages/Users/EditUser";
 import RedefinePassword from "./pages/Users/RedefinePassword";
-import Notificacoes from "./pages/Historico/HistoricoNotificacoes";
+import ListNotifications from "./pages/History/ListNotifications";
 import Inventario from "./pages/Inventario/Inventario";
 import VizualizarInventario from "./pages/Inventario/VisualizarInventario";
-import Inventarios from "./pages/Historico/HistoricoInventarios";
-import HistoricoInventario from "./pages/Historico/HistoricoInventario";
+import ListInventarios from "./pages/History/ListInventarios";
+import HistoricoInventario from "./pages/History/HistoricoInventario";
 
 function App() {
 
@@ -91,7 +91,7 @@ function App() {
           <Route path='/fornecedores/:id' element={<AdminRoute><EditarFornecedor /></AdminRoute>} />
           <Route path='/novoFornecedor' element={<AdminRoute><NovoFornecedor /></AdminRoute>} />
           <Route path='/ajustar' element={<AdminRoute><Ajustar /></AdminRoute>} />
-          <Route path='/historico' element={<AdminRoute><Historico /></AdminRoute>} />
+          <Route path='/historico' element={<AdminRoute><ListOperations /></AdminRoute>} />
           <Route path='/produtos/:id/historico' element={<AdminRoute><ProdutoHistorico /></AdminRoute>} />
           <Route path='/usuarios' element={<AdminRoute><Users /></AdminRoute>} />
           <Route path='/usuarios/novo' element={<AdminRoute><CreateUser /></AdminRoute>} />
@@ -100,8 +100,8 @@ function App() {
           <Route path='/usuarios/:id/redefinirSenha' element={<AdminRoute><RedefinePassword /></AdminRoute>} />
           <Route path='/inventario/:id' element={<AdminRoute><VizualizarInventario /></AdminRoute>} />
 
-          <Route path='/historico/notificacoes' element={<AdminRoute><Notificacoes /></AdminRoute>} />
-          <Route path='/historico/inventarios' element={<AdminRoute><Inventarios /></AdminRoute>} />
+          <Route path='/historico/notificacoes' element={<AdminRoute><ListNotifications /></AdminRoute>} />
+          <Route path='/historico/inventarios' element={<AdminRoute><ListInventarios /></AdminRoute>} />
           <Route path='/historico/inventarios/:id' element={<AdminRoute><HistoricoInventario /></AdminRoute>} />
 
         </Routes>

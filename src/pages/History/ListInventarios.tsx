@@ -6,36 +6,31 @@ import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import { formatValidity } from "../../utils/functions"
+import { useNavigate } from "react-router-dom"
 
 const Container = styled.div``
 
-export default function Notificacoes() {
+export default function ListInventarios() {
+
+    const navigate = useNavigate()
 
     const notifications = useAppSelector(state => state.notification.notifications.filter(
-        i => i.description === 'Notificação de Validade Incorreta'
+        i => i.description === 'Inventário'
     ))
 
     return (
         <>
-            <Title title='Histórico de Notificações (Produtos Retirados com Validade Incorreta)' />
+            <Title title='Histórico de Inventários' />
             <ListHeader>
                 <Item width="100px" text='Data' />
-                <Item flex={1} text='Produto' />
-                <Item flex={1} text='Motivo' />
-                <Item width="100px" text='Lote' />
-                <Item width="100px" text='Validade' />
-                <Item width="100px" text='Usuário' />
+                <Item flex={1} text='Realizado por' />
             </ListHeader>
             {
                 notifications.map((item) => (
                     <Container key={item.id}>
-                        <ItemsContainer>
+                        <ItemsContainer onClick={() => navigate(`/historico/inventarios/${item.id}`, { state: item })}>
                             <Item width="100px" text={formatValidity(item.createdAt)} />
-                            <Item flex={1} text={item.data!.product} />
-                            <Item flex={1} text={item.data!.message} />
-                            <Item width="100px" text={item.data!.subproduct} />
-                            <Item width="100px" text={formatValidity(item.data!.validity)} />
-                            <Item width="100px" text={item.user!.name} />
+                            <Item flex={1} text={item.user!.name} />
                         </ItemsContainer>
                     </Container>
                 ))
