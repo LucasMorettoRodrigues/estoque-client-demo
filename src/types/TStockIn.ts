@@ -26,4 +26,5 @@ export type TStockIn = {
     description?: string,
     username?: string,
     password?: string,
+    time?: string
 }

@@ -49,8 +49,26 @@ export default function ListOperations({ productFilter }: Props) {
     useEffect(() => {
 
         let filteredIns = productFilter ? stockIns.filter(i => i.product?.name === productFilter) : stockIns
+        filteredIns = filteredIns.map(i => (
+            {
+                ...i,
+                time: i.createdAt?.slice(11, 19)
+            }
+        ))
         let filteredOuts = productFilter ? stockOuts.filter(i => i.product?.name === productFilter) : stockOuts
+        filteredOuts = filteredOuts.map(i => (
+            {
+                ...i,
+                time: i.createdAt?.slice(11, 19)
+            }
+        ))
         let filteredAdjusts = productFilter ? adjustStock.filter(i => i.product?.name === productFilter) : adjustStock
+        filteredAdjusts = filteredAdjusts.map(i => (
+            {
+                ...i,
+                time: i.createdAt?.slice(11, 19)
+            }
+        ))
 
         const stockInByDate = groupStockByDate(filteredIns, '_in') as { [key: string]: TStockIn[] }
         const stockOutByDate = groupStockByDate(filteredOuts, '_out') as { [key: string]: TStockOut[] }
@@ -98,6 +116,7 @@ export default function ListOperations({ productFilter }: Props) {
 
     return (
         <>
+            {console.log(filteredStocks)}
             <HeaderContainer>
                 <Title title='Histórico' />
                 <Filter>
@@ -115,15 +134,16 @@ export default function ListOperations({ productFilter }: Props) {
                 </Filter>
             </HeaderContainer>
             <ListHeader>
+                <Item width='90px' text='Horário' />
                 <Item flex={4} text='Produto' />
-                <Item flex={1} text='Fornecedor' />
+                <Item width='90px' text='Fornecedor' />
                 <Item flex={1.5} text='Marca' />
-                <Item flex={1} text='Unidade' />
-                <Item flex={0.9} text='Preço' />
+                <Item width='90px' text='Unidade' />
+                <Item width='90px' text='Preço' />
                 <Item flex={1} text='Lote' />
-                <Item flex={1} text='Validade' />
-                <Item flex={0.9} text='Quantidade' align='center' />
-                <Item flex={0.9} text='Usuário' />
+                <Item width='90px' text='Validade' />
+                <Item width='90px' text='Quantidade' align='center' />
+                <Item width='90px' text='Usuário' />
             </ListHeader>
             {
                 Object.keys(filteredStocks).reverse().map(key => (
@@ -133,23 +153,24 @@ export default function ListOperations({ productFilter }: Props) {
                             filteredStocks[key].map((item: any, index: any) => (
                                 < div key={index}  >
                                     <ItemsContainer bg={key.split('_')[1] === 'in' ? '#ceffbf' : key.split('_')[1] === 'out' ? '#ffc6c6' : '#c6caff'} >
+                                        <Item width='90px' text={item.time} />
                                         <Item flex={4} text={item.product.name} />
-                                        <Item flex={1} text={item.provider?.name} />
+                                        <Item width='90px' text={item.provider?.name} />
                                         <Item flex={1.5} text={item.product.brand} />
-                                        <Item flex={1} text={item.product.unit} />
-                                        <Item flex={0.9} text={item.price} />
+                                        <Item width='90px' text={item.product.unit} />
+                                        <Item width='90px' text={item.price} />
                                         <Item flex={1} text={item.lote} />
-                                        <Item flex={1} text={formatValidity(item.validade)} />
-                                        <Item flex={0.9} text={key.split('_')[1] === 'out' ? -item.quantity : item.quantity} align='center' />
-                                        <Item flex={0.9} text={item.user?.name} />
+                                        <Item width='90px' text={formatValidity(item.validade)} />
+                                        <Item width='90px' text={key.split('_')[1] === 'out' ? -item.quantity : item.quantity} align='center' />
+                                        <Item width='90px' text={item.user?.name} />
                                     </ItemsContainer>
                                 </div>
                             ))
                         }
                         bg={key.split('_')[1] === 'in' ? '#a3ff86' : key.split('_')[1] === 'out' ? '#ffa7a7' : '#a8aeff'}
                     >
-                        <Item flex={1} text={key.split('_')[0]} />
-                        <Item flex={12} text={key.split('_')[1] === 'in' ? "Entrada" : key.split('_')[1] === 'out' ? "Retirada" : "Ajuste"} />
+                        <Item width='90px' text={key.split('_')[0]} />
+                        <Item text={key.split('_')[1] === 'in' ? "Entrada" : key.split('_')[1] === 'out' ? "Retirada" : "Ajuste"} />
                     </ItemsContainer>
                 ))
             }
