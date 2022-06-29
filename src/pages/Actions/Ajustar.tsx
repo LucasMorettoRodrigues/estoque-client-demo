@@ -50,21 +50,26 @@ export default function Ajustar() {
         }])
     }
 
-    const handleOnConclude = async (user: string, password: string) => {
+    const handleOnConclude = async (username: string, password: string) => {
         setLoading(true)
 
         for (const item of productList) {
-            await dispatch(createAdjustStock({
-                product_id: item.product.id!,
-                quantity: item.quantity,
-                subproduct_id: item.subProduct!.id
-            }))
+            try {
+                await dispatch(createAdjustStock({
+                    username,
+                    password,
+                    product_id: item.product.id!,
+                    quantity: item.quantity,
+                    subproduct_id: item.subProduct!.id
+                })).unwrap()
+                setMessage({ title: 'Sucesso', message: `O ajuste foi realizado.` })
+            } catch (error) {
+                setMessage({ title: 'Erro', message: `Não foi possivel realizar o ajuste.` })
+            } finally {
+                setProductList([])
+                setLoading(false)
+            }
         }
-
-        setProductList([])
-        setLoading(false)
-        setMessage({ title: 'Sucesso', message: `O ajuste foi realizado.` })
-
     }
 
     return (
