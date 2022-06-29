@@ -82,10 +82,14 @@ export default function Navbar() {
                             {auth.role === 'admin' &&
                                 <>
                                     <Link to='/ajustar'><Item>Ajustar</Item></Link>
-                                    <Link to='/historico'><Item>Histórico</Item></Link>
                                 </>
                             }
                             <Link to='/novoInventario'><Item>Inventário</Item></Link>
+                            {auth.role === 'admin' &&
+                                <>
+                                    <Link to='/historico'><Item>Histórico</Item></Link>
+                                </>
+                            }
                             <LeaveBtn onClick={handleOnClick}>
                                 Sair
                             </LeaveBtn>

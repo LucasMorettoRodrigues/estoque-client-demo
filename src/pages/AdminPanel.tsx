@@ -20,11 +20,11 @@ const Info = styled.div`
     margin-bottom: 30px;
     margin-left: 50px;
 `
-const Box = styled.div`
+const NotificationContainer = styled.div`
     padding: 10px;
     width: 80%;
     margin: 5px auto;
-    padding-left: 35px;
+    padding-left: 20px;
     border-radius: 5px;
     background-color: white;
     border: 2px solid #d8d8d8;
@@ -36,7 +36,12 @@ const Box = styled.div`
         background-color: #badaf8;
     }
 `
-const BoxItem = styled.div`
+const NotificationRow = styled.div`
+    display: flex;
+    align-items: center;
+`
+const NotificationItem = styled.div`
+    margin: 5px;
     display: flex;
     align-items: center;
 `
@@ -96,41 +101,44 @@ export default function AdminPanel() {
         <>
             <HeaderContainer>
                 <Title title='Bem Vindo'></Title>
-                <Button text='Histórico/Notificações' onClick={() => navigate('/historico/notificacoes')} />
-                <Button text='Histórico/Inventários' onClick={() => navigate('/historico/inventarios')} />
+                <div>
+                    <Button style={{ marginRight: '10px' }} text='Notificações' onClick={() => navigate('/historico/notificacoes')} />
+                    <Button text='Inventários' onClick={() => navigate('/historico/inventarios')} />
+                </div>
             </HeaderContainer>
             <Info>Você possui {notifications.length} notificações.</Info>
             {notifications.length > 0 && notifications.map((item, index) => (
-                <Box key={index} >
-                    <>
-                        <div style={{ display: 'flex', flex: 1 }}
-                            onClick={() => handleClick(item)}>
-                            <BoxItem style={{ flex: 1 }}>
-                                <Description bk={item.description}>
-                                    {item.description}
-                                </Description>
-                            </BoxItem>
-                            <BoxItem style={{ flex: 1 }}><Text>Enviado por:</Text>{item.user?.name}</BoxItem>
-                            <BoxItem style={{ width: '90px' }}>{formatValidity(item.createdAt)}</BoxItem>
-                            <EditDeleteButton width="40px"
-                                onClick={(e) => handleDelete(e, item)}>
-                                <AiOutlineDelete />
-                            </EditDeleteButton>
-                        </div>
-                        {item.description === 'Notificação de Validade Incorreta' &&
-                            <>
-                                <div>
-                                    <p style={{ paddingBottom: '10px' }}><Text>Motivo:</Text>{item.data!.message}</p>
-                                </div>
-                                <p style={{ paddingBottom: '10px' }}><Text>Produto:</Text>{item.data!.product}</p>
-                                <div style={{ display: 'flex' }}>
-                                    <p style={{ paddingBottom: '10px', width: '390px' }}><Text>Lote:</Text>{item.data!.subproduct}</p>
-                                    <p style={{ paddingBottom: '10px' }}><Text>Validade:</Text>{formatValidity(item.data!.validity)}</p>
-                                </div>
-                            </>
-                        }
-                    </>
-                </Box>
+                <NotificationContainer key={index} >
+                    <NotificationRow onClick={() => handleClick(item)}>
+                        <NotificationItem style={{ flex: 1 }}>
+                            <Description bk={item.description}>
+                                {item.description}
+                            </Description>
+                        </NotificationItem>
+                        <NotificationItem style={{ flex: 1 }}><Text>Enviado por:</Text>{item.user?.name}</NotificationItem>
+                        <NotificationItem style={{ width: '90px', fontSize: '14px', color: '#666' }}>{formatValidity(item.createdAt)}</NotificationItem>
+                        <EditDeleteButton width="40px"
+                            onClick={(e) => handleDelete(e, item)}>
+                            <AiOutlineDelete />
+                        </EditDeleteButton>
+                    </NotificationRow>
+
+                    {item.description === 'Notificação de Validade Incorreta' &&
+                        <>
+                            <NotificationRow style={{ display: 'flex' }}>
+                                <NotificationItem style={{ width: '42%' }}><Text>Produto:</Text>{item.data!.product}</NotificationItem>
+                                <NotificationItem ><Text>Qtd. Retirada:</Text>{item.data.quantity}</NotificationItem>
+                            </NotificationRow>
+                            <NotificationRow style={{ display: 'flex' }}>
+                                <NotificationItem style={{ width: '42%' }}><Text>Lote:</Text>{item.data!.subproduct}</NotificationItem>
+                                <NotificationItem><Text>Validade:</Text>{formatValidity(item.data!.validity)}</NotificationItem>
+                            </NotificationRow>
+                            <NotificationRow style={{ display: 'flex' }}>
+                                <NotificationItem ><Text>Motivo:</Text>{item.data!.message}</NotificationItem>
+                            </NotificationRow>
+                        </>
+                    }
+                </NotificationContainer>
             ))
             }
         </>

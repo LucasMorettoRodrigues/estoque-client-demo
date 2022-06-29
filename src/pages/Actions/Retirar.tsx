@@ -123,7 +123,8 @@ export default function Retirar() {
                                     message: item.notification,
                                     product: item.product.name,
                                     subproduct: item.subProduct?.lote,
-                                    validity: item.subProduct?.validade
+                                    validity: item.subProduct?.validade,
+                                    quantity: item.quantity
                                 }
                             }
                             : null
