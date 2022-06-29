@@ -5,7 +5,7 @@ const SButton = styled.button<{ bg?: string }>`
     background-color: ${props => props.bg === 'red' ? '#ff3232' : (props.bg === 'blue' ? '#3d69c7' : '#3dc73d')};
     color: white;
     border: none;
-    padding: 15px 30px;
+    padding: 12px 24px;
     border-radius: 5px;
     cursor: pointer;
     font-weight: 600;

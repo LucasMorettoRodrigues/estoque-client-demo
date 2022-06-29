@@ -12,7 +12,7 @@ import { formatValidity, groupStockByDate } from "../../utils/functions"
 import { getAllStockOuts } from "../../features/stockOut/stockOut"
 import { getAllStockIns } from "../../features/stockIn/stockIn"
 import { getAllAdjustStock } from "../../features/adjustStock/adjustStock"
-import Button from "../../components/UI/Button"
+import ExportJSON from "../../components/Actions/ExportJSON"
 
 const HeaderContainer = styled.div`
     display: flex;
@@ -80,21 +80,6 @@ export default function ListOperations({ productFilter }: Props) {
         }
     }, [filter, orderedStocks])
 
-    const handleExport = () => {
-        const blob = new Blob([JSON.stringify(filteredStocks)], { type: 'text/json' })
-
-        const a = document.createElement('a')
-        a.download = 'historico.json'
-        a.href = window.URL.createObjectURL(blob)
-        const clickEvt = new MouseEvent('click', {
-            view: window,
-            bubbles: true,
-            cancelable: true,
-        })
-        a.dispatchEvent(clickEvt)
-        a.remove()
-    }
-
     return (
         <>
             {console.log(filteredStocks)}
@@ -155,7 +140,7 @@ export default function ListOperations({ productFilter }: Props) {
                     </ItemsContainer>
                 ))
             }
-            <Button text='Exportar' onClick={handleExport} bg='blue' style={{ marginTop: '30px', float: 'right' }} />
+            <ExportJSON data={filteredStocks} fileName='historico.json' />
         </>
     )
 }
