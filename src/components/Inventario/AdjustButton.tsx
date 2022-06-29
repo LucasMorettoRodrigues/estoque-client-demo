@@ -39,7 +39,6 @@ export default function AdjustButton({ subProduct }: Props) {
 
     return (
         <>
-            { }
             {message && <Mensagem onClick={() => setMessage(null)} message={message} />}
             <Button
                 style={{ padding: '5px 10px', marginRight: '10px' }}

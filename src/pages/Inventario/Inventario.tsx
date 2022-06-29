@@ -14,6 +14,7 @@ import { TMessage } from "../../types/TMessage"
 import { createNotification } from "../../features/notification/notificationSlice"
 import Modal from "../../components/UI/Modal"
 import { useNavigate } from "react-router-dom"
+import Loading from "../../components/UI/Loading"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -59,6 +60,7 @@ export default function Inventario() {
     const [modalIsOpen, setModalIsOpen] = useState(true)
     const [category, setCategory] = useState<string[]>([])
     const [systemStock, setSystemStock] = useState<any>({})
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
 
@@ -89,7 +91,9 @@ export default function Inventario() {
     }, [category, productsData])
 
     const submitInventory = (username: string, password: string) => {
-        if (!isValidated()) return
+        setIsLoading(true)
+
+        if (!isValidated()) return setIsLoading(false)
 
         const divergentItems = getDivergentItems()
 
@@ -98,6 +102,8 @@ export default function Inventario() {
         }
 
         setDivergentItemsList(divergentItems)
+
+        setIsLoading(false)
 
         if (submissionCounter === 0) {
             setMessage({
@@ -127,10 +133,12 @@ export default function Inventario() {
     const sendInventory = async (username: string, password: string) => {
 
         if (submissionCounter === 2 && !justificationIsValid()) {
+            setIsLoading(false)
             return setMessage({ title: 'Erro', message: 'Por favor preencha todas as justificativas.' })
         }
 
         if (!username || !password) {
+            setIsLoading(false)
             return setMessage({ title: 'Erro', message: 'Por favor preencha o usuário e senha.' })
         }
 
@@ -157,6 +165,8 @@ export default function Inventario() {
         } catch (error) {
             console.log(error)
             setMessage({ title: 'Erro', message: 'Não foi possivel concluir a ação.' })
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -204,6 +214,7 @@ export default function Inventario() {
 
     return (
         <>
+            {isLoading && <Loading loading={isLoading} />}
             {modalIsOpen && <Modal selectCategory={selectCategory} />}
             {message && <Mensagem onClick={handleMessageClick} message={message} />}
             <Title title='Inventario' />
