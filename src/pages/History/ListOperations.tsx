@@ -136,13 +136,13 @@ export default function ListOperations({ productFilter }: Props) {
             <ListHeader>
                 <Item width='90px' text='Horário' />
                 <Item flex={4} text='Produto' />
-                <Item width='90px' text='Fornecedor' />
+                <Item width='100px' text='Fornecedor' />
                 <Item flex={1.5} text='Marca' />
-                <Item width='90px' text='Unidade' />
-                <Item width='90px' text='Preço' />
+                <Item width='80px' text='Unidade' />
+                <Item width='80px' text='Preço' />
                 <Item flex={1} text='Lote' />
                 <Item width='90px' text='Validade' />
-                <Item width='90px' text='Quantidade' align='center' />
+                <Item width='70px' text='Qtd.' align='center' />
                 <Item width='90px' text='Usuário' />
             </ListHeader>
             {
@@ -155,13 +155,13 @@ export default function ListOperations({ productFilter }: Props) {
                                     <ItemsContainer bg={key.split('_')[1] === 'in' ? '#ceffbf' : key.split('_')[1] === 'out' ? '#ffc6c6' : '#c6caff'} >
                                         <Item width='90px' text={item.time} />
                                         <Item flex={4} text={item.product.name} />
-                                        <Item width='90px' text={item.provider?.name} />
+                                        <Item width='100px' text={item.provider?.name} />
                                         <Item flex={1.5} text={item.product.brand} />
-                                        <Item width='90px' text={item.product.unit} />
-                                        <Item width='90px' text={item.price} />
+                                        <Item width='80px' text={item.product.unit} />
+                                        <Item width='80px' text={item.price} />
                                         <Item flex={1} text={item.lote} />
                                         <Item width='90px' text={formatValidity(item.validade)} />
-                                        <Item width='90px' text={key.split('_')[1] === 'out' ? -item.quantity : item.quantity} align='center' />
+                                        <Item width='70px' text={key.split('_')[1] === 'out' ? -item.quantity : item.quantity} align='center' />
                                         <Item width='90px' text={item.user?.name} />
                                     </ItemsContainer>
                                 </div>
