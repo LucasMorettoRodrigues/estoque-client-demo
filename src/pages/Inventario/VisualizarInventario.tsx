@@ -14,13 +14,9 @@ import Button from "../../components/UI/Button"
 import { TMessage } from "../../types/TMessage"
 import Mensagem from "../../components/UI/Mensagem"
 import InventarioList from "../../components/Inventario/InventarioList"
+import InventoryAnalisys from "../../components/Inventario/InventoryAnalisys"
 
 const Container = styled.div``
-const TitleContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-`
 const MenuContainer = styled.div`
     display: flex;
     align-items: center;
@@ -64,10 +60,13 @@ export default function VizualizarInventario() {
     return (
         <>
             {message && <Mensagem onClick={handleMessage} message={message} />}
-            <TitleContainer>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Title title='Inventário' />
                 <Button text="Arquivar" onClick={handleArchive} bg='red' />
-            </TitleContainer>
+            </div>
+            <InventoryAnalisys products={products} />
+
             <MenuContainer>
                 <div style={{ flex: 1 }}>
                     <p style={{ marginBottom: '8px' }}>Realizado por {state.user?.name}</p>

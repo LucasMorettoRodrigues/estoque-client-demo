@@ -91,7 +91,6 @@ export default function HistoricoInventario() {
             </div>
             <InventoryAnalisys products={products} />
 
-
             <h3 style={{ marginTop: '30px', marginBottom: '10px' }}>Produtos com Divergência</h3>
             <HeaderContainer>
                 <ListHeader fontSize='12px'>
