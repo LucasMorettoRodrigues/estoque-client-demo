@@ -49,27 +49,8 @@ export default function ListOperations({ productFilter }: Props) {
     useEffect(() => {
 
         let filteredIns = productFilter ? stockIns.filter(i => i.product?.name === productFilter) : stockIns
-        filteredIns = filteredIns.map(i => (
-            {
-                ...i,
-                time: i.createdAt?.slice(11, 19)
-            }
-        ))
         let filteredOuts = productFilter ? stockOuts.filter(i => i.product?.name === productFilter) : stockOuts
-        filteredOuts = filteredOuts.map(i => (
-            {
-                ...i,
-                time: i.createdAt?.slice(11, 19)
-            }
-        ))
         let filteredAdjusts = productFilter ? adjustStock.filter(i => i.product?.name === productFilter) : adjustStock
-        filteredAdjusts = filteredAdjusts.map(i => (
-            {
-                ...i,
-                time: i.createdAt?.slice(11, 19)
-            }
-        ))
-
         const stockInByDate = groupStockByDate(filteredIns, '_in') as { [key: string]: TStockIn[] }
         const stockOutByDate = groupStockByDate(filteredOuts, '_out') as { [key: string]: TStockOut[] }
         const adjustStockByDate = groupStockByDate(filteredAdjusts, '_adjust') as { [key: string]: TStockOut[] }
@@ -143,7 +124,7 @@ export default function ListOperations({ productFilter }: Props) {
                 <Item flex={1} text='Lote' />
                 <Item width='90px' text='Validade' />
                 <Item width='70px' text='Qtd.' align='center' />
-                <Item width='90px' text='Usuário' />
+                <Item width='80px' text='Usuário' />
             </ListHeader>
             {
                 Object.keys(filteredStocks).reverse().map(key => (
@@ -153,7 +134,7 @@ export default function ListOperations({ productFilter }: Props) {
                             filteredStocks[key].map((item: any, index: any) => (
                                 < div key={index}  >
                                     <ItemsContainer bg={key.split('_')[1] === 'in' ? '#ceffbf' : key.split('_')[1] === 'out' ? '#ffc6c6' : '#c6caff'} >
-                                        <Item width='90px' text={item.time} />
+                                        <Item width='90px' text={item.createdAt?.slice(11, 19)} />
                                         <Item flex={4} text={item.product.name} />
                                         <Item width='100px' text={item.provider?.name} />
                                         <Item flex={1.5} text={item.product.brand} />
@@ -162,7 +143,7 @@ export default function ListOperations({ productFilter }: Props) {
                                         <Item flex={1} text={item.lote} />
                                         <Item width='90px' text={formatValidity(item.validade)} />
                                         <Item width='70px' text={key.split('_')[1] === 'out' ? -item.quantity : item.quantity} align='center' />
-                                        <Item width='90px' text={item.user?.name} />
+                                        <Item width='80px' text={item.user?.name} />
                                     </ItemsContainer>
                                 </div>
                             ))
