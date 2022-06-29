@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"
-import { useAppDispatch } from "../../app/hooks"
+import { useState } from "react"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { createAdjustStock } from "../../features/adjustStock/adjustStock"
 import { TMessage } from "../../types/TMessage"
 import Mensagem from "../UI/Mensagem"
@@ -11,21 +11,21 @@ type Props = {
 
 export default function AdjustButton({ subProduct }: Props) {
 
+    const a = useAppSelector(state => state.authentication)
+
+    console.log(a)
+
     const dispatch = useAppDispatch()
     const [text, setText] = useState('Ajustar')
     const [message, setMessage] = useState<TMessage>()
 
-    useEffect(() => {
-
-    }, [])
-
     const handleOnClick = async () => {
         if (text === 'Ajustar') {
             setText('Carregando')
-            console.log(subProduct)
 
             try {
                 await dispatch(createAdjustStock({
+                    force: true,
                     product_id: subProduct.product_id,
                     quantity: subProduct.inventory,
                     subproduct_id: subProduct.id
@@ -39,6 +39,7 @@ export default function AdjustButton({ subProduct }: Props) {
 
     return (
         <>
+            { }
             {message && <Mensagem onClick={() => setMessage(null)} message={message} />}
             <Button
                 style={{ padding: '5px 10px', marginRight: '10px' }}

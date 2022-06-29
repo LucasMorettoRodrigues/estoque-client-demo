@@ -8,6 +8,7 @@ export type TStockOut = {
     user_id?: string,
     password?: string
     username?: string,
+    force?: boolean,
     product?: {
         name: string,
         brand: string,
