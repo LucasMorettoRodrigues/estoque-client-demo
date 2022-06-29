@@ -36,13 +36,15 @@ export default function EditUser() {
 
     const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+
         if (!username || !email || !role || !status) {
             setMessage({ title: 'Erro', message: 'Preencha todos os campos' })
         }
 
         try {
             await api.patch(`users/${user.id}`, { name: username, email, role, status })
-            setMessage('Usuário editado com sucesso.')
+            setMessage({ title: 'Sucesso', message: 'Usuário, editado com sucesso.' })
+
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 console.log(error)
