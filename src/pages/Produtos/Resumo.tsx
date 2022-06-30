@@ -11,6 +11,7 @@ import ItemsContainer from "../../components/List/ItemsContainer"
 import ProductBtn from "../../components/UI/ProductBtn"
 import Title from "../../components/UI/Title"
 import Filters from "../../components/Filters"
+import ListWrapper from "../../components/UI/ListWrapper"
 
 const Container = styled.div``
 const TitleContainer = styled.div`
@@ -75,30 +76,35 @@ export default function Produtos() {
                 <Button onClick={() => navigate('/novoProduto')} text={'Cadastrar Novo Produto'} />
                 <Filters hasCategoryFilter={false} hasMissingFilter />
             </MenuContainer>
-            <ListHeader>
-                <Item flex={8} text='Produto' cursor='pointer' onClick={() => setSort('name')} />
-                <Item flex={2} text='Fornecedores' cursor='pointer' onClick={() => setSort('providers')} />
-                <Item flex={1} text='Estoque' align='center' />
-                <Item flex={1} text='Est. Mín' align='center' />
-                <Item flex={1} text='Est. Max' align='center' />
-            </ListHeader>
-            {
-                filteredProducts.map((item) => (
-                    <Container key={item.id}>
-                        <ItemsContainer onClick={() => navigate(`/produtos/${item.id}/historico`, { state: item })}>
-                            <Item flex={8} text={item.name} />
-                            <Item flex={2} text={item.providers?.map(i => `${i} `)} />
-                            <Item flex={1} text={item.stock} align='center'
-                                bg={item.stock < item.min_stock
-                                    ? '#ff5353'
-                                    : (item.stock === 0 && item.min_stock === 0) ? '#ff5353' : 'inherit'
-                                } />
-                            <Item flex={1} text={item.min_stock} align='center' />
-                            <Item flex={1} text={item.max_stock} align='center' />
-                        </ItemsContainer>
-                    </Container>
-                ))
-            }
+
+            <ListWrapper>
+                <ListHeader>
+                    <Item flex={8} text='Produto' cursor='pointer' onClick={() => setSort('name')} />
+                    <Item flex={2} text='Fornecedores' cursor='pointer' onClick={() => setSort('providers')} />
+                    <Item flex={1} text='Estoque' align='center' />
+                    <Item flex={1} text='Est. Mín' align='center' />
+                    <Item flex={1} text='Est. Max' align='center' />
+                </ListHeader>
+                <>
+                    {
+                        filteredProducts.map((item) => (
+                            <Container key={item.id}>
+                                <ItemsContainer onClick={() => navigate(`/produtos/${item.id}/historico`, { state: item })}>
+                                    <Item flex={8} text={item.name} />
+                                    <Item flex={2} text={item.providers?.map(i => `${i} `)} />
+                                    <Item flex={1} text={item.stock} align='center'
+                                        bg={item.stock < item.min_stock
+                                            ? '#ff5353'
+                                            : (item.stock === 0 && item.min_stock === 0) ? '#ff5353' : 'inherit'
+                                        } />
+                                    <Item flex={1} text={item.min_stock} align='center' />
+                                    <Item flex={1} text={item.max_stock} align='center' />
+                                </ItemsContainer>
+                            </Container>
+                        ))
+                    }
+                </>
+            </ListWrapper>
         </>
     )
 }

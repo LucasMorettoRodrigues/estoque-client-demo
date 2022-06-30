@@ -7,6 +7,7 @@ import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import { formatValidity } from "../../utils/functions"
 import { useNavigate } from "react-router-dom"
+import ListWrapper from "../../components/UI/ListWrapper"
 
 const Container = styled.div``
 
@@ -21,20 +22,25 @@ export default function ListInventarios() {
     return (
         <>
             <Title title='Histórico de Inventários' />
-            <ListHeader>
-                <Item width="100px" text='Data' />
-                <Item flex={1} text='Realizado por' />
-            </ListHeader>
-            {
-                notifications.map((item) => (
-                    <Container key={item.id}>
-                        <ItemsContainer onClick={() => navigate(`/historico/inventarios/${item.id}`, { state: item })}>
-                            <Item width="100px" text={formatValidity(item.createdAt)} />
-                            <Item flex={1} text={item.user!.name} />
-                        </ItemsContainer>
-                    </Container>
-                ))
-            }
+
+            <ListWrapper>
+                <ListHeader>
+                    <Item width="100px" text='Data' />
+                    <Item flex={1} text='Realizado por' />
+                </ListHeader>
+                <>
+                    {
+                        notifications.map((item) => (
+                            <Container key={item.id}>
+                                <ItemsContainer onClick={() => navigate(`/historico/inventarios/${item.id}`, { state: item })}>
+                                    <Item width="100px" text={formatValidity(item.createdAt)} />
+                                    <Item flex={1} text={item.user!.name} />
+                                </ItemsContainer>
+                            </Container>
+                        ))
+                    }
+                </>
+            </ListWrapper>
         </>
     )
 }

@@ -13,6 +13,7 @@ import { getAllStockOuts } from "../../features/stockOut/stockOut"
 import { getAllStockIns } from "../../features/stockIn/stockIn"
 import { getAllAdjustStock } from "../../features/adjustStock/adjustStock"
 import ExportJSON from "../../components/Actions/ExportJSON"
+import ListWrapper from "../../components/UI/ListWrapper"
 
 const HeaderContainer = styled.div`
     display: flex;
@@ -99,47 +100,52 @@ export default function ListOperations({ productFilter }: Props) {
                     </Select>
                 </Filter>
             </HeaderContainer>
-            <ListHeader>
-                <Item width='90px' text='Horário' />
-                <Item flex={4} text='Produto' />
-                <Item width='100px' text='Fornecedor' />
-                <Item flex={1.5} text='Marca' />
-                <Item width='80px' text='Unidade' />
-                <Item width='80px' text='Preço' />
-                <Item flex={1} text='Lote' />
-                <Item width='90px' text='Validade' />
-                <Item width='70px' text='Qtd.' align='center' />
-                <Item width='80px' text='Usuário' />
-            </ListHeader>
-            {
-                Object.keys(filteredStocks).reverse().map(key => (
-                    <ItemsContainer
-                        key={key}
-                        subproducts={
-                            filteredStocks[key].map((item: any, index: any) => (
-                                < div key={index}  >
-                                    <ItemsContainer bg={key.split('_')[1] === 'in' ? '#ceffbf' : key.split('_')[1] === 'out' ? '#ffc6c6' : '#c6caff'} >
-                                        <Item width='90px' text={item.createdAt?.slice(11, 19)} />
-                                        <Item flex={4} text={item.product.name} />
-                                        <Item width='100px' text={item.provider?.name} />
-                                        <Item flex={1.5} text={item.product.brand} />
-                                        <Item width='80px' text={item.product.unit} />
-                                        <Item width='80px' text={item.price} />
-                                        <Item flex={1} text={item.lote} />
-                                        <Item width='90px' text={formatValidity(item.validade)} />
-                                        <Item width='70px' text={key.split('_')[1] === 'out' ? -item.quantity : item.quantity} align='center' />
-                                        <Item width='80px' text={item.user?.name} />
-                                    </ItemsContainer>
-                                </div>
-                            ))
-                        }
-                        bg={key.split('_')[1] === 'in' ? '#a3ff86' : key.split('_')[1] === 'out' ? '#ffa7a7' : '#a8aeff'}
-                    >
-                        <Item width='90px' text={key.split('_')[0]} />
-                        <Item text={key.split('_')[1] === 'in' ? "Entrada" : key.split('_')[1] === 'out' ? "Retirada" : "Ajuste"} />
-                    </ItemsContainer>
-                ))
-            }
+
+            <ListWrapper>
+                <ListHeader>
+                    <Item width='90px' text='Horário' />
+                    <Item flex={4} text='Produto' />
+                    <Item width='100px' text='Fornecedor' />
+                    <Item flex={1.5} text='Marca' />
+                    <Item width='80px' text='Unidade' />
+                    <Item width='80px' text='Preço' />
+                    <Item flex={1} text='Lote' />
+                    <Item width='90px' text='Validade' />
+                    <Item width='70px' text='Qtd.' align='center' />
+                    <Item width='80px' text='Usuário' />
+                </ListHeader>
+                <>
+                    {
+                        Object.keys(filteredStocks).reverse().map(key => (
+                            <ItemsContainer
+                                key={key}
+                                subproducts={
+                                    filteredStocks[key].map((item: any, index: any) => (
+                                        < div key={index}  >
+                                            <ItemsContainer bg={key.split('_')[1] === 'in' ? '#ceffbf' : key.split('_')[1] === 'out' ? '#ffc6c6' : '#c6caff'} >
+                                                <Item width='90px' text={item.createdAt?.slice(11, 19)} />
+                                                <Item flex={4} text={item.product.name} />
+                                                <Item width='100px' text={item.provider?.name} />
+                                                <Item flex={1.5} text={item.product.brand} />
+                                                <Item width='80px' text={item.product.unit} />
+                                                <Item width='80px' text={item.price} />
+                                                <Item flex={1} text={item.lote} />
+                                                <Item width='90px' text={formatValidity(item.validade)} />
+                                                <Item width='70px' text={key.split('_')[1] === 'out' ? -item.quantity : item.quantity} align='center' />
+                                                <Item width='80px' text={item.user?.name} />
+                                            </ItemsContainer>
+                                        </div>
+                                    ))
+                                }
+                                bg={key.split('_')[1] === 'in' ? '#a3ff86' : key.split('_')[1] === 'out' ? '#ffa7a7' : '#a8aeff'}
+                            >
+                                <Item width='90px' text={key.split('_')[0]} />
+                                <Item text={key.split('_')[1] === 'in' ? "Entrada" : key.split('_')[1] === 'out' ? "Retirada" : "Ajuste"} />
+                            </ItemsContainer>
+                        ))
+                    }
+                </>
+            </ListWrapper>
             <ExportJSON data={filteredStocks} fileName='historico.json' />
         </>
     )

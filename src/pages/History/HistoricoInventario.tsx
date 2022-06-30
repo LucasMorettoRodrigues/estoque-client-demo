@@ -14,6 +14,7 @@ import ModalInput from "../../components/UI/ModalInput"
 import { useAppDispatch } from "../../app/hooks"
 import { archiveNotification } from "../../features/notification/notificationSlice"
 import Button from "../../components/UI/Button"
+import ListWrapper from "../../components/UI/ListWrapper"
 
 const Container = styled.div``
 const MenuContainer = styled.div`
@@ -92,60 +93,64 @@ export default function HistoricoInventario() {
             <InventoryAnalisys products={products} />
 
             <h3 style={{ marginTop: '30px', marginBottom: '10px' }}>Produtos com Divergência</h3>
-            <HeaderContainer>
-                <ListHeader fontSize='12px'>
-                    <Item width="26px" text='Id' fontSize='12px' />
-                    <Item flex={3} text='Produto' fontSize='12px' />
-                    <Item flex={2} text='Observação' fontSize='12px' />
-                    <Item width="90px" text='Código' fontSize='12px' />
-                    <Item width="90px" text='Categoria' fontSize='12px' />
-                    <Item width="130px" text='Marca' fontSize='12px' />
-                    <Item width="65px" text='Unidade' fontSize='12px' />
-                    <Item width="65px" text='Estoque' align='center' fontSize='12px' />
-                </ListHeader>
-            </HeaderContainer>
 
-            {
-                products
-                    .map(i => ({ ...i, subproducts: i.subproducts?.filter(j => j.justification) }))
-                    .filter(i => i.subproducts!.length > 0)
-                    .map((item) => (
-                        <Container key={item.id}>
-                            <div style={{ display: 'flex' }}>
-                                <ItemsContainer>
-                                    <Item width="26px" text={item.id} fontSize='12px' />
-                                    <Item flex={3} text={item.name} fontSize='12px' />
-                                    <Item flex={2} text={item.observation} fontSize='12px' />
-                                    <Item width="90px" text={item.code} fontSize='12px' />
-                                    <Item width="90px" text={item.category} fontSize='12px' />
-                                    <Item width="130px" text={item.brand} fontSize='12px' />
-                                    <Item width="65px" text={item.unit} fontSize='12px' />
-                                    <Item width="65px" text={item.stock} align='center' fontSize='12px' />
-                                </ItemsContainer>
-                            </div>
-
-                            {item.subproducts &&
-                                item.subproducts
-                                    .filter(i => i.justification)
-                                    .map((subitem) => (
-                                        <ItemsContainer
-                                            type="subItem"
-                                            bg={'#eef7ff'}
-                                            key={subitem.id}
-                                        >
-                                            <Item width='200px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
-                                            <Item width='160px' color='#3142a0' text={`Validade: ${formatValidity(subitem.validade)}`} />
-                                            <Item width='90px' color='#3142a0' text={`Qtd (sis): ${subitem.quantity}`} />
-                                            <Item width='90px' color='#3142a0' text={`Qtd (inv): ${subitem.inventory}`} />
-                                            <Item flex={1} color='#3142a0' text={`Motivo: ${subitem.justification}`} />
-                                            <Item flex={1} color='#3142a0' text={`Obs: ${subitem.obs}`} />
-                                            <Button style={{ padding: '8px 16px', marginRight: '10px' }} text='Editar' onClick={() => handleEdit(item.id!, subitem.id)} bg='blue' />
+            <ListWrapper>
+                <HeaderContainer>
+                    <ListHeader fontSize='12px'>
+                        <Item width="26px" text='Id' fontSize='12px' />
+                        <Item flex={3} text='Produto' fontSize='12px' />
+                        <Item flex={2} text='Observação' fontSize='12px' />
+                        <Item width="90px" text='Código' fontSize='12px' />
+                        <Item width="90px" text='Categoria' fontSize='12px' />
+                        <Item width="130px" text='Marca' fontSize='12px' />
+                        <Item width="65px" text='Unidade' fontSize='12px' />
+                        <Item width="65px" text='Estoque' align='center' fontSize='12px' />
+                    </ListHeader>
+                </HeaderContainer>
+                <>
+                    {
+                        products
+                            .map(i => ({ ...i, subproducts: i.subproducts?.filter(j => j.justification) }))
+                            .filter(i => i.subproducts!.length > 0)
+                            .map((item) => (
+                                <Container key={item.id}>
+                                    <div style={{ display: 'flex' }}>
+                                        <ItemsContainer>
+                                            <Item width="26px" text={item.id} fontSize='12px' />
+                                            <Item flex={3} text={item.name} fontSize='12px' />
+                                            <Item flex={2} text={item.observation} fontSize='12px' />
+                                            <Item width="90px" text={item.code} fontSize='12px' />
+                                            <Item width="90px" text={item.category} fontSize='12px' />
+                                            <Item width="130px" text={item.brand} fontSize='12px' />
+                                            <Item width="65px" text={item.unit} fontSize='12px' />
+                                            <Item width="65px" text={item.stock} align='center' fontSize='12px' />
                                         </ItemsContainer>
-                                    ))
-                            }
-                        </Container>
-                    ))
-            }
+                                    </div>
+
+                                    {item.subproducts &&
+                                        item.subproducts
+                                            .filter(i => i.justification)
+                                            .map((subitem) => (
+                                                <ItemsContainer
+                                                    type="subItem"
+                                                    bg={'#eef7ff'}
+                                                    key={subitem.id}
+                                                >
+                                                    <Item width='200px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
+                                                    <Item width='160px' color='#3142a0' text={`Validade: ${formatValidity(subitem.validade)}`} />
+                                                    <Item width='90px' color='#3142a0' text={`Qtd (sis): ${subitem.quantity}`} />
+                                                    <Item width='90px' color='#3142a0' text={`Qtd (inv): ${subitem.inventory}`} />
+                                                    <Item flex={1} color='#3142a0' text={`Motivo: ${subitem.justification}`} />
+                                                    <Item flex={1} color='#3142a0' text={`Obs: ${subitem.obs}`} />
+                                                    <Button style={{ padding: '8px 16px', marginRight: '10px' }} text='Editar' onClick={() => handleEdit(item.id!, subitem.id)} bg='blue' />
+                                                </ItemsContainer>
+                                            ))
+                                    }
+                                </Container>
+                            ))
+                    }
+                </>
+            </ListWrapper>
 
             <h3 style={{ marginTop: '40px', marginBottom: '10px' }}>
                 Inventário completo

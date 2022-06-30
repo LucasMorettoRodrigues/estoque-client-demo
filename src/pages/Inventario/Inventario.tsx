@@ -15,6 +15,7 @@ import { createNotification } from "../../features/notification/notificationSlic
 import Modal from "../../components/UI/Modal"
 import { useNavigate } from "react-router-dom"
 import Loading from "../../components/UI/Loading"
+import ListWrapper from "../../components/UI/ListWrapper"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -218,67 +219,71 @@ export default function Inventario() {
             {modalIsOpen && <Modal selectCategory={selectCategory} />}
             {message && <Mensagem onClick={handleMessageClick} message={message} />}
             <Title title='Inventario' />
-            <HeaderContainer>
-                <ListHeader fontSize='12px'>
-                    <Item width="26px" text='Id' fontSize='12px' />
-                    <Item flex={3} text='Produto' fontSize='12px' />
-                    <Item flex={2} text='Observação' fontSize='12px' />
-                    <Item width="90px" text='Código' fontSize='12px' />
-                    <Item width="90px" text='Categoria' fontSize='12px' />
-                    <Item width="180px" text='Marca' fontSize='12px' />
-                    <Item width="65px" text='Unidade' fontSize='12px' />
-                </ListHeader>
-            </HeaderContainer>
+            <ListWrapper>
+                <HeaderContainer>
+                    <ListHeader fontSize='12px'>
+                        <Item width="26px" text='Id' fontSize='12px' />
+                        <Item flex={3} text='Produto' fontSize='12px' />
+                        <Item flex={2} text='Observação' fontSize='12px' />
+                        <Item width="90px" text='Código' fontSize='12px' />
+                        <Item width="90px" text='Categoria' fontSize='12px' />
+                        <Item width="180px" text='Marca' fontSize='12px' />
+                        <Item width="65px" text='Unidade' fontSize='12px' />
+                    </ListHeader>
+                </HeaderContainer>
+                <>
+                    {
+                        products.map((item) => (
+                            <Container key={item.id}>
+                                <div style={{ display: 'flex' }}>
+                                    <ItemsContainer>
+                                        <Item width="26px" text={item.id} fontSize='12px' />
+                                        <Item flex={3} text={item.name} fontSize='12px' />
+                                        <Item flex={2} text={item.observation} fontSize='12px' />
+                                        <Item width="90px" text={item.code} fontSize='12px' />
+                                        <Item width="90px" text={item.category} fontSize='12px' />
+                                        <Item width="180px" text={item.brand} fontSize='12px' />
+                                        <Item width="65px" text={item.unit} fontSize='12px' />
+                                    </ItemsContainer>
+                                </div>
 
-            {
-                products.map((item) => (
-                    <Container key={item.id}>
-                        <div style={{ display: 'flex' }}>
-                            <ItemsContainer>
-                                <Item width="26px" text={item.id} fontSize='12px' />
-                                <Item flex={3} text={item.name} fontSize='12px' />
-                                <Item flex={2} text={item.observation} fontSize='12px' />
-                                <Item width="90px" text={item.code} fontSize='12px' />
-                                <Item width="90px" text={item.category} fontSize='12px' />
-                                <Item width="180px" text={item.brand} fontSize='12px' />
-                                <Item width="65px" text={item.unit} fontSize='12px' />
-                            </ItemsContainer>
-                        </div>
+                                {item.subproducts &&
+                                    item.subproducts.map((subitem) => (
+                                        <ItemsContainer
+                                            type="subItem"
+                                            bg='#eef7ff'
+                                            key={subitem.id}
+                                        >
+                                            <Item width='160px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
+                                            <Item width='160px' color='#3142a0' text={`Validade: ${formatValidity(subitem.validade)}`} />
+                                            {submissionCounter === 2
+                                                ? <>
+                                                    <Item width='100px' color='#ff0000' text={`Qtd (sis): ${subitem.quantity}`} />
+                                                    <Item width='100px' color='#ff0000' text={`Qtd (inv): ${verifiedStock[subitem.id].inventory}`} />
+                                                    <Label>Justificativa:</Label>
+                                                    <InputJustification
+                                                        type='text'
+                                                        onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { ...verifiedStock[subitem.id], justification: e.target.value } })}
+                                                    />
+                                                </>
+                                                : <>
+                                                    <Label>Contagem:</Label>
+                                                    <InputQuantidade
+                                                        type='number'
+                                                        min='0'
+                                                        onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { inventory: Number(e.target.value) } })}
+                                                    />
+                                                </>
+                                            }
+                                        </ItemsContainer>
+                                    ))
+                                }
+                            </Container>
+                        ))
+                    }
+                </>
+            </ListWrapper>
 
-                        {item.subproducts &&
-                            item.subproducts.map((subitem) => (
-                                <ItemsContainer
-                                    type="subItem"
-                                    bg='#eef7ff'
-                                    key={subitem.id}
-                                >
-                                    <Item width='160px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
-                                    <Item width='160px' color='#3142a0' text={`Validade: ${formatValidity(subitem.validade)}`} />
-                                    {submissionCounter === 2
-                                        ? <>
-                                            <Item width='100px' color='#ff0000' text={`Qtd (sis): ${subitem.quantity}`} />
-                                            <Item width='100px' color='#ff0000' text={`Qtd (inv): ${verifiedStock[subitem.id].inventory}`} />
-                                            <Label>Justificativa:</Label>
-                                            <InputJustification
-                                                type='text'
-                                                onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { ...verifiedStock[subitem.id], justification: e.target.value } })}
-                                            />
-                                        </>
-                                        : <>
-                                            <Label>Contagem:</Label>
-                                            <InputQuantidade
-                                                type='number'
-                                                min='0'
-                                                onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { inventory: Number(e.target.value) } })}
-                                            />
-                                        </>
-                                    }
-                                </ItemsContainer>
-                            ))
-                        }
-                    </Container>
-                ))
-            }
             <div style={{ margin: '30px 0' }}>
                 <SignOperation show={true} handleSubmit={submitInventory} buttonText='Submeter Inventário' />
             </div>
