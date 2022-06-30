@@ -47,6 +47,10 @@ const InputJustification = styled.input`
     margin-right: 20px;
 `
 
+const justifications = [
+    'one', 'two', 'three'
+]
+
 export default function Inventario() {
 
     const productsData = useAppSelector(state => state.produto.produtos)
@@ -98,7 +102,7 @@ export default function Inventario() {
 
         const divergentItems = getDivergentItems()
 
-        if (divergentItems.length === 0 || submissionCounter === 2) {
+        if (divergentItems.length === 0 || submissionCounter === 1) {
             return sendInventory(username, password)
         }
 
@@ -113,27 +117,15 @@ export default function Inventario() {
                 Confira novamente o estoque dos itens a seguir por favor.`
             })
             setSubmissionCounter(1)
-            let newVerifiedStock = { ...verifiedStock }
-            divergentItems.forEach(i => delete newVerifiedStock[i])
             Array.from(document.querySelectorAll("input")).forEach(
                 input => (input.value = '')
             );
-            setVerifiedStock(newVerifiedStock)
-        }
-
-        if (submissionCounter === 1) {
-            setMessage({
-                title: 'Atenção',
-                message: `${divergentItems.length} itens ainda apresentam divergência. 
-                Compare com a quantidade no sistema e justifique a divergência.`
-            })
-            setSubmissionCounter(2)
         }
     }
 
     const sendInventory = async (username: string, password: string) => {
 
-        if (submissionCounter === 2 && !justificationIsValid()) {
+        if (submissionCounter === 1 && !justificationIsValid()) {
             setIsLoading(false)
             return setMessage({ title: 'Erro', message: 'Por favor preencha todas as justificativas.' })
         }
@@ -173,7 +165,10 @@ export default function Inventario() {
 
     const justificationIsValid = () => {
         for (const value of divergentItemsList) {
-            if (!verifiedStock[value].justification) {
+            console.log(verifiedStock)
+            if (verifiedStock[value].inventory !== verifiedStock[value].system &&
+                !verifiedStock[value].justification
+            ) {
                 return false
             }
         }
@@ -215,6 +210,7 @@ export default function Inventario() {
 
     return (
         <>
+            {console.log(verifiedStock)}
             {isLoading && <Loading loading={isLoading} />}
             {modalIsOpen && <Modal selectCategory={selectCategory} />}
             {message && <Mensagem onClick={handleMessageClick} message={message} />}
@@ -249,33 +245,52 @@ export default function Inventario() {
 
                                 {item.subproducts &&
                                     item.subproducts.map((subitem) => (
-                                        <ItemsContainer
-                                            type="subItem"
-                                            bg='#eef7ff'
-                                            key={subitem.id}
-                                        >
-                                            <Item width='160px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
-                                            <Item width='160px' color='#3142a0' text={`Validade: ${formatValidity(subitem.validade)}`} />
-                                            {submissionCounter === 2
+                                        <div key={subitem.id}>
+                                            <ItemsContainer
+                                                type="subItem"
+                                                bg='#eef7ff'
+                                            >
+                                                <Item width='160px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
+                                                <Item width='150px' color='#3142a0' text={`Validade: ${formatValidity(subitem.validade)}`} />
+                                                {submissionCounter === 1
+                                                    ? <>
+                                                        <Item width='100px' color='#ff0000' text={`Qtd (sis): ${subitem.quantity}`} />
+                                                        <Item width='100px' color='#ff0000' text={`Qtd (inv): ${verifiedStock[subitem.id].inventory}`} />
+                                                    </>
+                                                    : <></>
+                                                }
+                                                <Label>Contagem:</Label>
+                                                <InputQuantidade
+                                                    type='number'
+                                                    min='0'
+                                                    onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { inventory: Number(e.target.value), system: subitem.quantity } })}
+                                                />
+
+                                            </ItemsContainer>
+                                            {submissionCounter === 1
+
                                                 ? <>
-                                                    <Item width='100px' color='#ff0000' text={`Qtd (sis): ${subitem.quantity}`} />
-                                                    <Item width='100px' color='#ff0000' text={`Qtd (inv): ${verifiedStock[subitem.id].inventory}`} />
-                                                    <Label>Justificativa:</Label>
-                                                    <InputJustification
-                                                        type='text'
-                                                        onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { ...verifiedStock[subitem.id], justification: e.target.value } })}
-                                                    />
+                                                    {subitem.quantity !== verifiedStock[subitem.id].inventory &&
+                                                        <ItemsContainer
+                                                            type="subItem"
+                                                            bg='#eef7ff'
+                                                            key={subitem.id}
+                                                        >
+                                                            <Label>Justificativa:</Label>
+                                                            <InputJustification type="text" list="data" onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { ...verifiedStock[subitem.id], justification: e.target.value } })} />
+                                                            <datalist id="data">
+                                                                {justifications.map((item) =>
+                                                                    <option key={item} value={item} />
+                                                                )}
+                                                            </datalist>
+                                                        </ItemsContainer>
+                                                    }
+
                                                 </>
-                                                : <>
-                                                    <Label>Contagem:</Label>
-                                                    <InputQuantidade
-                                                        type='number'
-                                                        min='0'
-                                                        onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { inventory: Number(e.target.value) } })}
-                                                    />
-                                                </>
+                                                : <></>
                                             }
-                                        </ItemsContainer>
+
+                                        </div>
                                     ))
                                 }
                             </Container>
