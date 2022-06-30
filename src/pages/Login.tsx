@@ -1,10 +1,11 @@
-import { FormEvent, useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import Button from "../components/UI/Button"
 import Form from "../components/UI/Form"
 import Input from "../components/UI/Input"
+import Loading from "../components/UI/Loading"
 import { updateAuthentication } from "../features/authentication/authentication"
 import { getUser, login } from "../services/auth.service"
 
@@ -40,23 +41,40 @@ const InputContainer = styled.div`
 
 const Login = () => {
 
-    const [user, setUser] = useState('')
-    const [password, setPassword] = useState('')
-    const [error, setError] = useState('')
     const dispatch = useAppDispatch()
     const auth = useAppSelector(state => state.authentication)
     const navigate = useNavigate()
+
+    useEffect(() => {
+        if (auth.authenticated) {
+            console.log(auth.role)
+            if (auth.role === 'admin') {
+                navigate('/panel')
+            } else {
+                navigate('/retirar')
+            }
+        }
+    }, [auth.authenticated, auth.role, navigate])
+
+    const [user, setUser] = useState('')
+    const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
 
         if (!user || !password) return setError("Preencha todos os campos.")
 
+        setIsLoading(true)
+
         try {
             await login(user, password)
         } catch (error: any) {
             console.log(error)
             return setError(error.response.data)
+        } finally {
+            setIsLoading(false)
         }
         dispatch(updateAuthentication())
 
@@ -69,32 +87,35 @@ const Login = () => {
     }
 
     return (
-        <Container>
-            <Wrapper>
-                <Title>Login</Title>
-                {error && <Message>{error}</Message>}
-                <Form onSubmit={handleSubmit}>
-                    <InputContainer>
-                        <Input
-                            name="user"
-                            label="Usuario"
-                            onChange={(e) => setUser(e.target.value)}
-                            required
-                        />
-                    </InputContainer>
-                    <InputContainer>
-                        <Input
-                            type="password"
-                            name="password"
-                            label="Senha"
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </InputContainer>
-                    <Button text="Entrar" style={{ width: '100%' }} />
-                </Form>
-            </Wrapper>
-        </Container>
+        <>
+            <Loading loading={isLoading} />
+            <Container>
+                <Wrapper>
+                    <Title>Login</Title>
+                    {error && <Message>{error}</Message>}
+                    <Form onSubmit={handleSubmit}>
+                        <InputContainer>
+                            <Input
+                                name="user"
+                                label="Usuario"
+                                onChange={(e) => setUser(e.target.value)}
+                                required
+                            />
+                        </InputContainer>
+                        <InputContainer>
+                            <Input
+                                type="password"
+                                name="password"
+                                label="Senha"
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </InputContainer>
+                        <Button text="Entrar" style={{ width: '100%' }} />
+                    </Form>
+                </Wrapper>
+            </Container>
+        </>
     )
 }
 

@@ -48,8 +48,16 @@ export default function Loading({ loading }: { loading: boolean }) {
     const statusStockIn = useAppSelector(state => state.stockIn.status)
     const statusStockOut = useAppSelector(state => state.stockOut.status)
     const statusAdjustStock = useAppSelector(state => state.adjustStock.status)
+    const statusNotifications = useAppSelector(state => state.notification.status)
 
-    if (loading) {
+    if (
+        statusProduct === 'loading' ||
+        statusProvider === 'loading' ||
+        statusStockIn === 'loading' ||
+        statusStockOut === 'loading' ||
+        statusAdjustStock === 'loading' ||
+        statusNotifications === 'loading' ||
+        loading) {
         return (
             <Container>
                 <Wrapper>
@@ -62,23 +70,5 @@ export default function Loading({ loading }: { loading: boolean }) {
         )
     }
 
-    if (
-        statusProduct !== 'loading' ||
-        statusProvider !== 'loading' ||
-        statusStockIn !== 'loading' ||
-        statusStockOut !== 'loading' ||
-        statusAdjustStock !== 'loading') {
-        return <></>
-    }
-
-    return (
-        <Container>
-            <Wrapper>
-                <Box>
-                    <p>Loading</p>
-                    <Loader></Loader>
-                </Box>
-            </Wrapper>
-        </Container>
-    )
+    return <></>
 }
