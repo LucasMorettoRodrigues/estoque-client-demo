@@ -48,7 +48,11 @@ const InputJustification = styled.input`
 `
 
 const justifications = [
-    'one', 'two', 'three'
+    'Entrada/saída incorretos',
+    'Informação divergente',
+    'Sem identificação',
+    'Erro do local de armazenamento',
+    'Contagem inventário incorreta'
 ]
 
 export default function Inventario() {
