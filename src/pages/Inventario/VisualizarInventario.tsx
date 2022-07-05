@@ -1,6 +1,5 @@
 import styled from "styled-components"
 import { useLocation, useNavigate } from "react-router-dom"
-import { useAppDispatch } from "../../app/hooks"
 import { useState } from "react"
 import { TProduct } from "../../types/TProduct"
 import { formatValidity } from "../../utils/functions"
@@ -9,20 +8,12 @@ import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import Title from "../../components/UI/Title"
 import AdjustButton from "../../components/Inventario/AdjustButton"
-import { archiveNotification } from "../../features/notification/notificationSlice"
-import Button from "../../components/UI/Button"
 import { TMessage } from "../../types/TMessage"
 import Mensagem from "../../components/UI/Mensagem"
 import InventarioList from "../../components/Inventario/InventarioList"
 import InventoryAnalisys from "../../components/Inventario/InventoryAnalisys"
 
 const Container = styled.div``
-const MenuContainer = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-`
 const HeaderContainer = styled.div`
     display: flex;
     z-index: 1;
@@ -33,21 +24,10 @@ const HeaderContainer = styled.div`
 export default function VizualizarInventario() {
 
     const { state }: any = useLocation()
-    const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
     const products: TProduct[] = state.data
-
     const [message, setMessage] = useState<TMessage>()
-
-    const handleArchive = async () => {
-        try {
-            await dispatch(archiveNotification({ ...state, archived: true })).unwrap()
-            setMessage({ title: 'Sucesso', message: 'Ação concluida.' })
-        } catch (error) {
-            setMessage({ title: 'Erro', message: 'Não foi possivel concluir a ação.' })
-        }
-    }
 
     const handleMessage = () => {
         if (message!.title === 'Sucesso') {
@@ -63,16 +43,12 @@ export default function VizualizarInventario() {
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Title title='Inventário' />
-                <Button text="Arquivar" onClick={handleArchive} bg='red' />
+                <div style={{ fontSize: 14, color: '#555' }}>
+                    <p style={{ marginBottom: '8px' }}>Realizado por {state.user?.name} em {formatValidity(state.createdAt)}</p>
+                </div>
             </div>
             <InventoryAnalisys products={products} />
 
-            <MenuContainer>
-                <div style={{ flex: 1 }}>
-                    <p style={{ marginBottom: '8px' }}>Realizado por {state.user?.name}</p>
-                    <p>em {formatValidity(state.createdAt)} </p>
-                </div>
-            </MenuContainer>
             <h3 style={{ marginTop: '30px', marginBottom: '10px' }}>Produtos com Divergência</h3>
             <HeaderContainer>
                 <ListHeader fontSize='12px'>
@@ -115,17 +91,12 @@ export default function VizualizarInventario() {
                                             bg={subitem.justification ? '#ffd2d2' : '#eef7ff'}
                                             key={subitem.id}
                                         >
-                                            <div style={{ marginLeft: '60px' }}>
-                                                <Item width='200px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
-                                            </div>
-                                            <Item width='180px' color='#3142a0' text={`Validade: ${formatValidity(subitem.validade)}`} />
-                                            <Item width='120px' color='#3142a0' text={`Qtd (sis): ${subitem.quantity}`} />
-                                            <Item width='120px' color='#3142a0' text={`Qtd (inv): ${subitem.inventory}`} />
-                                            <>
-                                                {subitem.justification &&
-                                                    <Item flex={1} color='#3142a0' text={`Motivo: ${subitem.justification}`} />
-                                                }
-                                            </>
+                                            <Item width='200px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
+                                            <Item width='150px' color='#3142a0' text={`Validade: ${formatValidity(subitem.validade)}`} />
+                                            <Item width='90px' color='#3142a0' text={`Qtd (sis): ${subitem.quantity}`} />
+                                            <Item width='90px' color='#3142a0' text={`Qtd (inv): ${subitem.inventory}`} />
+                                            <Item flex={1} color='#3142a0' text={`Motivo: ${subitem.reason}`} />
+                                            <Item flex={2} color='#3142a0' text={`Justificativa: ${subitem.justification}`} />
                                             <AdjustButton subProduct={subitem} />
                                         </ItemsContainer>
                                     ))

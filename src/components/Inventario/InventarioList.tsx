@@ -58,15 +58,27 @@ export default function InventarioList({ products }: Props) {
                                             bg={subitem.justification ? '#ffd2d2' : '#eef7ff'}
                                             key={subitem.id}
                                         >
-                                            <div style={{ marginLeft: '60px' }}>
-                                                <Item width='200px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
-                                            </div>
-                                            <Item width='180px' color='#3142a0' text={`Validade: ${formatValidity(subitem.validade)}`} />
-                                            <Item width='120px' color='#3142a0' text={`Qtd (sis): ${subitem.quantity}`} />
-                                            <Item width='120px' color='#3142a0' text={`Qtd (inv): ${subitem.inventory}`} />
+                                            <Item width='200px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
+                                            <Item width='150px' color='#3142a0' text={`Validade: ${formatValidity(subitem.validade)}`} />
+                                            <>
+                                                {subitem.inventory === subitem.quantity &&
+                                                    <Item width='90px' color='#3142a0' text={`Qtd: ${subitem.inventory}`} />
+                                                }
+                                            </>
+                                            <>
+                                                {subitem.inventory !== subitem.quantity &&
+                                                    <>
+                                                        <Item width='90px' color='#3142a0' text={`Qtd (sis): ${subitem.quantity}`} />
+                                                        <Item width='90px' color='#3142a0' text={`Qtd (inv): ${subitem.inventory}`} />
+                                                    </>
+                                                }
+                                            </>
                                             <>
                                                 {subitem.justification &&
-                                                    <Item flex={1} color='#3142a0' text={`Motivo: ${subitem.justification}`} />
+                                                    <>
+                                                        <Item flex={1} color='#3142a0' text={`Motivo: ${subitem.reason}`} />
+                                                        <Item flex={2} color='#3142a0' text={`Justificativa: ${subitem.justification}`} />
+                                                    </>
                                                 }
                                             </>
                                         </ItemsContainer>

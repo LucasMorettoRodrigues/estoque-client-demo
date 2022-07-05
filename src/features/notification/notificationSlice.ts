@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import moment from 'moment-timezone'
 import { api } from '../../services/api.service'
 import { TNotification } from '../../types/TNotification'
 
@@ -18,8 +19,14 @@ export const createNotification = createAsyncThunk(
 export const getAllNotifications = createAsyncThunk(
     'notifications/getAllNotifications',
     async (thunkAPI) => {
-        const res = await api.get('/notifications')
-        return res.data
+        const notifications = await api.get('/notifications')
+        const res = notifications.data.map((item: any) => (
+            {
+                ...item,
+                createdAt: moment.tz(item.createdAt, "America/Sao_Paulo").format()
+            }
+        ))
+        return res
     }
 )
 

@@ -26,14 +26,16 @@ export default function ListInventarios() {
             <ListWrapper>
                 <ListHeader>
                     <Item width="100px" text='Data' />
-                    <Item flex={1} text='Realizado por' />
+                    <Item width="90px" text='Hora' />
+                    <Item flex={1} text='Responsável' />
                 </ListHeader>
                 <>
                     {
                         notifications.map((item) => (
                             <Container key={item.id}>
-                                <ItemsContainer onClick={() => navigate(`/historico/inventarios/${item.id}`, { state: item })}>
+                                <ItemsContainer onClick={() => navigate(`/inventarios/${item.id}`, { state: item })}>
                                     <Item width="100px" text={formatValidity(item.createdAt)} />
+                                    <Item width='90px' text={item.createdAt?.slice(11, 19)} />
                                     <Item flex={1} text={item.user!.name} />
                                 </ItemsContainer>
                             </Container>

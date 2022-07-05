@@ -79,7 +79,8 @@ export default function Notification({ notification }: Props) {
         }
 
         if (item.description === 'Inventário') {
-            navigate(`/inventario/${item.id}`, { state: item })
+            dispatch(archiveNotification({ ...item, archived: true }))
+            navigate(`/inventarios/${item.id}`, { state: item })
         }
     }
 

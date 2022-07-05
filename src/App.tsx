@@ -35,7 +35,6 @@ import ListNotifications from "./pages/Historic/ListNotifications";
 import Inventario from "./pages/Inventario/Inventario";
 import VizualizarInventario from "./pages/Inventario/VisualizarInventario";
 import ListInventarios from "./pages/Historic/ListInventarios";
-import HistoricoInventario from "./pages/Historic/HistoricoInventario";
 import { getAllHistoric } from "./features/historic/historicSlice";
 
 function App() {
@@ -95,11 +94,10 @@ function App() {
           <Route path='/panel' element={<AdminRoute><AdminPanel /></AdminRoute>} />
           <Route path='/usuarios/:id' element={<AdminRoute><EditUser /></AdminRoute>} />
           <Route path='/usuarios/:id/redefinirSenha' element={<AdminRoute><RedefinePassword /></AdminRoute>} />
-          <Route path='/inventario/:id' element={<AdminRoute><VizualizarInventario /></AdminRoute>} />
+          <Route path='/inventarios/:id' element={<AdminRoute><VizualizarInventario /></AdminRoute>} />
 
           <Route path='/historico/notificacoes' element={<AdminRoute><ListNotifications /></AdminRoute>} />
           <Route path='/historico/inventarios' element={<AdminRoute><ListInventarios /></AdminRoute>} />
-          <Route path='/historico/inventarios/:id' element={<AdminRoute><HistoricoInventario /></AdminRoute>} />
 
         </Routes>
       </Container>

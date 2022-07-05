@@ -24,7 +24,7 @@ export default function ChartPie({ data, radius }: Props) {
                     data={data}
                     cx="50%"
                     cy="50%"
-                    outerRadius={100}
+                    outerRadius={radius}
                     label={({
                         cx,
                         cy,
