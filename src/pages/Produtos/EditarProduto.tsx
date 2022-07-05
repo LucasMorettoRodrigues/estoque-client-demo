@@ -8,7 +8,7 @@ import Input from "../../components/UI/Input"
 import Title from "../../components/UI/Title"
 import { editProduct } from "../../features/produtos/produtoSlice"
 import { TProduct } from "../../types/TProduct"
-import ListOperations from "../History/ListOperations"
+import ListOperations from "../Historic/ListOperations"
 
 const InputContainer = styled.div`
     width: 48%;

@@ -118,3 +118,20 @@ export const groupStockByDate = (stockList: (TStockIn[] | TStockOut[]), suffix: 
 
     return stockByDate
 }
+
+
+export const groupStockByDateB = (stockList: (TStockIn[] | TStockOut[])) => {
+
+    let stockByDate: { [key: string]: (TStockIn[] | TStockOut[]) } = {}
+
+    stockList.forEach((i: any) => {
+        let index = i.createdAt!.slice(0, 10) + '_' + i.description
+        if (stockByDate[index]) {
+            stockByDate[index].push(i)
+        } else {
+            stockByDate[index] = [i]
+        }
+    })
+
+    return stockByDate
+}

@@ -20,14 +20,15 @@ const SInput = styled.input`
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     name: string,
     label?: string,
-    display?: string
+    display?: string,
 }
 
 export default function Input({ name, label, display, ...rest }: InputProps) {
     return (
         <>
             <Label htmlFor={name} display={display}>{label}</Label>
-            <SInput id={name} {...rest}></SInput>
+            <SInput id={name} {...rest}>
+            </SInput>
         </>
     )
 }

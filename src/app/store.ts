@@ -6,6 +6,7 @@ import stockOutReducer from '../features/stockOut/stockOut';
 import adjustStockReducer from '../features/adjustStock/adjustStock'
 import authenticationReducer from '../features/authentication/authentication'
 import notificationReducer from '../features/notification/notificationSlice';
+import historicSlice from '../features/historic/historicSlice';
 
 export const store = configureStore({
   reducer: {
@@ -15,7 +16,8 @@ export const store = configureStore({
     stockIn: stockInReducer,
     adjustStock: adjustStockReducer,
     authentication: authenticationReducer,
-    notification: notificationReducer
+    notification: notificationReducer,
+    historic: historicSlice
   },
 });
 

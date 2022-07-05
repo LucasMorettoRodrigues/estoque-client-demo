@@ -11,7 +11,6 @@ import Loading from "./components/UI/Loading";
 import Navbar from "./components/Layout/Navbar";
 import { getFornecedores } from "./features/fornecedor/fornecedorSlice";
 import { getProdutos } from "./features/produtos/produtoSlice";
-import { getAllStockOuts } from "./features/stockOut/stockOut";
 import Inserir from "./pages/Actions/Inserir";
 import Detalhes from "./pages/Produtos/Detalhes";
 import ProdutosEscondidos from "./pages/Produtos/Arquivados";
@@ -19,7 +18,7 @@ import EditarFornecedor from "./pages/Providers/EditarFornecedor";
 import EditarProduto from "./pages/Produtos/EditarProduto";
 import EditarSubProduto from "./pages/Produtos/EditarSubProduto";
 import Fornecedores from "./pages/Providers/Fornecedores";
-import ListOperations from "./pages/History/ListOperations";
+import ListOperations from "./pages/Historic/ListOperations";
 import NovoFornecedor from "./pages/Providers/NovoFornecedor";
 import NovoProduto from "./pages/Produtos/NovoProduto";
 import Produtos from "./pages/Produtos/Resumo";
@@ -32,11 +31,12 @@ import CreateUser from "./pages/Users/CreateUser";
 import AdminPanel from "./pages/AdminPanel";
 import EditUser from "./pages/Users/EditUser";
 import RedefinePassword from "./pages/Users/RedefinePassword";
-import ListNotifications from "./pages/History/ListNotifications";
+import ListNotifications from "./pages/Historic/ListNotifications";
 import Inventario from "./pages/Inventario/Inventario";
 import VizualizarInventario from "./pages/Inventario/VisualizarInventario";
-import ListInventarios from "./pages/History/ListInventarios";
-import HistoricoInventario from "./pages/History/HistoricoInventario";
+import ListInventarios from "./pages/Historic/ListInventarios";
+import HistoricoInventario from "./pages/Historic/HistoricoInventario";
+import { getAllHistoric } from "./features/historic/historicSlice";
 
 function App() {
 
@@ -47,10 +47,7 @@ function App() {
     if (authentication.authenticated) {
       dispatch(getProdutos())
       dispatch(getFornecedores())
-
-      if (authentication.role === 'admin') {
-        dispatch(getAllStockOuts())
-      }
+      dispatch(getAllHistoric())
     }
   }, [dispatch, authentication])
 

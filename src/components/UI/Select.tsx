@@ -23,7 +23,7 @@ const Select = styled.select`
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
     name: string,
     label: string,
-    display?: string
+    display?: string,
 }
 
 export default function Input({ name, label, display, ...rest }: SelectProps) {

@@ -1,21 +1,24 @@
 import styled from "styled-components"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { useEffect, useState } from "react"
+import { formatValidity } from "../../utils/functions"
+import { useNavigate } from "react-router-dom"
+import { createNotification } from "../../features/notification/notificationSlice"
+
+import { TMessage } from "../../types/TMessage"
+import { TProduct } from "../../types/TProduct"
 
 import Title from "../../components/UI/Title"
 import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
-import { formatValidity } from "../../utils/functions"
-import { useEffect, useState } from "react"
 import SignOperation from "../../components/Actions/SignOperation"
-import { TProduct } from "../../types/TProduct"
 import Mensagem from "../../components/UI/Mensagem"
-import { TMessage } from "../../types/TMessage"
-import { createNotification } from "../../features/notification/notificationSlice"
 import Modal from "../../components/UI/Modal"
-import { useNavigate } from "react-router-dom"
 import Loading from "../../components/UI/Loading"
 import ListWrapper from "../../components/UI/ListWrapper"
+import Select from "../../components/UI/Select"
+import Input from "../../components/UI/Input"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -34,22 +37,12 @@ const InputQuantidade = styled.input`
     width: 80px;
     border: 2px solid #e6e6e6;
     outline-color: lightblue;
-    margin-left: 10px;
-    margin-right: 20px;
-`
-const InputJustification = styled.input`
-    padding: 6px;
-    border-radius: 5px;
-    width: 20%;
-    border: 2px solid #e6e6e6;
-    outline-color: lightblue;
-    margin-left: 10px;
-    margin-right: 20px;
+    margin: 10px;
 `
 
-const justifications = [
+const reasons = [
     'Entrada/saída incorretos',
-    'Informação divergente',
+    'Erro de digitação',
     'Sem identificação',
     'Erro do local de armazenamento',
     'Contagem inventário incorreta'
@@ -275,19 +268,32 @@ export default function Inventario() {
 
                                                 ? <>
                                                     {subitem.quantity !== verifiedStock[subitem.id].inventory &&
-                                                        <ItemsContainer
-                                                            type="subItem"
-                                                            bg='#eef7ff'
-                                                            key={subitem.id}
-                                                        >
-                                                            <Label>Justificativa:</Label>
-                                                            <InputJustification type="text" list="data" onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { ...verifiedStock[subitem.id], justification: e.target.value } })} />
-                                                            <datalist id="data">
-                                                                {justifications.map((item) =>
-                                                                    <option key={item} value={item} />
-                                                                )}
-                                                            </datalist>
-                                                        </ItemsContainer>
+                                                        <>
+                                                            <ItemsContainer
+                                                                type="subItem"
+                                                                bg='#eef7ff'
+                                                                key={subitem.id}
+                                                            >
+                                                                <div style={{ marginRight: '10px', marginLeft: '45px', display: 'flex', alignItems: 'center', width: '100%' }}>
+                                                                    <Select label="Motivo:" name="reason" display="flex" style={{ fontSize: '12px', padding: '8px' }} onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { ...verifiedStock[subitem.id], justification: e.target.value } })}>
+                                                                        <>
+                                                                            {reasons.map((item) =>
+                                                                                <option key={item}>{item}</option>
+                                                                            )}
+                                                                        </>
+                                                                    </Select>
+                                                                </div>
+                                                            </ItemsContainer>
+                                                            <ItemsContainer
+                                                                type="subItem"
+                                                                bg='#eef7ff'
+                                                                key={subitem.id}
+                                                            >
+                                                                <div style={{ margin: '10px', display: 'flex', alignItems: 'center', width: '100%' }}>
+                                                                    <Input label="Justificativa:" name="justification" display="flex" style={{ fontSize: '12px', padding: '8px' }} onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { ...verifiedStock[subitem.id], reason: e.target.value } })} />
+                                                                </div>
+                                                            </ItemsContainer>
+                                                        </>
                                                     }
 
                                                 </>

@@ -2,18 +2,15 @@ import styled from "styled-components"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { useEffect, useState } from "react"
 import { TStockIn } from "../../types/TStockIn"
-import { TStockOut } from "../../types/TStockOut"
 import Select from '../../components/UI/Select'
 import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import Title from "../../components/UI/Title"
-import { formatValidity, groupStockByDate } from "../../utils/functions"
-import { getAllStockOuts } from "../../features/stockOut/stockOut"
-import { getAllStockIns } from "../../features/stockIn/stockIn"
-import { getAllAdjustStock } from "../../features/adjustStock/adjustStock"
+import { formatValidity, groupStockByDateB } from "../../utils/functions"
 import ExportJSON from "../../components/Actions/ExportJSON"
 import ListWrapper from "../../components/UI/ListWrapper"
+import { getAllHistoric } from "../../features/historic/historicSlice"
 
 const HeaderContainer = styled.div`
     display: flex;
@@ -31,59 +28,39 @@ type Props = {
 
 export default function ListOperations({ productFilter }: Props) {
 
-    const stockOuts = useAppSelector(state => state.stockOut.stockOuts)
-    const adjustStock = useAppSelector(state => state.adjustStock.adjustStock)
-    const stockIns = useAppSelector(state => state.stockIn.stockIns)
+    const historic = useAppSelector(state => state.historic.historic)
     const products = useAppSelector(state => state.produto.produtos)
-    const [orderedStocks, setOrderedStocks] = useState<{ [key: string]: any }>({})
-    const [filteredStocks, setFilteredStocks] = useState<{ [key: string]: any }>({})
+    const [orderedHistoric, setOrderedHistoric] = useState<{ [key: string]: any }>({})
+    const [filteredHistoric, setFilteredHistoric] = useState<{ [key: string]: any }>({})
     const [filter, setFilter] = useState('')
 
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        dispatch(getAllStockOuts())
-        dispatch(getAllStockIns())
-        dispatch(getAllAdjustStock())
+        dispatch(getAllHistoric())
     }, [dispatch])
 
     useEffect(() => {
 
-        let filteredIns = productFilter ? stockIns.filter(i => i.product?.name === productFilter) : stockIns
-        let filteredOuts = productFilter ? stockOuts.filter(i => i.product?.name === productFilter) : stockOuts
-        let filteredAdjusts = productFilter ? adjustStock.filter(i => i.product?.name === productFilter) : adjustStock
-        const stockInByDate = groupStockByDate(filteredIns, '_in') as { [key: string]: TStockIn[] }
-        const stockOutByDate = groupStockByDate(filteredOuts, '_out') as { [key: string]: TStockOut[] }
-        const adjustStockByDate = groupStockByDate(filteredAdjusts, '_adjust') as { [key: string]: TStockOut[] }
+        let filteredHistoric = productFilter ? historic.filter(i => i.product?.name === productFilter) : historic
+        const historicByDate = groupStockByDateB(filteredHistoric) as { [key: string]: TStockIn[] }
+        setOrderedHistoric(historicByDate)
 
-        const stocks = { ...stockInByDate, ...stockOutByDate, ...adjustStockByDate }
-
-        let orderedStocks = Object.keys(stocks).sort().reduce(
-            (obj: { [key: string]: any }, key) => {
-                obj[key] = stocks[key];
-                return obj;
-            },
-            {}
-        );
-
-        setOrderedStocks(orderedStocks)
-
-    }, [stockIns, stockOuts, adjustStock, productFilter, products])
+    }, [productFilter, products, historic])
 
     useEffect(() => {
         if (filter) {
-            setFilteredStocks(Object.keys(orderedStocks)
+            setFilteredHistoric(Object.keys(orderedHistoric)
                 .filter((key) => key.includes(filter))
-                .reduce((cur, key) => { return Object.assign(cur, { [key]: orderedStocks[key] }) }, {})
+                .reduce((cur, key) => { return Object.assign(cur, { [key]: orderedHistoric[key] }) }, {})
             )
         } else {
-            setFilteredStocks(orderedStocks)
+            setFilteredHistoric(orderedHistoric)
         }
-    }, [filter, orderedStocks])
+    }, [filter, orderedHistoric])
 
     return (
         <>
-            {console.log(filteredStocks)}
             <HeaderContainer>
                 <Title title='Histórico' />
                 <Filter>
@@ -94,9 +71,9 @@ export default function ListOperations({ productFilter }: Props) {
                         onChange={(e) => setFilter(e.target.value)}
                     >
                         <option></option>
-                        <option value="_in">Compras</option>
-                        <option value="_out">Retiradas</option>
-                        <option value="_adjust">Ajustes</option>
+                        <option value="Entrada">Entradas</option>
+                        <option value="Retirada">Retiradas</option>
+                        <option value="Ajuste">Ajustes</option>
                     </Select>
                 </Filter>
             </HeaderContainer>
@@ -116,13 +93,13 @@ export default function ListOperations({ productFilter }: Props) {
                 </ListHeader>
                 <>
                     {
-                        Object.keys(filteredStocks).reverse().map(key => (
+                        Object.keys(filteredHistoric).reverse().map(key => (
                             <ItemsContainer
                                 key={key}
                                 subproducts={
-                                    filteredStocks[key].map((item: any, index: any) => (
+                                    filteredHistoric[key].map((item: any, index: any) => (
                                         < div key={index}  >
-                                            <ItemsContainer bg={key.split('_')[1] === 'in' ? '#ceffbf' : key.split('_')[1] === 'out' ? '#ffc6c6' : '#c6caff'} >
+                                            <ItemsContainer bg={item.description === 'Entrada' ? '#ceffbf' : item.description === 'Retirada' ? '#ffc6c6' : '#c6caff'} >
                                                 <Item width='90px' text={item.createdAt?.slice(11, 19)} />
                                                 <Item flex={4} text={item.product.name} />
                                                 <Item width='100px' text={item.provider?.name} />
@@ -131,22 +108,22 @@ export default function ListOperations({ productFilter }: Props) {
                                                 <Item width='80px' text={item.price} />
                                                 <Item flex={1} text={item.lote} />
                                                 <Item width='90px' text={formatValidity(item.validade)} />
-                                                <Item width='70px' text={key.split('_')[1] === 'out' ? -item.quantity : item.quantity} align='center' />
+                                                <Item width='70px' text={item.description === 'Retirada' ? -item.quantity : item.quantity} align='center' />
                                                 <Item width='80px' text={item.user?.name} />
                                             </ItemsContainer>
                                         </div>
                                     ))
                                 }
-                                bg={key.split('_')[1] === 'in' ? '#a3ff86' : key.split('_')[1] === 'out' ? '#ffa7a7' : '#a8aeff'}
+                                bg={key.split('_')[1] === 'Entrada' ? '#a3ff86' : key.split('_')[1] === 'Retirada' ? '#ffa7a7' : '#a8aeff'}
                             >
                                 <Item width='90px' text={key.split('_')[0]} />
-                                <Item text={key.split('_')[1] === 'in' ? "Entrada" : key.split('_')[1] === 'out' ? "Retirada" : "Ajuste"} />
+                                <Item text={key.split('_')[1]} />
                             </ItemsContainer>
                         ))
                     }
                 </>
             </ListWrapper>
-            <ExportJSON data={filteredStocks} fileName='historico.json' />
+            <ExportJSON data={filteredHistoric} fileName='historico.json' />
         </>
     )
 }
