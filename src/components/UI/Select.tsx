@@ -5,8 +5,9 @@ const Label = styled.label<{ display?: string }>`
     display: block;
     margin-left: 2px;
     margin-right: ${props => props.display === 'flex' ? '8px' : 0};
-    margin-bottom: 4px;
-    color: #777;
+    margin-bottom: ${props => props.display === 'flex' ? 0 : '4px'};
+    color: #666;
+    font-size: 15px;
 `
 const Select = styled.select`
     display: block;

@@ -27,18 +27,6 @@ const HeaderContainer = styled.div`
     position: sticky;
     top: 0;
 `
-const Label = styled.label`
-    margin-left: auto;
-    font-size: 12px;
-`
-const InputQuantidade = styled.input`
-    padding: 6px;
-    border-radius: 5px;
-    width: 80px;
-    border: 2px solid #e6e6e6;
-    outline-color: lightblue;
-    margin: 10px;
-`
 
 const reasons = [
     'Entrada/saída incorretos',
@@ -110,8 +98,8 @@ export default function Inventario() {
         if (submissionCounter === 0) {
             setMessage({
                 title: 'Atenção',
-                message: `${divergentItems.length} itens apresentaram divergência. 
-                Confira novamente o estoque dos itens a seguir por favor.`
+                message: `${divergentItems.length} item(s) com divergência. 
+                Confira novamente o estoque do(s) iten(s) a seguir por favor.`
             })
             setSubmissionCounter(1)
             Array.from(document.querySelectorAll("input")).forEach(
@@ -124,7 +112,7 @@ export default function Inventario() {
 
         if (submissionCounter === 1 && !justificationIsValid()) {
             setIsLoading(false)
-            return setMessage({ title: 'Erro', message: 'Por favor preencha todas as justificativas.' })
+            return setMessage({ title: 'Erro', message: 'Por favor preencha todas as justificativas e motivos.' })
         }
 
         if (!username || !password) {
@@ -139,7 +127,8 @@ export default function Inventario() {
                         {
                             ...subitem,
                             inventory: verifiedStock[subitem.id].inventory,
-                            justification: verifiedStock[subitem.id].justification
+                            justification: verifiedStock[subitem.id].justification,
+                            reason: verifiedStock[subitem.id].reason
                         }
                     ))
             }
@@ -162,9 +151,9 @@ export default function Inventario() {
 
     const justificationIsValid = () => {
         for (const value of divergentItemsList) {
-            console.log(verifiedStock)
+
             if (verifiedStock[value].inventory !== verifiedStock[value].system &&
-                !verifiedStock[value].justification
+                (!verifiedStock[value].justification || !verifiedStock[value].reason)
             ) {
                 return false
             }
@@ -256,12 +245,16 @@ export default function Inventario() {
                                                     </>
                                                     : <></>
                                                 }
-                                                <Label>Contagem:</Label>
-                                                <InputQuantidade
-                                                    type='number'
-                                                    min='0'
-                                                    onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { inventory: Number(e.target.value), system: subitem.quantity } })}
-                                                />
+                                                <div style={{ marginLeft: 'auto', paddingRight: '10px', display: 'flex', alignItems: 'center', width: '180px' }}>
+                                                    <Input
+                                                        label="Contagem:"
+                                                        type="number"
+                                                        min="0"
+                                                        name="contagem"
+                                                        display="flex"
+                                                        style={{ fontSize: '12px', padding: '8px' }}
+                                                        onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { inventory: Number(e.target.value), system: subitem.quantity } })} />
+                                                </div>
 
                                             </ItemsContainer>
                                             {submissionCounter === 1
@@ -275,8 +268,9 @@ export default function Inventario() {
                                                                 key={subitem.id}
                                                             >
                                                                 <div style={{ marginRight: '10px', marginLeft: '45px', display: 'flex', alignItems: 'center', width: '100%' }}>
-                                                                    <Select label="Motivo:" name="reason" display="flex" style={{ fontSize: '12px', padding: '8px' }} onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { ...verifiedStock[subitem.id], justification: e.target.value } })}>
+                                                                    <Select label="Motivo:" name="reason" display="flex" style={{ fontSize: '12px', padding: '8px' }} onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { ...verifiedStock[subitem.id], reason: e.target.value } })}>
                                                                         <>
+                                                                            <option></option>
                                                                             {reasons.map((item) =>
                                                                                 <option key={item}>{item}</option>
                                                                             )}
@@ -290,7 +284,7 @@ export default function Inventario() {
                                                                 key={subitem.id}
                                                             >
                                                                 <div style={{ margin: '10px', display: 'flex', alignItems: 'center', width: '100%' }}>
-                                                                    <Input label="Justificativa:" name="justification" display="flex" style={{ fontSize: '12px', padding: '8px' }} onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { ...verifiedStock[subitem.id], reason: e.target.value } })} />
+                                                                    <Input label="Justificativa:" name="justification" display="flex" style={{ fontSize: '12px', padding: '8px' }} onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { ...verifiedStock[subitem.id], justification: e.target.value } })} />
                                                                 </div>
                                                             </ItemsContainer>
                                                         </>

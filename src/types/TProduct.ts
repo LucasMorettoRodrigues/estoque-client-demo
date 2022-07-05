@@ -20,7 +20,8 @@ export type TProduct = {
         validade: string | null,
         quantity: number,
         inventory?: number,
-        justification?: string | undefined,
+        justification?: string,
+        reason?: string,
         obs?: string
     }[]
 }
