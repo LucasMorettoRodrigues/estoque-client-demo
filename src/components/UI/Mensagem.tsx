@@ -23,18 +23,21 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: center;
 `
-const Box = styled.div`
+const Box = styled.div<{ width?: string }>`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 320px;
+    width: ${props => props.width ? props.width : '320px'};
     justify-content: center;
     border-radius: 15px;
     background-color: white;
     padding: 20px;
+
 `
 const ErrorsContainer = styled.div`
     margin-bottom: 20px;
+    width: 100%;
+    max-height: 60vh;
 `
 const Text = styled.p`
     font-size: 14px;
@@ -62,22 +65,25 @@ const ButtonContainer = styled.div`
 type Props = {
     onClick: (arg0: string) => void,
     onClose?: () => void,
+    width?: string
     message: {
         title: string,
         message: string
-    }
+    },
+    children?: JSX.Element | JSX.Element[]
 }
 
-export default function Mensagem({ onClick, onClose, message }: Props) {
+export default function Mensagem({ children, width, onClick, onClose, message }: Props) {
     return (
         <Container>
             <Wrapper>
-                <Box>
+                <Box width={width}>
                     <Title message={message.title}>{message.title}</Title>
                     <ErrorsContainer>
                         <Text style={{ whiteSpace: "pre-line" }}>
                             {message.message.replaceAll(',', '')}
                         </Text>
+                        {children}
                     </ErrorsContainer>
                     <ButtonContainer>
                         {onClose &&

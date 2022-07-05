@@ -14,6 +14,7 @@ import Loading from "../../components/UI/Loading"
 import RetirarEAjustarList from "../../components/Actions/RetirarEAjustarList"
 import SignOperation from "../../components/Actions/SignOperation"
 import RetirarForm from "../../components/Actions/RetirarForm"
+import ValidityInfoAlert from "../../components/ValidityInfoAlert"
 
 type TProductList = {
     product: TProduct,
@@ -152,6 +153,7 @@ export default function Retirar() {
 
     return (
         <>
+            < ValidityInfoAlert />
             < Loading loading={loading} />
             {message && <Mensagem onClick={() => setMessage(null)} message={message} />}
             {messageInput && <ModalInput
