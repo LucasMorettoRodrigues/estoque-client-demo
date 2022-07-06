@@ -64,6 +64,7 @@ export default function Ajustar() {
                 })).unwrap()
                 setMessage({ title: 'Sucesso', message: `O ajuste foi realizado.` })
             } catch (error) {
+                console.log(error)
                 setMessage({ title: 'Erro', message: `Não foi possivel realizar o ajuste.` })
             } finally {
                 setProductList([])
