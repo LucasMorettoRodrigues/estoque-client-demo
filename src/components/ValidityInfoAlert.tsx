@@ -3,29 +3,38 @@ import { useAppSelector } from "../app/hooks"
 import { TMessage } from "../types/TMessage"
 import { TSubProduct } from "../types/TSubProduct"
 import Mensagem from "./UI/Mensagem"
+import ValidityInfoItem from "./ValidityInfoItem"
+
+interface AlertList extends TSubProduct {
+    product: string
+}
+
+type AlertItems = {
+    expired: AlertList[],
+    toExpire: AlertList[]
+}
 
 export default function ValidityInfoAlert() {
 
     const products = useAppSelector(state => state.produto.produtos)
 
     const [message, setMessage] = useState<TMessage>(null)
-    const [alertItems, setAlertItems] = useState<{ vencidos: any, avencer: any }>({ vencidos: [], avencer: [] })
-    // const alertItems: { vencidos: any, avencer: any } = { vencidos: [], avencer: [] }
+    const [alertItems, setAlertItems] = useState<AlertItems>({ expired: [], toExpire: [] })
 
     useEffect(() => {
         const today = new Date()
         const following7Day = new Date(today.getTime() + 7 * 86400000); // + 1 day in ms
         following7Day.toLocaleDateString();
-        const alertItemsAux: { vencidos: any, avencer: any } = { vencidos: [], avencer: [] }
+        const alertItemsAux: AlertItems = { expired: [], toExpire: [] }
 
         products.forEach(product => {
             product.subproducts?.forEach(subproduct => {
                 if (subproduct.validade) {
                     if (new Date(subproduct.validade.slice(0, 10)) < today) {
-                        alertItemsAux.vencidos.push({ ...subproduct, product: product.name })
+                        alertItemsAux.expired.push({ ...subproduct, product: product.name })
                     }
                     else if (new Date(subproduct.validade.slice(0, 10)) < following7Day) {
-                        alertItemsAux.avencer.push({ ...subproduct, product: product.name })
+                        alertItemsAux.toExpire.push({ ...subproduct, product: product.name })
                     }
                 }
             })
@@ -42,31 +51,20 @@ export default function ValidityInfoAlert() {
 
     return (
         <>
-            {console.log(alertItems)}
             {message &&
-                <Mensagem width='500px' onClick={() => setMessage(null)} message={message} >
-                    {alertItems.vencidos.length > 0 && <p>Produtos vencidos:</p>}
-                    {alertItems.vencidos.map((i: any) => (
-                        <div style={{ backgroundColor: 'lightgray', margin: '5px', fontSize: '14px' }}>
-                            <p style={{ flex: '5', margin: '2px' }}>{i.product}</p>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <p style={{ margin: '2px' }}>Lote: {i.lote}</p>
-                                <p style={{ margin: '2px' }}>Validade: {i.validade.slice(0, 10)}</p>
-                            </div>
-                        </div>
-                    ))}
-
-                    {alertItems.avencer.length > 0 && <p>Produtos com data de validade pŕoxima:</p>}
-
-                    {alertItems.avencer.map((i: any) => (
-                        <div style={{ backgroundColor: 'lightgray', margin: '5px', fontSize: '14px' }}>
-                            <p style={{ flex: '5', margin: '2px' }}>{i.product}</p>
-                            <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
-                                <p style={{ margin: '2px' }}>Lote: {i.lote}</p>
-                                <p style={{ margin: '2px' }}>Validade: {i.validade.slice(0, 10)}</p>
-                            </div>
-                        </div>
-                    ))}
+                <Mensagem width='650px' onClick={() => setMessage(null)} message={message} >
+                    <div style={{ fontSize: '14px', marginBottom: '10px' }}>
+                        {alertItems.expired.length > 0 && <p style={{ marginLeft: '2px' }}>Produto(s) vencido(s) no estoque:</p>}
+                        {alertItems.expired.map((i: any) => (
+                            <ValidityInfoItem bColor="rgb(255, 162, 162)" product={i.product} lote={i.lote} validity={`${i.validade.slice(8, 10)}/${i.validade.slice(5, 7)}`} />
+                        ))}
+                    </div>
+                    <div style={{ fontSize: '14px' }}>
+                        {alertItems.toExpire.length > 0 && <p style={{ marginLeft: '2px' }}>Produto(s) com data de validade próxima:</p>}
+                        {alertItems.toExpire.map((i: any) => (
+                            <ValidityInfoItem bColor="#fffd80" product={i.product} lote={i.lote} validity={`${i.validade.slice(8, 10)}/${i.validade.slice(5, 7)}`} />
+                        ))}
+                    </div>
                 </Mensagem>}
         </>
     )
