@@ -4,7 +4,7 @@ import Button from "../../components/UI/Button"
 import { useAppSelector } from "../../app/hooks"
 import { useEffect, useState } from "react"
 import { TProduct } from "../../types/TProduct"
-import { compare, formatValidity } from "../../utils/functions"
+import { compare, formatValidity, isExpired } from "../../utils/functions"
 import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
@@ -193,7 +193,11 @@ export default function Detalhes() {
                                             <div style={{ marginLeft: '60px' }}>
                                                 <Item width='200px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
                                             </div>
-                                            <Item width='280px' color='#3142a0' text={`Validade: ${formatValidity(subitem.validade)}`} />
+                                            <Item
+                                                width='280px'
+                                                color={isExpired(subitem.validade!) ? 'red' : '#3142a0'}
+                                                text={`Validade: ${formatValidity(subitem.validade)}`}
+                                            />
                                             <Item width='200px' color='#3142a0' text={`Quantidade: ${subitem.quantity}`} />
                                         </ItemsContainer>
                                     ))

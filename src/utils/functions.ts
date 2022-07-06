@@ -135,3 +135,18 @@ export const groupStockByDateB = (stockList: (TStockIn[] | TStockOut[])) => {
 
     return stockByDate
 }
+
+export const isExpired = (validity: string): boolean => {
+    if (!validity) {
+        return false
+    }
+
+    const validityDate = new Date(validity)
+    const today = new Date()
+
+    if (validityDate < today) {
+        return true
+    }
+
+    return false
+}
