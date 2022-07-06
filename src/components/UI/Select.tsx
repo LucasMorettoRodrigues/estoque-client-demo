@@ -9,7 +9,7 @@ const Label = styled.label<{ display?: string }>`
     color: #666;
     font-size: 15px;
 `
-const Select = styled.select`
+const CSelect = styled.select`
     display: block;
     width: 100%;
     padding: 10px;
@@ -27,11 +27,11 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
     display?: string,
 }
 
-export default function Input({ name, label, display, ...rest }: SelectProps) {
+export default function Select({ name, label, display, ...rest }: SelectProps) {
     return (
         <>
             <Label htmlFor={name} display={display}>{label}</Label>
-            <Select id={name} {...rest}></Select>
+            <CSelect id={name} {...rest}></CSelect>
         </>
     )
 }

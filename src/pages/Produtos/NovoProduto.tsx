@@ -5,17 +5,13 @@ import { useAppDispatch } from "../../app/hooks"
 import Button from "../../components/UI/Button"
 import Form from "../../components/UI/Form"
 import Input from "../../components/UI/Input"
+import Select from "../../components/UI/Select"
 import Title from "../../components/UI/Title"
 import { createProduct } from "../../features/produtos/produtoSlice"
 
-const InputsContainer = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-`
 const InputContainer = styled.div`
-    width: 48%;
     margin-bottom: 20px;
+    flex: 1;
 `
 
 export default function NovoProduto() {
@@ -28,22 +24,36 @@ export default function NovoProduto() {
     const [category, setCategory] = useState('')
     const [brand, setBrand] = useState('')
     const [unit, setUnit] = useState('')
-    const [minStock, setMinStock] = useState(0)
-    const [maxStock, setMaxStock] = useState(0)
+    const [minStock, setMinStock] = useState('')
+    const [maxStock, setMaxStock] = useState('')
+    const [deliveryTime, setDeliveryTime] = useState('')
     const [observation, setObservation] = useState('')
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        dispatch(createProduct({ name, code, category, brand, unit, stock: 0, min_stock: minStock, max_stock: maxStock, observation }))
+
+        if (!inputIsValid()) {
+            return
+        }
+
+        dispatch(createProduct({ name, code, category, brand, unit, stock: 0, min_stock: parseInt(minStock), max_stock: parseInt(maxStock), delivery_time: parseInt(deliveryTime), observation }))
         navigate('/produtos')
+    }
+
+    const inputIsValid = () => {
+        if ((deliveryTime && !parseInt(deliveryTime)) || !parseInt(minStock) || !parseInt(maxStock)) {
+            return false
+        }
+
+        return true
     }
 
     return (
         <>
             <Title title='Novo Produto' />
             <Form onSubmit={handleOnSubmit}>
-                <InputsContainer>
-                    <InputContainer>
+                <div style={{ display: 'flex', width: '100%' }}>
+                    <InputContainer style={{ marginRight: '40px' }}>
                         <Input
                             onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                             name={'name'}
@@ -59,13 +69,20 @@ export default function NovoProduto() {
                             required
                         />
                     </InputContainer>
-                    <InputContainer>
-                        <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setCategory(e.target.value)}
+                </div>
+                <div style={{ display: 'flex', width: '100%' }}>
+                    <InputContainer style={{ marginRight: '40px' }}>
+                        <Select
+                            onChange={(e: ChangeEvent<HTMLSelectElement>) => setCategory(e.target.value)}
                             name={'categoria'}
                             label={'Categoria'}
                             required
-                        />
+                        >
+                            <option></option>
+                            <option>Reagentes</option>
+                            <option>Descartáveis</option>
+                            <option>Kits</option>
+                        </Select>
                     </InputContainer>
                     <InputContainer>
                         <Input
@@ -75,7 +92,9 @@ export default function NovoProduto() {
                             required
                         />
                     </InputContainer>
-                    <InputContainer>
+                </div>
+                <div style={{ display: 'flex', width: '100%' }}>
+                    <InputContainer style={{ marginRight: '40px' }}>
                         <Input
                             onChange={(e: ChangeEvent<HTMLInputElement>) => setUnit(e.target.value)}
                             name={'unit'}
@@ -83,27 +102,31 @@ export default function NovoProduto() {
                             required
                         />
                     </InputContainer>
-                    <InputContainer>
-                        <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setMinStock(parseInt(e.target.value))}
-                            name={'minStock'}
-                            label={'Estoque Mínimo'}
-                            type='number'
-                            min={0}
-                            required
-                        />
-                    </InputContainer>
-                    <InputContainer>
-                        <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setMaxStock(parseInt(e.target.value))}
-                            name={'maxStock'}
-                            label={'Estoque Máximo'}
-                            type='number'
-                            min={0}
-                            required
-                        />
-                    </InputContainer>
-                    <InputContainer>
+                    <div style={{ display: 'flex', flex: 1 }}>
+                        <InputContainer style={{ marginRight: '40px' }}>
+                            <Input
+                                onChange={(e: ChangeEvent<HTMLInputElement>) => setMinStock(e.target.value)}
+                                name={'minStock'}
+                                label={'Estoque Mínimo'}
+                                type='number'
+                                min={0}
+                                required
+                            />
+                        </InputContainer>
+                        <InputContainer>
+                            <Input
+                                onChange={(e: ChangeEvent<HTMLInputElement>) => setMaxStock(e.target.value)}
+                                name={'maxStock'}
+                                label={'Estoque Máximo'}
+                                type='number'
+                                min={0}
+                                required
+                            />
+                        </InputContainer>
+                    </div>
+                </div>
+                <div style={{ display: 'flex', width: '100%' }}>
+                    <InputContainer style={{ marginRight: '40px' }}>
                         <Input
                             onChange={(e: ChangeEvent<HTMLInputElement>) => setObservation(e.target.value)}
                             name={'obervation'}
@@ -111,7 +134,15 @@ export default function NovoProduto() {
                             type='string'
                         />
                     </InputContainer>
-                </InputsContainer>
+                    <InputContainer>
+                        <Input
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => setDeliveryTime(e.target.value)}
+                            name={'deliveryTime'}
+                            label={'Previsão de entrega (semanas)'}
+                            type='number'
+                        />
+                    </InputContainer>
+                </div>
                 <Button text={'Cadastrar Produto'} />
             </Form>
         </>
