@@ -53,7 +53,7 @@ export default function ValidityInfoAlert() {
         <>
             {message &&
                 <Mensagem width='650px' onClick={() => setMessage(null)} message={message} >
-                    <div style={{ overflowY: 'scroll', maxHeight: '60vh' }}>
+                    <div style={{ overflowY: 'auto', maxHeight: '60vh' }}>
                         <div style={{ fontSize: '14px', marginBottom: '20px' }}>
                             {alertItems.expired.length > 0 && <p style={{ marginLeft: '2px' }}>Produto(s) vencido(s) no estoque:</p>}
                             {alertItems.expired.map((i: any) => (

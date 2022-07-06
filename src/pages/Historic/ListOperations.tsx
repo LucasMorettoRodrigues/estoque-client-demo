@@ -93,7 +93,7 @@ export default function ListOperations({ productFilter }: Props) {
                 </ListHeader>
                 <>
                     {
-                        Object.keys(filteredHistoric).reverse().map(key => (
+                        Object.keys(filteredHistoric).map(key => (
                             <ItemsContainer
                                 key={key}
                                 subproducts={
