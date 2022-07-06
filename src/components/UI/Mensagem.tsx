@@ -14,7 +14,7 @@ const Title = styled.h2<{ message?: string }>`
         ? '#3dc73d'
         : props.message === 'Erro'
             ? '#ff3232'
-            : 'black'};
+            : '#333'};
     margin-bottom: 15px;
 `
 const Wrapper = styled.div`
@@ -37,7 +37,6 @@ const Box = styled.div<{ width?: string }>`
 const ErrorsContainer = styled.div`
     margin-bottom: 20px;
     width: 100%;
-    max-height: 60vh;
 `
 const Text = styled.p`
     font-size: 14px;

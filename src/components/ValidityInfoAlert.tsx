@@ -53,17 +53,19 @@ export default function ValidityInfoAlert() {
         <>
             {message &&
                 <Mensagem width='650px' onClick={() => setMessage(null)} message={message} >
-                    <div style={{ fontSize: '14px', marginBottom: '10px' }}>
-                        {alertItems.expired.length > 0 && <p style={{ marginLeft: '2px' }}>Produto(s) vencido(s) no estoque:</p>}
-                        {alertItems.expired.map((i: any) => (
-                            <ValidityInfoItem bColor="rgb(255, 162, 162)" product={i.product} lote={i.lote} validity={`${i.validade.slice(8, 10)}/${i.validade.slice(5, 7)}`} />
-                        ))}
-                    </div>
-                    <div style={{ fontSize: '14px' }}>
-                        {alertItems.toExpire.length > 0 && <p style={{ marginLeft: '2px' }}>Produto(s) com data de validade próxima:</p>}
-                        {alertItems.toExpire.map((i: any) => (
-                            <ValidityInfoItem bColor="#fffd80" product={i.product} lote={i.lote} validity={`${i.validade.slice(8, 10)}/${i.validade.slice(5, 7)}`} />
-                        ))}
+                    <div style={{ overflowY: 'scroll', maxHeight: '60vh' }}>
+                        <div style={{ fontSize: '14px', marginBottom: '20px' }}>
+                            {alertItems.expired.length > 0 && <p style={{ marginLeft: '2px' }}>Produto(s) vencido(s) no estoque:</p>}
+                            {alertItems.expired.map((i: any) => (
+                                <ValidityInfoItem bColor="rgb(255, 162, 162)" product={i.product} lote={i.lote} validity={`${i.validade.slice(8, 10)}/${i.validade.slice(5, 7)}`} />
+                            ))}
+                        </div>
+                        <div style={{ fontSize: '14px' }}>
+                            {alertItems.toExpire.length > 0 && <p style={{ marginLeft: '2px' }}>Produto(s) com data de validade próxima:</p>}
+                            {alertItems.toExpire.map((i: any) => (
+                                <ValidityInfoItem bColor="#fffd80" product={i.product} lote={i.lote} validity={`${i.validade.slice(8, 10)}/${i.validade.slice(5, 7)}`} />
+                            ))}
+                        </div>
                     </div>
                 </Mensagem>}
         </>
