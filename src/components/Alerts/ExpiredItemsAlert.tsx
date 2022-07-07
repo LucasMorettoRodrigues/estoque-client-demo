@@ -40,13 +40,14 @@ export default function ExpiredItemsAlert() {
             })
         })
 
-        setAlertItems(alertItemsAux)
+        if (alertItemsAux.expired.length > 0 || alertItemsAux.toExpire.length > 0) {
+            setAlertItems(alertItemsAux)
 
-        setMessage({
-            title: 'Atenção',
-            message: ``
-        })
-
+            setMessage({
+                title: 'Atenção',
+                message: ``
+            })
+        }
     }, [products])
 
     return (

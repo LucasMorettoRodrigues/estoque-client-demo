@@ -16,6 +16,12 @@ export default function ItemsToBuyAlert() {
     const [message, setMessage] = useState<TMessage>(null)
     const [alertItems, setAlertItems] = useState<AlertList[]>([])
 
+    const isTimeToBuy = (validade: string, deliveryTime: number) => {
+        const today = new Date().getTime()
+        const dateToBuy = new Date(validade).getTime() - 7 * deliveryTime * 86400000
+        return today > dateToBuy
+    }
+
     useEffect(() => {
         const itemsToBuy: AlertList[] = []
 
@@ -30,25 +36,20 @@ export default function ItemsToBuyAlert() {
                 }
             ))
 
-        const isTimeToBuy = (validade: string, deliveryTime: number) => {
-            const today = new Date().getTime()
-            const dateToBuy = new Date(validade).getTime() - 7 * deliveryTime * 86400000
-            return today > dateToBuy
-        }
-
         productsList.forEach(pro => {
             if (isTimeToBuy(pro!.subproducts!.validade!.slice(0, 10), pro.delivery_time!)) {
                 itemsToBuy.push({ ...pro.subproducts, product: pro.name })
             }
         })
 
-        setAlertItems(itemsToBuy)
+        if (itemsToBuy.length > 0) {
+            setAlertItems(itemsToBuy)
 
-        setMessage({
-            title: 'Atenção',
-            message: ``
-        })
-
+            setMessage({
+                title: 'Atenção',
+                message: ``
+            })
+        }
     }, [products])
 
     return (
