@@ -14,7 +14,7 @@ const Title = styled.h2<{ message?: string }>`
         ? '#3dc73d'
         : props.message === 'Erro'
             ? '#ff3232'
-            : '#333'};
+            : '#222'};
     margin-bottom: 15px;
 `
 const Wrapper = styled.div`

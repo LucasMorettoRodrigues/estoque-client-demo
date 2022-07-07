@@ -15,22 +15,23 @@ const InnerContainer = styled.div`
 `
 const Product = styled.h5`
     flex: 2;
+    font-size: 12px;
 `
 const Text = styled.p`
     display: flex;
     align-items: center;
-    font-size: 13px;
+    font-size: 12px;
 `
 const SecondaryText = styled.p`
-    font-size: 13px;
+    font-size: 12px;
     color: #111;
     margin-right: 5px;
 `
 
 type Props = {
     product: string,
-    lote: string,
-    validity: string,
+    lote?: string,
+    validity?: string,
     bColor: string
 }
 
@@ -39,8 +40,8 @@ export default function ValidityInfoItem({ bColor, product, lote, validity }: Pr
         <Container bColor={bColor}>
             <InnerContainer>
                 <Product>{product}</Product>
-                <Text style={{ flex: 1 }}><SecondaryText>Lote: </ SecondaryText>{lote}</Text>
-                <Text><SecondaryText>Validade: </SecondaryText>{validity}</Text>
+                <Text style={{ flex: 1 }}><SecondaryText>{lote && 'Lote:'} </ SecondaryText>{lote}</Text>
+                <Text><SecondaryText>{validity && 'Validade:'} </SecondaryText>{validity}</Text>
             </InnerContainer>
         </Container>
     )

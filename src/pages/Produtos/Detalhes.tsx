@@ -11,7 +11,7 @@ import ItemsContainer from "../../components/List/ItemsContainer"
 import ProductBtn from "../../components/UI/ProductBtn"
 import Title from "../../components/UI/Title"
 import { BsFillPlusSquareFill } from 'react-icons/bs'
-import Filters from "../../components/Filters"
+import Filters from "../../components/UI/Filters"
 import ListWrapper from "../../components/UI/ListWrapper"
 
 const Container = styled.div``

@@ -14,7 +14,7 @@ import Loading from "../../components/UI/Loading"
 import RetirarEAjustarList from "../../components/Actions/RetirarEAjustarList"
 import SignOperation from "../../components/Actions/SignOperation"
 import RetirarForm from "../../components/Actions/RetirarForm"
-import ValidityInfoAlert from "../../components/ValidityInfoAlert"
+import ValidityInfoAlert from "../../components/Alerts/ExpiredItemsAlert"
 
 type TProductList = {
     product: TProduct,

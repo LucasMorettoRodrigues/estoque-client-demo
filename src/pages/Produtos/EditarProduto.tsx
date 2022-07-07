@@ -40,8 +40,20 @@ export default function EditarProduto() {
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        dispatch(editProduct({ id: product.id, name, code, category, brand, unit, stock: product.stock, min_stock: parseInt(minStock), max_stock: parseInt(maxStock), observation }))
+
+        if (!inputIsValid()) {
+            return
+        }
+
+        dispatch(editProduct({ id: product.id, name, code, category, brand, unit, stock: product.stock, min_stock: parseInt(minStock), max_stock: parseInt(maxStock), delivery_time: parseInt(deliveryTime!), observation }))
         navigate('/produtos/detalhes')
+    }
+
+    const inputIsValid = () => {
+        if ((deliveryTime && !parseInt(deliveryTime)) || !parseInt(minStock) || !parseInt(maxStock)) {
+            return false
+        }
+        return true
     }
 
     return (

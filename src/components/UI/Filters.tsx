@@ -1,8 +1,8 @@
 import styled from "styled-components"
-import { useAppDispatch, useAppSelector } from "../app/hooks"
-import Input from "./UI/Input"
-import Select from "./UI/Select"
-import { SetCategoryFilter, setProviderFilter, SetSearchFilter, switchMissingFilter } from "../features/produtos/produtoSlice"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import Input from "./Input"
+import Select from "./Select"
+import { SetCategoryFilter, setProviderFilter, SetSearchFilter, switchMissingFilter } from "../../features/produtos/produtoSlice"
 
 const Filter = styled.div`
     display: flex;

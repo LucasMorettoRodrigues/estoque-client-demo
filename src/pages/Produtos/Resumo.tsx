@@ -10,7 +10,7 @@ import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import ProductBtn from "../../components/UI/ProductBtn"
 import Title from "../../components/UI/Title"
-import Filters from "../../components/Filters"
+import Filters from "../../components/UI/Filters"
 import ListWrapper from "../../components/UI/ListWrapper"
 
 const Container = styled.div``

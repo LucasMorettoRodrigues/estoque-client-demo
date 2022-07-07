@@ -6,6 +6,7 @@ import { getAllNotifications } from "../features/notification/notificationSlice"
 import { useEffect } from "react";
 import Button from "../components/UI/Button";
 import Notification from "../components/UI/Notification";
+import DeliveryInfoAlert from "../components/Alerts/ItemsToBuyAlert";
 
 const HeaderContainer = styled.div`
     display: flex;
@@ -31,6 +32,7 @@ export default function AdminPanel() {
 
     return (
         <>
+            <DeliveryInfoAlert />
             <HeaderContainer>
                 <Title title='Bem Vindo'></Title>
                 <div>

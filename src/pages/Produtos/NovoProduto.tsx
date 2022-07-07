@@ -44,7 +44,6 @@ export default function NovoProduto() {
         if ((deliveryTime && !parseInt(deliveryTime)) || !parseInt(minStock) || !parseInt(maxStock)) {
             return false
         }
-
         return true
     }
 

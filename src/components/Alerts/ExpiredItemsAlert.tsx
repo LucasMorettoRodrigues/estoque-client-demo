@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
-import { useAppSelector } from "../app/hooks"
-import { TMessage } from "../types/TMessage"
-import { TSubProduct } from "../types/TSubProduct"
-import Mensagem from "./UI/Mensagem"
-import ValidityInfoItem from "./ValidityInfoItem"
+import { useAppSelector } from "../../app/hooks"
+import { TMessage } from "../../types/TMessage"
+import { TSubProduct } from "../../types/TSubProduct"
+import Mensagem from "../UI/Mensagem"
+import ValidityInfoItem from "./AlertItem"
 
 interface AlertList extends TSubProduct {
     product: string
@@ -14,7 +14,7 @@ type AlertItems = {
     toExpire: AlertList[]
 }
 
-export default function ValidityInfoAlert() {
+export default function ExpiredItemsAlert() {
 
     const products = useAppSelector(state => state.produto.produtos)
 

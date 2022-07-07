@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { TProduct } from "../../types/TProduct"
-import ChartPie from "../PieChart"
+import ChartPie from "../Charts/PieChart"
 
 const InfoWrapper = styled.div`
     display: flex;
