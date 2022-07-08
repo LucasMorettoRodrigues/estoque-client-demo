@@ -48,6 +48,7 @@ export default function EditarProduto() {
     const [deliveryTime, setDeliveryTime] = useState(product.delivery_time?.toString())
     const [childProductId, setChildProductId] = useState(product.product_child_id)
     const [openAutoComplete, setOpenAutoComplete] = useState(false)
+    const [qtyToChild, setQtyToChild] = useState(product.qty_to_child?.toString())
 
     const selectedChildProduct = product.product_child_id && getProduct(products, product.product_child_id)
     console.log(selectedChildProduct)
@@ -60,13 +61,17 @@ export default function EditarProduto() {
         }
 
         const selectedChildProductId = openAutoComplete ? childProductId : product.product_child_id
+        const qty_to_child = qtyToChild ? parseInt(qtyToChild) : null
 
-        dispatch(editProduct({ id: product.id, name, code, category, brand, unit, stock: product.stock, min_stock: parseInt(minStock), max_stock: parseInt(maxStock), delivery_time: parseInt(deliveryTime!), observation, product_child_id: selectedChildProductId }))
+        dispatch(editProduct({ id: product.id, name, code, category, brand, unit, stock: product.stock, min_stock: parseInt(minStock), max_stock: parseInt(maxStock), delivery_time: parseInt(deliveryTime!), observation, product_child_id: selectedChildProductId, qty_to_child }))
         navigate('/produtos/detalhes')
     }
 
     const inputIsValid = () => {
-        if ((deliveryTime && !parseInt(deliveryTime)) || !parseInt(minStock) || !parseInt(maxStock)) {
+        if ((deliveryTime && !parseInt(deliveryTime)) ||
+            (qtyToChild && !parseInt(qtyToChild)) ||
+            !parseInt(minStock) ||
+            !parseInt(maxStock)) {
             return false
         }
         return true
@@ -182,22 +187,46 @@ export default function EditarProduto() {
                                 <div style={{ width: '100%' }}>
                                     <Input disabled name="child" label='Aliquotagem' value={selectedChildProduct ? `${selectedChildProduct.name} - ${selectedChildProduct.brand} - ${selectedChildProduct.unit}` : 'Sem Aliquotagem'} />
                                 </div>
-                                <Button style={{ height: '39px', marginBottom: '1px', whiteSpace: 'nowrap', alignSelf: 'end' }} bg='blue' text="Editar Aliquotagem" onClick={() => setOpenAutoComplete(true)} />
+                                <InputContainer
+                                    style={{ marginLeft: '40px', minWidth: '240px', flex: 0 }}
+                                >
+                                    <Input
+                                        name={'qtyToChild'}
+                                        label={'Qtd. de aliq. mín. para estoque'}
+                                        value={qtyToChild}
+                                        disabled
+                                        type='number'
+                                    />
+                                </InputContainer>
+                                <Button style={{ marginLeft: '40px', whiteSpace: 'nowrap', alignSelf: 'center' }} bg='blue' text="Editar Aliquotagem" onClick={() => setOpenAutoComplete(true)} />
                             </ div>
                         }
                         {openAutoComplete &&
-                            <>
-                                <p style={{ marginLeft: '2px', marginBottom: '4px', color: '#666', fontSize: '15px', fontWeight: 400 }}>Aliquotagem</p>
-                                <Autocomplete
-                                    disablePortal
-                                    onChange={(_, newValue) => setChildProductId(newValue?.id || null)}
-                                    isOptionEqualToValue={(option, value) => option.id === value.id}
-                                    id="select"
-                                    options={options}
-                                    sx={{ backgroundColor: 'white' }}
-                                    renderInput={(params) => <TextField {...params} label="Produto" size='small' />}
-                                />
-                            </>
+                            <div style={{ display: 'flex', width: '100%' }}>
+                                <InputContainer>
+                                    <p style={{ marginLeft: '2px', marginBottom: '4px', color: '#666', fontSize: '15px', fontWeight: 400 }}>Aliquotagem</p>
+                                    <Autocomplete
+                                        disablePortal
+                                        onChange={(_, newValue) => setChildProductId(newValue?.id || null)}
+                                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                                        id="select"
+                                        options={options}
+                                        sx={{ backgroundColor: 'white' }}
+                                        renderInput={(params) => <TextField {...params} label="Produto" size='small' />}
+                                    />
+                                </InputContainer>
+                                <InputContainer
+                                    style={{ marginLeft: '40px', minWidth: '240px', flex: 0 }}
+                                >
+                                    <Input
+                                        onChange={(e: ChangeEvent<HTMLInputElement>) => setQtyToChild(e.target.value)}
+                                        name={'qtyToChild'}
+                                        label={'Qtd. de aliq. mín. para estoque'}
+                                        value={qtyToChild}
+                                        type='number'
+                                    />
+                                </InputContainer>
+                            </div>
                         }
                     </InputContainer>
                 </div>

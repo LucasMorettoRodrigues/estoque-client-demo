@@ -16,6 +16,7 @@ export type TProduct = {
     providers?: string[],
     delivery_time?: number,
     product_child_id?: number | null,
+    qty_to_child: number | null
     subproducts?: {
         id: number,
         lote: string,

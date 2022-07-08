@@ -31,6 +31,7 @@ export default function NovoProduto() {
     const [deliveryTime, setDeliveryTime] = useState('')
     const [observation, setObservation] = useState('')
     const [childProductId, setChildProductId] = useState<number | null>(null)
+    const [qtyToChild, setQtyToChild] = useState('')
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -39,12 +40,15 @@ export default function NovoProduto() {
             return
         }
 
-        dispatch(createProduct({ name, code, category, brand, unit, stock: 0, min_stock: parseInt(minStock), max_stock: parseInt(maxStock), delivery_time: parseInt(deliveryTime), observation, product_child_id: childProductId }))
+        dispatch(createProduct({ name, code, category, brand, unit, stock: 0, min_stock: parseInt(minStock), max_stock: parseInt(maxStock), delivery_time: parseInt(deliveryTime), observation, product_child_id: childProductId, qty_to_child: parseInt(qtyToChild) }))
         navigate('/produtos')
     }
 
     const inputIsValid = () => {
-        if ((deliveryTime && !parseInt(deliveryTime)) || !parseInt(minStock) || !parseInt(maxStock)) {
+        if ((deliveryTime && !parseInt(deliveryTime)) ||
+            (qtyToChild && !parseInt(qtyToChild)) ||
+            !parseInt(minStock) ||
+            !parseInt(maxStock)) {
             return false
         }
         return true
@@ -145,7 +149,7 @@ export default function NovoProduto() {
                         />
                     </InputContainer>
                 </div>
-                <div style={{ width: '100%' }}>
+                <div style={{ display: 'flex', width: '100%' }}>
                     <InputContainer>
                         <p style={{ marginLeft: '2px', marginBottom: '4px', color: '#666', fontSize: '15px', fontWeight: 400 }}>Aliquotagem:</p>
                         <Autocomplete
@@ -160,6 +164,16 @@ export default function NovoProduto() {
                             }
                             sx={{ backgroundColor: 'white' }}
                             renderInput={(params) => <TextField {...params} label="Produto" size='small' />}
+                        />
+                    </InputContainer>
+                    <InputContainer
+                        style={{ marginLeft: '40px', minWidth: '240px', flex: 0 }}
+                    >
+                        <Input
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => setQtyToChild(e.target.value)}
+                            name={'qtyToChild'}
+                            label={'Qtd. de aliq. mín. para estoque'}
+                            type='number'
                         />
                     </InputContainer>
                 </div>
