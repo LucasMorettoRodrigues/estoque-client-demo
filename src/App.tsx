@@ -36,6 +36,8 @@ import Inventario from "./pages/Inventario/Inventario";
 import VizualizarInventario from "./pages/Inventario/VisualizarInventario";
 import ListInventarios from "./pages/Historic/ListInventarios";
 import { getAllHistoric } from "./features/historic/historicSlice";
+import OnHold from "./pages/Aliquot/OnHold";
+import Aliquoting from "./pages/Aliquot/Aliquoting";
 
 function App() {
 
@@ -98,6 +100,9 @@ function App() {
 
           <Route path='/historico/notificacoes' element={<AdminRoute><ListNotifications /></AdminRoute>} />
           <Route path='/historico/inventarios' element={<AdminRoute><ListInventarios /></AdminRoute>} />
+
+          <Route path='/aliquotagem/em-espera' element={<PrivateRoute><OnHold /></PrivateRoute>} />
+          <Route path='/aliquotagem/:productId/:subProductId' element={<PrivateRoute><Aliquoting /></PrivateRoute>} />
 
         </Routes>
       </Container>

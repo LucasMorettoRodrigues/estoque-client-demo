@@ -15,6 +15,7 @@ export type TProduct = {
     hide?: boolean,
     providers?: string[],
     delivery_time?: number,
+    product_child_id?: number | null,
     subproducts?: {
         id: number,
         lote: string,
@@ -23,6 +24,7 @@ export type TProduct = {
         inventory?: number,
         justification?: string,
         reason?: string,
-        obs?: string
+        obs?: string,
+        on_hold?: boolean
     }[]
 }

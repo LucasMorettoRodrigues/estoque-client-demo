@@ -1,7 +1,8 @@
+import { Autocomplete, TextField } from "@mui/material"
 import { useState, FormEvent, ChangeEvent } from "react"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
-import { useAppDispatch } from "../../app/hooks"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import Button from "../../components/UI/Button"
 import Form from "../../components/UI/Form"
 import Input from "../../components/UI/Input"
@@ -18,6 +19,7 @@ export default function NovoProduto() {
 
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
+    const products = useAppSelector(state => state.produto.produtos)
 
     const [name, setName] = useState('')
     const [code, setCode] = useState('')
@@ -28,6 +30,7 @@ export default function NovoProduto() {
     const [maxStock, setMaxStock] = useState('')
     const [deliveryTime, setDeliveryTime] = useState('')
     const [observation, setObservation] = useState('')
+    const [childProductId, setChildProductId] = useState<number | null>(null)
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -36,7 +39,7 @@ export default function NovoProduto() {
             return
         }
 
-        dispatch(createProduct({ name, code, category, brand, unit, stock: 0, min_stock: parseInt(minStock), max_stock: parseInt(maxStock), delivery_time: parseInt(deliveryTime), observation }))
+        dispatch(createProduct({ name, code, category, brand, unit, stock: 0, min_stock: parseInt(minStock), max_stock: parseInt(maxStock), delivery_time: parseInt(deliveryTime), observation, product_child_id: childProductId }))
         navigate('/produtos')
     }
 
@@ -139,6 +142,24 @@ export default function NovoProduto() {
                             name={'deliveryTime'}
                             label={'Previsão de entrega (semanas)'}
                             type='number'
+                        />
+                    </InputContainer>
+                </div>
+                <div style={{ width: '100%' }}>
+                    <InputContainer>
+                        <p style={{ marginLeft: '2px', marginBottom: '4px', color: '#666', fontSize: '15px', fontWeight: 400 }}>Aliquotagem:</p>
+                        <Autocomplete
+                            disablePortal
+                            onChange={(_, newValue) => setChildProductId(newValue?.id || null)}
+                            isOptionEqualToValue={(option, value) => option.id === value.id}
+                            id="select"
+                            options={
+                                products.map(i => ({
+                                    label: `${i.id} - ${i.name} - ${i.brand} - ${i.unit}`, id: i.id
+                                }))
+                            }
+                            sx={{ backgroundColor: 'white' }}
+                            renderInput={(params) => <TextField {...params} label="Produto" size='small' />}
                         />
                     </InputContainer>
                 </div>
