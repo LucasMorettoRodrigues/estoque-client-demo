@@ -12,6 +12,9 @@ import { TMessage } from "../../types/TMessage"
 import Mensagem from "../../components/UI/Mensagem"
 import InventarioList from "../../components/Inventario/InventarioList"
 import InventoryAnalisys from "../../components/Inventario/InventoryAnalisys"
+import Button from "../../components/UI/Button"
+import { useAppDispatch } from "../../app/hooks"
+import { deleteNotification } from "../../features/notification/notificationSlice"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -25,15 +28,25 @@ export default function VizualizarInventario() {
 
     const { state }: any = useLocation()
     const navigate = useNavigate()
+    const dispatch = useAppDispatch()
 
     const products: TProduct[] = state.data
     const [message, setMessage] = useState<TMessage>()
 
     const handleMessage = () => {
         if (message!.title === 'Sucesso') {
-            navigate('/panel')
+            navigate('/historico/inventarios')
         } else {
             setMessage(null)
+        }
+    }
+
+    const handleDelete = async () => {
+        try {
+            await dispatch(deleteNotification(state.id!)).unwrap()
+            setMessage({ title: 'Sucesso', message: 'O inventário foi deletado com êxito.' })
+        } catch (error) {
+            setMessage({ title: 'Erro', message: 'Não foi possível deletar o inventário' })
         }
     }
 
@@ -109,6 +122,7 @@ export default function VizualizarInventario() {
                 Inventário completo
             </h3>
             <InventarioList products={products} />
+            <Button style={{ float: 'right', margin: '30px 0' }} text='Deletar Inventário' bg='red' onClick={handleDelete} />
         </>
     )
 }
