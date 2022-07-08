@@ -42,6 +42,14 @@ export const editSubProduct = createAsyncThunk(
     }
 )
 
+export const createAliquot = createAsyncThunk(
+    'aliquots/createAliquot',
+    async (data: any, thunkAPI) => {
+        const result = await api.post(`/aliquot`, data)
+        return result.data
+    }
+)
+
 type State = {
     produtos: TProduct[],
     status: string,
@@ -173,6 +181,15 @@ export const produtoSlice = createSlice({
             ))
 
             state.produtos = state.produtos.map(item => ({ ...item, subproducts: item.subproducts?.filter(i => i.quantity !== 0) }))
+        })
+        builder.addCase(createAliquot.pending, (state) => {
+            state.status = 'loading'
+        })
+        builder.addCase(createAliquot.fulfilled, (state, action) => {
+            state.status = 'success'
+        })
+        builder.addCase(createAliquot.rejected, (state, action) => {
+            state.status = 'failed'
         })
     },
 })

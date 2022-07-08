@@ -1,7 +1,7 @@
-import { ChangeEvent, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { getProduct } from "../../utils/functions"
-import { ImArrowRight, ImArrowLeft } from 'react-icons/im'
+import { ImArrowRight } from 'react-icons/im'
 
 import { TProduct } from "../../types/TProduct"
 import { TMessage } from "../../types/TMessage"
@@ -10,11 +10,10 @@ import Mensagem from "../../components/UI/Mensagem"
 import Title from "../../components/UI/Title"
 import Loading from "../../components/UI/Loading"
 import SignOperation from "../../components/Actions/SignOperation"
-import { Navigate, useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
 import Card from "./Card"
-import { margin } from "@mui/system"
-import { set } from "immer/dist/internal"
+import { createAliquot } from "../../features/produtos/produtoSlice"
 
 const IconContainer = styled.div<{ completed: boolean }>`
     cursor: pointer;
@@ -51,7 +50,6 @@ export default function Aliquoting() {
     const [destinyProduct, setDestinyProduct] = useState<any>()
     const [completed, setCompleted] = useState(false)
 
-
     const { productId, subProductId } = useParams()
     const products = useAppSelector(state => state.produto.produtos)
 
@@ -73,7 +71,7 @@ export default function Aliquoting() {
         setDestinyProduct(productToCreate)
 
         setLoading(false)
-    }, [])
+    }, [productId, products, subProductId])
 
     const handleAddAliquot = () => {
         setOriginProduct({ ...originProduct, subProduct: { ...originProduct.subProduct, quantity: originProduct.subProduct.quantity - 1 } })
@@ -90,10 +88,11 @@ export default function Aliquoting() {
         }
 
         try {
-            // dispatch(createAliquot({
-            //     originSubProductId: originProduct.subProduct.id,
-            //     destinySubProductId: destinyProduct.subProduct.id
-            // })).unwrap()
+            await dispatch(createAliquot({
+                username,
+                password,
+                originSubProductId: originProduct.subProduct.id,
+            })).unwrap()
             setMessage({ title: 'Sucesso', message: 'A ação foi concluida.' })
         } catch (error) {
             setMessage({ title: 'Erro', message: 'Não foi possivel concluir a ação.' })

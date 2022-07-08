@@ -63,14 +63,6 @@ const Unit = styled.p`
     margin-left: 3px;
     margin-bottom: 3px;
 `
-const IconContainer = styled.div`
-    margin: 40px 0;
-    opacity: 0.7;
-
-    &:hover {
-        opacity: 1;
-    }
-`
 
 type Props = {
     title: string,
@@ -98,4 +90,3 @@ export default function Card({ title, name, brand, obs, lote, validade, quantity
     )
 }
 
-// quantidade de aliquota minima para estoque

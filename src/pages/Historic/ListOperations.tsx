@@ -59,6 +59,20 @@ export default function ListOperations({ productFilter }: Props) {
         }
     }, [filter, orderedHistoric])
 
+    const getColor = (description: string, highlight?: boolean): string => {
+        if (highlight) {
+            if (description === "Entrada") return '#a3ff86'
+            if (description === "Retirada") return '#ffa7a7'
+            if (description === "Ajuster") return '#a8aeff'
+            return '#f5ff6d'
+        }
+
+        if (description === "Entrada") return '#ceffbf'
+        if (description === "Retirada") return '#ffc6c6'
+        if (description === "Ajuster") return '#c6caff'
+        return '#fbffc6'
+    }
+
     return (
         <>
             <HeaderContainer>
@@ -74,6 +88,7 @@ export default function ListOperations({ productFilter }: Props) {
                         <option value="Entrada">Entradas</option>
                         <option value="Retirada">Retiradas</option>
                         <option value="Ajuste">Ajustes</option>
+                        <option value="Alíquota">Alíquotas</option>
                     </Select>
                 </Filter>
             </HeaderContainer>
@@ -99,7 +114,7 @@ export default function ListOperations({ productFilter }: Props) {
                                 subproducts={
                                     filteredHistoric[key].map((item: any, index: any) => (
                                         < div key={index}  >
-                                            <ItemsContainer bg={item.description === 'Entrada' ? '#ceffbf' : item.description === 'Retirada' ? '#ffc6c6' : '#c6caff'} >
+                                            <ItemsContainer bg={getColor(item.description)} >
                                                 <Item width='90px' text={item.createdAt?.slice(11, 19)} />
                                                 <Item flex={4} text={item.product.name} />
                                                 <Item width='100px' text={item.provider?.name} />
@@ -114,7 +129,7 @@ export default function ListOperations({ productFilter }: Props) {
                                         </div>
                                     ))
                                 }
-                                bg={key.split('_')[1] === 'Entrada' ? '#a3ff86' : key.split('_')[1] === 'Retirada' ? '#ffa7a7' : '#a8aeff'}
+                                bg={getColor(key.split('_')[1], true)}
                             >
                                 <Item width='90px' text={key.split('_')[0]} />
                                 <Item text={key.split('_')[1]} />
