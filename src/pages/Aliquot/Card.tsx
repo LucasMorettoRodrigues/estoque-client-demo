@@ -2,6 +2,7 @@ import styled from "styled-components"
 
 const ProductCard = styled.div`
     padding: 20px;
+    min-width: 280px;
     text-align: center;
     border: 5px solid #5fb4ff;
     border-radius: 20px;

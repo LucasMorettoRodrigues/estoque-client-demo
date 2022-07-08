@@ -10,11 +10,18 @@ import Mensagem from "../../components/UI/Mensagem"
 import Title from "../../components/UI/Title"
 import Loading from "../../components/UI/Loading"
 import SignOperation from "../../components/Actions/SignOperation"
-import { useParams } from "react-router-dom"
+import { Navigate, useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
 import Card from "./Card"
+import { margin } from "@mui/system"
+import { set } from "immer/dist/internal"
 
 const IconContainer = styled.div<{ completed: boolean }>`
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     opacity: ${props => props.completed ? 0.2 : 0.8};
     pointer-events: ${props => props.completed ? 'none' : 'all'};;
 
@@ -36,6 +43,7 @@ interface TSelectedProduct extends TProduct {
 export default function Aliquoting() {
 
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     const [message, setMessage] = useState<TMessage>(null)
     const [loading, setLoading] = useState(true)
@@ -69,20 +77,36 @@ export default function Aliquoting() {
 
     const handleAddAliquot = () => {
         setOriginProduct({ ...originProduct, subProduct: { ...originProduct.subProduct, quantity: originProduct.subProduct.quantity - 1 } })
-        setDestinyProduct({ ...destinyProduct, subProduct: { ...destinyProduct.subProduct, quantity: destinyProduct.subProduct.quantity + 1 } })
+        setDestinyProduct({ ...destinyProduct, subProduct: { ...destinyProduct.subProduct, quantity: originProduct.qty_to_child } })
         setCompleted(true)
     }
 
     const handleOnConclude = async (username: string, password: string) => {
         setLoading(true)
 
+        if (!completed) {
+            setMessage({ title: 'Erro', message: 'Realize a aliquotagem para continuar.' })
+            return setLoading(false)
+        }
+
         try {
             // dispatch(createAliquot({
-            //     originSubProductId: 1
-            //     destinyProductId: 1
-            // }))
+            //     originSubProductId: originProduct.subProduct.id,
+            //     destinySubProductId: destinyProduct.subProduct.id
+            // })).unwrap()
+            setMessage({ title: 'Sucesso', message: 'A ação foi concluida.' })
         } catch (error) {
+            setMessage({ title: 'Erro', message: 'Não foi possivel concluir a ação.' })
+        } finally {
+            setLoading(false)
+        }
+    }
 
+    const handleMessageClick = () => {
+        if (message!.title === 'Sucesso') {
+            navigate('/inserir')
+        } else {
+            setMessage(null)
         }
     }
 
@@ -93,7 +117,7 @@ export default function Aliquoting() {
     return (
         <>
 
-            {message && <Mensagem onClick={() => setMessage(null)} message={message} />}
+            {message && <Mensagem onClick={handleMessageClick} message={message} />}
             <Title title='Realizar Aliquotagem' />
 
             <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' }}>
@@ -113,8 +137,8 @@ export default function Aliquoting() {
                     onClick={handleAddAliquot}
                     completed={completed}
                 >
+                    <p style={{ marginBottom: '10px' }}>Clique para aliquotar</p>
                     <ImArrowRight
-                        style={{ cursor: 'pointer' }}
                         size={80}
                         color='green'
                     />
@@ -133,11 +157,14 @@ export default function Aliquoting() {
                 }
             </div>
 
-            <SignOperation
-                show={true}
-                handleSubmit={handleOnConclude}
-                buttonText='Concluir'
-            />
+            <div style={{ width: 'fit-content', margin: '40px auto' }}>
+                <SignOperation
+                    show={true}
+                    handleSubmit={handleOnConclude}
+                    buttonText='Concluir'
+                />
+            </div>
+
         </>
     )
 }

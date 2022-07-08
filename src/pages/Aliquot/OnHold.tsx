@@ -23,10 +23,10 @@ export default function OnHold() {
     const products = useAppSelector(state => state.produto.produtos)
 
     const productsOnHold = products
-        .map(product => (
-            { ...product, subproducts: product.subproducts?.filter(sub => sub.on_hold) }
-        ))
-        .filter(products => products.subproducts!.length > 0)
+        .filter(product => product.qty_to_child &&
+            product.product_child_id &&
+            product.subproducts!.length > 0
+        )
 
     return (
         <>
