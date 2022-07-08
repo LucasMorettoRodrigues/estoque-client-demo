@@ -14,6 +14,7 @@ export const getProdutos = createAsyncThunk(
             const data = await api.get('/products')
             return data.data
         } catch (error) {
+            console.log(error)
         }
     }
 )
@@ -45,8 +46,12 @@ export const editSubProduct = createAsyncThunk(
 export const createAliquot = createAsyncThunk(
     'aliquots/createAliquot',
     async (data: any, thunkAPI) => {
-        const result = await api.post(`/aliquot`, data)
-        return result.data
+        try {
+            await api.post(`/aliquot`, data)
+            thunkAPI.dispatch(getProdutos())
+        } catch (error) {
+            console.log(error)
+        }
     }
 )
 

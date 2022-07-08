@@ -58,7 +58,7 @@ export default function ItemsToBuyAlert() {
                 <Mensagem width='650px' onClick={() => setMessage(null)} message={message} >
                     <div style={{ fontSize: '14px', overflowY: 'auto', maxHeight: '60vh' }}>
                         <p style={{ marginLeft: '2px' }}>
-                            {`Você possue ${alertItems.length === 1 ? '1 produto ' : `${alertItems.length} produtos`} para comprar:`}
+                            {`Você possui ${alertItems.length === 1 ? '1 produto ' : `${alertItems.length} produtos`} para comprar:`}
                         </p>
                         {alertItems.map(i => (
                             <ValidityInfoItem bColor="#5fb4ff" product={i.product} />
