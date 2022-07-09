@@ -59,8 +59,8 @@ type State = {
     products: TProduct[],
     status: string,
     missingFilter: boolean,
-    providerFilter: string | undefined,
-    categoryFilter: string | undefined,
+    providerFilter: string[],
+    categoryFilter: string[],
     searchFilter: string | undefined
 }
 
@@ -70,8 +70,8 @@ export const produtoSlice = createSlice({
         products: [],
         status: 'success',
         missingFilter: false,
-        providerFilter: undefined,
-        categoryFilter: undefined,
+        providerFilter: [],
+        categoryFilter: [],
         searchFilter: undefined,
     } as State,
     reducers: {

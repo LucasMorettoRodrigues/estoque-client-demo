@@ -1,8 +1,9 @@
 import styled from "styled-components"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import Input from "./Input"
-import Select from "./Select"
 import { SetCategoryFilter, setProviderFilter, SetSearchFilter, switchMissingFilter } from "../../features/product/productSlice"
+import MUISelect from "../MultipleSelect"
+import { SelectChangeEvent } from "@mui/material"
 
 const Filter = styled.div`
     display: flex;
@@ -41,35 +42,45 @@ export default function Filters({ hasMissingFilter, hasCategoryFilter }: Props) 
 
     let categories = Array.from(new Set(productsData.map(i => i.category)))
 
+    const handleCategoryChange = (event: SelectChangeEvent<string[]>) => {
+        const {
+            target: { value },
+        } = event;
+        dispatch(SetCategoryFilter(
+            typeof value === 'string' ? value.split(',') : value,
+        ))
+    };
+
+    const handleProviderChange = (event: SelectChangeEvent<string[]>) => {
+        const {
+            target: { value },
+        } = event;
+        dispatch(setProviderFilter(
+            typeof value === 'string' ? value.split(',') : value,
+        ))
+    };
+
     return (
         <Filter>
-            <InputContainer>
-                <Input name="search" label="Pesquisar:"
+            <InputContainer style={{ marginTop: '1px' }}>
+                <Input
+                    name="search" label=""
                     display="flex" type='text'
                     value={searchFilter}
+                    placeholder="Pesquisar"
                     onChange={(e) => dispatch(SetSearchFilter(e.target.value))}
                 >
                 </Input>
             </InputContainer>
             {hasCategoryFilter &&
                 <InputContainer>
-                    <Select name="categories" label="Categoria:"
-                        display="flex" value={categoryFilter}
-                        onChange={(e) => dispatch(SetCategoryFilter(e.target.value))}
-                    >
-                        <option></option>
-                        {categories.map((i, index) => <option key={index}>{i}</option>)}
-                    </Select>
+                    <MUISelect handleOnChange={handleCategoryChange} value={categoryFilter} options={categories} label="Categoria" />
                 </InputContainer>
             }
             <InputContainer>
-                <Select name="providers" label="Fornecedor:"
-                    display="flex" value={providerFilter}
-                    onChange={(e) => dispatch(setProviderFilter(e.target.value))}
-                >
-                    <option></option>
-                    {providers.map(i => <option key={i.id} value={i.name}>{i.name}</option>)}
-                </Select>
+                <InputContainer style={{ marginLeft: 0 }}>
+                    <MUISelect handleOnChange={handleProviderChange} value={providerFilter} options={providers.map(i => i.name)} label="Fornecedor" />
+                </InputContainer>
             </InputContainer>
             {hasMissingFilter &&
                 <>

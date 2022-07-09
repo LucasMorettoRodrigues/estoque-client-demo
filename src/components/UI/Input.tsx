@@ -12,10 +12,18 @@ const Label = styled.label<{ display?: string }>`
 const SInput = styled.input`
     display: block;
     width: 100%;
-    padding: 12px;
-    outline-color: lightblue;
+    padding-top: 13px;
+    padding-bottom: 11px;
+    padding-left: 12px;
+    padding-right: 12px;
+    outline-color: #8383ff;
     border: 1px solid lightgray;
-    border-radius: 5px;
+    border-radius: 5px;    
+
+    &::placeholder {
+        font-size: 16px;
+        color: #666;
+    }
 `
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {

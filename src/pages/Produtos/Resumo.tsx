@@ -57,8 +57,8 @@ export default function Produtos() {
             filtered = filtered.filter(i => i.name.toLowerCase().includes(searchFilter))
         }
 
-        if (providerFilter) {
-            filtered = filtered.filter(i => i.providers?.includes(providerFilter))
+        if (providerFilter.length > 0) {
+            filtered = filtered.filter(i => providerFilter.some(r => i.providers?.includes(r)))
         }
 
         setFilteredProducts(filtered)
