@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { createStockOut } from "../../features/stockOut/stockOut"
+import { createStockOut } from "../../features/AsyncThunkFunctions"
 import { compareDates, getProduct, getSubProduct } from "../../utils/functions"
 
 import { TProduct } from "../../types/TProduct"

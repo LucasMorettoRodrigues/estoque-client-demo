@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { createAdjustStock } from "../../features/adjustStock/adjustStock"
+import { createAdjustStock } from "../../features/AsyncThunkFunctions"
 import { getProduct, getSubProduct } from "../../utils/functions"
 
 import { TSubProduct } from "../../types/TSubProduct"

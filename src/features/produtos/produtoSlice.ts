@@ -4,8 +4,8 @@ import { api } from '../../services/api.service'
 import { TProduct } from '../../types/TProduct'
 import { TSubProduct } from '../../types/TSubProduct'
 import { getProduct } from '../../utils/functions'
-import { createAdjustStock } from '../adjustStock/adjustStock'
-import { createStockOut } from '../stockOut/stockOut'
+import { createAdjustStock } from '../AsyncThunkFunctions'
+import { createStockOut } from '../AsyncThunkFunctions'
 
 export const getProdutos = createAsyncThunk(
     'produtos/getProducts',
@@ -190,10 +190,10 @@ export const produtoSlice = createSlice({
         builder.addCase(createAliquot.pending, (state) => {
             state.status = 'loading'
         })
-        builder.addCase(createAliquot.fulfilled, (state, action) => {
+        builder.addCase(createAliquot.fulfilled, (state) => {
             state.status = 'success'
         })
-        builder.addCase(createAliquot.rejected, (state, action) => {
+        builder.addCase(createAliquot.rejected, (state) => {
             state.status = 'failed'
         })
     },

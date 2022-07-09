@@ -63,13 +63,13 @@ export default function ListOperations({ productFilter }: Props) {
         if (highlight) {
             if (description === "Entrada") return '#a3ff86'
             if (description === "Retirada") return '#ffa7a7'
-            if (description === "Ajuster") return '#a8aeff'
+            if (description === "Ajuste") return '#a8aeff'
             return '#f5ff6d'
         }
 
         if (description === "Entrada") return '#ceffbf'
         if (description === "Retirada") return '#ffc6c6'
-        if (description === "Ajuster") return '#c6caff'
+        if (description === "Ajuste") return '#c6caff'
         return '#fbffc6'
     }
 

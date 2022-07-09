@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { createAdjustStock } from "../../features/adjustStock/adjustStock"
+import { createAdjustStock } from "../../features/AsyncThunkFunctions"
 import { TMessage } from "../../types/TMessage"
 import Mensagem from "../UI/Mensagem"
 import Button from "../UI/Button"

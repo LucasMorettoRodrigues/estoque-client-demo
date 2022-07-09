@@ -45,17 +45,11 @@ export default function Loading({ loading }: { loading: boolean }) {
 
     const statusProvider = useAppSelector(state => state.fornecedor.status)
     const statusProduct = useAppSelector(state => state.produto.status)
-    const statusStockIn = useAppSelector(state => state.stockIn.status)
-    const statusStockOut = useAppSelector(state => state.stockOut.status)
-    const statusAdjustStock = useAppSelector(state => state.adjustStock.status)
     const statusNotifications = useAppSelector(state => state.notification.status)
 
     if (
         statusProduct === 'loading' ||
         statusProvider === 'loading' ||
-        statusStockIn === 'loading' ||
-        statusStockOut === 'loading' ||
-        statusAdjustStock === 'loading' ||
         statusNotifications === 'loading' ||
         loading) {
         return (

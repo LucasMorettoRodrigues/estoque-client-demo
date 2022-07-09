@@ -5,7 +5,7 @@ import { AiOutlineDelete } from 'react-icons/ai'
 import Button from "../../components/UI/Button"
 import { TStockIn } from "../../types/TStockIn"
 import { getProduct, getProvider } from "../../utils/functions"
-import { createStockIn } from "../../features/stockIn/stockIn"
+import { createStockIn } from "../../features/AsyncThunkFunctions"
 import EditDeleteButton from "../../components/UI/EditDeleteButton"
 import Mensagem from "../../components/UI/Mensagem"
 import { createProvider } from "../../features/fornecedor/fornecedorSlice"
@@ -22,7 +22,6 @@ import Loading from "../../components/UI/Loading"
 import { TMessage } from "../../types/TMessage"
 import { getProdutos } from "../../features/produtos/produtoSlice"
 import SignOperation from "../../components/Actions/SignOperation"
-import { getAllHistoric } from "../../features/historic/historicSlice"
 
 const InputContainer = styled.div<{ flex: number, minWidth?: string }>`
     flex: ${props => props.flex};
@@ -146,7 +145,6 @@ export default function Inserir() {
         setCart(prsError)
         setLoading(false)
 
-        dispatch(getAllHistoric())
         dispatch(getProdutos())
 
         if (prsError.length === 0) {
