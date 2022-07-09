@@ -17,7 +17,7 @@ const SInput = styled.input`
     padding-left: 12px;
     padding-right: 12px;
     outline-color: #8383ff;
-    border: 1px solid lightgray;
+    border: 1px solid #c2c2c2;
     border-radius: 5px;    
 
     &::placeholder {
