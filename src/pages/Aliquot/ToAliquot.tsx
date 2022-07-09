@@ -7,6 +7,7 @@ import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import Title from "../../components/UI/Title"
 import ListWrapper from "../../components/UI/ListWrapper"
+import { productsToAliquotSelector } from "../../app/selectors"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -16,17 +17,11 @@ const HeaderContainer = styled.div`
     top: 0;
 `
 
-export default function OnHold() {
+export default function ToAliquot() {
 
     const navigate = useNavigate()
 
-    const products = useAppSelector(state => state.produto.produtos)
-
-    const productsOnHold = products
-        .filter(product => product.qty_to_child &&
-            product.product_child_id &&
-            product.subproducts!.length > 0
-        )
+    const productsOnHold = useAppSelector(productsToAliquotSelector)
 
     return (
         <>

@@ -36,7 +36,7 @@ import Inventario from "./pages/Inventario/Inventario";
 import VizualizarInventario from "./pages/Inventario/VisualizarInventario";
 import ListInventarios from "./pages/Historic/ListInventarios";
 import { getAllHistoric } from "./features/historic/historicSlice";
-import OnHold from "./pages/Aliquot/OnHold";
+import OnHold from "./pages/Aliquot/ToAliquot";
 import Aliquoting from "./pages/Aliquot/Aliquoting";
 
 function App() {

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { logout } from "../../services/auth.service";
 import { updateAuthentication } from '../../features/authentication/authentication'
+import { productsToAliquotSelector } from "../../app/selectors";
 
 const Container = styled.div`
     background-color: #5fb4ff;
@@ -27,6 +28,8 @@ const List = styled.ul`
     justify-content: space-between;
 `
 const Item = styled.li`
+    z-index: 1;
+    position: relative;
     padding: 14px;
     color: #111;
     transition: all .2s ease-in-out;
@@ -53,9 +56,26 @@ const LeaveBtn = styled.button`
     }
 `
 
+const Badge = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 500;
+    position: absolute;
+    top: 1px;
+    right: 2px;
+    font-size: 14px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #f58c41;
+`
+
 export default function Navbar() {
 
     const auth = useAppSelector(state => state.authentication)
+    const productsToAliquot = useAppSelector(productsToAliquotSelector)
     const dispatch = useAppDispatch()
 
     const handleOnClick = () => {
@@ -84,6 +104,7 @@ export default function Navbar() {
                                     <Link to='/ajustar'><Item>Ajustar</Item></Link>
                                 </>
                             }
+                            <Link to='/aliquotagem/em-espera'><Item>Alíquotagem<Badge>{productsToAliquot.length}</Badge></Item></Link>
                             <Link to='/novoInventario'><Item>Inventário</Item></Link>
                             {auth.role === 'admin' &&
                                 <>
