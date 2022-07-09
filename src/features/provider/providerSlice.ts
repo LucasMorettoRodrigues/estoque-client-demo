@@ -39,14 +39,14 @@ export const editProvider = createAsyncThunk(
 )
 
 type State = {
-    fornecedores: TProvider[],
+    providers: TProvider[],
     status: string
 }
 
-export const fornecedorSlice = createSlice({
+export const providerSlice = createSlice({
     name: 'fornecedor',
     initialState: {
-        fornecedores: [],
+        providers: [],
         status: 'success'
     } as State,
     reducers: {
@@ -57,7 +57,7 @@ export const fornecedorSlice = createSlice({
         })
         builder.addCase(getFornecedores.fulfilled, (state, action) => {
             state.status = 'success'
-            state.fornecedores = action.payload
+            state.providers = action.payload
         })
         builder.addCase(getFornecedores.rejected, (state) => {
             state.status = 'failed'
@@ -67,7 +67,7 @@ export const fornecedorSlice = createSlice({
         })
         builder.addCase(createProvider.fulfilled, (state, action: PayloadAction<TProvider>) => {
             state.status = 'success'
-            state.fornecedores.push(action.payload)
+            state.providers.push(action.payload)
         })
         builder.addCase(createProvider.rejected, (state) => {
             state.status = 'failed'
@@ -77,7 +77,7 @@ export const fornecedorSlice = createSlice({
         })
         builder.addCase(deleteProviderById.fulfilled, (state, action: PayloadAction<number>) => {
             state.status = 'success'
-            state.fornecedores = state.fornecedores.filter((item) => item.id !== action.payload)
+            state.providers = state.providers.filter((item) => item.id !== action.payload)
         })
         builder.addCase(deleteProviderById.rejected, (state) => {
             state.status = 'failed'
@@ -87,7 +87,7 @@ export const fornecedorSlice = createSlice({
         })
         builder.addCase(editProvider.fulfilled, (state, action: PayloadAction<TProvider>) => {
             state.status = 'success'
-            state.fornecedores = state.fornecedores
+            state.providers = state.providers
                 .map((item) => item.id === action.payload.id
                     ? action.payload
                     : item
@@ -99,4 +99,4 @@ export const fornecedorSlice = createSlice({
     },
 })
 
-export default fornecedorSlice.reducer
+export default providerSlice.reducer

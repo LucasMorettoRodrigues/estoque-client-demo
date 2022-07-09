@@ -6,7 +6,7 @@ import Button from "../../components/UI/Button"
 import Form from "../../components/UI/Form"
 import Input from "../../components/UI/Input"
 import Title from "../../components/UI/Title"
-import { editSubProduct } from "../../features/produtos/produtoSlice"
+import { editSubProduct } from "../../features/product/productSlice"
 import { TSubProduct } from "../../types/TSubProduct"
 import { formatValidity } from "../../utils/functions"
 

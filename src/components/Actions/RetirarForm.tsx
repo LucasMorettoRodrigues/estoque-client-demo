@@ -23,7 +23,7 @@ type Props = {
 
 export default function RetirarForm({ onSubmit }: Props) {
 
-    const products = useAppSelector(state => state.produto.produtos)
+    const products = useAppSelector(state => state.product.products)
 
     const [quantity, setQuantity] = useState(1)
     const [subProductId, setSubProductId] = useState(0)

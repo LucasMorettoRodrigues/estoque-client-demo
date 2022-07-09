@@ -4,7 +4,7 @@ import Button from "../../components/UI/Button"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { TProduct } from "../../types/TProduct"
 import { AiOutlineEye } from "react-icons/ai"
-import { editProduct } from "../../features/produtos/produtoSlice"
+import { editProduct } from "../../features/product/productSlice"
 import EditDeleteButton from "../../components/UI/EditDeleteButton"
 import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
@@ -13,6 +13,7 @@ import ProductBtn from "../../components/UI/ProductBtn"
 import Title from "../../components/UI/Title"
 import { formatValidity } from "../../utils/functions"
 import ListWrapper from "../../components/UI/ListWrapper"
+import { archivedProducts } from "../../app/selectors"
 
 const Container = styled.div``
 
@@ -27,7 +28,7 @@ export default function ProdutosEscondidos() {
 
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
-    const products = useAppSelector(state => state.produto.produtos.filter(i => i.hide === true))
+    const products = useAppSelector(archivedProducts)
     const resumedProducts: TProduct[] = []
 
     for (let i in products) {

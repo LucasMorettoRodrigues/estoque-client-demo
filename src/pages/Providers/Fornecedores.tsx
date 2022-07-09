@@ -15,7 +15,7 @@ const ButtonContainer = styled.div`
 export default function Fornecedores() {
 
     const navigate = useNavigate()
-    const fornecedores = useAppSelector(state => state.fornecedor.fornecedores)
+    const fornecedores = useAppSelector(state => state.provider.providers)
 
     return (
         <>

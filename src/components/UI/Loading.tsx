@@ -43,8 +43,8 @@ const Loader = styled.div`
 
 export default function Loading({ loading }: { loading: boolean }) {
 
-    const statusProvider = useAppSelector(state => state.fornecedor.status)
-    const statusProduct = useAppSelector(state => state.produto.status)
+    const statusProvider = useAppSelector(state => state.provider.status)
+    const statusProduct = useAppSelector(state => state.product.status)
     const statusNotifications = useAppSelector(state => state.notification.status)
 
     if (

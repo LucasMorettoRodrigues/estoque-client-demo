@@ -11,7 +11,7 @@ interface AlertList extends TSubProduct {
 
 export default function ItemsToBuyAlert() {
 
-    const products = useAppSelector(state => state.produto.produtos)
+    const products = useAppSelector(state => state.product.products)
 
     const [message, setMessage] = useState<TMessage>(null)
     const [alertItems, setAlertItems] = useState<AlertList[]>([])

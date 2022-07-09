@@ -28,10 +28,10 @@ export default function Produtos() {
 
     const navigate = useNavigate()
 
-    const products = useAppSelector(state => state.produto.produtos)
-    const missingFilter = useAppSelector(state => state.produto.missingFilter)
-    const providerFilter = useAppSelector(state => state.produto.providerFilter)
-    const searchFilter = useAppSelector(state => state.produto.searchFilter)
+    const products = useAppSelector(state => state.product.products)
+    const missingFilter = useAppSelector(state => state.product.missingFilter)
+    const providerFilter = useAppSelector(state => state.product.providerFilter)
+    const searchFilter = useAppSelector(state => state.product.searchFilter)
 
     const [filteredProducts, setFilteredProducts] = useState<TProduct[]>([])
     const [sort, setSort] = useState('')

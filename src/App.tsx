@@ -9,8 +9,8 @@ import { useAppDispatch, useAppSelector } from "./app/hooks";
 import Container from "./components/UI/Container";
 import Loading from "./components/UI/Loading";
 import Navbar from "./components/Layout/Navbar";
-import { getFornecedores } from "./features/fornecedor/fornecedorSlice";
-import { getProdutos } from "./features/produtos/produtoSlice";
+import { getFornecedores } from "./features/provider/providerSlice";
+import { getProducts } from "./features/product/productSlice";
 import Inserir from "./pages/Actions/Inserir";
 import Detalhes from "./pages/Produtos/Detalhes";
 import ProdutosEscondidos from "./pages/Produtos/Arquivados";
@@ -46,7 +46,7 @@ function App() {
 
   useEffect(() => {
     if (authentication.authenticated) {
-      dispatch(getProdutos())
+      dispatch(getProducts())
       dispatch(getFornecedores())
       dispatch(getAllHistoric())
     }

@@ -23,7 +23,7 @@ type TProductList = {
 export default function Ajustar() {
 
     const dispatch = useAppDispatch()
-    const products = useAppSelector(state => state.produto.produtos)
+    const products = useAppSelector(state => state.product.products)
     const [productList, setProductList] = useState<TProductList[]>([])
     const [message, setMessage] = useState<TMessage>(null)
     const [loading, setLoading] = useState(false)

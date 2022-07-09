@@ -26,7 +26,7 @@ type TProductList = {
 export default function Retirar() {
 
     const dispatch = useAppDispatch()
-    const products = useAppSelector(state => state.produto.produtos)
+    const products = useAppSelector(state => state.product.products)
 
     const [memoQuantity, setMemoQuantity] = useState(1)
     const [memoSubProductId, setMemoSubProductId] = useState(0)

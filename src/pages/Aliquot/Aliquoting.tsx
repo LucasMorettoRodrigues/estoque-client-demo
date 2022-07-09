@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { getProduct } from "../../utils/functions"
 import { ImArrowRight } from 'react-icons/im'
 
-import { TProduct } from "../../types/TProduct"
 import { TMessage } from "../../types/TMessage"
 
 import Mensagem from "../../components/UI/Mensagem"
@@ -13,7 +12,7 @@ import SignOperation from "../../components/Actions/SignOperation"
 import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
 import Card from "./Card"
-import { createAliquot } from "../../features/produtos/produtoSlice"
+import { createAliquot } from "../../features/product/productSlice"
 
 const IconContainer = styled.div<{ completed: boolean }>`
     cursor: pointer;
@@ -29,15 +28,15 @@ const IconContainer = styled.div<{ completed: boolean }>`
     }
 `
 
-interface TSelectedProduct extends TProduct {
-    subProduct: {
-        id: number,
-        product_id: number,
-        lote: string,
-        validade: string,
-        quantity: number
-    }
-}
+// interface TSelectedProduct extends TProduct {
+//     subProduct: {
+//         id: number,
+//         product_id: number,
+//         lote: string,
+//         validade: string,
+//         quantity: number
+//     }
+// }
 
 export default function Aliquoting() {
 
@@ -51,7 +50,7 @@ export default function Aliquoting() {
     const [completed, setCompleted] = useState(false)
 
     const { productId, subProductId } = useParams()
-    const products = useAppSelector(state => state.produto.produtos)
+    const products = useAppSelector(state => state.product.products)
 
     useEffect(() => {
 

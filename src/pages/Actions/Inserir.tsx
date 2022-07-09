@@ -8,7 +8,7 @@ import { getProduct, getProvider } from "../../utils/functions"
 import { createStockIn } from "../../features/AsyncThunkFunctions"
 import EditDeleteButton from "../../components/UI/EditDeleteButton"
 import Mensagem from "../../components/UI/Mensagem"
-import { createProvider } from "../../features/fornecedor/fornecedorSlice"
+import { createProvider } from "../../features/provider/providerSlice"
 import Input from "../../components/UI/Input"
 import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
@@ -20,7 +20,7 @@ import { createNotification, deleteNotification } from "../../features/notificat
 import { useLocation } from "react-router-dom"
 import Loading from "../../components/UI/Loading"
 import { TMessage } from "../../types/TMessage"
-import { getProdutos } from "../../features/produtos/produtoSlice"
+import { getProducts } from "../../features/product/productSlice"
 import SignOperation from "../../components/Actions/SignOperation"
 
 const InputContainer = styled.div<{ flex: number, minWidth?: string }>`
@@ -40,8 +40,8 @@ export default function Inserir() {
 
     const dispatch = useAppDispatch()
     const { state }: any = useLocation()
-    const products = useAppSelector(state => state.produto.produtos)
-    const providers = useAppSelector(state => state.fornecedor.fornecedores)
+    const products = useAppSelector(state => state.product.products)
+    const providers = useAppSelector(state => state.provider.providers)
     const auth = useAppSelector(state => state.authentication)
 
     const [cart, setCart] = useState<TStockIn[]>(state ? state.data : [])
@@ -145,7 +145,7 @@ export default function Inserir() {
         setCart(prsError)
         setLoading(false)
 
-        dispatch(getProdutos())
+        dispatch(getProducts())
 
         if (prsError.length === 0) {
             setMessage({ title: 'Sucesso', message: 'O(s) produto(s) foram inseridos com sucesso.' })

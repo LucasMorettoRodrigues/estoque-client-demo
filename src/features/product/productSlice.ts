@@ -7,8 +7,8 @@ import { getProduct } from '../../utils/functions'
 import { createAdjustStock } from '../AsyncThunkFunctions'
 import { createStockOut } from '../AsyncThunkFunctions'
 
-export const getProdutos = createAsyncThunk(
-    'produtos/getProducts',
+export const getProducts = createAsyncThunk(
+    'products/getProducts',
     async () => {
         try {
             const data = await api.get('/products')
@@ -48,7 +48,7 @@ export const createAliquot = createAsyncThunk(
     async (data: any, thunkAPI) => {
         try {
             await api.post(`/aliquot`, data)
-            thunkAPI.dispatch(getProdutos())
+            thunkAPI.dispatch(getProducts())
         } catch (error) {
             console.log(error)
         }
@@ -56,7 +56,7 @@ export const createAliquot = createAsyncThunk(
 )
 
 type State = {
-    produtos: TProduct[],
+    products: TProduct[],
     status: string,
     missingFilter: boolean,
     providerFilter: string | undefined,
@@ -67,7 +67,7 @@ type State = {
 export const produtoSlice = createSlice({
     name: 'products',
     initialState: {
-        produtos: [],
+        products: [],
         status: 'success',
         missingFilter: false,
         providerFilter: undefined,
@@ -89,14 +89,14 @@ export const produtoSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(getProdutos.pending, (state) => {
+        builder.addCase(getProducts.pending, (state) => {
             state.status = 'loading'
         })
-        builder.addCase(getProdutos.fulfilled, (state, action) => {
+        builder.addCase(getProducts.fulfilled, (state, action) => {
             state.status = 'success'
-            state.produtos = action.payload
+            state.products = action.payload
         })
-        builder.addCase(getProdutos.rejected, (state) => {
+        builder.addCase(getProducts.rejected, (state) => {
             state.status = 'failed'
         })
         builder.addCase(createProduct.pending, (state) => {
@@ -104,8 +104,8 @@ export const produtoSlice = createSlice({
         })
         builder.addCase(createProduct.fulfilled, (state, action) => {
             state.status = 'success'
-            state.produtos.push(action.payload)
-            state.produtos = state.produtos
+            state.products.push(action.payload)
+            state.products = state.products
                 .map((item) => item.name === action.payload.name
                     ? { ...item, min_stock: action.payload.min_stock, max_stock: action.payload.max_stock }
                     : item
@@ -119,9 +119,9 @@ export const produtoSlice = createSlice({
         })
         builder.addCase(editProduct.fulfilled, (state, action) => {
             state.status = 'success'
-            state.produtos = state.produtos
+            state.products = state.products
                 .map((item) => item.id === action.payload.id
-                    ? { ...action.payload, subproducts: getProduct(state.produtos, action.payload.id)?.subproducts }
+                    ? { ...action.payload, subproducts: getProduct(state.products, action.payload.id)?.subproducts }
                     : item.name === action.payload.name
                         ? { ...item, min_stock: action.payload.min_stock, max_stock: action.payload.max_stock }
                         : item
@@ -136,7 +136,7 @@ export const produtoSlice = createSlice({
         builder.addCase(editSubProduct.fulfilled, (state, action) => {
             state.status = 'success'
 
-            state.produtos = state.produtos
+            state.products = state.products
                 .map((item) => item.id === action.payload.product_id
                     ? {
                         ...item,
@@ -154,7 +154,7 @@ export const produtoSlice = createSlice({
         builder.addCase(createStockOut.fulfilled, (state, action) => {
             state.status = 'success'
 
-            let updatedProduct = getProduct(state.produtos, action.payload.product_id)
+            let updatedProduct = getProduct(state.products, action.payload.product_id)
 
             updatedProduct = { ...updatedProduct!, stock: updatedProduct!.stock - action.payload.quantity }
 
@@ -163,16 +163,16 @@ export const produtoSlice = createSlice({
                 : item
             ))
 
-            state.produtos = state.produtos.map(item => (item.id === action.payload.product_id
+            state.products = state.products.map(item => (item.id === action.payload.product_id
                 ? updatedProduct!
                 : item
             ))
 
-            state.produtos = state.produtos.map(item => ({ ...item, subproducts: item.subproducts?.filter(i => i.quantity !== 0) }))
+            state.products = state.products.map(item => ({ ...item, subproducts: item.subproducts?.filter(i => i.quantity !== 0) }))
         })
         builder.addCase(createAdjustStock.fulfilled, (state, action) => {
             state.status = 'success'
-            let updatedProduct = getProduct(state.produtos, action.payload.product_id)
+            let updatedProduct = getProduct(state.products, action.payload.product_id)
             updatedProduct = { ...updatedProduct!, stock: updatedProduct!.stock + action.payload.quantity }
 
             updatedProduct.subproducts = updatedProduct.subproducts?.map(item => (item.lote === action.payload.lote
@@ -180,12 +180,12 @@ export const produtoSlice = createSlice({
                 : item
             ))
 
-            state.produtos = state.produtos.map(item => (item.id === action.payload.product_id
+            state.products = state.products.map(item => (item.id === action.payload.product_id
                 ? updatedProduct!
                 : item
             ))
 
-            state.produtos = state.produtos.map(item => ({ ...item, subproducts: item.subproducts?.filter(i => i.quantity !== 0) }))
+            state.products = state.products.map(item => ({ ...item, subproducts: item.subproducts?.filter(i => i.quantity !== 0) }))
         })
         builder.addCase(createAliquot.pending, (state) => {
             state.status = 'loading'

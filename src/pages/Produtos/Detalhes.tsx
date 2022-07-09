@@ -49,11 +49,11 @@ export default function Detalhes() {
 
     const navigate = useNavigate()
 
-    const productsData = useAppSelector(state => state.produto.produtos)
+    const productsData = useAppSelector(state => state.product.products)
     const stockOuts = useAppSelector(state => state.historic.historic.filter(i => i.description === 'stockOut'))
-    const providerFilter = useAppSelector(state => state.produto.providerFilter)
-    const categoryFilter = useAppSelector(state => state.produto.categoryFilter)
-    const searchFilter = useAppSelector(state => state.produto.searchFilter)
+    const providerFilter = useAppSelector(state => state.product.providerFilter)
+    const categoryFilter = useAppSelector(state => state.product.categoryFilter)
+    const searchFilter = useAppSelector(state => state.product.searchFilter)
 
     const [filteredProducts, setFilteredProducts] = useState<TProduct[]>([])
     const [sortedProducts, setSortedProducts] = useState<TProduct[]>([])

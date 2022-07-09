@@ -1,14 +1,14 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import fornecedorReducer from '../features/fornecedor/fornecedorSlice'
-import produtoReducer from '../features/produtos/produtoSlice';
+import providerReducer from '../features/provider/providerSlice'
+import productsReducer from '../features/product/productSlice';
 import authenticationReducer from '../features/authentication/authentication'
 import notificationReducer from '../features/notification/notificationSlice';
 import historicSlice from '../features/historic/historicSlice';
 
 export const store = configureStore({
   reducer: {
-    fornecedor: fornecedorReducer,
-    produto: produtoReducer,
+    provider: providerReducer,
+    product: productsReducer,
     authentication: authenticationReducer,
     notification: notificationReducer,
     historic: historicSlice

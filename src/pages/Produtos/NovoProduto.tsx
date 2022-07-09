@@ -8,7 +8,7 @@ import Form from "../../components/UI/Form"
 import Input from "../../components/UI/Input"
 import Select from "../../components/UI/Select"
 import Title from "../../components/UI/Title"
-import { createProduct } from "../../features/produtos/produtoSlice"
+import { createProduct } from "../../features/product/productSlice"
 
 const InputContainer = styled.div`
     margin-bottom: 20px;
@@ -19,7 +19,7 @@ export default function NovoProduto() {
 
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
-    const products = useAppSelector(state => state.produto.produtos)
+    const products = useAppSelector(state => state.product.products)
 
     const [name, setName] = useState('')
     const [code, setCode] = useState('')

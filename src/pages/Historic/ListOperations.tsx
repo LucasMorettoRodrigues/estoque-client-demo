@@ -29,7 +29,7 @@ type Props = {
 export default function ListOperations({ productFilter }: Props) {
 
     const historic = useAppSelector(state => state.historic.historic)
-    const products = useAppSelector(state => state.produto.produtos)
+    const products = useAppSelector(state => state.product.products)
     const [orderedHistoric, setOrderedHistoric] = useState<{ [key: string]: any }>({})
     const [filteredHistoric, setFilteredHistoric] = useState<{ [key: string]: any }>({})
     const [filter, setFilter] = useState('')

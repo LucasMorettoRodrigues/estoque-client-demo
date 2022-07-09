@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import Input from "./Input"
 import Select from "./Select"
-import { SetCategoryFilter, setProviderFilter, SetSearchFilter, switchMissingFilter } from "../../features/produtos/produtoSlice"
+import { SetCategoryFilter, setProviderFilter, SetSearchFilter, switchMissingFilter } from "../../features/product/productSlice"
 
 const Filter = styled.div`
     display: flex;
@@ -32,12 +32,12 @@ type Props = {
 export default function Filters({ hasMissingFilter, hasCategoryFilter }: Props) {
 
     const dispatch = useAppDispatch()
-    const productsData = useAppSelector(state => state.produto.produtos)
-    const providers = useAppSelector(state => state.fornecedor.fornecedores)
-    const searchFilter = useAppSelector(state => state.produto.searchFilter)
-    const categoryFilter = useAppSelector(state => state.produto.categoryFilter)
-    const providerFilter = useAppSelector(state => state.produto.providerFilter)
-    const missingFilter = useAppSelector(state => state.produto.missingFilter)
+    const productsData = useAppSelector(state => state.product.products)
+    const providers = useAppSelector(state => state.provider.providers)
+    const searchFilter = useAppSelector(state => state.product.searchFilter)
+    const categoryFilter = useAppSelector(state => state.product.categoryFilter)
+    const providerFilter = useAppSelector(state => state.product.providerFilter)
+    const missingFilter = useAppSelector(state => state.product.missingFilter)
 
     let categories = Array.from(new Set(productsData.map(i => i.category)))
 

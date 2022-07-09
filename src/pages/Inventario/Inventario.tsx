@@ -38,7 +38,7 @@ const reasons = [
 
 export default function Inventario() {
 
-    const productsData = useAppSelector(state => state.produto.produtos)
+    const productsData = useAppSelector(state => state.product.products)
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
@@ -196,7 +196,6 @@ export default function Inventario() {
 
     return (
         <>
-            {console.log(verifiedStock)}
             {isLoading && <Loading loading={isLoading} />}
             {modalIsOpen && <Modal selectCategory={selectCategory} />}
             {message && <Mensagem onClick={handleMessageClick} message={message} />}

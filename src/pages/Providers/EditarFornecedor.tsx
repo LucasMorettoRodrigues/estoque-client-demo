@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import Button from "../../components/UI/Button"
 import Input from "../../components/UI/Input"
-import { editProvider } from "../../features/fornecedor/fornecedorSlice"
+import { editProvider } from "../../features/provider/providerSlice"
 import Title from "../../components/UI/Title"
 import Form from "../../components/UI/Form"
 

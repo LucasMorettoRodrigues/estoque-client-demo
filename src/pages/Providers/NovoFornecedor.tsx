@@ -6,7 +6,7 @@ import Button from "../../components/UI/Button"
 import Form from "../../components/UI/Form"
 import Input from "../../components/UI/Input"
 import Title from "../../components/UI/Title"
-import { createProvider } from "../../features/fornecedor/fornecedorSlice"
+import { createProvider } from "../../features/provider/providerSlice"
 
 const ButtonContainer = styled.div`
     display: flex;

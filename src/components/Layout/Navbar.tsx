@@ -104,7 +104,12 @@ export default function Navbar() {
                                     <Link to='/ajustar'><Item>Ajustar</Item></Link>
                                 </>
                             }
-                            <Link to='/aliquotagem/em-espera'><Item>Alíquotagem<Badge>{productsToAliquot.length}</Badge></Item></Link>
+                            <Link to='/aliquotagem/em-espera'>
+                                <Item>
+                                    Alíquotagem
+                                    {productsToAliquot.length > 0 && <Badge>{productsToAliquot.length}</Badge>}
+                                </Item>
+                            </Link>
                             <Link to='/novoInventario'><Item>Inventário</Item></Link>
                             {auth.role === 'admin' &&
                                 <>

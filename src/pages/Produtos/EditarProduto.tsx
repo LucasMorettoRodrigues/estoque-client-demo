@@ -8,7 +8,7 @@ import Form from "../../components/UI/Form"
 import Input from "../../components/UI/Input"
 import Select from "../../components/UI/Select"
 import Title from "../../components/UI/Title"
-import { editProduct } from "../../features/produtos/produtoSlice"
+import { editProduct } from "../../features/product/productSlice"
 import { TProduct } from "../../types/TProduct"
 import { getProduct } from "../../utils/functions"
 import ListOperations from "../Historic/ListOperations"
@@ -29,7 +29,7 @@ export default function EditarProduto() {
     const navigate = useNavigate()
     const location = useLocation()
     const product = location.state as TProduct;
-    const products = useAppSelector(state => state.produto.produtos)
+    const products = useAppSelector(state => state.product.products)
 
     const options = products.map(i => ({
         label: `${i.id} - ${i.name} - ${i.brand} - ${i.unit}`, id: i.id
