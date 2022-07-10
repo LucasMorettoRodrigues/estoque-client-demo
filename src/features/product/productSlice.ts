@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-// import { TAccount } from '../Types/taccount'
 import { api } from '../../services/api.service'
-import { TProduct } from '../../types/TProduct'
+import { TProduct, TProductRequest } from '../../types/TProduct'
 import { TSubProduct } from '../../types/TSubProduct'
 import { getProduct } from '../../utils/functions'
 import { createAdjustStock } from '../AsyncThunkFunctions'
@@ -21,7 +20,7 @@ export const getProducts = createAsyncThunk(
 
 export const createProduct = createAsyncThunk(
     'products/createProduct',
-    async (newProduct: TProduct, thunkAPI) => {
+    async (newProduct: TProductRequest, thunkAPI) => {
         const product = await api.post('/products', newProduct)
         return product.data
     }
@@ -29,8 +28,8 @@ export const createProduct = createAsyncThunk(
 
 export const editProduct = createAsyncThunk(
     'products/editProduct',
-    async (product: TProduct, thunkAPI) => {
-        const result = await api.patch(`/products/${product.id}`, product)
+    async ({ id, product }: { id: number, product: TProductRequest }, thunkAPI) => {
+        const result = await api.patch(`/products/${id}`, product)
         return result.data
     }
 )

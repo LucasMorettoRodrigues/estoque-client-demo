@@ -9,7 +9,7 @@ import Input from "../../components/UI/Input"
 import Select from "../../components/UI/Select"
 import Title from "../../components/UI/Title"
 import { editProduct } from "../../features/product/productSlice"
-import { TProduct } from "../../types/TProduct"
+import { TProductRequest } from "../../types/TProduct"
 import { getProduct } from "../../utils/functions"
 import ListOperations from "../Historic/ListOperations"
 
@@ -23,80 +23,118 @@ const ButtonContainer = styled.div`
     justify-content: space-between;
 `
 
-export default function EditarProduto() {
+interface ProductState extends TProductRequest {
+    id: number
+}
+
+export default function EditProduct() {
 
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const location = useLocation()
-    const product = location.state as TProduct;
+    const product = location.state as ProductState;
     const products = useAppSelector(state => state.product.products)
 
     const options = products.map(i => ({
         label: `${i.id} - ${i.name} - ${i.brand} - ${i.unit}`, id: i.id
     }))
 
-    options.unshift({ label: 'Sem Aliquotagem', id: undefined })
+    options.unshift({ label: 'Sem Aliquotagem', id: 0 })
 
-    const [name, setName] = useState(product.name)
-    const [code, setCode] = useState(product.code)
-    const [category, setCategory] = useState(product.category)
-    const [brand, setBrand] = useState(product.brand)
-    const [unit, setUnit] = useState(product.unit)
-    const [minStock, setMinStock] = useState(`${product.min_stock}`)
-    const [maxStock, setMaxStock] = useState(`${product.max_stock}`)
-    const [observation, setObservation] = useState(product.observation)
-    const [deliveryTime, setDeliveryTime] = useState(product.delivery_time?.toString())
-    const [childProductId, setChildProductId] = useState(product.product_child_id)
+    const editingProductInitialState: TProductRequest = {
+        name: product.name,
+        code: product.code,
+        category: product.category,
+        brand: product.brand,
+        unit: product.unit,
+        min_stock: product.min_stock,
+        max_stock: product.max_stock,
+        delivery_time: product.delivery_time,
+        observation: product.observation,
+        product_child_id: product.product_child_id,
+        qty_to_child: product.qty_to_child,
+        hide: product.hide
+    }
+
+    const [editingProduct, setEditingProduct] = useState(editingProductInitialState)
+
     const [openAutoComplete, setOpenAutoComplete] = useState(false)
-    const [qtyToChild, setQtyToChild] = useState(product.qty_to_child?.toString())
+    const [childProductId, setChildProductId] = useState(product.product_child_id)
 
-    const selectedChildProduct = product.product_child_id && getProduct(products, product.product_child_id)
-    console.log(selectedChildProduct)
+    const selectedChildProduct = editingProduct.product_child_id && getProduct(products, editingProduct.product_child_id)
+    console.log(selectedChildProduct, editingProduct.product_child_id)
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (!inputIsValid()) {
+        let editedProduct = editingProduct
+
+        if (openAutoComplete) {
+            editedProduct = {
+                ...editedProduct,
+                product_child_id: childProductId
+            }
+
+
+        }
+
+        if (!productIsValid(editedProduct)) {
             return
         }
 
-        const selectedChildProductId = openAutoComplete ? childProductId : product.product_child_id
-        const qty_to_child = qtyToChild ? parseInt(qtyToChild) : null
-
-        dispatch(editProduct({ id: product.id, name, code, category, brand, unit, stock: product.stock, min_stock: parseInt(minStock), max_stock: parseInt(maxStock), delivery_time: parseInt(deliveryTime!), observation, product_child_id: selectedChildProductId, qty_to_child }))
+        dispatch(editProduct({ id: product.id, product: editedProduct }))
         navigate('/produtos/detalhes')
     }
 
-    const inputIsValid = () => {
-        if ((deliveryTime && !parseInt(deliveryTime)) ||
-            (qtyToChild && !parseInt(qtyToChild)) ||
-            !parseInt(minStock) ||
-            !parseInt(maxStock)) {
-            return false
-        }
+    const productIsValid = (product: TProductRequest) => {
+        if (!product.name) return false
+        if (!product.brand) return false
+        if (!product.code) return false
+        if (!product.category) return false
+        if (!product.unit) return false
+        if (!product.max_stock) return false
+        if (!product.min_stock) return false
+        if ((product.product_child_id && !product.qty_to_child) ||
+            (!product.product_child_id && product.qty_to_child)) return false
+
         return true
+    }
+
+    const validateNumberInput = (e: ChangeEvent<HTMLInputElement>, key: string) => {
+        if (parseInt(e.target.value)) {
+            setEditingProduct({ ...editingProduct, [key]: parseInt(e.target.value) })
+        } else {
+            setEditingProduct({ ...editingProduct, [key]: null })
+        }
     }
 
     return (
         <>
-            <Title title='Editar Produto' />
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Title title='Editar Produto' />
+                <Button
+                    onClick={() => dispatch(editProduct({ id: product.id, product: { hide: true } }))}
+                    text='Arquivar'
+                    bg='red'
+                />
+            </div>
             <Form onSubmit={handleOnSubmit}>
                 <div style={{ display: 'flex', width: '100%' }}>
                     <InputContainer style={{ marginRight: '40px' }}>
                         <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => setEditingProduct({ ...editingProduct, name: e.target.value })}
                             name={'name'}
                             label={'Name'}
-                            value={name}
+                            value={editingProduct.name}
                             required
                         />
                     </InputContainer>
                     <InputContainer>
                         <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setCode(e.target.value)}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => setEditingProduct({ ...editingProduct, code: e.target.value })}
                             name={'codigo'}
                             label={'Código'}
-                            value={code}
+                            value={editingProduct.code}
                             required
                         />
                     </InputContainer>
@@ -104,10 +142,10 @@ export default function EditarProduto() {
                 <div style={{ display: 'flex', width: '100%' }}>
                     <InputContainer style={{ marginRight: '40px' }}>
                         <Select
-                            onChange={(e: ChangeEvent<HTMLSelectElement>) => setCategory(e.target.value)}
+                            onChange={(e: ChangeEvent<HTMLSelectElement>) => setEditingProduct({ ...editingProduct, category: e.target.value })}
                             name={'categoria'}
                             label={'Categoria'}
-                            value={category}
+                            value={editingProduct.category}
                             required
                         >
                             <option></option>
@@ -118,10 +156,10 @@ export default function EditarProduto() {
                     </InputContainer>
                     <InputContainer>
                         <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setBrand(e.target.value)}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => setEditingProduct({ ...editingProduct, brand: e.target.value })}
                             name={'brand'}
                             label={'Marca'}
-                            value={brand}
+                            value={editingProduct.brand}
                             required
                         />
                     </InputContainer>
@@ -129,32 +167,32 @@ export default function EditarProduto() {
                 <div style={{ display: 'flex', width: '100%' }}>
                     <InputContainer style={{ marginRight: '40px' }}>
                         <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setUnit(e.target.value)}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => setEditingProduct({ ...editingProduct, unit: e.target.value })}
                             name={'unit'}
                             label={'Unidade'}
-                            value={unit}
+                            value={editingProduct.unit}
                             required
                         />
                     </InputContainer>
                     <div style={{ display: 'flex', flex: 1 }}>
                         <InputContainer style={{ marginRight: '40px' }}>
                             <Input
-                                onChange={(e: ChangeEvent<HTMLInputElement>) => setMinStock(e.target.value)}
+                                onChange={(e) => validateNumberInput(e, 'min_stock')}
                                 name={'minStock'}
                                 label={'Estoque Mínimo'}
                                 type='number'
-                                value={minStock}
+                                value={editingProduct.min_stock}
                                 min={0}
                                 required
                             />
                         </InputContainer>
                         <InputContainer>
                             <Input
-                                onChange={(e: ChangeEvent<HTMLInputElement>) => setMaxStock(e.target.value)}
+                                onChange={(e) => validateNumberInput(e, 'max_stock')}
                                 name={'maxStock'}
                                 label={'Estoque Máximo'}
                                 type='number'
-                                value={maxStock}
+                                value={editingProduct.max_stock}
                                 min={0}
                                 required
                             />
@@ -164,18 +202,18 @@ export default function EditarProduto() {
                 <div style={{ display: 'flex', width: '100%' }}>
                     <InputContainer style={{ marginRight: '40px' }}>
                         <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setObservation(e.target.value)}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => setEditingProduct({ ...editingProduct, observation: e.target.value })}
                             name={'obervation'}
                             label={'Observação'}
-                            value={observation ? observation : ''}
+                            value={editingProduct.observation || ''}
                         />
                     </InputContainer>
                     <InputContainer>
                         <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setDeliveryTime(e.target.value)}
+                            onChange={(e) => validateNumberInput(e, 'delivery_time')}
                             name={'deliveryTime'}
                             label={'Previsão de entrega (semanas)'}
-                            value={deliveryTime ? deliveryTime : ''}
+                            value={editingProduct.delivery_time || ''}
                             type='number'
                         />
                     </InputContainer>
@@ -193,7 +231,7 @@ export default function EditarProduto() {
                                     <Input
                                         name={'qtyToChild'}
                                         label={'Qtd. de aliq. mín. para estoque'}
-                                        value={qtyToChild}
+                                        value={editingProduct.qty_to_child || ''}
                                         disabled
                                         type='number'
                                     />
@@ -219,10 +257,10 @@ export default function EditarProduto() {
                                     style={{ marginLeft: '40px', minWidth: '240px', flex: 0 }}
                                 >
                                     <Input
-                                        onChange={(e: ChangeEvent<HTMLInputElement>) => setQtyToChild(e.target.value)}
+                                        onChange={(e) => validateNumberInput(e, 'qty_to_child')}
                                         name={'qtyToChild'}
                                         label={'Qtd. de aliq. mín. para estoque'}
-                                        value={qtyToChild}
+                                        value={editingProduct.qty_to_child || ''}
                                         type='number'
                                     />
                                 </InputContainer>
@@ -232,11 +270,6 @@ export default function EditarProduto() {
                 </div>
                 <ButtonContainer>
                     <Button text='Concluir Edição' />
-                    <Button
-                        onClick={() => dispatch(editProduct({ ...product, hide: true }))}
-                        text='Arquivar'
-                        bg='blue'
-                    />
                 </ButtonContainer>
             </Form>
             <ListOperations productFilter={product.name} />

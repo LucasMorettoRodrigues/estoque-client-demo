@@ -9,49 +9,67 @@ import Input from "../../components/UI/Input"
 import Select from "../../components/UI/Select"
 import Title from "../../components/UI/Title"
 import { createProduct } from "../../features/product/productSlice"
+import { TProductRequest } from "../../types/TProduct"
 
 const InputContainer = styled.div`
     margin-bottom: 20px;
     flex: 1;
 `
 
-export default function NovoProduto() {
+export default function CreateProduct() {
 
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const products = useAppSelector(state => state.product.products)
 
-    const [name, setName] = useState('')
-    const [code, setCode] = useState('')
-    const [category, setCategory] = useState('')
-    const [brand, setBrand] = useState('')
-    const [unit, setUnit] = useState('')
-    const [minStock, setMinStock] = useState('')
-    const [maxStock, setMaxStock] = useState('')
-    const [deliveryTime, setDeliveryTime] = useState('')
-    const [observation, setObservation] = useState('')
-    const [childProductId, setChildProductId] = useState<number | null>(null)
-    const [qtyToChild, setQtyToChild] = useState('')
+    const newProductInicialState: TProductRequest = {
+        name: '',
+        code: '',
+        category: '',
+        brand: '',
+        unit: '',
+        min_stock: 0,
+        max_stock: 0,
+        delivery_time: null,
+        observation: null,
+        product_child_id: null,
+        qty_to_child: null,
+        hide: false
+    }
+
+    const [newProduct, setNewProduct] = useState(newProductInicialState)
+
+    const productIsValid = (product: TProductRequest) => {
+        if (!product.name) return false
+        if (!product.brand) return false
+        if (!product.code) return false
+        if (!product.category) return false
+        if (!product.unit) return false
+        if (!product.max_stock) return false
+        if (!product.min_stock) return false
+        if ((product.product_child_id && !product.qty_to_child) ||
+            (!product.product_child_id && product.qty_to_child)) return false
+
+        return true
+    }
+
+    const validateNumberInput = (e: ChangeEvent<HTMLInputElement>, key: string) => {
+        if (parseInt(e.target.value)) {
+            setNewProduct({ ...newProduct, [key]: parseInt(e.target.value) })
+        } else {
+            setNewProduct({ ...newProduct, [key]: null })
+        }
+    }
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (!inputIsValid()) {
+        if (!productIsValid(newProduct)) {
             return
         }
 
-        dispatch(createProduct({ name, code, category, brand, unit, stock: 0, min_stock: parseInt(minStock), max_stock: parseInt(maxStock), delivery_time: parseInt(deliveryTime), observation, product_child_id: childProductId, qty_to_child: parseInt(qtyToChild) }))
+        dispatch(createProduct(newProduct))
         navigate('/produtos')
-    }
-
-    const inputIsValid = () => {
-        if ((deliveryTime && !parseInt(deliveryTime)) ||
-            (qtyToChild && !parseInt(qtyToChild)) ||
-            !parseInt(minStock) ||
-            !parseInt(maxStock)) {
-            return false
-        }
-        return true
     }
 
     return (
@@ -61,7 +79,7 @@ export default function NovoProduto() {
                 <div style={{ display: 'flex', width: '100%' }}>
                     <InputContainer style={{ marginRight: '40px' }}>
                         <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => setNewProduct({ ...newProduct, name: e.target.value })}
                             name={'name'}
                             label={'Name'}
                             required
@@ -69,7 +87,7 @@ export default function NovoProduto() {
                     </InputContainer>
                     <InputContainer>
                         <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setCode(e.target.value)}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => setNewProduct({ ...newProduct, code: e.target.value })}
                             name={'codigo'}
                             label={'Código'}
                             required
@@ -79,7 +97,7 @@ export default function NovoProduto() {
                 <div style={{ display: 'flex', width: '100%' }}>
                     <InputContainer style={{ marginRight: '40px' }}>
                         <Select
-                            onChange={(e: ChangeEvent<HTMLSelectElement>) => setCategory(e.target.value)}
+                            onChange={(e: ChangeEvent<HTMLSelectElement>) => setNewProduct({ ...newProduct, category: e.target.value })}
                             name={'categoria'}
                             label={'Categoria'}
                             required
@@ -92,7 +110,7 @@ export default function NovoProduto() {
                     </InputContainer>
                     <InputContainer>
                         <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setBrand(e.target.value)}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => setNewProduct({ ...newProduct, brand: e.target.value })}
                             name={'brand'}
                             label={'Marca'}
                             required
@@ -102,7 +120,7 @@ export default function NovoProduto() {
                 <div style={{ display: 'flex', width: '100%' }}>
                     <InputContainer style={{ marginRight: '40px' }}>
                         <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setUnit(e.target.value)}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => setNewProduct({ ...newProduct, unit: e.target.value })}
                             name={'unit'}
                             label={'Unidade'}
                             required
@@ -111,7 +129,7 @@ export default function NovoProduto() {
                     <div style={{ display: 'flex', flex: 1 }}>
                         <InputContainer style={{ marginRight: '40px' }}>
                             <Input
-                                onChange={(e: ChangeEvent<HTMLInputElement>) => setMinStock(e.target.value)}
+                                onChange={(e) => validateNumberInput(e, 'min_stock')}
                                 name={'minStock'}
                                 label={'Estoque Mínimo'}
                                 type='number'
@@ -121,7 +139,7 @@ export default function NovoProduto() {
                         </InputContainer>
                         <InputContainer>
                             <Input
-                                onChange={(e: ChangeEvent<HTMLInputElement>) => setMaxStock(e.target.value)}
+                                onChange={(e) => validateNumberInput(e, 'max_stock')}
                                 name={'maxStock'}
                                 label={'Estoque Máximo'}
                                 type='number'
@@ -134,7 +152,7 @@ export default function NovoProduto() {
                 <div style={{ display: 'flex', width: '100%' }}>
                     <InputContainer style={{ marginRight: '40px' }}>
                         <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setObservation(e.target.value)}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => setNewProduct({ ...newProduct, observation: e.target.value })}
                             name={'obervation'}
                             label={'Observação'}
                             type='string'
@@ -142,7 +160,7 @@ export default function NovoProduto() {
                     </InputContainer>
                     <InputContainer>
                         <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setDeliveryTime(e.target.value)}
+                            onChange={(e) => validateNumberInput(e, 'delivery_time')}
                             name={'deliveryTime'}
                             label={'Previsão de entrega (semanas)'}
                             type='number'
@@ -154,7 +172,7 @@ export default function NovoProduto() {
                         <p style={{ marginLeft: '2px', marginBottom: '4px', color: '#666', fontSize: '15px', fontWeight: 400 }}>Aliquotagem:</p>
                         <Autocomplete
                             disablePortal
-                            onChange={(_, newValue) => setChildProductId(newValue?.id || null)}
+                            onChange={(_, newValue) => setNewProduct({ ...newProduct, product_child_id: newValue?.id || null })}
                             isOptionEqualToValue={(option, value) => option.id === value.id}
                             id="select"
                             options={
@@ -170,7 +188,7 @@ export default function NovoProduto() {
                         style={{ marginLeft: '40px', minWidth: '240px', flex: 0 }}
                     >
                         <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setQtyToChild(e.target.value)}
+                            onChange={(e) => validateNumberInput(e, 'qty_to_child')}
                             name={'qtyToChild'}
                             label={'Qtd. de aliq. mín. para estoque'}
                             type='number'

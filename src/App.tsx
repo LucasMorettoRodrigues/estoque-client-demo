@@ -15,12 +15,10 @@ import Inserir from "./pages/Actions/Inserir";
 import Detalhes from "./pages/Produtos/Detalhes";
 import ProdutosEscondidos from "./pages/Produtos/Arquivados";
 import EditarFornecedor from "./pages/Providers/EditarFornecedor";
-import EditarProduto from "./pages/Produtos/EditarProduto";
 import EditarSubProduto from "./pages/Produtos/EditarSubProduto";
 import Fornecedores from "./pages/Providers/Fornecedores";
 import ListOperations from "./pages/Historic/ListOperations";
 import NovoFornecedor from "./pages/Providers/NovoFornecedor";
-import NovoProduto from "./pages/Produtos/NovoProduto";
 import Produtos from "./pages/Produtos/Resumo";
 import Retirar from "./pages/Actions/Retirar";
 import ProdutoHistorico from "./components/ProdutoHistorico";
@@ -38,6 +36,8 @@ import ListInventarios from "./pages/Historic/ListInventarios";
 import { getAllHistoric } from "./features/historic/historicSlice";
 import OnHold from "./pages/Aliquot/ToAliquot";
 import Aliquoting from "./pages/Aliquot/Aliquoting";
+import NovoProdutoTwo from "./pages/Produtos/CreateProduct";
+import EditProduct from "./pages/Produtos/EditProduct";
 
 function App() {
 
@@ -82,9 +82,9 @@ function App() {
           <Route path='/produtos' element={<AdminRoute><Produtos /></AdminRoute>} />
           <Route path='/produtos/detalhes' element={<AdminRoute><Detalhes /></AdminRoute>} />
           <Route path='/produtos/escondidos' element={<AdminRoute><ProdutosEscondidos /></AdminRoute>} />
-          <Route path='/produtos/:id' element={<AdminRoute><EditarProduto /></AdminRoute>} />
+          <Route path='/produtos/:id' element={<AdminRoute><EditProduct /></AdminRoute>} />
           <Route path='/produtos/:id_produto/subprodutos/:id_subproduto' element={<AdminRoute><EditarSubProduto /></AdminRoute>} />
-          <Route path='/novoProduto' element={<AdminRoute><NovoProduto /></AdminRoute>} />
+          <Route path='/novoProduto' element={<AdminRoute><NovoProdutoTwo /></AdminRoute>} />
           <Route path='/fornecedores' element={<AdminRoute><Fornecedores /></AdminRoute>} />
           <Route path='/fornecedores/:id' element={<AdminRoute><EditarFornecedor /></AdminRoute>} />
           <Route path='/novoFornecedor' element={<AdminRoute><NovoFornecedor /></AdminRoute>} />

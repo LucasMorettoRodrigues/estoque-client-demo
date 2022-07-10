@@ -77,7 +77,7 @@ export default function ProdutosEscondidos() {
                                         bg={item.stock < item.min_stock ? '#ff5353' : 'inherit'} />
                                     <Item flex={0.5} align='center' text={item.min_stock} />
                                     <Item flex={0.5} align='center' text={item.max_stock} />
-                                    <EditDeleteButton onClick={() => dispatch(editProduct({ ...item, hide: false }))}>
+                                    <EditDeleteButton onClick={() => dispatch(editProduct({ id: item.id, product: { hide: false } }))}>
                                         <AiOutlineEye />
                                     </EditDeleteButton>
                                 </ItemsContainer>
