@@ -8,7 +8,7 @@ import Input from "../../components/UI/Input"
 import Title from "../../components/UI/Title"
 import { editSubProduct } from "../../features/product/productSlice"
 import { TSubProduct } from "../../types/TSubProduct"
-import { formatValidity } from "../../utils/functions"
+import { formatValidity } from "../../utils/dateFunctions"
 
 const InputContainer = styled.div`
     width: 48%;

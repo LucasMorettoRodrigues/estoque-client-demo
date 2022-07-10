@@ -4,7 +4,7 @@ import Button from "../../components/UI/Button"
 import { useAppSelector } from "../../app/hooks"
 import { useEffect, useState } from "react"
 import { TProduct } from "../../types/TProduct"
-import { compare, formatValidity, isExpired } from "../../utils/functions"
+import { compare } from "../../utils/functions"
 import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
@@ -13,6 +13,7 @@ import Title from "../../components/UI/Title"
 import { BsFillPlusSquareFill } from 'react-icons/bs'
 import Filters from "../../components/UI/Filters"
 import ListWrapper from "../../components/UI/ListWrapper"
+import { formatDate, isExpired } from "../../utils/dateFunctions"
 
 const Container = styled.div``
 const TitleContainer = styled.div`
@@ -196,7 +197,7 @@ export default function Detalhes() {
                                             <Item
                                                 width='280px'
                                                 color={isExpired(subitem.validade!) ? 'red' : '#3142a0'}
-                                                text={`Validade: ${formatValidity(subitem.validade)}`}
+                                                text={`Validade: ${formatDate(subitem.validade)}`}
                                             />
                                             <Item width='200px' color='#3142a0' text={`Quantidade: ${subitem.quantity}`} />
                                         </ItemsContainer>

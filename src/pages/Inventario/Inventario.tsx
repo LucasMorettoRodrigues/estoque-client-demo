@@ -1,7 +1,6 @@
 import styled from "styled-components"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { useEffect, useState } from "react"
-import { formatValidity } from "../../utils/functions"
 import { useNavigate } from "react-router-dom"
 import { createNotification } from "../../features/notification/notificationSlice"
 
@@ -19,6 +18,7 @@ import Loading from "../../components/UI/Loading"
 import ListWrapper from "../../components/UI/ListWrapper"
 import Select from "../../components/UI/Select"
 import Input from "../../components/UI/Input"
+import { formatDate } from "../../utils/dateFunctions"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -59,7 +59,7 @@ export default function Inventario() {
             products = productsData.filter(i => category.includes(i.category))
 
             if (divergentItemsList.length > 0) {
-                products = products.map(i => ({ ...i, subproducts: i.subproducts?.filter(j => divergentItemsList.includes(j.id)) }))
+                products = products.map(i => ({ ...i, subproducts: i.subproducts?.filter(j => divergentItemsList.includes(j.id!)) }))
                 products = products.filter(i => i.subproducts!.length > 0)
             }
 
@@ -73,7 +73,7 @@ export default function Inventario() {
             const systemStockObj: any = {}
             productsData.filter(i => category.includes(i.category)).forEach((product) => {
                 product.subproducts && product.subproducts.forEach((subproduct) => {
-                    systemStockObj[subproduct.id] = subproduct.quantity
+                    systemStockObj[subproduct.id!] = subproduct.quantity
                 })
             })
             setSystemStock(systemStockObj)
@@ -126,9 +126,9 @@ export default function Inventario() {
                     item.subproducts!.map(subitem => (
                         {
                             ...subitem,
-                            inventory: verifiedStock[subitem.id].inventory,
-                            justification: verifiedStock[subitem.id].justification,
-                            reason: verifiedStock[subitem.id].reason
+                            inventory: verifiedStock[subitem.id!].inventory,
+                            justification: verifiedStock[subitem.id!].justification,
+                            reason: verifiedStock[subitem.id!].reason
                         }
                     ))
             }
@@ -236,11 +236,11 @@ export default function Inventario() {
                                                 bg='#eef7ff'
                                             >
                                                 <Item width='160px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
-                                                <Item width='150px' color='#3142a0' text={`Validade: ${formatValidity(subitem.validade)}`} />
+                                                <Item width='150px' color='#3142a0' text={`Validade: ${formatDate(subitem.validade)}`} />
                                                 {submissionCounter === 1
                                                     ? <>
                                                         <Item width='100px' color='#ff0000' text={`Qtd (sis): ${subitem.quantity}`} />
-                                                        <Item width='100px' color='#ff0000' text={`Qtd (inv): ${verifiedStock[subitem.id].inventory}`} />
+                                                        <Item width='100px' color='#ff0000' text={`Qtd (inv): ${verifiedStock[subitem.id!].inventory}`} />
                                                     </>
                                                     : <></>
                                                 }
@@ -252,14 +252,14 @@ export default function Inventario() {
                                                         name="contagem"
                                                         display="flex"
                                                         style={{ fontSize: '12px', padding: '8px' }}
-                                                        onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { inventory: Number(e.target.value), system: subitem.quantity } })} />
+                                                        onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id!]: { inventory: Number(e.target.value), system: subitem.quantity } })} />
                                                 </div>
 
                                             </ItemsContainer>
                                             {submissionCounter === 1
 
                                                 ? <>
-                                                    {subitem.quantity !== verifiedStock[subitem.id].inventory &&
+                                                    {subitem.quantity !== verifiedStock[subitem.id!].inventory &&
                                                         <>
                                                             <ItemsContainer
                                                                 type="subItem"
@@ -267,7 +267,7 @@ export default function Inventario() {
                                                                 key={subitem.id}
                                                             >
                                                                 <div style={{ marginRight: '10px', marginLeft: '45px', display: 'flex', alignItems: 'center', width: '100%' }}>
-                                                                    <Select label="Motivo:" name="reason" display="flex" style={{ fontSize: '12px', padding: '8px' }} onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { ...verifiedStock[subitem.id], reason: e.target.value } })}>
+                                                                    <Select label="Motivo:" name="reason" display="flex" style={{ fontSize: '12px', padding: '8px' }} onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id!]: { ...verifiedStock[subitem.id!], reason: e.target.value } })}>
                                                                         <>
                                                                             <option></option>
                                                                             {reasons.map((item) =>
@@ -283,7 +283,7 @@ export default function Inventario() {
                                                                 key={subitem.id}
                                                             >
                                                                 <div style={{ margin: '10px', display: 'flex', alignItems: 'center', width: '100%' }}>
-                                                                    <Input label="Justificativa:" name="justification" display="flex" style={{ fontSize: '12px', padding: '8px' }} onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id]: { ...verifiedStock[subitem.id], justification: e.target.value } })} />
+                                                                    <Input label="Justificativa:" name="justification" display="flex" style={{ fontSize: '12px', padding: '8px' }} onChange={(e) => setVerifiedStock({ ...verifiedStock, [subitem.id!]: { ...verifiedStock[subitem.id!], justification: e.target.value } })} />
                                                                 </div>
                                                             </ItemsContainer>
                                                         </>

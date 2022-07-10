@@ -1,13 +1,13 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
 import { useAppSelector } from "../../app/hooks"
-import { formatValidity, isExpired } from "../../utils/functions"
 import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import Title from "../../components/UI/Title"
 import ListWrapper from "../../components/UI/ListWrapper"
 import { productsToAliquotSelector } from "../../app/selectors"
+import { formatDate, isExpired } from "../../utils/dateFunctions"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -71,7 +71,7 @@ export default function ToAliquot() {
                                             <Item
                                                 width='280px'
                                                 color={isExpired(subitem.validade!) ? 'red' : '#3142a0'}
-                                                text={`Validade: ${formatValidity(subitem.validade)}`}
+                                                text={`Validade: ${formatDate(subitem.validade)}`}
                                             />
                                             <Item width='200px' color='#3142a0' text={`Quantidade: ${subitem.quantity}`} />
                                         </ItemsContainer>

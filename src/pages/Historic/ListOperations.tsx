@@ -7,10 +7,11 @@ import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import Title from "../../components/UI/Title"
-import { formatValidity, groupStockByDateB } from "../../utils/functions"
+import { groupStockByDate } from "../../utils/functions"
 import ExportJSON from "../../components/Actions/ExportJSON"
 import ListWrapper from "../../components/UI/ListWrapper"
 import { getAllHistoric } from "../../features/historic/historicSlice"
+import { formatDate } from "../../utils/dateFunctions"
 
 const HeaderContainer = styled.div`
     display: flex;
@@ -43,7 +44,7 @@ export default function ListOperations({ productFilter }: Props) {
     useEffect(() => {
 
         let filteredHistoric = productFilter ? historic.filter(i => i.product?.name === productFilter) : historic
-        const historicByDate = groupStockByDateB(filteredHistoric) as { [key: string]: TStockIn[] }
+        const historicByDate = groupStockByDate(filteredHistoric) as { [key: string]: TStockIn[] }
         setOrderedHistoric(historicByDate)
 
     }, [productFilter, products, historic])
@@ -115,14 +116,14 @@ export default function ListOperations({ productFilter }: Props) {
                                     filteredHistoric[key].map((item: any, index: any) => (
                                         < div key={index}  >
                                             <ItemsContainer bg={getColor(item.description)} >
-                                                <Item width='90px' text={item.createdAt?.slice(11, 19)} />
+                                                <Item width='90px' text={item.createdAt!.slice(11, 19)} />
                                                 <Item flex={4} text={item.product.name} />
                                                 <Item width='100px' text={item.provider?.name} />
                                                 <Item flex={1.5} text={item.product.brand} />
                                                 <Item width='80px' text={item.product.unit} />
                                                 <Item width='80px' text={item.price} />
                                                 <Item flex={1} text={item.lote} />
-                                                <Item width='90px' text={formatValidity(item.validade)} />
+                                                <Item width='90px' text={formatDate(item.validade)} />
                                                 <Item width='70px' text={item.description === 'Retirada' ? -item.quantity : item.quantity} align='center' />
                                                 <Item width='80px' text={item.user?.name} />
                                             </ItemsContainer>
@@ -131,7 +132,7 @@ export default function ListOperations({ productFilter }: Props) {
                                 }
                                 bg={getColor(key.split('_')[1], true)}
                             >
-                                <Item width='90px' text={key.split('_')[0]} />
+                                <Item width='90px' text={`${key.split('_')[0].slice(8, 10)}/${key.split('_')[0].slice(5, 7)}/${key.split('_')[0].slice(0, 4)}`} />
                                 <Item text={key.split('_')[1]} />
                             </ItemsContainer>
                         ))

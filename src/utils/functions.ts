@@ -4,10 +4,6 @@ import { TStockIn } from "../types/TStockIn"
 import { TStockOut } from "../types/TStockOut"
 import { TSubProduct } from "../types/TSubProduct"
 
-export const dateToString = (date: Date): string => {
-    return `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`
-}
-
 export const getProduct = (products: TProduct[], product_id: number | undefined): TProduct | null => {
     if (!product_id) return null
 
@@ -54,12 +50,6 @@ export const getSubProductByLote = (products: TProduct[], product_id: number | u
     return subProduct
 }
 
-export const compareDates = (a: string, b: string): number => {
-    let dateA: any = new Date(a);
-    let dateB: any = new Date(b);
-    return dateB - dateA;
-}
-
 export const mergeProducts = (products: TProduct[]): TProduct[] => {
     products = products.filter(i => i.hide === false)
 
@@ -95,32 +85,7 @@ export const compare = (array: TProduct[], property: string) => {
     return []
 }
 
-export const formatValidity = (date: string | null | undefined) => {
-    if (date) {
-        return date.slice(0, 10)
-        // 
-    }
-    return 'Ind.'
-}
-
-export const groupStockByDate = (stockList: (TStockIn[] | TStockOut[]), suffix: string) => {
-
-    let stockByDate: { [key: string]: (TStockIn[] | TStockOut[]) } = {}
-
-    stockList.forEach((i: any) => {
-        let index = i.createdAt!.slice(0, 10) + suffix
-        if (stockByDate[index]) {
-            stockByDate[index].push(i)
-        } else {
-            stockByDate[index] = [i]
-        }
-    })
-
-    return stockByDate
-}
-
-
-export const groupStockByDateB = (stockList: (TStockIn[] | TStockOut[])) => {
+export const groupStockByDate = (stockList: (TStockIn[] | TStockOut[])) => {
 
     let stockByDate: { [key: string]: (TStockIn[] | TStockOut[]) } = {}
 
@@ -134,19 +99,4 @@ export const groupStockByDateB = (stockList: (TStockIn[] | TStockOut[])) => {
     })
 
     return stockByDate
-}
-
-export const isExpired = (validity: string): boolean => {
-    if (!validity) {
-        return false
-    }
-
-    const validityDate = new Date(validity)
-    const today = new Date()
-
-    if (validityDate < today) {
-        return true
-    }
-
-    return false
 }

@@ -6,7 +6,7 @@ import EditDeleteButton from "../UI/EditDeleteButton"
 import ListHeader from "../List/ListHeader"
 import Item from "../List/Item"
 import ItemsContainer from "../List/ItemsContainer"
-import { formatValidity } from '../../utils/functions'
+import { formatDate } from "../../utils/dateFunctions"
 
 const ProductListContainer = styled.div`
     margin-bottom: 30px;
@@ -46,7 +46,7 @@ export default function RetirarEAjustarList({ productList, deleteItem }: Props) 
                                         <Item flex={1} text={item.product.name} />
                                         <Item flex={0.4} text={item.product.brand} />
                                         <Item flex={0.2} text={item.subProduct?.lote} />
-                                        <Item flex={0.25} text={formatValidity(item.subProduct?.validade)} />
+                                        <Item flex={0.25} text={formatDate(item.subProduct?.validade)} />
                                         <Item flex={0.1} text={item.quantity} align="center" />
                                         <EditDeleteButton
                                             width='50px'

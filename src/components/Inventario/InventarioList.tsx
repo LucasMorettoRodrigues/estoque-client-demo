@@ -1,10 +1,10 @@
 import styled from "styled-components"
-import { TProduct } from "../../types/TProduct"
-import { formatValidity } from "../../utils/functions"
+import { IProductInventory } from "../../types/TProduct"
 import Item from "../List/Item"
 import ItemsContainer from "../List/ItemsContainer"
 import ListHeader from "../../components/List/ListHeader"
 import ListWrapper from "../UI/ListWrapper"
+import { formatDate } from "../../utils/dateFunctions"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -15,7 +15,7 @@ const HeaderContainer = styled.div`
 `
 
 type Props = {
-    products: TProduct[]
+    products: IProductInventory[]
 }
 
 export default function InventarioList({ products }: Props) {
@@ -59,7 +59,7 @@ export default function InventarioList({ products }: Props) {
                                             key={subitem.id}
                                         >
                                             <Item width='200px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
-                                            <Item width='150px' color='#3142a0' text={`Validade: ${formatValidity(subitem.validade)}`} />
+                                            <Item width='150px' color='#3142a0' text={`Validade: ${formatDate(subitem.validade)}`} />
                                             <>
                                                 {subitem.inventory === subitem.quantity &&
                                                     <Item width='90px' color='#3142a0' text={`Qtd: ${subitem.inventory}`} />

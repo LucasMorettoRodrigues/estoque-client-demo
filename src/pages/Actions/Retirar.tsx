@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { createStockOut } from "../../features/AsyncThunkFunctions"
-import { compareDates, getProduct, getSubProduct } from "../../utils/functions"
+import { getProduct, getSubProduct } from "../../utils/functions"
 
 import { TProduct } from "../../types/TProduct"
 import { TMessage } from "../../types/TMessage"
@@ -15,6 +15,7 @@ import RetirarEAjustarList from "../../components/Actions/RetirarEAjustarList"
 import SignOperation from "../../components/Actions/SignOperation"
 import RetirarForm from "../../components/Actions/RetirarForm"
 import ValidityInfoAlert from "../../components/Alerts/ExpiredItemsAlert"
+import { compareDates } from "../../utils/dateFunctions"
 
 type TProductList = {
     product: TProduct,

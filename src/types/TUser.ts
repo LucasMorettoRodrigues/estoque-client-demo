@@ -4,5 +4,5 @@ export type TUser = {
     password: string,
     email: string,
     role: string,
-    status?: string,
+    status: string,
 }

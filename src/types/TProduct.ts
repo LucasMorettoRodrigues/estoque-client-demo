@@ -1,3 +1,5 @@
+import { TSubProduct, TSubProductInventory } from "./TSubProduct"
+
 export type TProduct = {
     id?: number,
     name: string,
@@ -8,24 +10,15 @@ export type TProduct = {
     stock: number,
     max_stock: number,
     min_stock: number,
-    lote?: string,
-    validade?: string,
-    quantity?: number,
     observation: string | null
     hide?: boolean,
     providers?: string[],
     delivery_time?: number,
     product_child_id?: number | null,
     qty_to_child: number | null
-    subproducts?: {
-        id: number,
-        lote: string,
-        validade: string | null,
-        quantity: number,
-        inventory?: number,
-        justification?: string,
-        reason?: string,
-        obs?: string,
-        on_hold?: boolean
-    }[]
+    subproducts?: TSubProduct[]
+}
+
+export interface IProductInventory extends TProduct {
+    subproducts: TSubProductInventory[]
 }

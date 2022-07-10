@@ -1,8 +1,7 @@
 import styled from "styled-components"
 import { useLocation, useNavigate } from "react-router-dom"
 import { useState } from "react"
-import { TProduct } from "../../types/TProduct"
-import { formatValidity } from "../../utils/functions"
+import { IProductInventory } from "../../types/TProduct"
 import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
@@ -15,6 +14,7 @@ import InventoryAnalisys from "../../components/Inventario/InventoryAnalisys"
 import Button from "../../components/UI/Button"
 import { useAppDispatch } from "../../app/hooks"
 import { deleteNotification } from "../../features/notification/notificationSlice"
+import { formatDate } from "../../utils/dateFunctions"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -30,7 +30,7 @@ export default function VizualizarInventario() {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
 
-    const products: TProduct[] = state.data
+    const products: IProductInventory[] = state.data
     const [message, setMessage] = useState<TMessage>()
 
     const handleMessage = () => {
@@ -57,7 +57,7 @@ export default function VizualizarInventario() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Title title='Inventário' />
                 <div style={{ fontSize: 14, color: '#555' }}>
-                    <p style={{ marginBottom: '8px' }}>Realizado por {state.user?.name} em {formatValidity(state.createdAt)}</p>
+                    <p style={{ marginBottom: '8px' }}>Realizado por {state.user?.name} em {formatDate(state.createdAt)}</p>
                 </div>
             </div>
             <InventoryAnalisys products={products} />
@@ -105,7 +105,7 @@ export default function VizualizarInventario() {
                                             key={subitem.id}
                                         >
                                             <Item width='200px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
-                                            <Item width='150px' color='#3142a0' text={`Validade: ${formatValidity(subitem.validade)}`} />
+                                            <Item width='150px' color='#3142a0' text={`Validade: ${formatDate(subitem.validade)}`} />
                                             <Item width='90px' color='#3142a0' text={`Qtd (sis): ${subitem.quantity}`} />
                                             <Item width='90px' color='#3142a0' text={`Qtd (inv): ${subitem.inventory}`} />
                                             <Item flex={1} color='#3142a0' text={`Motivo: ${subitem.reason}`} />

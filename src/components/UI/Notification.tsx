@@ -4,9 +4,9 @@ import styled from "styled-components"
 import { useAppDispatch } from "../../app/hooks"
 import { archiveNotification, deleteNotification } from "../../features/notification/notificationSlice"
 import { TNotification } from "../../types/TNotification"
-import { formatValidity } from "../../utils/functions"
 import EditDeleteButton from "./EditDeleteButton"
 import { MouseEvent } from 'react'
+import { formatDate } from "../../utils/dateFunctions"
 
 const NotificationContainer = styled.div`
     padding: 10px;
@@ -93,7 +93,7 @@ export default function Notification({ notification }: Props) {
                     </Description>
                 </NotificationItem>
                 <NotificationItem style={{ flex: 1 }}><Text>Enviado por:</Text>{notification.user?.name}</NotificationItem>
-                <NotificationItem style={{ width: '90px', fontSize: '14px', color: '#666' }}>{formatValidity(notification.createdAt)}</NotificationItem>
+                <NotificationItem style={{ width: '90px', fontSize: '14px', color: '#666' }}>{formatDate(notification.createdAt)}</NotificationItem>
                 <EditDeleteButton width="40px"
                     onClick={(e) => handleDelete(e, notification)}>
                     <AiOutlineDelete />
@@ -108,7 +108,7 @@ export default function Notification({ notification }: Props) {
                     </NotificationRow>
                     <NotificationRow style={{ display: 'flex' }}>
                         <NotificationItem style={{ width: '42%' }}><Text>Lote:</Text>{notification.data!.subproduct}</NotificationItem>
-                        <NotificationItem><Text>Validade:</Text>{formatValidity(notification.data!.validity)}</NotificationItem>
+                        <NotificationItem><Text>Validade:</Text>{formatDate(notification.data!.validity)}</NotificationItem>
                     </NotificationRow>
                     <NotificationRow style={{ display: 'flex' }}>
                         <NotificationItem ><Text>Motivo:</Text>{notification.data!.message}</NotificationItem>

@@ -11,7 +11,7 @@ import Loading from "../../components/UI/Loading"
 import SignOperation from "../../components/Actions/SignOperation"
 import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
-import Card from "./Card"
+import Card from "../../components/Aliquot/Card"
 import { createAliquot } from "../../features/product/productSlice"
 
 const IconContainer = styled.div<{ completed: boolean }>`

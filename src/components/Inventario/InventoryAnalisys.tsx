@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { TProduct } from "../../types/TProduct"
+import { IProductInventory } from "../../types/TProduct"
 import ChartPie from "../Charts/PieChart"
 
 const InfoWrapper = styled.div`
@@ -31,7 +31,7 @@ const Value = styled.p`
 `
 
 type Props = {
-    products: TProduct[]
+    products: IProductInventory[]
 }
 
 export default function InventoryAnalisys({ products }: Props) {

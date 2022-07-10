@@ -2,7 +2,7 @@ import { Autocomplete, FormControl, InputLabel, MenuItem, Select, TextField } fr
 import { FormEvent, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { useAppSelector } from '../../app/hooks'
-import { formatValidity, isExpired } from '../../utils/functions'
+import { formatDate, isExpired } from '../../utils/dateFunctions'
 import Button from '../UI/Button'
 import Form from '../UI/Form'
 import Input from '../UI/Input'
@@ -84,7 +84,7 @@ export default function RetirarForm({ onSubmit }: Props) {
                             products.filter(item => item.id === productId).map(item => (
                                 item.subproducts?.map((item, index) => (
                                     <MenuItem style={{ color: isExpired(item.validade!) ? 'red' : 'black', backgroundColor: `${index === 0 && 'lightgreen'}` }} key={item.id} value={item.id}>
-                                        {item.lote} / {formatValidity(item.validade)}
+                                        {item.lote} / {formatDate(item.validade)}
                                     </MenuItem>
                                 ))
                             ))
