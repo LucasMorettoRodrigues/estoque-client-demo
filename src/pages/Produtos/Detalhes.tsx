@@ -14,6 +14,7 @@ import { BsFillPlusSquareFill } from 'react-icons/bs'
 import Filters from "../../components/UI/Filters"
 import ListWrapper from "../../components/UI/ListWrapper"
 import { formatDate, isExpired } from "../../utils/dateFunctions"
+import ExportXLSX from "../../components/Actions/ExportXLSX"
 
 const Container = styled.div``
 const TitleContainer = styled.div`
@@ -208,6 +209,9 @@ export default function Detalhes() {
                     }
                 </>
             </ListWrapper>
+            <div style={{ margin: '30px 0', display: 'flex', justifyContent: 'flex-end' }}>
+                <ExportXLSX data={productsData} fileName={`produtos-${new Date().toISOString().slice(0, 10)}`} />
+            </div>
         </>
     )
 }

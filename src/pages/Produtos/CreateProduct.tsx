@@ -47,8 +47,10 @@ export default function CreateProduct() {
         if (!product.unit) return false
         if (!product.max_stock) return false
         if (!product.min_stock) return false
-        if ((product.product_child_id && !product.qty_to_child) ||
-            (!product.product_child_id && product.qty_to_child)) return false
+
+        if (product.product_child_id && !product.qty_to_child) return false
+
+        if (!product.product_child_id && product.qty_to_child) return false
 
         return true
     }

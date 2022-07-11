@@ -139,7 +139,10 @@ export default function ListOperations({ productFilter }: Props) {
                     }
                 </>
             </ListWrapper>
-            <ExportJSON data={filteredHistoric} fileName='historico.json' />
+            <div style={{ margin: '30px 0', display: 'flex', justifyContent: 'flex-end' }}>
+                <ExportJSON data={filteredHistoric} fileName={`produtos-${new Date().toISOString().slice(0, 10)}`} />
+            </div>
+
         </>
     )
 }

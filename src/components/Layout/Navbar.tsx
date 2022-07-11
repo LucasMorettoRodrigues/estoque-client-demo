@@ -65,9 +65,9 @@ const Badge = styled.div`
     position: absolute;
     top: 1px;
     right: 2px;
-    font-size: 14px;
-    width: 20px;
-    height: 20px;
+    font-size: 13px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     background-color: #f58c41;
 `
@@ -77,6 +77,8 @@ export default function Navbar() {
     const auth = useAppSelector(state => state.authentication)
     const productsToAliquot = useAppSelector(productsToAliquotSelector)
     const dispatch = useAppDispatch()
+
+    console.log(productsToAliquot)
 
     const handleOnClick = () => {
         logout()

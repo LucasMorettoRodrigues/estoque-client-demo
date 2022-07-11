@@ -11,7 +11,7 @@ export default function ExportJSON({ data, fileName }: Props) {
         const blob = new Blob([JSON.stringify(data)], { type: 'text/json' })
 
         const a = document.createElement('a')
-        a.download = fileName
+        a.download = `${fileName}.json`
         a.href = window.URL.createObjectURL(blob)
         const clickEvt = new MouseEvent('click', {
             view: window,
@@ -22,6 +22,6 @@ export default function ExportJSON({ data, fileName }: Props) {
         a.remove()
     }
     return (
-        <Button text='Exportar' onClick={handleExport} bg='blue' style={{ marginTop: '30px', float: 'right' }} />
+        <Button text='Exportar para JSON' onClick={handleExport} bg='blue' />
     )
 }
