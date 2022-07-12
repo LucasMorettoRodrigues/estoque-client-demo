@@ -1,6 +1,5 @@
 import styled from "styled-components"
 import { useAppSelector } from "../../app/hooks"
-import Title from "../../components/UI/Title"
 import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"

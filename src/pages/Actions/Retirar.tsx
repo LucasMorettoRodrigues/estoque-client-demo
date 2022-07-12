@@ -62,6 +62,7 @@ export default function Retirar() {
         if (quantity > subProductToAdd.quantity) return setMessage({ title: 'Erro', message: `Existem apenas ${subProductToAdd.quantity} unidades do lote ${subProductToAdd.lote}.` })
 
         let sorted = [...productToAdd.subproducts!].sort(function compare(a, b) { return compareDates(b.validade!, a.validade!) })
+        console.log(sorted)
         if (sorted[0].id !== subProductToAdd.id && !notification) {
             setMemoProductId(productId)
             setMemoSubProductId(subProductId)

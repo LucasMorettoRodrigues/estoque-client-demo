@@ -3,7 +3,6 @@ import { useAppSelector } from '../../app/hooks'
 import { inventoriesSelector } from '../../app/selectors'
 import AdminPanelHeader from '../../components/AdminPanel/AdminPanelHeader'
 import ChartPie from '../../components/Charts/PieChart'
-import Title from '../../components/UI/Title'
 import { TNotification } from '../../types/TNotification'
 import { IProductInventory } from '../../types/TProduct'
 
