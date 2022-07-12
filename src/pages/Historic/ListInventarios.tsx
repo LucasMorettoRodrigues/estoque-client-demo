@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom"
 import ListWrapper from "../../components/UI/ListWrapper"
 import { formatDate } from "../../utils/dateFunctions"
 import { inventoriesSelector } from "../../app/selectors"
+import AdminPanelHeader from "../../components/AdminPanel/AdminPanelHeader"
 
 const Container = styled.div``
 
@@ -19,7 +20,7 @@ export default function ListInventarios() {
 
     return (
         <>
-            <Title title='Histórico de Inventários' />
+            <AdminPanelHeader title={'Histórico de Inventários'} active={'Inventories'} />
 
             <ListWrapper>
                 <ListHeader>

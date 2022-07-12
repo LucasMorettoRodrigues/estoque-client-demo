@@ -87,7 +87,7 @@ export default function Navbar() {
         <Container>
             <Nav>
                 <Wrapper>
-                    <Title><Link to='/panel' style={{ color: '#222' }}>Estoque</Link></Title>
+                    <Title><Link to='/inbox' style={{ color: '#222' }}>Estoque</Link></Title>
                     {auth.authenticated &&
                         <List>
                             {auth.role === 'admin' &&

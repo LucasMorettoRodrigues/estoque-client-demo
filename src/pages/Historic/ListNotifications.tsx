@@ -6,6 +6,7 @@ import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import ListWrapper from "../../components/UI/ListWrapper"
 import { formatDate } from "../../utils/dateFunctions"
+import AdminPanelHeader from "../../components/AdminPanel/AdminPanelHeader"
 
 const Container = styled.div``
 
@@ -17,8 +18,7 @@ export default function ListNotifications() {
 
     return (
         <>
-            <Title title='Histórico de Notificações (Produtos Retirados com Validade Incorreta)' />
-
+            <AdminPanelHeader title={'Histórico de Retiradas Incorretas'} active={'Notifications'} />
             <ListWrapper>
                 <ListHeader>
                     <Item width="100px" text='Data' />

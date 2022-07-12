@@ -49,7 +49,7 @@ const Login = () => {
         if (auth.authenticated) {
             console.log(auth.role)
             if (auth.role === 'admin') {
-                navigate('/panel')
+                navigate('/inbox')
             } else {
                 navigate('/retirar')
             }

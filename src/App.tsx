@@ -26,7 +26,7 @@ import Ajustar from "./pages/Actions/Ajustar";
 import Login from "./pages/Login";
 import Users from "./pages/Users/Users";
 import CreateUser from "./pages/Users/CreateUser";
-import AdminPanel from "./pages/AdminPanel";
+import InboxPage from "./pages/AdminPanel/InboxPage";
 import EditUser from "./pages/Users/EditUser";
 import RedefinePassword from "./pages/Users/RedefinePassword";
 import ListNotifications from "./pages/Historic/ListNotifications";
@@ -38,7 +38,7 @@ import OnHold from "./pages/Aliquot/ToAliquot";
 import Aliquoting from "./pages/Aliquot/Aliquoting";
 import NovoProdutoTwo from "./pages/Produtos/CreateProduct";
 import EditProduct from "./pages/Produtos/EditProduct";
-import DashBoard from "./pages/DashBoard";
+import DashBoard from "./pages/AdminPanel/DashBoard";
 
 function App() {
 
@@ -94,7 +94,7 @@ function App() {
           <Route path='/produtos/:id/historico' element={<AdminRoute><ProdutoHistorico /></AdminRoute>} />
           <Route path='/usuarios' element={<AdminRoute><Users /></AdminRoute>} />
           <Route path='/usuarios/novo' element={<AdminRoute><CreateUser /></AdminRoute>} />
-          <Route path='/panel' element={<AdminRoute><AdminPanel /></AdminRoute>} />
+          <Route path='/inbox' element={<AdminRoute><InboxPage /></AdminRoute>} />
           <Route path='/usuarios/:id' element={<AdminRoute><EditUser /></AdminRoute>} />
           <Route path='/usuarios/:id/redefinirSenha' element={<AdminRoute><RedefinePassword /></AdminRoute>} />
           <Route path='/inventarios/:id' element={<AdminRoute><VizualizarInventario /></AdminRoute>} />
