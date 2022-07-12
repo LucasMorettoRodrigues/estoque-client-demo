@@ -38,6 +38,7 @@ import OnHold from "./pages/Aliquot/ToAliquot";
 import Aliquoting from "./pages/Aliquot/Aliquoting";
 import NovoProdutoTwo from "./pages/Produtos/CreateProduct";
 import EditProduct from "./pages/Produtos/EditProduct";
+import DashBoard from "./pages/DashBoard";
 
 function App() {
 
@@ -97,6 +98,8 @@ function App() {
           <Route path='/usuarios/:id' element={<AdminRoute><EditUser /></AdminRoute>} />
           <Route path='/usuarios/:id/redefinirSenha' element={<AdminRoute><RedefinePassword /></AdminRoute>} />
           <Route path='/inventarios/:id' element={<AdminRoute><VizualizarInventario /></AdminRoute>} />
+
+          <Route path='/dashboard/' element={<AdminRoute><DashBoard /></AdminRoute>} />
 
           <Route path='/historico/notificacoes' element={<AdminRoute><ListNotifications /></AdminRoute>} />
           <Route path='/historico/inventarios' element={<AdminRoute><ListInventarios /></AdminRoute>} />

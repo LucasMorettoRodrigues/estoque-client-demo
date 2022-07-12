@@ -7,6 +7,7 @@ import ItemsContainer from "../../components/List/ItemsContainer"
 import { useNavigate } from "react-router-dom"
 import ListWrapper from "../../components/UI/ListWrapper"
 import { formatDate } from "../../utils/dateFunctions"
+import { inventoriesSelector } from "../../app/selectors"
 
 const Container = styled.div``
 
@@ -14,9 +15,7 @@ export default function ListInventarios() {
 
     const navigate = useNavigate()
 
-    const notifications = useAppSelector(state => state.notification.notifications.filter(
-        i => i.description === 'Inventário'
-    ))
+    const notifications = useAppSelector(inventoriesSelector)
 
     return (
         <>

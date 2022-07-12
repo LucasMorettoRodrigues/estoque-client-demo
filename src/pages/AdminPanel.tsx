@@ -36,6 +36,7 @@ export default function AdminPanel() {
             <HeaderContainer>
                 <Title title='Bem Vindo'></Title>
                 <div>
+                    <Button style={{ marginRight: '10px' }} text='DashBoard' onClick={() => navigate('/dashboard')} />
                     <Button style={{ marginRight: '10px' }} text='Notificações' onClick={() => navigate('/historico/notificacoes')} />
                     <Button text='Inventários' onClick={() => navigate('/historico/inventarios')} />
                 </div>

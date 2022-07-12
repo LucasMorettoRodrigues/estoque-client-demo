@@ -55,7 +55,6 @@ export default function InventoryAnalisys({ products }: Props) {
     }))
 
     test = test.map((item: any, index: number) => ({ ...item, color: colors[index] }))
-    console.log(test)
 
     const data = [
         { name: 'Items em acordo', value: rigthProducts, color: '#37bb1c' },
