@@ -135,11 +135,13 @@ export default function Aliquoting() {
                     onClick={handleAddAliquot}
                     completed={completed}
                 >
-                    <p style={{ marginBottom: '10px' }}>Clique para aliquotar</p>
+                    <p style={{ margin: '10px', textAlign: 'center' }}>Você percisa fazer {originProduct.qty_to_child} alíquotas.</p>
                     <ImArrowRight
                         size={80}
                         color='green'
                     />
+                    <p style={{ margin: '10px', textAlign: 'center' }}>Clique na seta para criar alíquotas</p>
+
                 </IconContainer>
                 {destinyProduct &&
                     <Card
