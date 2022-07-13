@@ -46,6 +46,8 @@ const Login = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
+        handleSubmit() 
+        
         if (auth.authenticated) {
             console.log(auth.role)
             if (auth.role === 'admin') {
@@ -56,8 +58,8 @@ const Login = () => {
         }
     }, [auth.authenticated, auth.role, navigate])
 
-    const [user, setUser] = useState('')
-    const [password, setPassword] = useState('')
+    const [user, setUser] = useState('admin')
+    const [password, setPassword] = useState('admin')
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
 
