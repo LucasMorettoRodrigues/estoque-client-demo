@@ -62,7 +62,7 @@ export default function ExpiredItemsAlert() {
                             ))}
                         </div>
                         <div style={{ fontSize: '14px' }}>
-                            {alertItems.toExpire.length > 0 && <p style={{ marginLeft: '2px' }}>Produto(s) com data de validade próxima:</p>}
+                            {alertItems.toExpire.length > 0 && <p style={{ marginLeft: '2px' }}>Produto(s) que irão vencer em 7 dias:</p>}
                             {alertItems.toExpire.map((i: any) => (
                                 <ValidityInfoItem bColor="#fffd80" product={i.product} lote={i.lote} validity={`${i.validade.slice(8, 10)}/${i.validade.slice(5, 7)}`} />
                             ))}

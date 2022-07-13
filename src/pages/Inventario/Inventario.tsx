@@ -18,7 +18,7 @@ import Loading from "../../components/UI/Loading"
 import ListWrapper from "../../components/UI/ListWrapper"
 import Select from "../../components/UI/Select"
 import Input from "../../components/UI/Input"
-import { formatDate } from "../../utils/dateFunctions"
+import { formatDate, isExpired } from "../../utils/dateFunctions"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -236,7 +236,7 @@ export default function Inventario() {
                                                 bg='#eef7ff'
                                             >
                                                 <Item width='160px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
-                                                <Item width='150px' color='#3142a0' text={`Validade: ${formatDate(subitem.validade)}`} />
+                                                <Item width='150px' color={isExpired(subitem.validade!) ? 'red' : '#3142a0'} text={`Validade: ${formatDate(subitem.validade)}`} />
                                                 {submissionCounter === 1
                                                     ? <>
                                                         <Item width='100px' color='#ff0000' text={`Qtd (sis): ${subitem.quantity}`} />

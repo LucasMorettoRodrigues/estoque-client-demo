@@ -48,8 +48,12 @@ export const createAliquot = createAsyncThunk(
         try {
             await api.post(`/aliquot`, data)
             thunkAPI.dispatch(getProducts())
-        } catch (error) {
-            console.log(error)
+        } catch (err: any) {
+            if (!err.response) {
+                throw err
+            }
+
+            return thunkAPI.rejectWithValue(err.response.data)
         }
     }
 )
@@ -103,12 +107,13 @@ export const produtoSlice = createSlice({
         })
         builder.addCase(createProduct.fulfilled, (state, action) => {
             state.status = 'success'
-            state.products.push(action.payload)
-            state.products = state.products
-                .map((item) => item.name === action.payload.name
-                    ? { ...item, min_stock: action.payload.min_stock, max_stock: action.payload.max_stock }
-                    : item
-                )
+            state.products.push({ ...action.payload, subproducts: [] })
+            // state.products = state.products
+            //     .map((item) => item.name === action.payload.name
+            //         ? { ...item, min_stock: action.payload.min_stock, max_stock: action.payload.max_stock }
+            //         : item
+            //     )
+
         })
         builder.addCase(createProduct.rejected, (state) => {
             state.status = 'failed'

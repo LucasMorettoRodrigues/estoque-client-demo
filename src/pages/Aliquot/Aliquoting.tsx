@@ -94,7 +94,7 @@ export default function Aliquoting() {
             })).unwrap()
             setMessage({ title: 'Sucesso', message: 'A ação foi concluida.' })
         } catch (error) {
-            setMessage({ title: 'Erro', message: 'Não foi possivel concluir a ação.' })
+            setMessage({ title: 'Erro', message: `${error}` })
         } finally {
             setLoading(false)
         }
@@ -125,9 +125,9 @@ export default function Aliquoting() {
                         name={originProduct.name}
                         brand={originProduct.brand}
                         obs={originProduct.observation ? originProduct.observation : ''}
-                        lote={originProduct.subProduct!.lote!}
-                        validade={originProduct.subProduct!.validade!}
-                        quantity={originProduct.subProduct!.quantity!}
+                        lote={originProduct.subProduct?.lote}
+                        validade={originProduct.subProduct!.validade || 'Ind.'}
+                        quantity={originProduct.subProduct!.quantity}
                         unit={originProduct.unit}
                     />
                 }
@@ -147,9 +147,9 @@ export default function Aliquoting() {
                         name={destinyProduct.name}
                         brand={destinyProduct.brand}
                         obs={destinyProduct.observation ? destinyProduct.observation : ''}
-                        lote={destinyProduct.subProduct!.lote!}
-                        validade={destinyProduct.subProduct!.validade!}
-                        quantity={destinyProduct.subProduct?.quantity!}
+                        lote={destinyProduct.subProduct?.lote!}
+                        validade={destinyProduct.subProduct!.validade || 'Ind.'}
+                        quantity={destinyProduct.subProduct?.quantity}
                         unit={destinyProduct.unit}
                     />
                 }
