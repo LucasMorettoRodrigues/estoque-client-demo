@@ -63,8 +63,8 @@ const Login = () => {
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
 
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault()
+    const handleSubmit = async (e?: FormEvent) => {
+        e?.preventDefault()
 
         if (!user || !password) return setError("Preencha todos os campos.")
 
